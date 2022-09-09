@@ -1,6 +1,7 @@
 const Bank = require('../models/bankModel');
+const catchAsync = require('../utils/catchAsync');
 
-exports.getAllBanks = async (req, res, next) => {
+exports.getAllBanks = catchAsync(async (req, res, next) => {
   const allBanks = await Bank.find();
 
   res.status(201).json({
@@ -9,9 +10,9 @@ exports.getAllBanks = async (req, res, next) => {
       allBanks: allBanks,
     },
   });
-};
+});
 
-exports.createBank = async (req, res, next) => {
+exports.createBank = catchAsync(async (req, res, next) => {
   const newBank = await Bank.create(req.body);
 
   res.status(201).json({
@@ -20,4 +21,4 @@ exports.createBank = async (req, res, next) => {
       newBank: newBank,
     },
   });
-};
+});
