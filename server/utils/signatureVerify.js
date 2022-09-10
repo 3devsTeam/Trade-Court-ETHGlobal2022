@@ -1,7 +1,6 @@
 // const axios = require('axios');
 const AppError = require('../utils/appError');
 const catchAsync = require('./catchAsync');
-const User = require('../models/userModel');
 const Web3 = require('web3');
 const web3 = new Web3(
   new Web3.providers.HttpProvider(process.env.ALCHEMY_HTTP)
@@ -11,7 +10,6 @@ exports.signatureVerify = catchAsync(async (req, res, next) => {
   const address = req.body.address;
   const messageRaw = req.body.messageRaw;
   const messageSignature = req.body.signature;
-  //TODO: add this to header
 
   if (!(address && messageRaw && messageSignature)) {
     return next(
