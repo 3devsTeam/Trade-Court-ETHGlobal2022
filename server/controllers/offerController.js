@@ -13,21 +13,21 @@ exports.getAllOffers = catchAsync(async (req, res, next) => {
 });
 
 exports.createOffer = catchAsync(async (req, res, next) => {
-  // const offerBody = {
-  //   user: req.body.user,
-  //   offerType: req.body.offerType,
-  //   payMethods: req.body.payMethods,
-  //   fiat: req.body.fiat,
-  //   unitPrice: req.body.unitPrice,
-  //   amount: req.body.amount,
-  //   quantity: req.body.quantity,
-  //   orderLimit: req.body.orderLimit,
-  //   timeLimit: req.body.timeLimit,
-  //   crypto: req.body.crypto,
-  //   offerComment: req.body.offerComment,
-  // };
+  const offerBody = {
+    user: req.user._id,
+    offerType: req.body.offerType,
+    payMethods: req.body.payMethods,
+    fiat: req.body.fiat,
+    unitPrice: req.body.unitPrice,
+    amount: req.body.amount,
+    quantity: req.body.quantity,
+    orderLimit: req.body.orderLimit,
+    timeLimit: req.body.timeLimit,
+    crypto: req.body.crypto,
+    offerComment: req.body.offerComment,
+  };
 
-  const newOffer = await Offer.create(req.body);
+  const newOffer = await Offer.create(offerBody);
 
   res.status(201).json({
     status: 'success',

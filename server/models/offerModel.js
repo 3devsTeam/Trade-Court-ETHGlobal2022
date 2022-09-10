@@ -2,7 +2,8 @@ const mongoose = require('mongoose');
 
 const offerSchema = new mongoose.Schema({
   user: {
-    type: String,
+    type: mongoose.Schema.ObjectId,
+    ref: 'User',
     required: [true, 'address is empty'],
   },
   offerType: {
