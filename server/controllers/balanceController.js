@@ -73,7 +73,29 @@ exports.getERC20Balances = catchAsync(async (req, res, next) => {
     }
     el['balance'] = balance;
   });
-  //TODO: add sort
+  tokenList.sort((a, b) => {
+    const arg0 = BigNumber.from(a.balance);
+    const arg1 = BigNumber.from(b.balance);
+    const zero = BigNumber.from('0');
+    if (arg0.eq(zero) && arg1.eq(zero)) {
+      //TODO: shit refactor!!!!!
+      if (a.symbol.toLowerCase() > b.symbol.toLowerCase()) {
+        return 1;
+      } else if (a.symbol.toLowerCase() < b.symbol.toLowerCase()) {
+        return -1;
+      } else {
+        return 0;
+      }
+    } else if (arg0.gt(zero) && arg1.eq(zero)) {
+      return -1;
+    } else if (arg0.gt(arg1)) {
+      return -1;
+    } else if (arg0.lt(arg1)) {
+      return 1;
+    } else {
+      return 0;
+    }
+  }); //TODO: add aplphabetic sort after amount sort
   res.status(200).json({
     msg: 'success',
     data: tokenList,
