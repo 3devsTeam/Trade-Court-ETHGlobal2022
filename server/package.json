@@ -12,11 +12,13 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "axios": "^0.27.2",
     "cors": "^2.8.5",
     "dotenv": "^16.0.2",
     "express": "^4.18.1",
     "mongoose": "^6.6.0",
     "morgan": "^1.10.0",
-    "validator": "^13.7.0"
+    "validator": "^13.7.0",
+    "web3": "^1.7.5"
   }
 }
