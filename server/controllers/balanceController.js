@@ -1,6 +1,7 @@
 const AppError = require('../utils/appError');
 const catchAsync = require('../utils/catchAsync');
 const Web3 = require('web3');
+const fs = require('fs');
 const { BigNumber } = require('ethers');
 const {
   Web3ProviderConnector,
@@ -10,6 +11,14 @@ const {
 // const Crypto = require('../models/cryptoModel');
 const { ERC20ABI } = require('../data/ABI');
 const tokenList = require('../data/erc20TokenList');
+
+exports.getERC20Rate = catchAsync(async (req, res, next) => {
+  const prices = fs.readFileSync('./data/tokenRate.json', 'utf-8');
+  res.status(200).json({
+    msg: 'success',
+    data: JSON.parse(prices),
+  });
+});
 
 exports.getERC20Balances = catchAsync(async (req, res, next) => {
   const web3 = new Web3(process.env.ALCHEMY_HTTP_LEO);
