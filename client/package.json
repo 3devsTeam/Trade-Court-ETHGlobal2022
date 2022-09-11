@@ -1,0 +1,37 @@
+{
+  "name": "trade-court-eth-global-2022",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@rainbow-me/rainbowkit": "^0.5.1",
+    "@reduxjs/toolkit": "^1.8.5",
+    "@tanstack/react-query": "^4.2.3",
+    "@tanstack/react-virtual": "^3.0.0-beta.18",
+    "axios": "^0.27.2",
+    "ethers": "^5.7.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-hook-form": "^7.34.2",
+    "react-redux": "^8.0.2",
+    "react-router-dom": "^6.3.0",
+    "react-select": "^5.4.0",
+    "use-onclickoutside": "^0.4.1",
+    "wagmi": "^0.6.4"
+  },
+  "devDependencies": {
+    "@types/react": "^18.0.17",
+    "@types/react-dom": "^18.0.6",
+    "@vitejs/plugin-react": "^2.1.0",
+    "autoprefixer": "^10.4.8",
+    "postcss": "^8.4.16",
+    "tailwindcss": "^3.1.8",
+    "typescript": "^4.6.4",
+    "vite": "^3.1.0"
+  }
+}
