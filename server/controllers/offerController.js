@@ -2,6 +2,24 @@ const Offer = require('../models/offerModel');
 const catchAsync = require('../utils/catchAsync');
 
 exports.getAllOffers = catchAsync(async (req, res, next) => {
+  const page = +req.query.page || 1;
+  const limit = +req.query.limit || 10;
+  console.log(page, limit);
+  const offers = await Offer.find()
+    .sort({ unitPrice: 1 })
+    .populate('crypto')
+    .limit(limit)
+    .skip((page - 1) * limit);
+
+  res.status(201).json({
+    status: 'success',
+    data: {
+      offers: offers,
+    },
+  });
+});
+
+exports.getOffer = catchAsync(async (req, res, next) => {
   const offers = await Offer.find();
   //TODO: add pagination
   res.status(201).json({
