@@ -20,6 +20,22 @@ exports.getERC20Rate = catchAsync(async (req, res, next) => {
   });
 });
 
+exports.getTokenImg = catchAsync(async (req, res, next) => {
+  fs.readFile(
+    `${__dirname}/../data/erc20TokenImg/${req.params.url}.png`,
+    function (err, content) {
+      if (err) {
+        res.writeHead(400, { 'Content-type': 'text/html' });
+        console.log(err);
+        res.end('No such image');
+      } else {
+        res.writeHead(200, { 'Content-type': 'image/jpg' });
+        res.end(content);
+      }
+    }
+  );
+});
+
 exports.getERC20Balances = catchAsync(async (req, res, next) => {
   const web3 = new Web3(process.env.ALCHEMY_HTTP_LEO);
   const provider = new Web3ProviderConnector(
