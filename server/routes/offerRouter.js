@@ -8,5 +8,6 @@ router.get('/', offerController.getAllOffers);
 
 router.use(authController.protect);
 router.post('/', offerController.createOffer);
+router.get('/:id', offerController.getOffer);
 
 module.exports = router;
