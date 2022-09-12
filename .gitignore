@@ -1,0 +1,4 @@
+config.env
+node_modules
+erc20TokenImg
+.DS_Store
