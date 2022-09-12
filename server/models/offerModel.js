@@ -1,13 +1,15 @@
 const mongoose = require('mongoose');
 
 const offerSchema = new mongoose.Schema({
-  users: [
-    {
-      type: mongoose.Schema.ObjectId,
-      ref: 'User',
-      required: [true, 'address is empty'],
-    },
-  ],
+  maker: {
+    type: mongoose.Schema.ObjectId,
+    ref: 'User',
+    required: [true, 'address is empty'],
+  },
+  taker: {
+    type: mongoose.Schema.ObjectId,
+    ref: 'User',
+  },
   offerType: {
     type: String,
     enum: ['buy', 'sell'],

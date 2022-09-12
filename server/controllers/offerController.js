@@ -24,7 +24,10 @@ exports.getOffer = catchAsync(async (req, res, next) => {
   if (!offer) {
     return next(new AppError('No such offer', 404));
   }
-  if (!offer.users.includes(req.user._id)) {
+  if (
+    offer.maker.toString() != req.user._id.toString() ||
+    (offer.taker && offer.taker.toString() != req.user._id.toString())
+  ) {
     return next(new AppError('You dont have access', 403));
   }
   res.status(201).json({
@@ -40,28 +43,46 @@ exports.joinOffer = catchAsync(async (req, res, next) => {
   if (!offer) {
     return next(new AppError('No such offer', 404));
   }
-  if (offer.users.length > 2) {
+  if (offer.maker && offer.taker) {
     return next(new AppError('Offer is full', 403));
   }
-  if (offer.users.includes(req.user._id)) {
+  if (
+    offer.maker.toString() == req.user._id.toString() ||
+    (offer.taker && offer.taker.toString() == req.user._id.toString())
+  ) {
     return next(new AppError('You already in this room', 403));
   }
-  const newOffer = await Offer.findOneAndUpdate(
+  await Offer.findOneAndUpdate({ _id: req.params.id }, { taker: req.user._id });
+  res.status(200).json({
+    status: 'success',
+  });
+});
+
+exports.leaveOffer = catchAsync(async (req, res, next) => {
+  const offer = await Offer.findById(req.params.id);
+  if (!offer) {
+    return next(new AppError('No such offer', 404));
+  }
+  if (offer.taker) {
+    if (offer.taker.toString() != req.user._id.toString()) {
+      return next(new AppError('You cant leave this room', 403));
+    }
+  } else {
+    return next(new AppError('You cant leave this room', 403));
+  }
+  await Offer.findOneAndUpdate(
     { _id: req.params.id },
-    { $push: { users: req.user._id } }
+    { $unset: { taker: '' } }
   );
 
-  res.status(201).json({
+  res.status(200).json({
     status: 'success',
-    data: {
-      newOffer,
-    },
   });
 });
 
 exports.createOffer = catchAsync(async (req, res, next) => {
   const offerBody = {
-    users: [req.user._id],
+    maker: req.user._id,
     offerType: req.body.offerType,
     payMethods: req.body.payMethods,
     fiat: req.body.fiat,
