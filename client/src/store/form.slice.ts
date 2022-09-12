@@ -1,12 +1,17 @@
 import { createSlice } from "@reduxjs/toolkit"
 import { IForm } from "../models/models"
 
-const initialState: any = {}
+const initialState: IForm = {
+    step: 1
+}
 
 const formSlice = createSlice({
     name: 'form-slice',
     initialState,
-    reducers: {}
+    reducers: {
+        nextStep: (state) => { state.step++ },
+        prevStep: (state) => { state.step--}
+    }
 })
 
 export const formReducer = formSlice.reducer
