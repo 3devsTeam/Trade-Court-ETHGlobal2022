@@ -55,7 +55,6 @@ exports.protect = catchAsync(async (req, res, next) => {
     return next(new AppError(`user dont exist`, 401));
   }
   req.user = currentUser;
-  console.log(req.user._id);
   return next();
 });
 
