@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { Step1 } from "./form-pages/Step1";
 import { Step2 } from "./form-pages/Step2";
+import { Step3 } from "./form-pages/Step3";
 import { useTypedSelector } from "../../hooks/useTypedSelector";
 
 export const Form = () => {
@@ -14,6 +15,7 @@ export const Form = () => {
     >
       {step === 1 && <Step1 />}
       {step === 2 && <Step2 />}
+      {step === 3 && <Step3 />}
     </div>
   );
 };
