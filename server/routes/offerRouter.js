@@ -9,5 +9,7 @@ router.get('/', offerController.getAllOffers);
 router.use(authController.protect);
 router.post('/', offerController.createOffer);
 router.get('/:id', offerController.getOffer);
+router.patch('/:id', offerController.joinOffer);
+router.put('/:id', offerController.leaveOffer);
 
 module.exports = router;
