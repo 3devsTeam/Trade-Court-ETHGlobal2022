@@ -24,11 +24,14 @@ exports.getOffer = catchAsync(async (req, res, next) => {
   if (!offer) {
     return next(new AppError('No such offer', 404));
   }
-  if (
-    offer.maker.toString() != req.user._id.toString() ||
-    (offer.taker && offer.taker.toString() != req.user._id.toString())
-  ) {
-    return next(new AppError('You dont have access', 403));
+  if (offer.maker.toString() != req.user._id.toString()) {
+    if (offer.taker) {
+      if (offer.taker.toString() != req.user._id.toString()) {
+        return next(new AppError('You dont have access', 403));
+      }
+    } else {
+      return next(new AppError('You dont have access', 403));
+    }
   }
   res.status(201).json({
     status: 'success',
@@ -46,10 +49,13 @@ exports.joinOffer = catchAsync(async (req, res, next) => {
   if (offer.maker && offer.taker) {
     return next(new AppError('Offer is full', 403));
   }
-  if (
-    offer.maker.toString() == req.user._id.toString() ||
-    (offer.taker && offer.taker.toString() == req.user._id.toString())
-  ) {
+  if (offer.maker.toString() != req.user._id.toString()) {
+    if (offer.taker) {
+      if (offer.taker.toString() == req.user._id.toString()) {
+        return next(new AppError('You already in this room', 403));
+      }
+    }
+  } else {
     return next(new AppError('You already in this room', 403));
   }
   await Offer.findOneAndUpdate({ _id: req.params.id }, { taker: req.user._id });
@@ -63,13 +69,18 @@ exports.leaveOffer = catchAsync(async (req, res, next) => {
   if (!offer) {
     return next(new AppError('No such offer', 404));
   }
-  if (offer.taker) {
-    if (offer.taker.toString() != req.user._id.toString()) {
+  if (offer.maker.toString() == req.user._id.toString()) {
+    return next(new AppError('You cant leave this room as owner', 403));
+  } else {
+    if (offer.taker) {
+      if (offer.taker.toString() != req.user._id.toString()) {
+        return next(new AppError('You cant leave this room', 403));
+      }
+    } else {
       return next(new AppError('You cant leave this room', 403));
     }
-  } else {
-    return next(new AppError('You cant leave this room', 403));
   }
+
   await Offer.findOneAndUpdate(
     { _id: req.params.id },
     { $unset: { taker: '' } }
