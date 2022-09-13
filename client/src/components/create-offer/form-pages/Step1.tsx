@@ -6,8 +6,12 @@ import { useActions } from "../../../hooks/useActions";
 import { ModalInput } from "../ModalInput";
 import { Modal } from "../../modal/Modal";
 import { SearchField } from "../../modal/SearchField";
+import { TokenList } from "../../modal/TokenList";
+import { useTokens } from "../../../hooks/useTokens";
 
 export const Step1 = () => {
+  const { tokens } = useTokens();
+
   const { setCrypto, setFiat, setQuantity, setUnitPrice } = useActions();
   const { crypto, fiat, quantity, unitPrice } = useTypedSelector(
     (state) => state.offerReducer
@@ -68,7 +72,7 @@ export const Step1 = () => {
           onAction={null}
           value={""}
         />
-        tokens
+        <TokenList tokens={tokens} onClose={() => setIsOpen(false)} />
       </Modal>
     </form>
   );

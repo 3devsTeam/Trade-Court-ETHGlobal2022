@@ -13,12 +13,12 @@ export const Token = ({ virtualItem, token, onClose }: any) => {
 
   return (
     <button
+      key={virtualItem.key}
       type={"button"}
       onClick={() => selectHandler([token])}
       className={
         "flex items-center justify-between gap-2 px-3 cursor-pointer hover:bg-lightGray transition-colors duration-300 rounded-[15px]"
       }
-      key={virtualItem.key}
       style={{
         position: "absolute",
         top: 0,
