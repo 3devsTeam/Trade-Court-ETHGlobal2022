@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit"
 import { IOffer } from "../models/models"
+import defaultTokenImg from "../assets/defaultTokenImg.svg"
 
 const initialState: IOffer = {
     crypto: [{
@@ -7,9 +8,9 @@ const initialState: IOffer = {
         balance: '',
         chainId: 0,
         decimals: 0,
-        logoUrl: '',
+        logoUrl: defaultTokenImg,
         name: '',
-        symbol: '',
+        symbol: 'Unknown token',
         _id: '',
         tokenAmount: 0
     }],

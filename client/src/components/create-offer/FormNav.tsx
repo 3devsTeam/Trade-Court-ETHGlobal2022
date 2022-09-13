@@ -1,7 +1,12 @@
 import React from "react";
 import { Button } from "./Button";
+import { useActions } from "../../hooks/useActions";
+import { useTypedSelector } from "../../hooks/useTypedSelector";
 
 export const FormNav = () => {
+  const { nextStep, prevStep } = useActions();
+  const { step } = useTypedSelector((state) => state.formReducer);
+
   return (
     <div
       className={
@@ -9,20 +14,24 @@ export const FormNav = () => {
       }
     >
       <div className="flex gap-3">
+        {step > 1 && (
+          <Button
+            type={"button"}
+            onAction={prevStep}
+            name={"Prev"}
+            color={"purple"}
+            rounded={"20px"}
+            fWeight={"bold"}
+            fSize={"lg"}
+            tColor={"white"}
+          />
+        )}
         <Button
           type={"button"}
-          onAction={null}
-          name={"Prev"}
-          color={"purple"}
-          rounded={"20px"}
-          fWeight={"bold"}
-          fSize={"lg"}
-          tColor={"white"}
-        />
-        <Button
-          type={"button"}
-          onAction={null}
-          name={"Next"}
+          onAction={() => {
+            step < 3 ? nextStep() : null;
+          }}
+          name={step === 3 ? "Create offer" : "Next"}
           color={"purple"}
           rounded={"20px"}
           fWeight={"bold"}
