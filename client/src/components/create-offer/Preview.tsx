@@ -1,6 +1,13 @@
 import React from "react";
+import { useTypedSelector } from "../../hooks/useTypedSelector";
+import { multiply } from "../../utils/multiply";
 
 export const Preview = () => {
+  const { crypto, fiat, unitPrice, quantity, timeLimit, priceLimit, comment } =
+    useTypedSelector((state) => state.offerReducer);
+
+  const { symbol, logoUrl } = crypto[0];
+
   return (
     <div className={"bg-white rounded-[20px] shadow-lg row-span-2 break-words"}>
       <div className={"bg-purple rounded-t-[20px] p-5"}>
@@ -12,63 +19,88 @@ export const Preview = () => {
           <div>
             <span className={"font-bold text-lg"}>Crypto</span>
           </div>
-          <div className={"flex gap-2 items-center"}>-</div>
+          <div className={"flex gap-2 items-center"}>
+            <img className={"w-7 h-7"} src={logoUrl} alt={"tokenImg"} />
+            <span>{symbol}</span>
+          </div>
         </div>
 
         <div className={"flex justify-between"}>
           <div>
             <span className={"font-bold text-lg"}>Fiat</span>
           </div>
-          <div>-</div>
+          <div>
+            <span>{fiat}</span>
+          </div>
         </div>
 
         <div className={"flex justify-between"}>
           <div>
             <span className={"font-bold text-lg"}>Unit Price</span>
           </div>
-          <div>-</div>
+          <div>
+            <span>
+              {unitPrice} {fiat}
+            </span>
+          </div>
         </div>
 
         <div className={"flex justify-between"}>
           <div>
             <span className={"font-bold text-lg"}>Quantity</span>
           </div>
-          <div>-</div>
+          <div>
+            <span>
+              {quantity} {symbol}
+            </span>
+          </div>
         </div>
 
         <div className={"flex justify-between"}>
           <div>
             <span className={"font-bold text-lg"}>Total Amount</span>
           </div>
-          <div>-</div>
+          <div>
+            <span>
+              {multiply(unitPrice, quantity)} {fiat}
+            </span>
+          </div>
         </div>
 
         <div className={"flex justify-between"}>
           <div>
             <span className={"font-bold text-lg"}>Payment Methods</span>
           </div>
-          <div>-</div>
+          <div>
+            <span>-</span>
+          </div>
         </div>
 
         <div className={"flex justify-between"}>
           <div>
             <span className={"font-bold text-lg"}>Time Limit</span>
           </div>
-          <div>-</div>
+          <div>
+            <span>{timeLimit} min</span>
+          </div>
         </div>
 
         <div className={"flex justify-between"}>
           <div>
             <span className={"font-bold text-lg"}>Price Limit</span>
           </div>
-          <div>-</div>
+          <div>
+            <span>{`${priceLimit[0]}-${priceLimit[1]}`}</span>
+          </div>
         </div>
 
         <div className={"flex justify-between"}>
           <div>
             <span className={"font-bold text-lg"}>Comment</span>
           </div>
-          <div>-</div>
+          <div>
+            <span>{comment}</span>
+          </div>
         </div>
       </div>
     </div>
