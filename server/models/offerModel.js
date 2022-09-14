@@ -6,9 +6,20 @@ const offerSchema = new mongoose.Schema({
     ref: 'User',
     required: [true, 'address is empty'],
   },
-  taker: {
-    type: mongoose.Schema.ObjectId,
-    ref: 'User',
+  room: {
+    taker: {
+      type: mongoose.Schema.ObjectId,
+      ref: 'User',
+    },
+    stage: {
+      type: String,
+      enum: ['no taker', 'waitng taker', 'taker sent', 'maker recived'],
+      default: 'no taker',
+    },
+    amount: {
+      type: Number,
+      min: 0,
+    },
   },
   offerType: {
     type: String,
@@ -17,7 +28,7 @@ const offerSchema = new mongoose.Schema({
   },
   payMethods: [
     {
-      currentBank: {
+      bank: {
         type: mongoose.Schema.ObjectId,
         ref: 'Banks',
         required: [true, 'Bank is empty'],
@@ -27,8 +38,9 @@ const offerSchema = new mongoose.Schema({
         minLenght: 4,
         required: [true, 'card Number is empty'],
       },
-      activeRegion: {
-        type: String,
+      region: {
+        type: mongoose.Schema.ObjectId,
+        ref: 'Regions',
         required: [true, 'activeRegion is empty'],
       },
       paymentDescription: {
