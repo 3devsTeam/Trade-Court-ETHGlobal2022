@@ -2,6 +2,7 @@ import React from "react";
 import { Logo } from "./Logo";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { Link } from "react-router-dom";
+import { LoginButton } from "./LoginButton";
 
 export const Navbar = () => {
   return (
@@ -21,7 +22,7 @@ export const Navbar = () => {
           </li>
         </ul>
 
-        <ConnectButton />
+        <LoginButton />
       </div>
     </nav>
   );

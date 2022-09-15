@@ -3,9 +3,11 @@ import { useQuery } from 'wagmi'
 import { TokenService } from '../services/tokens.services'
 import { useAccount } from 'wagmi'
 import { IToken } from '../models/models'
+import { useActions } from "../hooks/useActions";
 
 export const useTokens = () => {
 
+    const { setCrypto } = useActions()
 
     const { address } = useAccount()
 
@@ -13,7 +15,7 @@ export const useTokens = () => {
 		['get tokens'],
 		() => TokenService.getTokens(address!),
 		{
-			select: (data) => data.data.data
+			select: (data) => data.data.data,
 		}
 	)
 
@@ -63,6 +65,6 @@ export const useTokens = () => {
 		})
 	}
 
-	return { tokens }
+	return { tokens, isSuccess }
         
 }

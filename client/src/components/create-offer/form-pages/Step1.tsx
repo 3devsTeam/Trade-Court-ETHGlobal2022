@@ -8,11 +8,13 @@ import { Modal } from "../../modal/Modal";
 import { SearchField } from "../../modal/SearchField";
 import { TokenList } from "../../modal/TokenList";
 import { useTokens } from "../../../hooks/useTokens";
+import Skeleton from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
 
 export const Step1 = () => {
-  const { tokens } = useTokens();
-
   const { setCrypto, setFiat, setQuantity, setUnitPrice } = useActions();
+  const { tokens, isSuccess } = useTokens();
+
   const { crypto, fiat, quantity, unitPrice } = useTypedSelector(
     (state) => state.offerReducer
   );
@@ -26,40 +28,47 @@ export const Step1 = () => {
       //  onSubmit={handleSubmit(onSubmit)}
       className={"flex flex-col gap-5"}
     >
-      <ModalInput
-        image={logoUrl}
-        onOpen={() => setIsOpen(!isOpen)}
-        label={"Crypto"}
-        value={symbol}
-      />
-      <Dropdown
-        value={fiat}
-        onAction={setFiat}
-        data={["RUB", "USD", "GBP"]}
-        label={"Fiat"}
-      />
-      <Input
-        type={"number"}
-        onAction={setUnitPrice}
-        //register={register('unitPrice', { valueAsNumber: true })}
-        placeholder={"Enter unit price"}
-        readOnly={false}
-        label={"Unit Price"}
-        outline={false}
-        element={fiat}
-        value={unitPrice}
-      />
-      <Input
-        type={"number"}
-        onAction={setQuantity}
-        //register={register('quantity', { valueAsNumber: true })}
-        placeholder={"Enter quantity"}
-        readOnly={false}
-        label={"Quantity"}
-        outline={false}
-        element={symbol}
-        value={quantity}
-      />
+      {!isSuccess ? (
+        // && (symbol && logoUrl) !== ""
+        <Skeleton count={10} height={45} />
+      ) : (
+        <>
+          <ModalInput
+            image={logoUrl}
+            onOpen={() => setIsOpen(!isOpen)}
+            label={"Crypto"}
+            value={symbol}
+          />
+          <Dropdown
+            value={fiat}
+            onAction={setFiat}
+            data={["RUB", "USD", "GBP"]}
+            label={"Fiat"}
+          />
+          <Input
+            type={"number"}
+            onAction={setUnitPrice}
+            //register={register('unitPrice', { valueAsNumber: true })}
+            placeholder={"Enter unit price"}
+            readOnly={false}
+            label={"Unit Price"}
+            outline={false}
+            element={fiat}
+            value={unitPrice}
+          />
+          <Input
+            type={"number"}
+            onAction={setQuantity}
+            //register={register('quantity', { valueAsNumber: true })}
+            placeholder={"Enter quantity"}
+            readOnly={false}
+            label={"Quantity"}
+            outline={false}
+            element={symbol}
+            value={quantity}
+          />
+        </>
+      )}
 
       <Modal
         width={"567px"}
