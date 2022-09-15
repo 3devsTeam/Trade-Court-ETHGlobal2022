@@ -28,7 +28,7 @@ export const Input = ({
   return (
     <label>
       <p className={"text-lg font-bold mb-1 ml-[10px]"}>{label}</p>
-      <div className="flex items-center border-2 border-purple rounded-[15px] h-[60px] shadow-lg">
+      <div className="flex items-center border-2 border-purple rounded-[15px] h-[60px]">
         <input
           type={type}
           onChange={(e) => onAction(e.target.value)}

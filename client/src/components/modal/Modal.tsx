@@ -26,7 +26,7 @@ export const Modal = ({ isOpen, width, children, close, header }: IModal) => {
               width: width,
             }}
             ref={ref}
-            className={`bg-white overflow-y-auto fixed shadow-lg rounded-md top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 p-5 z-50 mobile:w-screen mobile:top-0 tablet:w-screen`}
+            className={`bg-white overflow-y-auto fixed shadow-lg rounded-[20px] top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 p-5 z-50 mobile:w-screen mobile:top-0 tablet:w-screen`}
           >
             <div className="flex justify-between items-center mb-[20px]">
               <div>

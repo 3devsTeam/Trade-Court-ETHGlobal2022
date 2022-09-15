@@ -18,7 +18,7 @@ export const ModalInput = ({ onOpen, label, value, image }: IModalInput) => {
       <p className={"text-lg font-bold mb-1 ml-[10px]"}>{label}</p>
       <button
         onClick={(e) => onOpenHandler(e)}
-        className="flex items-center border-2 border-purple rounded-[15px] h-[60px] shadow-lg px-[10px] w-full"
+        className="flex items-center border-2 border-purple rounded-[15px] h-[60px] px-[10px] w-full"
       >
         <div className={"flex items-center gap-2"}>
           <img className={"w-7 h-7"} src={image} alt={"tokenImg"} />

@@ -8,7 +8,7 @@ interface ISearchField {
 
 export const SearchField = ({ onAction, value, placeholder }: ISearchField) => {
   return (
-    <div className="h-12 px-3 border-2 border-purple rounded-md flex items-center justify-between mb-[20px]">
+    <div className="h-12 px-3 border-2 border-purple flex items-center justify-between mb-[20px] rounded-[10px]">
       {/* <div className="flex items-center justify-between"> */}
       <Loop />
       <input
@@ -22,7 +22,7 @@ export const SearchField = ({ onAction, value, placeholder }: ISearchField) => {
           e.preventDefault();
           onAction("");
         }}
-        className="cursor-pointer text-purple"
+        className="cursor-pointer text-purple font-bold"
       >
         Clear
       </button>

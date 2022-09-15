@@ -13,7 +13,7 @@ import "react-loading-skeleton/dist/skeleton.css";
 
 export const Step1 = () => {
   const { setCrypto, setFiat, setQuantity, setUnitPrice } = useActions();
-  const { tokens, isSuccess } = useTokens();
+  const { tokens, isSuccessRequest } = useTokens();
 
   const { crypto, fiat, quantity, unitPrice } = useTypedSelector(
     (state) => state.offerReducer
@@ -28,7 +28,7 @@ export const Step1 = () => {
       //  onSubmit={handleSubmit(onSubmit)}
       className={"flex flex-col gap-5"}
     >
-      {!isSuccess ? (
+      {!isSuccessRequest ? (
         // && (symbol && logoUrl) !== ""
         <Skeleton count={10} height={45} />
       ) : (

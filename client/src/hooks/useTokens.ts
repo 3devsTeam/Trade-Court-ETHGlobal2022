@@ -10,8 +10,9 @@ export const useTokens = () => {
     const { setCrypto } = useActions()
 
     const { address } = useAccount()
+	//console.log('address', address)
 
-	const { data: tokens, isSuccess } = useQuery(
+	const { data: tokens, isSuccess: successGetTokens } = useQuery(
 		['get tokens'],
 		() => TokenService.getTokens(address!),
 		{
@@ -19,23 +20,26 @@ export const useTokens = () => {
 		}
 	)
 
-	const { data: exchangeRate } = useQuery(
+	const { data: exchangeRate, isSuccess: successGetExchangeTokens } = useQuery(
 		['get exchange token rate erc20'],
 		() => TokenService.getExchangeRateERC20(),
 		{ select: (data) => data.data.data }
 	)
 
-	const { data: ethUsdRate } = useQuery(
+	const { data: ethUsdRate, isSuccess: successGetEthUsdRate } = useQuery(
 		['get eth usd rate'],
 		() => TokenService.getEthUsdRate(),
 		{ select: (data) => data.data.ethereum.usd }
 	)
 
+	const isSuccessRequest = successGetTokens && successGetExchangeTokens && successGetEthUsdRate
+
+
 	const zero = BigNumber.from(0)
 	const div36 = BigNumber.from(10).pow(36)
 	const div15 = BigNumber.from(10).pow(15)
 
-	if (isSuccess) {
+	if (isSuccessRequest) {
 		
 		//tokens.forEach((t: any, i: number) => console.info(i, t)) 
 		tokens.forEach((el: any, i: any) => {
@@ -65,6 +69,6 @@ export const useTokens = () => {
 		})
 	}
 
-	return { tokens, isSuccess }
+	return { tokens, isSuccessRequest }
         
 }

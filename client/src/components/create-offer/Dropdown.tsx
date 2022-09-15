@@ -28,7 +28,7 @@ export const Dropdown = ({ value, onAction, label, data }: IDropdown) => {
           <div
             onClick={() => setIsOpen(!isOpen)}
             className={
-              "p-[10px] flex items-center justify-between h-[60px] shadow-lg rounded-[15px] border-2 border-purple cursor-pointer"
+              "p-[10px] flex items-center justify-between h-[60px] rounded-[15px] border-2 border-purple cursor-pointer"
             }
           >
             <div>
