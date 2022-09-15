@@ -4,8 +4,12 @@ import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { Link } from "react-router-dom";
 import { LoginButton } from "./LoginButton";
 import { NavLink } from "./NavLink";
+import { useAccount } from "wagmi";
 
 export const Navbar = () => {
+  const { isConnected } = useAccount();
+  console.log(isConnected);
+
   return (
     <nav>
       <div className={"p-5 flex justify-between items-center w-full"}>

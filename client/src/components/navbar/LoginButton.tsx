@@ -1,10 +1,6 @@
 import { ConnectButton } from "@rainbow-me/rainbowkit";
-import { useSignMessage } from "wagmi";
-export const LoginButton = () => {
-  const { data, isError, isLoading, isSuccess, signMessage } = useSignMessage({
-    message: "Sign login to Trade Court",
-  });
 
+export const LoginButton = () => {
   return (
     <ConnectButton.Custom>
       {({
@@ -41,7 +37,6 @@ export const LoginButton = () => {
                   <button
                     onClick={() => {
                       openConnectModal();
-                      //signMessage();
                     }}
                     type="button"
                   >

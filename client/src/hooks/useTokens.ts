@@ -10,7 +10,7 @@ export const useTokens = () => {
     const { setCrypto } = useActions()
 
     const { address } = useAccount()
-	//console.log('address', address)
+	console.log('address', address)
 
 	const { data: tokens, isSuccess: successGetTokens } = useQuery(
 		['get tokens'],

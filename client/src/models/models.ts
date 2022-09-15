@@ -9,7 +9,7 @@ export interface IOffer {
     paymentMethod?: string
     region?: string
     cardNumber?: string
-    timeLimit: number
+    timeLimit: string
     priceLimit: [number, number]
     comment: string   
     paymentDescription?: string

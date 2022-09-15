@@ -3,7 +3,7 @@ import { useTypedSelector } from "../../hooks/useTypedSelector";
 
 interface ITimeLimit {
   onAction: any;
-  times: any;
+  times: string[];
   label: string;
 }
 
@@ -14,7 +14,7 @@ export const TimeLimit = ({ times, label, onAction }: ITimeLimit) => {
     <label>
       <p className={"text-lg font-bold mb-1 ml-[10px]"}>{label}</p>
       <div className={"flex items-center justify-between p-5"}>
-        {times.map((t: any, i: number) => {
+        {times.map((t: string, i: number) => {
           return (
             <button
               type="button"

@@ -18,7 +18,7 @@ const initialState: IOffer = {
     unitPrice: 0,
     quantity: 0,
     paymentMethods: [],
-    timeLimit: 15,
+    timeLimit: '15',
     priceLimit: [0, 0],
     paymentMethod: 'Sberbank',  //make auto paste
     region: 'Russia', //make auto paste
