@@ -7,7 +7,8 @@ interface IModal {
   isOpen: boolean;
   width?: string;
   children: React.ReactNode;
-  close: React.Dispatch<any>;
+  // close: React.Dispatch<any> || null;
+  close: any;
   header: string;
 }
 

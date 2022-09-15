@@ -1,6 +1,25 @@
 import { ConnectButton } from "@rainbow-me/rainbowkit";
+import { useEffect } from "react";
+import { useSignMessage, useAccount } from "wagmi";
+import { verifyMessage } from "@ethersproject/wallet";
 
 export const LoginButton = () => {
+  const { data, isError, isSuccess, signMessage } = useSignMessage({
+    message: "login",
+    onSuccess: (data, variables) => {
+      const address = verifyMessage(variables.message, data);
+      console.log(address);
+    },
+  });
+
+  const { isConnected } = useAccount();
+
+  useEffect(() => {
+    if (isConnected) {
+      signMessage();
+    }
+  }, [isConnected]);
+
   return (
     <ConnectButton.Custom>
       {({
@@ -20,6 +39,7 @@ export const LoginButton = () => {
           account &&
           chain &&
           (!authenticationStatus || authenticationStatus === "authenticated");
+
         return (
           <div
             {...(!ready && {
@@ -35,7 +55,7 @@ export const LoginButton = () => {
               if (!connected) {
                 return (
                   <button
-                    onClick={() => {
+                    onClick={async () => {
                       openConnectModal();
                     }}
                     type="button"

@@ -1,5 +1,18 @@
-import React from "react";
+import React, { useEffect, useState, useRef } from "react";
+import axios from "axios";
+import { Offer } from "../components/home/Offer";
+import { Header } from "../components/home/Header";
 
 export const Home = () => {
-  return <div>Home</div>;
+  return (
+    <>
+      <Header />
+
+      <div className="mt-[20px]">
+        <Offer />
+        <Offer />
+        <Offer />
+      </div>
+    </>
+  );
 };

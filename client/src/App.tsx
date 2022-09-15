@@ -4,6 +4,7 @@ import { Navbar } from "./components/navbar/Navbar";
 import { CreateOffer } from "./pages/CreateOffer";
 import { Home } from "./pages/Home";
 import { Settings } from "./pages/Settings";
+import { Transaction } from "./pages/Transaction";
 
 const App = () => {
   return (
@@ -14,6 +15,7 @@ const App = () => {
           <Route path={"/"} element={<Home />} />
           <Route path={"/create-offer"} element={<CreateOffer />} />
           <Route path={"/settings"} element={<Settings />} />
+          <Route path={"/transaction"} element={<Transaction />} />
         </Routes>
       </main>
     </BrowserRouter>
