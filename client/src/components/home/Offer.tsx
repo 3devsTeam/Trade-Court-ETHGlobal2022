@@ -50,8 +50,8 @@ export const Offer = ({ offer }: any) => {
             <button
               onClick={() => setOpenOfferModal(!openOfferModal)}
               className="bg-lightGreen text-lg text-white px-[15px] rounded-[10px] font-bold h-[45px]
-            transition-all duration-500 hover:bg-transparent hover:shadow-md
-             hover:text-purple hover:scale-110"
+            transition-all duration-500 hover:bg-white
+             hover:text-purple hover:scale-110 hover:shadow-lg"
             >
               <span className="text-md">Buy {"ETH"}</span>
             </button>

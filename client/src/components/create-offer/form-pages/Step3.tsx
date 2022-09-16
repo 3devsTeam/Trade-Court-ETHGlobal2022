@@ -28,19 +28,17 @@ export const Step3 = () => {
         <p className={"text-lg font-bold mb-1 ml-[10px]"}>
           {"Order price limit"}
         </p>
-        <div className={"flex gap-1"}>
+        <div className={"flex justify-between"}>
           <Input
             type={"number"}
             onAction={setMinPriceLimit}
             placeholder={"Min"}
-            readOnly={false}
             element={fiat}
           />
           <Input
             type={"number"}
             onAction={setMaxPriceLimit}
             placeholder={"Max"}
-            readOnly={false}
             element={fiat}
           />
         </div>
@@ -55,4 +53,3 @@ export const Step3 = () => {
     </form>
   );
 };
- 

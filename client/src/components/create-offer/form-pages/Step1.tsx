@@ -48,22 +48,16 @@ export const Step1 = () => {
           <Input
             type={"number"}
             onAction={setUnitPrice}
-            //register={register('unitPrice', { valueAsNumber: true })}
             placeholder={"Enter unit price"}
-            readOnly={false}
             label={"Unit Price"}
-            outline={false}
             element={fiat}
             value={unitPrice}
           />
           <Input
             type={"number"}
             onAction={setQuantity}
-            //register={register('quantity', { valueAsNumber: true })}
             placeholder={"Enter quantity"}
-            readOnly={false}
             label={"Quantity"}
-            outline={false}
             element={symbol}
             value={quantity}
           />

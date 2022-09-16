@@ -10,7 +10,7 @@ export const Form = () => {
   return (
     <div
       className={
-        "bg-white break-words rounded-[20px] shadow-lg p-5 min-h-[505px]"
+        "bg-white break-words rounded-[20px] shadow-lg p-5 min-h-[610px]"
       }
     >
       {step === 1 && <Step1 />}

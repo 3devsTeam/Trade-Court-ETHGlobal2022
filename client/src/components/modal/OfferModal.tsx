@@ -1,6 +1,6 @@
 import React from "react";
 import { truncateAddress } from "../../utils/truncateAddress";
-import { OfferInput } from "../home/OfferInput";
+import { Input } from "../create-offer/Input";
 import { useNavigate } from "react-router";
 
 export const OfferModal = () => {
@@ -30,23 +30,19 @@ export const OfferModal = () => {
       </div>
 
       <div className="flex flex-col gap-3 border-l border-gray p-3 ">
-        <OfferInput
-          maxValue={"238823902"}
+        <Input
+          type={"number"}
+          onAction={null}
+          placeholder={"You pay"}
+          element={"RUB"}
           value={""}
-          height={"60px"}
-          action={null}
-          type="number"
-          placeholder={"I pay"}
-          elementInInput={"RUB"}
         />
-        <OfferInput
-          maxValue={"892399230"}
+        <Input
+          type={"number"}
+          onAction={null}
+          placeholder={"You receive"}
+          element={"ETH"}
           value={""}
-          height={"60px"}
-          action={null}
-          type="number"
-          placeholder={"I receive"}
-          elementInInput={"ETH"}
         />
 
         <div className="grid grid-cols-2 mt-[20px] gap-1">

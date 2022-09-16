@@ -7,8 +7,6 @@ export interface IInput {
   label?: string;
   placeholder?: string;
   value?: string | number;
-  readOnly: boolean;
-  outline?: boolean;
   cursor?: string;
   element?: any;
 }
@@ -20,8 +18,6 @@ export const Input = ({
   label,
   placeholder,
   value,
-  readOnly,
-  outline,
   cursor,
   element,
 }: IInput) => {
@@ -33,11 +29,8 @@ export const Input = ({
           type={type}
           onChange={(e) => onAction(e.target.value)}
           //{...register}
-          className={`font-bold p-[10px] rounded-[15px] ${
-            outline === false ? "outline-none" : ""
-          } cursor-${cursor} w-full h-full`}
+          className={`font-bold outline-none p-[10px] rounded-[15px] cursor-${cursor} w-full h-full`}
           placeholder={placeholder}
-          readOnly={readOnly}
           value={value}
         />
         {element != undefined ? (

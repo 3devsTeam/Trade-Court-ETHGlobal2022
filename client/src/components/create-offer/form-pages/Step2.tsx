@@ -79,7 +79,6 @@ export const Step2 = () => {
         label={"Card Number"}
         placeholder={"Enter card number"}
         onAction={setCardNumber}
-        readOnly={false}
       />
       <TextArea
         value={paymentDescription}

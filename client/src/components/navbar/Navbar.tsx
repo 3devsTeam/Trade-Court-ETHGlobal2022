@@ -12,32 +12,32 @@ import { UserService } from "../../services/user.services";
 export const Navbar = () => {
   const { isConnected } = useAccount();
 
-  const { data, isError, isSuccess, signMessage } = useSignMessage({
-    message: "login",
-    onSuccess: (data, variables) => {
-      console.log(data);
-      console.log(variables);
-      const address = verifyMessage(variables.message, data);
-      console.log(address);
-      // const mutation = useMutation(() =>
-      //   UserService.userLogin({
-      //     address,
-      //     messageRaw: "login",
-      //     signature: data!,
-      //   })
-      // );
-      // mutation.mutateAsync();
-    },
-  });
+  // const { data, isError, isSuccess, signMessage } = useSignMessage({
+  //   message: "login",
+  //   onSuccess: (data, variables) => {
+  //     console.log(data);
+  //     console.log(variables);
+  //     const address = verifyMessage(variables.message, data);
+  //     console.log(address);
+  //     // const mutation = useMutation(() =>
+  //     //   UserService.userLogin({
+  //     //     address,
+  //     //     messageRaw: "login",
+  //     //     signature: data!,
+  //     //   })
+  //     // );
+  //     // mutation.mutateAsync();
+  //   },
+  // });
 
-  if (isSuccess) {
-  }
+  // if (isSuccess) {
+  // }
 
-  useEffect(() => {
-    if (isConnected) {
-      signMessage();
-    }
-  }, [isConnected]);
+  // useEffect(() => {
+  //   if (isConnected) {
+  //     signMessage();
+  //   }
+  // }, [isConnected]);
 
   return (
     <nav>
