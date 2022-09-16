@@ -8,5 +8,8 @@ export const OfferService = {
         return axios.post(`${API_URl}/api/offer`, data, {
             headers: {'Content-Type': 'application/json'}
         })
+    }, 
+    async getFiat() {
+        return axios.get(`${API_URl}/api/fiat`)
     }
 }

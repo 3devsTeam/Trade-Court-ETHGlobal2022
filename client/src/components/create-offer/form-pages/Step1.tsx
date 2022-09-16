@@ -10,16 +10,30 @@ import { TokenList } from "../../modal/TokenList";
 import { useTokens } from "../../../hooks/useTokens";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
+import { OfferService } from "../../../services/offer.services";
+import { QueryKey, useQuery } from "@tanstack/react-query";
+import { IFiat } from "../../../models/models";
 
 export const Step1 = () => {
+  const [allFiat, setAllFiat] = useState([]);
+  const [tickers, setTickers] = useState([]);
   const { setCrypto, setFiat, setQuantity, setUnitPrice } = useActions();
   const { tokens, isSuccessRequest } = useTokens();
+
+  const { isSuccess } = useQuery(["get fiat"], () => OfferService.getFiat(), {
+    select: (data) => data.data.data.allFiat,
+    onSuccess: (data) => {
+      setAllFiat(data);
+    },
+  });
 
   const { crypto, fiat, quantity, unitPrice } = useTypedSelector(
     (state) => state.offerReducer
   );
 
-  const { symbol, logoUrl } = crypto[0];
+  const { symbol, logoUrl: cryptoImage } = crypto[0];
+
+  const { ticker, logoUrl: fiatImage } = fiat[0];
 
   const [isOpen, setIsOpen] = useState(false);
 
@@ -34,15 +48,16 @@ export const Step1 = () => {
       ) : (
         <>
           <ModalInput
-            image={logoUrl}
+            image={cryptoImage}
             onOpen={() => setIsOpen(!isOpen)}
             label={"Crypto"}
             value={symbol}
           />
           <Dropdown
-            value={fiat}
+            image={fiatImage}
+            value={ticker}
             onAction={setFiat}
-            data={["RUB", "USD", "GBP"]}
+            data={allFiat}
             label={"Fiat"}
           />
           <Input
@@ -50,7 +65,7 @@ export const Step1 = () => {
             onAction={setUnitPrice}
             placeholder={"Enter unit price"}
             label={"Unit Price"}
-            element={fiat}
+            element={ticker}
             value={unitPrice}
           />
           <Input
@@ -58,7 +73,7 @@ export const Step1 = () => {
             onAction={setQuantity}
             placeholder={"Enter quantity"}
             label={"Quantity"}
-            element={symbol}
+            element={ticker}
             value={quantity}
           />
         </>

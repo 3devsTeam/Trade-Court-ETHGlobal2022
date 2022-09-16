@@ -17,6 +17,8 @@ export const Step3 = () => {
     useActions();
   const { fiat, comment } = useTypedSelector((state) => state.offerReducer);
 
+  const { ticker } = fiat[0];
+
   return (
     <form className={"flex flex-col gap-5"}>
       <TimeLimit
@@ -33,13 +35,13 @@ export const Step3 = () => {
             type={"number"}
             onAction={setMinPriceLimit}
             placeholder={"Min"}
-            element={fiat}
+            element={ticker}
           />
           <Input
             type={"number"}
             onAction={setMaxPriceLimit}
             placeholder={"Max"}
-            element={fiat}
+            element={ticker}
           />
         </div>
       </label>

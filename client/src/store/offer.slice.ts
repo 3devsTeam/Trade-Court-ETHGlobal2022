@@ -14,14 +14,31 @@ const initialState: IOffer = {
         _id: '',
         tokenAmount: 0
     }],
-    fiat: "RUB",
+    fiat: [{
+        _id: '',
+        name: '',
+        ticker: '',
+        banks: [],
+        regions: [],
+        logoUrl: ''
+    }],
     unitPrice: 0,
     quantity: 0,
     paymentMethods: [],
     timeLimit: '15',
     priceLimit: [0, 0],
-    paymentMethod: 'Sberbank',  //make auto paste
-    region: 'Russia', //make auto paste
+    paymentMethod: [{
+        _id: '',
+        name: '',
+        __v: 0
+    }],  
+    region: [{
+        _id: '',
+        name: '',
+        logoUrl: '',
+        __v: 0
+
+    }], 
     cardNumber: '',
     paymentDescription: '',
     comment: '',
@@ -44,12 +61,12 @@ export const offerSlice = createSlice({
         setCardNumber: (state, action) => { state.cardNumber = action.payload},
         setPaymentDescription: (state, action) => { state.paymentDescription = action.payload},
         setPaymentMethod: (state, action) => { state.paymentMethod = action.payload},
-        resetPayment: (state) => {
-            state.paymentMethod = ''
-            state.region = ''
-            state.cardNumber = ''
-            state.paymentDescription = ''
-        }
+        // resetPayment: (state) => {
+        //     state.paymentMethod = {}
+        //     state.region = {}
+        //     state.cardNumber = ''
+        //     state.paymentDescription = ''
+        // }
     }
 })
 

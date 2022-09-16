@@ -8,11 +8,7 @@ export const Form = () => {
   const { step } = useTypedSelector((state) => state.formReducer);
 
   return (
-    <div
-      className={
-        "bg-white break-words rounded-[20px] shadow-lg p-5 min-h-[610px]"
-      }
-    >
+    <div className={"bg-white break-words rounded-[20px] shadow-lg p-5"}>
       {step === 1 && <Step1 />}
       {step === 2 && <Step2 />}
       {step === 3 && <Step3 />}

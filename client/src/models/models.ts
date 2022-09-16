@@ -2,12 +2,12 @@ import { BigNumber } from "ethers"
 
 export interface IOffer {
     crypto: IToken[]
-    fiat: string
+    fiat: IFiat[]
     unitPrice: number
     quantity: number
     paymentMethods: object[]
-    paymentMethod?: string
-    region?: string
+    paymentMethod?: object[]
+    region?: object[]
     cardNumber?: string
     timeLimit: string
     priceLimit: [number, number]
@@ -30,3 +30,30 @@ export interface IToken {
 	symbol: string
 	_id: string
 }
+
+export interface IBank {
+    _id: string
+    name: string
+    __v: number
+}
+
+export interface IRegion {
+    _id: string,
+    name: string,
+    logoUrl: string,
+    __v: number
+
+}
+
+export interface IFiat {
+ 
+    _id: string
+    name: string
+    ticker: string
+    banks: IBank[]
+    regions: IRegion[]
+    logoUrl: string
+
+   
+}
+

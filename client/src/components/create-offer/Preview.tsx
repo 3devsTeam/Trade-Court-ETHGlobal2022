@@ -6,7 +6,9 @@ export const Preview = () => {
   const { crypto, fiat, unitPrice, quantity, timeLimit, priceLimit, comment } =
     useTypedSelector((state) => state.offerReducer);
 
-  const { symbol, logoUrl } = crypto[0];
+  const { symbol, logoUrl: cryptoImage } = crypto[0];
+
+  const { ticker, logoUrl: fiatImage } = fiat[0];
 
   return (
     <div className={"bg-white rounded-[20px] shadow-lg row-span-2 break-words"}>
@@ -20,7 +22,7 @@ export const Preview = () => {
             <span className={"font-bold text-lg"}>Crypto</span>
           </div>
           <div className={"flex gap-2 items-center"}>
-            <img className={"w-7 h-7"} src={logoUrl} alt={"tokenImg"} />
+            <img className={"w-7 h-7"} src={cryptoImage} alt={""} />
             <span>{symbol}</span>
           </div>
         </div>
@@ -29,8 +31,9 @@ export const Preview = () => {
           <div>
             <span className={"font-bold text-lg"}>Fiat</span>
           </div>
-          <div>
-            <span>{fiat}</span>
+          <div className={"flex gap-2 items-center"}>
+            <img className={"w-7 h-7"} src={fiatImage} alt={""} />
+            <span>{ticker}</span>
           </div>
         </div>
 
@@ -40,7 +43,8 @@ export const Preview = () => {
           </div>
           <div>
             <span>
-              {unitPrice} {fiat}
+              {unitPrice}
+              {ticker}
             </span>
           </div>
         </div>
@@ -62,7 +66,8 @@ export const Preview = () => {
           </div>
           <div>
             <span>
-              {multiply(unitPrice, quantity)} {fiat}
+              {multiply(unitPrice, quantity)}
+              {ticker}
             </span>
           </div>
         </div>

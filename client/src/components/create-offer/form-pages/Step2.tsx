@@ -6,7 +6,7 @@ import { Arrow } from "../../Arrow";
 import { FormNav } from "../FormNav";
 import { useActions } from "../../../hooks/useActions";
 import { useForm } from "react-hook-form";
-import { IOffer } from "../../../models/models";
+import { IOffer, IRegion, IBank } from "../../../models/models";
 import { TextArea } from "../TextArea";
 import { Button } from "../Button";
 import { Payment } from "../Payment";
@@ -18,9 +18,10 @@ export const Step2 = () => {
     setCardNumber,
     setRegion,
     setPaymentMethod,
-    resetPayment,
+    //resetPayment,
   } = useActions();
   const {
+    fiat,
     cardNumber,
     region,
     paymentMethod,
@@ -36,8 +37,13 @@ export const Step2 = () => {
       paymentDescription,
     };
     addPaymentMethod(newPayment);
-    resetPayment();
+    //resetPayment();
   };
+
+  const { banks, regions } = fiat[0];
+
+  const { name: paymentName } = paymentMethod[0];
+  const { name: regionName, logoUrl: regionImage } = region[0];
 
   return (
     <form className={"flex flex-col gap-5"}>
@@ -61,13 +67,15 @@ export const Step2 = () => {
         <p className={"text-lg font-bold mb-1 ml-[10px]"}>Add payment method</p>
         <div className={"flex items-center gap-1"}>
           <Dropdown
-            value={paymentMethod!}
-            data={["Sberbank", "Tinkoff", "Alfa"]}
+            image={""}
+            value={paymentName}
+            data={banks}
             onAction={setPaymentMethod}
           />
           <Dropdown
-            value={region!}
-            data={["Europe", "China", "USA"]}
+            image={regionImage}
+            value={regionName}
+            data={regions}
             onAction={setRegion}
           />
         </div>

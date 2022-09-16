@@ -9,7 +9,7 @@ interface IModalInput {
 
 export const ModalInput = ({ onOpen, label, value, image }: IModalInput) => {
   const onOpenHandler: React.MouseEventHandler = (e) => {
-    // console.log("open tokens modal");
+    console.log("open tokens modal");
     e.preventDefault();
     onOpen();
   };
@@ -22,7 +22,7 @@ export const ModalInput = ({ onOpen, label, value, image }: IModalInput) => {
         className="flex items-center border-2 border-purple rounded-[15px] h-[60px] px-[10px] w-full"
       >
         <div className={"flex items-center gap-2"}>
-          <img className={"w-7 h-7"} src={image} alt={"tokenImg"} />
+          <img className={"w-7 h-7"} src={image} alt={""} />
           <span className={"font-bold"}>{value}</span>
         </div>
       </button>
