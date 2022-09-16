@@ -12,6 +12,15 @@ export const Home = () => {
         <Offer />
         <Offer />
         <Offer />
+        <Offer />
+        <Offer />
+        <Offer />
+        <Offer />
+        <Offer />
+        <Offer />
+        <Offer />
+        <Offer />
+        <Offer />
       </div>
     </>
   );

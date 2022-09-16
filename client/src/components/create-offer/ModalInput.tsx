@@ -9,6 +9,7 @@ interface IModalInput {
 
 export const ModalInput = ({ onOpen, label, value, image }: IModalInput) => {
   const onOpenHandler: React.MouseEventHandler = (e) => {
+    // console.log("open tokens modal");
     e.preventDefault();
     onOpen();
   };

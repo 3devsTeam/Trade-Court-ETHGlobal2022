@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import { BigNumber } from 'ethers'
 import { useQuery } from 'wagmi'
 import { TokenService } from '../services/tokens.services'
@@ -9,8 +10,10 @@ export const useTokens = () => {
 
     const { setCrypto } = useActions()
 
+	
+
     const { address } = useAccount()
-	console.log('address', address)
+	//console.log('address', address)
 
 	const { data: tokens, isSuccess: successGetTokens } = useQuery(
 		['get tokens'],
@@ -42,7 +45,7 @@ export const useTokens = () => {
 	if (isSuccessRequest) {
 		
 		//tokens.forEach((t: any, i: number) => console.info(i, t)) 
-		tokens.forEach((el: any, i: any) => {
+		tokens.forEach((el: any, i: number) => {
 			try {
 				const weiBalance = BigNumber.from(el.balance)
 				if (!weiBalance.eq(zero)) {
@@ -59,6 +62,11 @@ export const useTokens = () => {
 					 el.balance = result
 					 el.tokenAmount = parseInt(weiBalance.div(div15).toString()) / 1000 
 					// console.log(el)
+
+					// if (i === 0) {
+					// 	setCrypto([tokens[i]])
+					// }
+
 				} else {
 					el.balance = 0
 					el.tokenAmount = 0

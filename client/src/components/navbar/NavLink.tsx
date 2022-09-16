@@ -10,7 +10,7 @@ export const NavLink = ({ name, route }: INavLink) => {
   return (
     <div
       className={
-        "cursor-pointer hover:bg-gray transition-colors duration-500 rounded-[10px] p-2"
+        "cursor-pointer transition-colors duration-500 rounded-[10px] p-2 hover:bg-gray"
       }
     >
       <Link to={route}>

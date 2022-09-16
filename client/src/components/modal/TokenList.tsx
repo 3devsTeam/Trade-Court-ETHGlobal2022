@@ -1,7 +1,8 @@
-import React, { useRef } from "react";
+import React, { useRef, useEffect } from "react";
 import { useVirtualizer } from "@tanstack/react-virtual";
 import { Token } from "./Token";
 import { IToken } from "../../models/models";
+import { useActions } from "../../hooks/useActions";
 
 interface ITokenList {
   tokens: IToken[];

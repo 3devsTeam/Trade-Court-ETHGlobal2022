@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useRef, useEffect } from "react";
 import useOnClickOutside from "use-onclickoutside";
 import { CloseButton } from "./CloseButton";
 import { ModalOverlay } from "./ModalOverlay";
@@ -15,6 +15,15 @@ interface IModal {
 export const Modal = ({ isOpen, width, children, close, header }: IModal) => {
   const ref = useRef(null);
   useOnClickOutside(ref, () => close(false));
+
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = "hidden";
+    }
+    if (!isOpen) {
+      document.body.style.overflow = "unset";
+    }
+  }, [isOpen]);
 
   return (
     <>
