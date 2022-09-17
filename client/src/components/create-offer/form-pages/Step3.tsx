@@ -9,7 +9,6 @@ import { useForm } from "react-hook-form";
 import { IOffer } from "../../../models/models";
 import { TextArea } from "../TextArea";
 import { Button } from "../Button";
-import Select from "react-select";
 import { TimeLimit } from "../TimeLimit";
 
 export const Step3 = () => {
