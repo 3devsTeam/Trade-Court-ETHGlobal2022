@@ -12,13 +12,26 @@ exports.getAllUsers = catchAsync(async (req, res, next) => {
   });
 });
 
-exports.getUser = catchAsync(async (req, res, next) => {
-  const user = await User.findById(req.params.id);
-
+exports.getMe = catchAsync(async (req, res, next) => {
+  const user = await User.aggregate([
+    {
+      $match: {
+        _id: req.user._id,
+      },
+    },
+    {
+      $lookup: {
+        from: 'offers',
+        localField: '_id',
+        foreignField: 'maker',
+        as: 'offers',
+      },
+    },
+  ]);
   res.status(201).json({
     status: 'success',
     data: {
-      user: user,
+      user,
     },
   });
 });
