@@ -1,6 +1,7 @@
 import { BigNumber } from "ethers"
 
 export interface IOffer {
+    offerType?: "buy" | "sell"
     crypto: IToken[]
     fiat: IFiat[]
     unitPrice: number
@@ -13,6 +14,7 @@ export interface IOffer {
     priceLimit: [number, number]
     comment: string   
     paymentDescription?: string
+    amount?: number
 }
 
 export interface IForm {

@@ -5,28 +5,26 @@ import { Link } from "react-router-dom";
 import { LoginButton } from "./LoginButton";
 import { NavLink } from "./NavLink";
 import { useAccount, useSignMessage } from "wagmi";
-import { verifyMessage } from "ethers/lib/utils";
 import { useMutation } from "@tanstack/react-query";
 import { UserService } from "../../services/user.services";
-import axios from "axios";
+import Cookies from "js-cookie";
+import { useActions } from "../../hooks/useActions";
 
 export const Navbar = () => {
+  const { setLogged } = useActions();
   const { isConnected, isDisconnected, address } = useAccount();
 
   const message = "login";
 
   const { data, isError, isSuccess, signMessage } = useSignMessage({
     message,
-
-    // if (address && data) {
-    //   console.log("login2");
-    //   UserService.userLogin({
-    //     address: address,
-    //     messageRaw: message,
-    //     signature: data,
-    //   });
-    // }
   });
+
+  useEffect(() => {
+    if (Cookies.get("jwt")) {
+      setLogged(true);
+    }
+  }, []);
 
   if (isSuccess) {
     console.log(data);
@@ -34,6 +32,10 @@ export const Navbar = () => {
       address,
       messageRaw: message,
       signature: data,
+    }).then(() => {
+      if (Cookies.get("jwt")) {
+        setLogged(true);
+      }
     });
   }
 
