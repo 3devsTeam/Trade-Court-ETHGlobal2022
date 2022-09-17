@@ -7,7 +7,12 @@ const cookieParser = require('cookie-parser');
 const globalErrorHandler = require('./utils/errorController');
 
 const app = express();
-app.use(cors());
+app.use(
+  cors({
+    credentials: true,
+    origin: 'http://127.0.0.1:5173',
+  })
+);
 app.options('*', cors());
 
 if (process.env.NODE_ENV === 'dev') {
