@@ -1,7 +1,6 @@
 import axios from "axios"
 import { IToken } from "../models/models"
-
-export const API_URl = import.meta.env.VITE_API_URL
+import { API_URl } from "./axios"
 
 // axios.defaults.baseURL = API_URl
 export const TokenService = {

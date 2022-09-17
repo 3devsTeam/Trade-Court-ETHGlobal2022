@@ -5,39 +5,43 @@ import { Link } from "react-router-dom";
 import { LoginButton } from "./LoginButton";
 import { NavLink } from "./NavLink";
 import { useAccount, useSignMessage } from "wagmi";
-import { verifyMessage } from "ethers/lib/utils"
+import { verifyMessage } from "ethers/lib/utils";
 import { useMutation } from "@tanstack/react-query";
 import { UserService } from "../../services/user.services";
+import axios from "axios";
 
 export const Navbar = () => {
-  const { isConnected } = useAccount();
+  const { isConnected, isDisconnected, address } = useAccount();
 
-  // const { data, isError, isSuccess, signMessage } = useSignMessage({
-  //   message: "login",
-  //   onSuccess: (data, variables) => {
-  //     console.log(data);
-  //     console.log(variables);
-  //     const address = verifyMessage(variables.message, data);
-  //     console.log(address);
-  //     // const mutation = useMutation(() =>
-  //     //   UserService.userLogin({
-  //     //     address,
-  //     //     messageRaw: "login",
-  //     //     signature: data!,
-  //     //   })
-  //     // );
-  //     // mutation.mutateAsync();
-  //   },
-  // });
+  const message = "login";
 
-  // if (isSuccess) {
-  // }
+  const { data, isError, isSuccess, signMessage } = useSignMessage({
+    message,
 
-  // useEffect(() => {
-  //   if (isConnected) {
-  //     signMessage();
-  //   }
-  // }, [isConnected]);
+    // if (address && data) {
+    //   console.log("login2");
+    //   UserService.userLogin({
+    //     address: address,
+    //     messageRaw: message,
+    //     signature: data,
+    //   });
+    // }
+  });
+
+  if (isSuccess) {
+    console.log(data);
+    UserService.userLogin({
+      address,
+      messageRaw: message,
+      signature: data,
+    });
+  }
+
+  useEffect(() => {
+    if (isConnected) {
+      signMessage();
+    }
+  }, [isConnected]);
 
   return (
     <nav>

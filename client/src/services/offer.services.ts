@@ -1,5 +1,5 @@
 import axios from "axios"
-import { API_URl } from "./tokens.services"
+import { API_URl } from "./axios"
 import { IOffer } from "../models/models"
 
 export const OfferService = {
