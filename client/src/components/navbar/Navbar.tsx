@@ -5,7 +5,6 @@ import { Link } from "react-router-dom";
 import { LoginButton } from "./LoginButton";
 import { NavLink } from "./NavLink";
 import { useAccount, useSignMessage } from "wagmi";
-import { verifyMessage } from "ethers/lib/utils";
 import { useMutation } from "@tanstack/react-query";
 import { UserService } from "../../services/user.services";
 import Cookies from "js-cookie";
@@ -17,15 +16,6 @@ export const Navbar = () => {
 
   const { data, isError, isSuccess, signMessage } = useSignMessage({
     message,
-
-    // if (address && data) {
-    //   console.log("login2");
-    //   UserService.userLogin({
-    //     address: address,
-    //     messageRaw: message,
-    //     signature: data,
-    //   });
-    // }
   });
 
   if (isSuccess) {
