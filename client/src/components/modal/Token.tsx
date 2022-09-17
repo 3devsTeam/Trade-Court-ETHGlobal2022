@@ -1,6 +1,7 @@
 import React from "react";
 import { IToken } from "../../models/models";
 import { useActions } from "../../hooks/useActions";
+// import defaultImg from "../../assets/defaultImg.svg";
 
 export const Token = ({ virtualItem, token, onClose }: any) => {
   const { setCrypto } = useActions();
@@ -29,7 +30,7 @@ export const Token = ({ virtualItem, token, onClose }: any) => {
       }}
     >
       <div className={"flex items-center gap-3"}>
-        <img width={48} height={48} src={logoUrl} alt="" />
+        <img width={48} height={48} src={logoUrl} alt={""} />
         <div className={"flex flex-col items-start"}>
           <span className={"font-bold"}>{name}</span>
           <span className={"text-gray"}>

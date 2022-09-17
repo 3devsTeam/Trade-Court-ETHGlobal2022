@@ -21,18 +21,24 @@ export const Preview = () => {
           <div>
             <span className={"font-bold text-lg"}>Crypto</span>
           </div>
-          <div className={"flex gap-2 items-center"}>
-            <img className={"w-7 h-7"} src={cryptoImage} alt={""} />
+          <div className={"flex gap-1 items-center"}>
+            <img className={"w-8 h-8"} src={cryptoImage} alt={""} />
             <span>{symbol}</span>
           </div>
         </div>
 
-        <div className={"flex justify-between"}>
+        <div className={"flex justify-between items-center"}>
           <div>
             <span className={"font-bold text-lg"}>Fiat</span>
           </div>
-          <div className={"flex gap-2 items-center"}>
-            <img className={"w-7 h-7"} src={fiatImage} alt={""} />
+          <div className={"flex gap-1 items-center"}>
+            <img
+              className={
+                "w-8 h-8 rounded-[50%] border border-purple object-cover"
+              }
+              src={fiatImage}
+              alt={""}
+            />
             <span>{ticker}</span>
           </div>
         </div>
@@ -42,10 +48,8 @@ export const Preview = () => {
             <span className={"font-bold text-lg"}>Unit Price</span>
           </div>
           <div>
-            <span>
-              {unitPrice}
-              {ticker}
-            </span>
+            <span>{unitPrice}</span>
+            <span> {ticker}</span>
           </div>
         </div>
 
@@ -65,10 +69,8 @@ export const Preview = () => {
             <span className={"font-bold text-lg"}>Total Amount</span>
           </div>
           <div>
-            <span>
-              {multiply(unitPrice, quantity)}
-              {ticker}
-            </span>
+            <span>{multiply(unitPrice, quantity)}</span>
+            <span> {ticker}</span>
           </div>
         </div>
 

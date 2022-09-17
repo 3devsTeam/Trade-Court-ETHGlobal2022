@@ -30,7 +30,7 @@ export const Step3 = () => {
         <p className={"text-lg font-bold mb-1 ml-[10px]"}>
           {"Order price limit"}
         </p>
-        <div className={"flex justify-between"}>
+        <div className={"flex justify-between gap-1"}>
           <Input
             type={"number"}
             onAction={setMinPriceLimit}

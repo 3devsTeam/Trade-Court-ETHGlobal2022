@@ -39,7 +39,13 @@ export const Dropdown = ({
             }
           >
             <div className={"flex items-center gap-1"}>
-              <img className={"w-7 h-7"} src={image} alt={""} />
+              <img
+                className={
+                  "w-8 h-8 rounded-[50%] border border-purple object-cover"
+                }
+                src={image}
+                alt={""}
+              />
               <span className={"font-bold"}>{value}</span>
             </div>
             <div
@@ -51,7 +57,7 @@ export const Dropdown = ({
           {isOpen && (
             <div
               className={
-                "bg-white rounded-[10px] border-2 border-purple absolute w-full"
+                "rounded-[10px] absolute w-full shadow-2xl bg-white h-[250px] overflow-y-auto"
               }
             >
               {data.map((select: string, i: number) => {
@@ -63,8 +69,16 @@ export const Dropdown = ({
                     key={i}
                     className={"p-2 cursor-pointer flex items-center gap-1"}
                   >
-                    <img width={32} height={32} src={logoUrl} alt="" />
-                    <span>{ticker || name}</span>
+                    <img
+                      className={
+                        "w-8 h-8 rounded-[50%] border border-purple object-cover"
+                      }
+                      width={32}
+                      height={32}
+                      src={logoUrl}
+                      alt=""
+                    />
+                    <span className={"font-bold"}>{ticker || name}</span>
                   </div>
                 );
               })}

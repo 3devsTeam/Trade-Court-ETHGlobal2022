@@ -1,4 +1,5 @@
 import React from "react";
+// import defaultImg from "../../assets/defaultImg.svg";
 
 interface IModalInput {
   image: string;
@@ -21,8 +22,8 @@ export const ModalInput = ({ onOpen, label, value, image }: IModalInput) => {
         onClick={(e) => onOpenHandler(e)}
         className="flex items-center border-2 border-purple rounded-[15px] h-[60px] px-[10px] w-full"
       >
-        <div className={"flex items-center gap-2"}>
-          <img className={"w-7 h-7"} src={image} alt={""} />
+        <div className={"flex items-center gap-1"}>
+          <img className={"w-8 h-8"} src={image} alt={""} />
           <span className={"font-bold"}>{value}</span>
         </div>
       </button>

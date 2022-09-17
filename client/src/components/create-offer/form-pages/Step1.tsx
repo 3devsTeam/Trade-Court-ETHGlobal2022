@@ -16,8 +16,7 @@ import { IFiat } from "../../../models/models";
 
 export const Step1 = () => {
   const [allFiat, setAllFiat] = useState([]);
-  const [tickers, setTickers] = useState([]);
-  const { setCrypto, setFiat, setQuantity, setUnitPrice } = useActions();
+  const { setFiat, setQuantity, setUnitPrice } = useActions();
   const { tokens, isSuccessRequest } = useTokens();
 
   const { isSuccess } = useQuery(["get fiat"], () => OfferService.getFiat(), {
