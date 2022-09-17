@@ -63,10 +63,15 @@ exports.joinOffer = catchAsync(async (req, res, next) => {
   }
   if (
     req.body.amount < offer.orderLimit[0] ||
-    req.body.amount > offer.orderLimit[1]
+    req.body.amount > offer.orderLimit[1] ||
+    !req.body.amount
   ) {
     return next(new AppError('Amount is invalid', 400));
   }
+  if (offer.amount - req.body.amount < 0) {
+    return next(new AppError('Amount is too big', 400));
+  }
+
   await Offer.findOneAndUpdate(
     { _id: req.params.id },
     {
