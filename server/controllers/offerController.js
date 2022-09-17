@@ -12,7 +12,7 @@ exports.getAllOffers = catchAsync(async (req, res, next) => {
     .skip((page - 1) * limit);
 
   res.status(201).json({
-    status: 'success',
+    message: 'success',
     data: {
       offers,
     },
@@ -34,7 +34,7 @@ exports.getOffer = catchAsync(async (req, res, next) => {
     }
   }
   res.status(201).json({
-    status: 'success',
+    message: 'success',
     data: {
       offer,
     },
@@ -83,7 +83,7 @@ exports.joinOffer = catchAsync(async (req, res, next) => {
     }
   );
   res.status(200).json({
-    status: 'success',
+    message: 'success',
   });
 });
 
@@ -112,7 +112,7 @@ exports.leaveOffer = catchAsync(async (req, res, next) => {
   );
 
   res.status(200).json({
-    status: 'success',
+    message: 'success',
   });
 });
 
@@ -134,9 +134,26 @@ exports.createOffer = catchAsync(async (req, res, next) => {
   const newOffer = await Offer.create(offerBody);
 
   res.status(201).json({
-    status: 'success',
+    message: 'success',
     data: {
       newOffer,
     },
+  });
+});
+
+exports.deleteOffer = catchAsync(async (req, res, next) => {
+  const offer = await Offer.findById(req.params.id);
+  if (!offer) {
+    return next(new AppError('No such offer', 403));
+  }
+  if (offer.maker.toString() != req.user._id.toString()) {
+    return next(new AppError('You dont have access', 403));
+  }
+  if (offer.room.stage != 'no taker') {
+    return next(new AppError('You cant delete with active taker', 403));
+  }
+  await Offer.findByIdAndDelete(req.params.id);
+  res.status(200).json({
+    message: 'success',
   });
 });

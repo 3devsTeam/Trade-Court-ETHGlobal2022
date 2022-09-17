@@ -5,7 +5,7 @@ exports.getAllUsers = catchAsync(async (req, res, next) => {
   const allUsers = await User.find();
 
   res.status(201).json({
-    status: 'success',
+    message: 'success',
     data: {
       allUsers: allUsers,
     },
@@ -29,7 +29,7 @@ exports.getMe = catchAsync(async (req, res, next) => {
     },
   ]);
   res.status(201).json({
-    status: 'success',
+    message: 'success',
     data: {
       user,
     },
@@ -39,7 +39,7 @@ exports.getMe = catchAsync(async (req, res, next) => {
 exports.createUser = catchAsync(async (req, res, next) => {
   const newUser = await User.create(req.body);
   res.status(201).json({
-    status: 'success',
+    message: 'success',
     data: {
       newUser: newUser,
     },

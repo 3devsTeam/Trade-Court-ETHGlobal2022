@@ -21,7 +21,7 @@ exports.takerSent = catchAsync(async (req, res, next) => {
     $set: { 'room.stage': 'taker sent' },
   });
   res.status(200).json({
-    msg: 'success',
+    message: 'success',
   });
 });
 
@@ -40,7 +40,7 @@ exports.makerRecieved = catchAsync(async (req, res, next) => {
     $set: { 'room.stage': 'maker recived' },
   });
   res.status(200).json({
-    msg: 'success',
+    message: 'success',
   });
 });
 
@@ -66,6 +66,6 @@ exports.takerClaimed = catchAsync(async (req, res, next) => {
     $set: { amount: newAmount, quantity: newQuantity },
   });
   res.status(200).json({
-    msg: 'success',
+    message: 'success',
   });
 });
