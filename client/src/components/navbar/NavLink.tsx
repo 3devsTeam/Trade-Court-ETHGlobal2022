@@ -8,14 +8,14 @@ interface INavLink {
 
 export const NavLink = ({ name, route }: INavLink) => {
   return (
-    <div
-      className={
-        "cursor-pointer transition-colors duration-500 rounded-[10px] p-2 hover:bg-gray"
-      }
-    >
-      <Link to={route}>
+    <Link to={route}>
+      <div
+        className={
+          "cursor-pointer transition-colors duration-500 rounded-[10px] p-2 hover:bg-gray"
+        }
+      >
         <span className={"font-bold"}>{name}</span>
-      </Link>
-    </div>
+      </div>
+    </Link>
   );
 };
