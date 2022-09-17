@@ -8,7 +8,7 @@ import { useAccount, useSignMessage } from "wagmi";
 import { verifyMessage } from "ethers/lib/utils";
 import { useMutation } from "@tanstack/react-query";
 import { UserService } from "../../services/user.services";
-import axios from "axios";
+import Cookies from "js-cookie";
 
 export const Navbar = () => {
   const { isConnected, isDisconnected, address } = useAccount();

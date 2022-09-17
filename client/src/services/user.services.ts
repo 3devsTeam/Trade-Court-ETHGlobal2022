@@ -10,7 +10,9 @@ interface ILogin {
 }
 export const UserService = {
     async userLogin(data: ILogin) {
-        return axios.post(`${API_URl}/api/user/login`, data)  
+        return axios.post(`${API_URl}/api/user/login`, data,
+         { withCredentials: true}
+         )  
     }
 }
 

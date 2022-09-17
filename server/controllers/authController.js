@@ -1,10 +1,10 @@
-const catchAsync = require('../utils/catchAsync');
-const AppError = require('../utils/appError');
-const jwt = require('jsonwebtoken');
-const { signatureVerify } = require('../utils/signatureVerify');
-const { promisify } = require('util');
-const axios = require('axios');
-const User = require('../models/userModel');
+const catchAsync = require("../utils/catchAsync");
+const AppError = require("../utils/appError");
+const jwt = require("jsonwebtoken");
+const { signatureVerify } = require("../utils/signatureVerify");
+const { promisify } = require("util");
+const axios = require("axios");
+const User = require("../models/userModel");
 
 const signToken = (id) =>
   jwt.sign({ id }, process.env.JWT_SECRET, {
@@ -18,11 +18,14 @@ const createSendToken = (user, statusCode, res) => {
       Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000
     ),
     httpOnly: true,
+    sameSite: "none",
+    secure: true,
   };
-  if (process.env.NODE_ENV === 'production') cookieOptions.secure = true;
-  res.cookie('jwt', token, cookieOptions);
+  if (process.env.NODE_ENV === "production") cookieOptions.secure = true;
+  res.cookie("jwt", token, cookieOptions);
+  res.set("access-control-expose-headers", "Set-Cookie");
   res.status(statusCode).json({
-    message: 'success',
+    message: "success",
     token,
     data: {
       user,
@@ -46,7 +49,7 @@ exports.protect = catchAsync(async (req, res, next) => {
     token = req.cookies.jwt;
   }
   if (!token) {
-    return next(new AppError('Your not logged in', 401));
+    return next(new AppError("Your not logged in", 401));
   }
   const decoded = await promisify(jwt.verify)(token, process.env.JWT_SECRET);
 
@@ -59,19 +62,19 @@ exports.protect = catchAsync(async (req, res, next) => {
 });
 
 exports.logout = (req, res) => {
-  res.cookie('jwt', 'loggedout', {
+  res.cookie("jwt", "loggedout", {
     expires: new Date(Date.now() + 1),
     httpOnly: true,
   });
   res.status(200).json({
-    message: 'success',
+    message: "success",
   });
 };
 
 exports.accessOnly = (...roles) => {
   return (req, res, next) => {
     if (!roles.includes(req.user.role)) {
-      return next(new AppError('No permission', 403));
+      return next(new AppError("No permission", 403));
     }
     next();
   };
