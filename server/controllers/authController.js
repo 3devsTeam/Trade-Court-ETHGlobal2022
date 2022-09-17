@@ -22,7 +22,7 @@ const createSendToken = (user, statusCode, res) => {
   if (process.env.NODE_ENV === 'production') cookieOptions.secure = true;
   res.cookie('jwt', token, cookieOptions);
   res.status(statusCode).json({
-    status: 'success',
+    message: 'success',
     token,
     data: {
       user,
@@ -63,7 +63,9 @@ exports.logout = (req, res) => {
     expires: new Date(Date.now() + 1),
     httpOnly: true,
   });
-  res.status(200).json({ status: 'success' });
+  res.status(200).json({
+    message: 'success',
+  });
 };
 
 exports.accessOnly = (...roles) => {

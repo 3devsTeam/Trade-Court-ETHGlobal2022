@@ -15,7 +15,7 @@ const tokenList = require('../data/erc20TokenList');
 exports.getERC20Rate = catchAsync(async (req, res, next) => {
   const prices = fs.readFileSync('./data/tokenRate.json', 'utf-8');
   res.status(200).json({
-    msg: 'success',
+    message: 'success',
     data: JSON.parse(prices),
   });
 });
@@ -122,7 +122,7 @@ exports.getERC20Balances = catchAsync(async (req, res, next) => {
     }
   }); //TODO: add aplphabetic sort after amount sort
   res.status(200).json({
-    msg: 'success',
+    message: 'success',
     data: tokenList,
   });
 });

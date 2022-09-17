@@ -12,6 +12,7 @@ router.post('/', offerController.createOffer);
 router.get('/:id', offerController.getOffer);
 router.post('/:id', offerController.joinOffer);
 router.put('/:id', offerController.leaveOffer);
+router.delete('/:id', offerController.deleteOffer);
 router.get('/:id/send', roomController.takerSent);
 router.get('/:id/receive', roomController.makerRecieved);
 router.get('/:id/claim', roomController.takerClaimed);

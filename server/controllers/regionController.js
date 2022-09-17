@@ -5,7 +5,7 @@ exports.getAllRegions = catchAsync(async (req, res, next) => {
   const allRegions = await Region.find();
 
   res.status(201).json({
-    status: 'success',
+    message: 'success',
     data: {
       allRegions: allRegions,
     },
@@ -15,7 +15,7 @@ exports.getAllRegions = catchAsync(async (req, res, next) => {
 exports.createRegion = catchAsync(async (req, res, next) => {
   const newRegion = await Region.create(req.body);
   res.status(201).json({
-    status: 'success',
+    message: 'success',
     data: {
       newRegion: newRegion,
     },

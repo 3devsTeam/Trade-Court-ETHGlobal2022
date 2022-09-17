@@ -5,20 +5,33 @@ exports.getAllUsers = catchAsync(async (req, res, next) => {
   const allUsers = await User.find();
 
   res.status(201).json({
-    status: 'success',
+    message: 'success',
     data: {
       allUsers: allUsers,
     },
   });
 });
 
-exports.getUser = catchAsync(async (req, res, next) => {
-  const user = await User.findById(req.params.id);
-
+exports.getMe = catchAsync(async (req, res, next) => {
+  const user = await User.aggregate([
+    {
+      $match: {
+        _id: req.user._id,
+      },
+    },
+    {
+      $lookup: {
+        from: 'offers',
+        localField: '_id',
+        foreignField: 'maker',
+        as: 'offers',
+      },
+    },
+  ]);
   res.status(201).json({
-    status: 'success',
+    message: 'success',
     data: {
-      user: user,
+      user,
     },
   });
 });
@@ -26,7 +39,7 @@ exports.getUser = catchAsync(async (req, res, next) => {
 exports.createUser = catchAsync(async (req, res, next) => {
   const newUser = await User.create(req.body);
   res.status(201).json({
-    status: 'success',
+    message: 'success',
     data: {
       newUser: newUser,
     },
