@@ -61,11 +61,47 @@ export const offerSlice = createSlice({
         setCardNumber: (state, action) => { state.cardNumber = action.payload},
         setPaymentDescription: (state, action) => { state.paymentDescription = action.payload},
         setPaymentMethod: (state, action) => { state.paymentMethod = action.payload},
-        // resetPayment: (state) => {
-        //     state.paymentMethod = {}
-        //     state.region = {}
-        //     state.cardNumber = ''
-        //     state.paymentDescription = ''
+        // resetOffer: (state) => {
+        // {
+        //     state.crypto = [{
+        //         address: '',
+        //         balance: '',
+        //         chainId: 0,
+        //         decimals: 0,
+        //         logoUrl: defaultImg,
+        //         name: '',
+        //         symbol: 'Unknown token',
+        //         _id: '',
+        //         tokenAmount: 0
+        //     }]
+        //     state.fiat = [{
+        //         _id: '',
+        //         name: '',
+        //         ticker: '',
+        //         banks: [],
+        //         regions: [],
+        //         logoUrl: ''
+        //     }]
+        //     state.unitPrice = 0,
+        //     state.quantity = 0,
+        //     state.paymentMethods = [],
+        //     state.timeLimit = '15',
+        //     state.priceLimit = [0, 0],
+        //     state.paymentMethod = [{
+        //         _id: '',
+        //         name: '',
+        //         __v: 0
+        //     }]  
+        //     state.region = [{
+        //         _id: '',
+        //         name: '',
+        //         logoUrl: '',
+        //         __v: 0
+        
+        //     }]
+        //     state.cardNumber = '',
+        //     state.paymentDescription = '',
+        //     state.comment = '',
         // }
     }
 })
