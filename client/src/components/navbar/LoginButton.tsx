@@ -4,6 +4,12 @@ import { useSignMessage, useAccount } from "wagmi";
 import { verifyMessage } from "@ethersproject/wallet";
 
 export const LoginButton = () => {
+  const message = "login";
+
+  const { data, isError, isSuccess, signMessage } = useSignMessage({
+    message,
+  });
+
   return (
     <ConnectButton.Custom>
       {({

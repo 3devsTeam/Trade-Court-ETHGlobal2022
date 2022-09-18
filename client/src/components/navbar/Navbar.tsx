@@ -12,7 +12,7 @@ import { useActions } from "../../hooks/useActions";
 
 export const Navbar = () => {
   const { setLogged } = useActions();
-  const { isConnected, isDisconnected, address } = useAccount();
+  const { isConnected, isDisconnected, address, connector } = useAccount();
 
   const message = "login";
 
@@ -20,15 +20,9 @@ export const Navbar = () => {
     message,
   });
 
-  useEffect(() => {
-    if (Cookies.get("jwt")) {
-      setLogged(true);
-    }
-  }, []);
-
   if (isSuccess) {
     console.log(data);
-    UserService.userLogin({
+    UserService.login({
       address,
       messageRaw: message,
       signature: data,
@@ -40,10 +34,24 @@ export const Navbar = () => {
   }
 
   useEffect(() => {
-    if (isConnected) {
+    if (connector && isConnected && !Cookies.get("jwt")) {
       signMessage();
     }
-  }, [isConnected]);
+  }, [isConnected, connector]);
+
+  useEffect(() => {
+    if (Cookies.get("jwt")) {
+      setLogged(true);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (isDisconnected) {
+      setLogged(false);
+
+      UserService.logout();
+    }
+  }, [isDisconnected]);
 
   return (
     <nav>

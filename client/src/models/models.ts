@@ -6,7 +6,7 @@ export interface IOffer {
     fiat: IFiat[]
     unitPrice: number
     quantity: number
-    paymentMethods: object[]
+    paymentMethods: IPayments[]
     paymentMethod?: object[]
     region?: object[]
     cardNumber?: string
@@ -19,6 +19,13 @@ export interface IOffer {
 
 export interface IForm {
     step: number
+}
+
+export interface IPayments {
+    cardNumber: string
+    paymentDescription: string
+    paymentMethod: IBank[]
+    region: IRegion[]
 }
 
 export interface IToken {
@@ -35,6 +42,7 @@ export interface IToken {
 
 export interface IBank {
     _id: string
+    logoUrl: string
     name: string
     __v: number
 }
@@ -54,8 +62,6 @@ export interface IFiat {
     ticker: string
     banks: IBank[]
     regions: IRegion[]
-    logoUrl: string
-
-   
+    logoUrl: string  
 }
 

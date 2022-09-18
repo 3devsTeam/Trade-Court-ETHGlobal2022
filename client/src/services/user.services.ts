@@ -8,9 +8,12 @@ interface ILogin {
   signature: string | undefined;
 }
 export const UserService = {
-  async userLogin(data: ILogin) {
+  async login(data: ILogin) {
     return axios.post(`${API_URl}/api/user/login`, data, {
       withCredentials: true,
     });
   },
+  async logout() {
+    return axios.get(`${API_URl}/api/user/logout`, { withCredentials: true})
+  }
 };

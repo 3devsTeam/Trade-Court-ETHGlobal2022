@@ -42,8 +42,8 @@ export const Step2 = () => {
 
   const { banks, regions } = fiat[0];
 
-  console.log(paymentMethod);
-  console.log(region);
+  // console.log(paymentMethod);
+  // console.log(region);
 
   const { name: paymentName } = paymentMethod[0];
   const { name: regionName, logoUrl: regionImage } = region[0];

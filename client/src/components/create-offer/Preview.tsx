@@ -1,14 +1,25 @@
 import React from "react";
 import { useTypedSelector } from "../../hooks/useTypedSelector";
 import { multiply } from "../../utils/multiply";
+import { IPayments } from "../../models/models";
 
 export const Preview = () => {
-  const { crypto, fiat, unitPrice, quantity, timeLimit, priceLimit, comment } =
-    useTypedSelector((state) => state.offerReducer);
+  const {
+    crypto,
+    fiat,
+    unitPrice,
+    quantity,
+    timeLimit,
+    priceLimit,
+    comment,
+    paymentMethods,
+  } = useTypedSelector((state) => state.offerReducer);
 
   const { symbol, logoUrl: cryptoImage } = crypto[0];
 
   const { ticker, logoUrl: fiatImage } = fiat[0];
+
+  paymentMethods.map((p) => console.log(p.cardNumber));
 
   return (
     <div className={"bg-white rounded-[20px] shadow-lg row-span-2 break-words"}>
@@ -74,14 +85,33 @@ export const Preview = () => {
           </div>
         </div>
 
+        <hr />
+
         <div className={"flex justify-between"}>
           <div>
             <span className={"font-bold text-lg"}>Payment Methods</span>
           </div>
           <div>
-            <span>-</span>
+            {paymentMethods.length
+              ? paymentMethods.map((p) => {
+                  return (
+                    <div className={"flex items-center gap-1 my-2"}>
+                      <img
+                        className={
+                          "w-8 h-8 rounded-[50%] border border-purple object-cover"
+                        }
+                        src={p.paymentMethod[0].logoUrl}
+                        alt=""
+                      />
+                      <p>{p.paymentMethod[0].name}</p>
+                    </div>
+                  );
+                })
+              : "-"}
           </div>
         </div>
+
+        <hr />
 
         <div className={"flex justify-between"}>
           <div>

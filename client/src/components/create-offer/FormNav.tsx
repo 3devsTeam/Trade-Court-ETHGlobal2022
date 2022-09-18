@@ -30,6 +30,8 @@ export const FormNav = () => {
   // console.log(crypto[0]._id);
 
   const createHandler = () => {
+    console.log("create offer");
+
     OfferService.create({
       offerType: "buy",
       fiat: fiat[0]._id,

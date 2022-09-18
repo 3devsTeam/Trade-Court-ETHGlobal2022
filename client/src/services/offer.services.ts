@@ -6,6 +6,7 @@ export const OfferService = {
 
     async create(data: any) {
         return axios.post(`${API_URl}/api/offer`, data, {
+            withCredentials: true,
             headers: {'Content-Type': 'application/json'}
         })
     }, 
