@@ -50,6 +50,17 @@ export const FormNav = () => {
 
   // console.log(crypto[0]._id);
 
+  const arr = paymentMethods.map((e) => {
+    return {
+      bank: e.paymentMethod._id,
+      cardNumber: e.cardNumber,
+      region: e.region._id,
+      paymentDescription: e.paymentDescription,
+    };
+  });
+
+  console.log(arr);
+
   const createHandler = () => {
     console.log("create offer");
 
@@ -62,7 +73,7 @@ export const FormNav = () => {
       orderLimit: priceLimit,
       crypto: crypto._id,
       offerComment: comment,
-      payMethods: [],
+      payMethods: arr,
     }).then(() => {
       openSuccessModal(true);
       //resetOffer();

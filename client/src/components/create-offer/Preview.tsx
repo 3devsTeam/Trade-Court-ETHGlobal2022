@@ -130,12 +130,12 @@ export const Preview = () => {
           </div>
         </div>
 
-        <div className={"flex justify-between"}>
+        <div className={"flex justify-between gap-5"}>
           <div>
             <span className={"font-bold text-lg"}>Comment</span>
           </div>
           <div>
-            <span>{comment}</span>
+            <p>{comment}</p>
           </div>
         </div>
       </div>
