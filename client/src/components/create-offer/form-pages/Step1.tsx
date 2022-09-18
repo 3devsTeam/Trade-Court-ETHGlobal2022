@@ -79,6 +79,7 @@ export const Step1 = () => {
       )}
 
       <Modal
+        canClose={true}
         width={"567px"}
         isOpen={isOpen}
         close={() => setIsOpen(false)}

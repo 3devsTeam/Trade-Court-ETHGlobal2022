@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Form } from "../components/create-offer/Form";
 import { FormNav } from "../components/create-offer/FormNav";
 import { Preview } from "../components/create-offer/Preview";

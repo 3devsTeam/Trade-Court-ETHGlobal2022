@@ -59,6 +59,7 @@ export const Offer = ({ offer }: any) => {
         </div>
       </div>
       <Modal
+        canClose={true}
         isOpen={openOfferModal}
         width={"700px"}
         header={"Transaction"}

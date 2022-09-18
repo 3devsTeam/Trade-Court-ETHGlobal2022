@@ -4,26 +4,37 @@ import { CloseButton } from "./CloseButton";
 import { ModalOverlay } from "./ModalOverlay";
 
 interface IModal {
+  canClose: boolean;
   isOpen: boolean;
   width?: string;
   children: React.ReactNode;
-  // close: React.Dispatch<any> || null;
-  close: any;
+  close: React.Dispatch<any>;
+  //close: any;
   header: string;
 }
 
-export const Modal = ({ isOpen, width, children, close, header }: IModal) => {
+export const Modal = ({
+  canClose,
+  isOpen,
+  width,
+  children,
+  close,
+  header,
+}: IModal) => {
   const ref = useRef(null);
-  useOnClickOutside(ref, () => close(false));
 
-  useEffect(() => {
-    if (isOpen) {
-      document.body.style.overflow = "hidden";
-    }
-    if (!isOpen) {
-      document.body.style.overflow = "unset";
-    }
-  }, [isOpen]);
+  if (canClose) {
+    useOnClickOutside(ref, () => close(false));
+
+    useEffect(() => {
+      if (isOpen) {
+        document.body.style.overflow = "hidden";
+      }
+      if (!isOpen) {
+        document.body.style.overflow = "unset";
+      }
+    }, [isOpen]);
+  }
 
   return (
     <>
@@ -42,7 +53,7 @@ export const Modal = ({ isOpen, width, children, close, header }: IModal) => {
               <div>
                 <span className="font-bold text-lg mb-3">{header}</span>
               </div>
-              <CloseButton onClose={close} />
+              {canClose && <CloseButton onClose={close} />}
             </div>
             {children}
           </div>
