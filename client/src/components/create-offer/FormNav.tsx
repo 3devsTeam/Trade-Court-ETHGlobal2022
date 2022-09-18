@@ -40,8 +40,6 @@ export const FormNav = () => {
     paymentMethods,
   } = useTypedSelector((state) => state.offerReducer);
 
-  console.log(paymentMethods);
-
   // console.log("crypto", crypto);
   // console.log("fiat", fiat);
   // console.log("unitPrice", unitPrice);
@@ -57,14 +55,14 @@ export const FormNav = () => {
 
     OfferService.create({
       offerType: "buy",
-      fiat: fiat[0]._id,
-      unitPrice: unitPrice,
+      fiat: fiat._id,
+      unitPrice,
       amount: multiply(unitPrice, quantity),
-      quantity: quantity,
+      quantity,
       orderLimit: priceLimit,
-      crypto: crypto[0]._id,
+      crypto: crypto._id,
       offerComment: comment,
-      //payMethods: paymentMethods,
+      payMethods: [],
     }).then(() => {
       openSuccessModal(true);
       //resetOffer();

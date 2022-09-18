@@ -16,7 +16,7 @@ export const Step3 = () => {
     useActions();
   const { fiat, comment } = useTypedSelector((state) => state.offerReducer);
 
-  const { ticker } = fiat[0];
+  const { ticker } = fiat;
 
   return (
     <form className={"flex flex-col gap-5"}>

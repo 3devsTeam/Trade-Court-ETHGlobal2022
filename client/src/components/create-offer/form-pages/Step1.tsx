@@ -30,9 +30,9 @@ export const Step1 = () => {
     (state) => state.offerReducer
   );
 
-  const { symbol, logoUrl: cryptoImage } = crypto[0];
+  const { symbol, logoUrl: cryptoImage } = crypto;
 
-  const { ticker, logoUrl: fiatImage } = fiat[0];
+  const { ticker, logoUrl: fiatImage } = fiat;
 
   const [isOpen, setIsOpen] = useState(false);
 

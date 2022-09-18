@@ -5,7 +5,7 @@ import { Modal } from "../modal/Modal";
 import { off } from "process";
 
 export const Offer = ({ offer }: any) => {
-  console.log(offer);
+  //console.log(offer);
 
   const {
     _id,
@@ -28,8 +28,6 @@ export const Offer = ({ offer }: any) => {
   const { ticker } = fiat;
 
   const [openOfferModal, setOpenOfferModal] = useState(false);
-
-  console.log(payMethods);
 
   const ref = useRef();
   return (

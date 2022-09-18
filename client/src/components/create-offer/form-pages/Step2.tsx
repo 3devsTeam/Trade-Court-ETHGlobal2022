@@ -40,13 +40,13 @@ export const Step2 = () => {
     //resetPayment();
   };
 
-  const { banks, regions } = fiat[0];
+  const { banks, regions } = fiat;
 
-  // console.log(paymentMethod);
-  // console.log(region);
+  const paymentName = paymentMethod?.name;
+  const paymentLogoUrl = paymentMethod?.logoUrl;
 
-  const { name: paymentName } = paymentMethod[0];
-  const { name: regionName, logoUrl: regionImage } = region[0];
+  const regionName = region?.name;
+  const regionLogoUrl = region?.logoUrl;
 
   return (
     <form className={"flex flex-col gap-5"}>
@@ -70,13 +70,13 @@ export const Step2 = () => {
         <p className={"text-lg font-bold mb-1 ml-[10px]"}>Add payment method</p>
         <div className={"flex items-center gap-1"}>
           <Dropdown
-            image={""}
+            image={paymentLogoUrl}
             value={paymentName}
             data={banks}
             onAction={setPaymentMethod}
           />
           <Dropdown
-            image={regionImage}
+            image={regionLogoUrl}
             value={regionName}
             data={regions}
             onAction={setRegion}

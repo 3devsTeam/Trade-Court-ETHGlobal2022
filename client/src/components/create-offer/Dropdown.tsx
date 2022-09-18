@@ -3,12 +3,12 @@ import useOnClickOutside from "use-onclickoutside";
 import { Arrow } from "../Arrow";
 
 interface IDropdown {
-  value: string;
+  value: string | undefined;
   onAction: any;
   register?: any;
   label?: string;
   data: any;
-  image: string;
+  image: string | undefined;
 }
 
 export const Dropdown = ({
@@ -65,7 +65,7 @@ export const Dropdown = ({
 
                 return (
                   <div
-                    onClick={() => clickHandler([data[i]])}
+                    onClick={() => clickHandler(data[i])}
                     key={i}
                     className={"p-2 cursor-pointer flex items-center gap-1"}
                   >

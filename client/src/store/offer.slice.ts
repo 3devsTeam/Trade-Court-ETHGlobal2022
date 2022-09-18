@@ -3,7 +3,7 @@ import { IOffer } from "../models/models"
 import defaultImg from "../assets/defaultImg.svg"
 
 const initialState: IOffer = {
-    crypto: [{
+    crypto: {
         address: '',
         balance: '',
         chainId: 0,
@@ -13,32 +13,33 @@ const initialState: IOffer = {
         symbol: 'Unknown token',
         _id: '',
         tokenAmount: 0
-    }],
-    fiat: [{
+    },
+    fiat: {
         _id: '',
         name: '',
         ticker: '',
         banks: [],
         regions: [],
         logoUrl: ''
-    }],
+    },
     unitPrice: 0,
     quantity: 0,
     paymentMethods: [],
     timeLimit: '15',
     priceLimit: [0, 0],
-    paymentMethod: [{
+    paymentMethod: {
         _id: '',
+        logoUrl: '',
         name: '',
         __v: 0
-    }],  
-    region: [{
+    },  
+    region: {
         _id: '',
         name: '',
         logoUrl: '',
         __v: 0
 
-    }], 
+    }, 
     cardNumber: '',
     paymentDescription: '',
     comment: '',
