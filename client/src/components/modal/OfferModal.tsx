@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { truncateAddress } from "../../utils/truncateAddress";
 import { Input } from "../create-offer/Input";
 import { useNavigate } from "react-router";
 import { IOffer } from "../../models/models";
+import { OfferInput } from "../home/OfferInput";
 
 export const OfferModal = ({
   unitPrice,
@@ -11,8 +12,12 @@ export const OfferModal = ({
   orderLimit,
   amount,
   crypto,
+  quantity,
   offerComment,
 }: IOffer) => {
+  const [pay, setPay] = useState(0);
+  const [recieve, setRecieve] = useState(0);
+
   const { ticker } = fiat;
 
   const { symbol } = crypto;
@@ -20,6 +25,10 @@ export const OfferModal = ({
   const { address } = maker;
 
   const navigate = useNavigate();
+
+  useEffect(() => {
+    setRecieve(+(pay / unitPrice).toFixed(2));
+  }, [pay, recieve]);
 
   return (
     <div className="border-2 border-purple rounded-[15px] grid grid-cols-2">
@@ -37,7 +46,7 @@ export const OfferModal = ({
         <div className={"flex justify-between"}>
           <p>Available: </p>
           <p>
-            {amount} {symbol}
+            {quantity} {symbol}
           </p>
         </div>
         <div className={"flex justify-between"}>
@@ -52,21 +61,20 @@ export const OfferModal = ({
       </div>
 
       <div className="flex flex-col gap-3 border-l border-gray p-3 ">
-        <Input
-          type={"number"}
-          onAction={null}
+        <OfferInput
+          maxValue={orderLimit[1]}
+          setValue={setPay}
           placeholder={"You pay"}
-          element={ticker}
-          value={""}
+          value={pay}
+          inputContent={ticker}
         />
-        <Input
-          type={"number"}
-          onAction={null}
-          placeholder={"You receive"}
-          element={symbol}
-          value={""}
+        <OfferInput
+          maxValue={quantity}
+          setValue={setRecieve}
+          placeholder={"You recieve"}
+          value={recieve}
+          inputContent={symbol}
         />
-
         <div>
           <button
             onClick={() => navigate("/transaction")}

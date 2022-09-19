@@ -28,6 +28,7 @@ export const Input = ({
         <input
           type={type}
           onChange={(e) => onAction(e.target.value)}
+          //{...register}
           className={`font-bold outline-none p-[10px] rounded-[15px] cursor-${cursor} w-full h-full`}
           placeholder={placeholder}
           value={value}
