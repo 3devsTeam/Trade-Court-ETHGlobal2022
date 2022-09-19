@@ -6,6 +6,7 @@ exports.getAllOffers = catchAsync(async (req, res, next) => {
   const page = +req.query.page || 1;
   const limit = +req.query.limit || 10;
   const offers = await Offer.find()
+    .find({ 'room.stage': { $eq: 'no taker' } })
     .sort({ unitPrice: 1 })
     .populate('crypto payMethods.bank')
     .limit(limit)
@@ -108,6 +109,13 @@ exports.leaveOffer = catchAsync(async (req, res, next) => {
 
   res.status(200).json({
     status: 'success',
+  });
+});
+
+exports.deleteOffer = catchAsync(async (req, res, next) => {
+  await Offer.findByIdAndDelete(req.params.id);
+  res.status(200).json({
+    message: 'success',
   });
 });
 
