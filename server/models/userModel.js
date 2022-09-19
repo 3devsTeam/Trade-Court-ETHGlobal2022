@@ -8,12 +8,6 @@ const userSchema = new mongoose.Schema({
     required: true,
     unique: true,
   },
-  offers: [
-    {
-      type: mongoose.Schema.ObjectId,
-      ref: 'Offer',
-    },
-  ],
   rating: {
     type: Number,
     min: 1,

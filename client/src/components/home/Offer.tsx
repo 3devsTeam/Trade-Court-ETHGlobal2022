@@ -52,8 +52,8 @@ export const Offer = (offer: IOffer) => {
         </div>
         <div>
           <div>
-            {payments.map((p: string) => (
-              <div>{p}</div>
+            {payments.map((p: string, i: number) => (
+              <div key={i}>{p}</div>
             ))}
           </div>
         </div>

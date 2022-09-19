@@ -6,14 +6,14 @@ exports.getAllOffers = catchAsync(async (req, res, next) => {
   const page = +req.query.page || 1;
   const limit = +req.query.limit || 10;
   const offers = await Offer.find()
-    .find({ 'room.stage': { $eq: 'no taker' } })
+    .find({ "room.stage": { $eq: "no taker" } })
     .sort({ unitPrice: 1 })
     .populate("crypto payMethods.bank fiat maker")
     .limit(limit)
     .skip((page - 1) * limit);
 
   res.status(201).json({
-    status: "success",
+    message: "success",
     data: {
       offers,
     },
@@ -35,7 +35,7 @@ exports.getOffer = catchAsync(async (req, res, next) => {
     }
   }
   res.status(201).json({
-    status: "success",
+    message: "success",
     data: {
       offer,
     },
@@ -64,10 +64,15 @@ exports.joinOffer = catchAsync(async (req, res, next) => {
   }
   if (
     req.body.amount < offer.orderLimit[0] ||
-    req.body.amount > offer.orderLimit[1]
+    req.body.amount > offer.orderLimit[1] ||
+    !req.body.amount
   ) {
     return next(new AppError("Amount is invalid", 400));
   }
+  if (offer.amount - req.body.amount < 0) {
+    return next(new AppError("Amount is too big", 400));
+  }
+
   await Offer.findOneAndUpdate(
     { _id: req.params.id },
     {
@@ -79,7 +84,7 @@ exports.joinOffer = catchAsync(async (req, res, next) => {
     }
   );
   res.status(200).json({
-    status: "success",
+    message: "success",
   });
 });
 
@@ -108,14 +113,7 @@ exports.leaveOffer = catchAsync(async (req, res, next) => {
   );
 
   res.status(200).json({
-    status: "success",
-  });
-});
-
-exports.deleteOffer = catchAsync(async (req, res, next) => {
-  await Offer.findByIdAndDelete(req.params.id);
-  res.status(200).json({
-    message: 'success',
+    message: "success",
   });
 });
 
@@ -137,9 +135,26 @@ exports.createOffer = catchAsync(async (req, res, next) => {
   const newOffer = await Offer.create(offerBody);
 
   res.status(201).json({
-    status: "success",
+    message: "success",
     data: {
       newOffer,
     },
+  });
+});
+
+exports.deleteOffer = catchAsync(async (req, res, next) => {
+  const offer = await Offer.findById(req.params.id);
+  if (!offer) {
+    return next(new AppError("No such offer", 403));
+  }
+  if (offer.maker.toString() != req.user._id.toString()) {
+    return next(new AppError("You dont have access", 403));
+  }
+  if (offer.room.stage != "no taker") {
+    return next(new AppError("You cant delete with active taker", 403));
+  }
+  await Offer.findByIdAndDelete(req.params.id);
+  res.status(200).json({
+    message: "success",
   });
 });

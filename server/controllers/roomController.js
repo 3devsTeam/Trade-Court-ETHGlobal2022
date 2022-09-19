@@ -21,7 +21,7 @@ exports.takerSent = catchAsync(async (req, res, next) => {
     $set: { 'room.stage': 'taker sent' },
   });
   res.status(200).json({
-    msg: 'success',
+    message: 'success',
   });
 });
 
@@ -40,7 +40,7 @@ exports.makerRecieved = catchAsync(async (req, res, next) => {
     $set: { 'room.stage': 'maker recived' },
   });
   res.status(200).json({
-    msg: 'success',
+    message: 'success',
   });
 });
 
@@ -59,10 +59,13 @@ exports.takerClaimed = catchAsync(async (req, res, next) => {
   if (offer.room.stage != 'maker recived') {
     return next(new AppError("It's not your turn", 400));
   }
+  const newAmount = offer.amount - offer.room.amount;
+  const newQuantity = offer.quantity - offer.room.amount / offer.unitPrice;
   await Offer.findByIdAndUpdate(req.params.id, {
     room: { starge: 'no taker' },
+    $set: { amount: newAmount, quantity: newQuantity },
   });
   res.status(200).json({
-    msg: 'success',
+    message: 'success',
   });
 });

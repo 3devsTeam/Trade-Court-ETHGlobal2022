@@ -39,7 +39,12 @@ export const TokenList = ({ tokens, onClose }: ITokenList) => {
           const token = tokens[virtualItem.index];
 
           return (
-            <Token token={token} virtualItem={virtualItem} onClose={onClose} />
+            <Token
+              key={virtualItem.key}
+              token={token}
+              virtualItem={virtualItem}
+              onClose={onClose}
+            />
           );
         })}
       </div>

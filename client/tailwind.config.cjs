@@ -44,7 +44,7 @@ module.exports = {
       gridTemplateColumns: {
         offer: "0.5fr minmax(0, 1fr) 0.6fr 0.7fr 0.5fr",
         form: "0.6fr 0.4fr",
-        profile: "0.4fr 0.6fr",
+        profile: "0.3fr 0.7fr",
       },
     },
   },

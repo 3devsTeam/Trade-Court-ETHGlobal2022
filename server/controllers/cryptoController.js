@@ -5,7 +5,7 @@ exports.getAllCrypto = catchAsync(async (req, res, next) => {
   const allCrypto = await Crypto.find();
 
   res.status(201).json({
-    status: 'success',
+    message: 'success',
     data: {
       allCrypto: allCrypto,
     },
@@ -15,7 +15,7 @@ exports.getAllCrypto = catchAsync(async (req, res, next) => {
 exports.createCrypto = catchAsync(async (req, res, next) => {
   const newCrypto = await Crypto.create(req.body);
   res.status(201).json({
-    status: 'success',
+    message: 'success',
     data: {
       newCrypto: newCrypto,
     },

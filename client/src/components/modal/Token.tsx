@@ -15,7 +15,6 @@ export const Token = ({ virtualItem, token, onClose }: any) => {
 
   return (
     <button
-      key={virtualItem.key}
       type={"button"}
       onClick={() => selectHandler(token)}
       className={
