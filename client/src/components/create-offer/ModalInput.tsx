@@ -2,13 +2,20 @@ import React from "react";
 // import defaultImg from "../../assets/defaultImg.svg";
 
 interface IModalInput {
+  fullName: string;
   image: string;
   onOpen: any;
   label: string;
-  value: string;
+  symbol: string;
 }
 
-export const ModalInput = ({ onOpen, label, value, image }: IModalInput) => {
+export const ModalInput = ({
+  onOpen,
+  label,
+  symbol,
+  image,
+  fullName,
+}: IModalInput) => {
   const onOpenHandler: React.MouseEventHandler = (e) => {
     console.log("open tokens modal");
     e.preventDefault();
@@ -24,7 +31,8 @@ export const ModalInput = ({ onOpen, label, value, image }: IModalInput) => {
       >
         <div className={"flex items-center gap-1"}>
           <img className={"w-8 h-8"} src={image} alt={""} />
-          <span className={"font-bold"}>{value}</span>
+          <span className={"font-bold"}>{symbol}</span>
+          <span className={"text-gray font-bold"}>{fullName}</span>
         </div>
       </button>
     </div>

@@ -12,5 +12,8 @@ export const OfferService = {
     }, 
     async getFiat() {
         return axios.get(`${API_URl}/api/fiat`)
+    },
+    async getAll() {
+        return axios.get(`${API_URl}/api/offer`)
     }
 }

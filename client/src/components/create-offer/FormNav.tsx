@@ -35,34 +35,37 @@ export const FormNav = () => {
     fiat,
     unitPrice,
     quantity,
-    priceLimit,
-    comment,
-    paymentMethods,
+    orderLimit,
+    offerComment,
+    payMethods,
   } = useTypedSelector((state) => state.offerReducer);
 
-  // console.log("crypto", crypto);
-  // console.log("fiat", fiat);
-  // console.log("unitPrice", unitPrice);
-  // console.log("quantity", quantity);
-  // console.log("payment methods", paymentMethods);
-  // console.log("priceLimit", priceLimit);
-  // console.log("comment", comment);
-
-  // console.log(crypto[0]._id);
+  const arr = payMethods.map((e) => {
+    return {
+      bank: e.paymentMethod._id,
+      cardNumber: e.cardNumber,
+      region: e.region._id,
+      paymentDescription: e.paymentDescription,
+    };
+  });
 
   const createHandler = () => {
     console.log("create offer");
 
     OfferService.create({
       offerType: "buy",
-      fiat: fiat[0]._id,
-      unitPrice: unitPrice,
+      fiat: fiat._id,
+      unitPrice,
       amount: multiply(unitPrice, quantity),
-      quantity: quantity,
-      orderLimit: priceLimit,
-      crypto: crypto[0]._id,
-      offerComment: comment,
-    }).then(() => openSuccessModal(true));
+      quantity,
+      orderLimit,
+      crypto: crypto._id,
+      offerComment,
+      payMethods: arr,
+    }).then(() => {
+      openSuccessModal(true);
+      //resetOffer();
+    });
   };
 
   return (

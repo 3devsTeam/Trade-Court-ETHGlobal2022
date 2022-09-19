@@ -61,7 +61,7 @@ export const useTokens = () => {
 					 //console.log('result', result)
 					 el.balance = result
 					 el.tokenAmount = parseInt(weiBalance.div(div15).toString()) / 1000 
-					// console.log(el)
+					 console.log(el)
 
 					// if (i === 0) {
 					// 	setCrypto([tokens[i]])

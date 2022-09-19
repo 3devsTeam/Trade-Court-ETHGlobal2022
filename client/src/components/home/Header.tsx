@@ -2,21 +2,21 @@ import React from "react";
 
 export const Header = () => {
   return (
-    <div className="grid grid-cols-offer gap-5 px-[20px]">
+    <div className="grid grid-cols-offer gap-5 px-[20px] mb-[20px]">
       <div>
-        <span className="font-md">Maker address</span>
+        <p className="font-md">Maker address</p>
       </div>
       <div>
-        <span className="font-md">Avaliable / Limit</span>
+        <p className="font-md">Avaliable / Limit</p>
       </div>
       <div>
-        <span className="font-md">Unit Price</span>
+        <p className="font-md">Unit Price</p>
       </div>
       <div>
-        <span className="font-md">Payment methods</span>
+        <p className="font-md">Payment methods</p>
       </div>
       <div>
-        <span className="font-md">Buy / Sell</span>
+        <p className="font-md">Buy / Sell</p>
       </div>
     </div>
   );

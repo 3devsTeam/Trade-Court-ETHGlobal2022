@@ -10,16 +10,14 @@ export const Preview = () => {
     unitPrice,
     quantity,
     timeLimit,
-    priceLimit,
-    comment,
-    paymentMethods,
+    orderLimit,
+    offerComment,
+    payMethods,
   } = useTypedSelector((state) => state.offerReducer);
 
-  const { symbol, logoUrl: cryptoImage } = crypto[0];
+  const { symbol, logoUrl: cryptoImage } = crypto;
 
-  const { ticker, logoUrl: fiatImage } = fiat[0];
-
-  paymentMethods.map((p) => console.log(p.cardNumber));
+  const { ticker, logoUrl: fiatImage } = fiat;
 
   return (
     <div className={"bg-white rounded-[20px] shadow-lg row-span-2 break-words"}>
@@ -92,18 +90,19 @@ export const Preview = () => {
             <span className={"font-bold text-lg"}>Payment Methods</span>
           </div>
           <div>
-            {paymentMethods.length
-              ? paymentMethods.map((p) => {
+            {payMethods.length
+              ? payMethods.map((p) => {
+                  console.log(p);
                   return (
                     <div className={"flex items-center gap-1 my-2"}>
                       <img
                         className={
                           "w-8 h-8 rounded-[50%] border border-purple object-cover"
                         }
-                        src={p.paymentMethod[0].logoUrl}
+                        src={p.paymentMethod.logoUrl}
                         alt=""
                       />
-                      <p>{p.paymentMethod[0].name}</p>
+                      <p>{p.paymentMethod.name}</p>
                     </div>
                   );
                 })
@@ -127,16 +126,16 @@ export const Preview = () => {
             <span className={"font-bold text-lg"}>Price Limit</span>
           </div>
           <div>
-            <span>{`${priceLimit[0]}-${priceLimit[1]}`}</span>
+            <span>{`${orderLimit[0]}-${orderLimit[1]}`}</span>
           </div>
         </div>
 
-        <div className={"flex justify-between"}>
+        <div className={"flex justify-between gap-5"}>
           <div>
             <span className={"font-bold text-lg"}>Comment</span>
           </div>
           <div>
-            <span>{comment}</span>
+            <p>{offerComment}</p>
           </div>
         </div>
       </div>

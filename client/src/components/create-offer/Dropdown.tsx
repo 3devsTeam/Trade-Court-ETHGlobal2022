@@ -3,16 +3,18 @@ import useOnClickOutside from "use-onclickoutside";
 import { Arrow } from "../Arrow";
 
 interface IDropdown {
-  value: string;
+  value: string | undefined;
+  fullName?: string;
   onAction: any;
   register?: any;
   label?: string;
   data: any;
-  image: string;
+  image: string | undefined;
 }
 
 export const Dropdown = ({
   value,
+  fullName,
   onAction,
   label,
   data,
@@ -47,6 +49,7 @@ export const Dropdown = ({
                 alt={""}
               />
               <span className={"font-bold"}>{value}</span>
+              <span className={"font-bold text-gray"}>{fullName}</span>
             </div>
             <div
               className={`transition duration-300 ${isOpen && "rotate-180"}`}
@@ -65,7 +68,7 @@ export const Dropdown = ({
 
                 return (
                   <div
-                    onClick={() => clickHandler([data[i]])}
+                    onClick={() => clickHandler(data[i])}
                     key={i}
                     className={"p-2 cursor-pointer flex items-center gap-1"}
                   >

@@ -2,47 +2,71 @@ import React, { useRef, useState } from "react";
 import { truncateAddress } from "../../utils/truncateAddress";
 import { OfferModal } from "../modal/OfferModal";
 import { Modal } from "../modal/Modal";
+import { IOffer } from "../../models/models";
 
 export const Offer = ({ offer }: any) => {
+  const {
+    _id,
+    crypto,
+    fiat,
+    maker,
+    orderLimit,
+    payMethods,
+    quantity,
+    unitPrice,
+  } = offer;
+
+  const payments = payMethods.map((e: any) => e.bank.name);
+
+  const { address } = maker;
+
+  const { symbol } = crypto;
+  const { ticker } = fiat;
+
   const [openOfferModal, setOpenOfferModal] = useState(false);
 
   const ref = useRef();
   return (
     <>
-      <div className="bg-white shadow-md grid text-sm grid-cols-offer gap-5 items-center h-[100px] w-full px-[20px] rounded-[10px] mb-[20px]">
+      <div
+        key={_id}
+        className="bg-white shadow-md grid text-sm grid-cols-offer gap-5 items-center h-[100px] w-full px-[20px] rounded-[20px] mb-[20px]"
+      >
         <div className="text-md">
           <div>
-            <span className="font-bold">
-              {truncateAddress("0x7Bae409c84E0C3e56F44dB24D05277bdd004aBbB")}
-            </span>
+            <p className="font-bold">{truncateAddress(address)}</p>
           </div>
         </div>
 
         <div>
           <div>
             <div>
-              <span>Available </span>
-              <span className="font-bold">{"7238923892393"} </span>
-              {"ETH"}
+              <p className={"text-gray font-bold"}>Available </p>
+              <span>{quantity}</span>
+              <span> {symbol}</span>
             </div>
             <div>
-              <span>Limit </span>
-              <span className="font-bold">
-                {"8923923923"}-{"2892392392"}
+              <p className={"text-gray font-bold"}>Limit </p>
+              <span>
+                {orderLimit[0]}-{orderLimit[1]}
               </span>
-              <span className="font-normal"> {"RUB"}</span>
+              <span className="font-normal"> {ticker}</span>
             </div>
           </div>
         </div>
 
         <div className="text-md">
-          <span className="text-md font-bold">
-            {"120"} <span className="text-sm font-normal">{"RUB"}</span>
+          <span className={"text-purple font-bold"}>
+            {unitPrice} {ticker}
           </span>
         </div>
 
         <div>
-          <div>{"payments"}</div>
+          <div>
+            {payments.map((p: string) => (
+              <div>{p}</div>
+            ))}
+          </div>
         </div>
 
         <div>
@@ -53,7 +77,7 @@ export const Offer = ({ offer }: any) => {
             transition-all duration-500 hover:bg-white
              hover:text-purple hover:scale-110 hover:shadow-lg"
             >
-              <span className="text-md">Buy {"ETH"}</span>
+              <span className="text-md">Buy {symbol}</span>
             </button>
           </div>
         </div>
@@ -65,7 +89,7 @@ export const Offer = ({ offer }: any) => {
         header={"Transaction"}
         close={() => setOpenOfferModal(false)}
       >
-        <OfferModal />
+        <OfferModal {...offer} />
       </Modal>
     </>
   );

@@ -1,47 +1,55 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit"
-import { IOffer } from "../models/models"
+import { IOffer, ROLES } from "../models/models"
 import defaultImg from "../assets/defaultImg.svg"
 
 const initialState: IOffer = {
-    crypto: [{
+    crypto: {
         address: '',
         balance: '',
         chainId: 0,
         decimals: 0,
-        logoUrl: defaultImg,
+        logoUrl: '',
         name: '',
-        symbol: 'Unknown token',
+        symbol: '',
         _id: '',
         tokenAmount: 0
-    }],
-    fiat: [{
+    },
+    maker: {
+        _id: "",
+        address: "",
+        offers: [],
+        role: ROLES.user,
+        __v: 0
+    },
+    fiat: {
         _id: '',
         name: '',
         ticker: '',
         banks: [],
         regions: [],
         logoUrl: ''
-    }],
+    },
     unitPrice: 0,
     quantity: 0,
-    paymentMethods: [],
+    payMethods: [],
     timeLimit: '15',
-    priceLimit: [0, 0],
-    paymentMethod: [{
+    orderLimit: [0, 0],
+    paymentMethod: {
         _id: '',
+        logoUrl: '',
         name: '',
         __v: 0
-    }],  
-    region: [{
+    },  
+    region: {
         _id: '',
         name: '',
         logoUrl: '',
         __v: 0
 
-    }], 
+    }, 
     cardNumber: '',
     paymentDescription: '',
-    comment: '',
+    offerComment: '',
 }
 
 export const offerSlice = createSlice({
@@ -52,20 +60,56 @@ export const offerSlice = createSlice({
         setFiat: (state, action) => {state.fiat = action.payload},
         setUnitPrice: (state, action) => {state.unitPrice = action.payload},
         setQuantity: (state, action) => {state.quantity = action.payload},
-        addPaymentMethod: (state, action) => { state.paymentMethods.push(action.payload)},
+        addPaymentMethod: (state, action) => { state.payMethods.push(action.payload)},
         setTimeLimit: (state, action) => { state.timeLimit = action.payload },
-        setMinPriceLimit: (state, action) => { state.priceLimit[0] = action.payload},
-        setMaxPriceLimit: (state, action) => { state.priceLimit[1] = action.payload},
-        setComment: (state, action) => { state.comment = action.payload},
+        setMinPriceLimit: (state, action) => { state.orderLimit[0] = action.payload},
+        setMaxPriceLimit: (state, action) => { state.orderLimit[1] = action.payload},
+        setComment: (state, action) => { state.offerComment = action.payload},
         setRegion: (state, action) => { state.region = action.payload},
         setCardNumber: (state, action) => { state.cardNumber = action.payload},
         setPaymentDescription: (state, action) => { state.paymentDescription = action.payload},
         setPaymentMethod: (state, action) => { state.paymentMethod = action.payload},
-        // resetPayment: (state) => {
-        //     state.paymentMethod = {}
-        //     state.region = {}
-        //     state.cardNumber = ''
-        //     state.paymentDescription = ''
+        // resetOffer: (state) => {
+        // {
+        //     state.crypto = [{
+        //         address: '',
+        //         balance: '',
+        //         chainId: 0,
+        //         decimals: 0,
+        //         logoUrl: defaultImg,
+        //         name: '',
+        //         symbol: 'Unknown token',
+        //         _id: '',
+        //         tokenAmount: 0
+        //     }]
+        //     state.fiat = [{
+        //         _id: '',
+        //         name: '',
+        //         ticker: '',
+        //         banks: [],
+        //         regions: [],
+        //         logoUrl: ''
+        //     }]
+        //     state.unitPrice = 0,
+        //     state.quantity = 0,
+        //     state.paymentMethods = [],
+        //     state.timeLimit = '15',
+        //     state.priceLimit = [0, 0],
+        //     state.paymentMethod = [{
+        //         _id: '',
+        //         name: '',
+        //         __v: 0
+        //     }]  
+        //     state.region = [{
+        //         _id: '',
+        //         name: '',
+        //         logoUrl: '',
+        //         __v: 0
+        
+        //     }]
+        //     state.cardNumber = '',
+        //     state.paymentDescription = '',
+        //     state.comment = '',
         // }
     }
 })

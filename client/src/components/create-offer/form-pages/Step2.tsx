@@ -26,7 +26,7 @@ export const Step2 = () => {
     region,
     paymentMethod,
     paymentDescription,
-    paymentMethods,
+    payMethods,
   } = useTypedSelector((state) => state.offerReducer);
 
   const addPayment = () => {
@@ -40,27 +40,27 @@ export const Step2 = () => {
     //resetPayment();
   };
 
-  const { banks, regions } = fiat[0];
+  const { banks, regions } = fiat;
 
-  // console.log(paymentMethod);
-  // console.log(region);
+  const paymentName = paymentMethod?.name;
+  const paymentLogoUrl = paymentMethod?.logoUrl;
 
-  const { name: paymentName } = paymentMethod[0];
-  const { name: regionName, logoUrl: regionImage } = region[0];
+  const regionName = region?.name;
+  const regionLogoUrl = region?.logoUrl;
 
   return (
     <form className={"flex flex-col gap-5"}>
       <div>
         <p className={"text-lg font-bold mb-1 ml-[10px]"}>Payment methods</p>
         <div className={"flex gap-1 overflow-x-auto"}>
-          {!paymentMethods.length && (
+          {!payMethods.length && (
             <div className={"h-[60px] w-full flex items-center justify-center"}>
               <span className={"font-bold text-purple text-lg"}>
                 No payments yet...
               </span>
             </div>
           )}
-          {paymentMethods?.map((payment) => (
+          {payMethods?.map((payment) => (
             <Payment {...payment} />
           ))}
         </div>
@@ -70,13 +70,13 @@ export const Step2 = () => {
         <p className={"text-lg font-bold mb-1 ml-[10px]"}>Add payment method</p>
         <div className={"flex items-center gap-1"}>
           <Dropdown
-            image={""}
+            image={paymentLogoUrl}
             value={paymentName}
             data={banks}
             onAction={setPaymentMethod}
           />
           <Dropdown
-            image={regionImage}
+            image={regionLogoUrl}
             value={regionName}
             data={regions}
             onAction={setRegion}
