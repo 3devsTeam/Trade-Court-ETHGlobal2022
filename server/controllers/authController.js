@@ -1,10 +1,10 @@
-const catchAsync = require("../utils/catchAsync");
-const AppError = require("../utils/appError");
-const jwt = require("jsonwebtoken");
-const { signatureVerify } = require("../utils/signatureVerify");
-const { promisify } = require("util");
-const axios = require("axios");
-const User = require("../models/userModel");
+const catchAsync = require('../utils/catchAsync');
+const AppError = require('../utils/appError');
+const jwt = require('jsonwebtoken');
+const { signatureVerify } = require('../utils/signatureVerify');
+const { promisify } = require('util');
+const axios = require('axios');
+const User = require('../models/userModel');
 
 const signToken = (id) =>
   jwt.sign({ id }, process.env.JWT_SECRET, {
@@ -19,12 +19,12 @@ const createSendToken = (user, statusCode, res) => {
     ),
     httpOnly: false,
     secure: false,
-    sameSite: "none",
+    sameSite: 'none',
   };
-  if (process.env.NODE_ENV === "production") cookieOptions.secure = true;
-  res.cookie("jwt", token, cookieOptions);
+  if (process.env.NODE_ENV === 'production') cookieOptions.secure = true;
+  res.cookie('jwt', token, cookieOptions);
   res.status(statusCode).json({
-    status: "success",
+    status: 'success',
     token,
     data: {
       user,
@@ -37,19 +37,17 @@ exports.login = catchAsync(async (req, res, next) => {
   let user = await User.findOne({ address });
   if (!user) {
     user = await User.create({ address: address });
-    console.log(`new user ${address}`);
   }
   createSendToken(user, 201, res);
 });
 
 exports.protect = catchAsync(async (req, res, next) => {
   let token;
-  console.log(req.cookies);
   if (req.cookies.jwt) {
     token = req.cookies.jwt;
   }
   if (!token) {
-    return next(new AppError("Your not logged in", 401));
+    return next(new AppError('Your not logged in', 401));
   }
   const decoded = await promisify(jwt.verify)(token, process.env.JWT_SECRET);
 
@@ -62,19 +60,19 @@ exports.protect = catchAsync(async (req, res, next) => {
 });
 
 exports.logout = (req, res) => {
-  res.cookie("jwt", "loggedout", {
+  res.cookie('jwt', 'loggedout', {
     expires: new Date(Date.now() + 1),
     httpOnly: false,
     secure: false,
-    sameSite: "none",
+    sameSite: 'none',
   });
-  res.status(200).json({ status: "success" });
+  res.status(200).json({ status: 'success' });
 };
 
 exports.accessOnly = (...roles) => {
   return (req, res, next) => {
     if (!roles.includes(req.user.role)) {
-      return next(new AppError("No permission", 403));
+      return next(new AppError('No permission', 403));
     }
     next();
   };

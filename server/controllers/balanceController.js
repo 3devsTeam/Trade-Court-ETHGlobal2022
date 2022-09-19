@@ -42,7 +42,6 @@ exports.getERC20Balances = catchAsync(async (req, res, next) => {
     new Web3(process.env.ALCHEMY_HTTP_LEO)
   );
   if (!req.params.address) {
-    console.log(req.params);
     return new AppError('Address is empty', 400);
   }
   // const tmp = await Crypto.find().select('-__v');
