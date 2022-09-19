@@ -6,6 +6,7 @@ import { useActions } from "../../hooks/useActions";
 export const Token = ({ virtualItem, token, onClose }: any) => {
   const { setCrypto } = useActions();
   const { symbol, balance, logoUrl, name, tokenAmount } = token;
+  //console.log(tokenAmount);
 
   const selectHandler = (token: IToken[]) => {
     setCrypto(token);

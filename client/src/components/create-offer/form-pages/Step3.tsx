@@ -14,7 +14,9 @@ import { TimeLimit } from "../TimeLimit";
 export const Step3 = () => {
   const { setMinPriceLimit, setMaxPriceLimit, setTimeLimit, setComment } =
     useActions();
-  const { fiat, comment } = useTypedSelector((state) => state.offerReducer);
+  const { fiat, offerComment } = useTypedSelector(
+    (state) => state.offerReducer
+  );
 
   const { ticker } = fiat;
 
@@ -46,7 +48,7 @@ export const Step3 = () => {
       </label>
 
       <TextArea
-        value={comment}
+        value={offerComment ? offerComment : ""}
         onAction={setComment}
         label={"Comment"}
         placeholder={"Enter comment"}

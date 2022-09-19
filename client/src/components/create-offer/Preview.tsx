@@ -10,9 +10,9 @@ export const Preview = () => {
     unitPrice,
     quantity,
     timeLimit,
-    priceLimit,
-    comment,
-    paymentMethods,
+    orderLimit,
+    offerComment,
+    payMethods,
   } = useTypedSelector((state) => state.offerReducer);
 
   const { symbol, logoUrl: cryptoImage } = crypto;
@@ -90,8 +90,8 @@ export const Preview = () => {
             <span className={"font-bold text-lg"}>Payment Methods</span>
           </div>
           <div>
-            {paymentMethods.length
-              ? paymentMethods.map((p) => {
+            {payMethods.length
+              ? payMethods.map((p) => {
                   console.log(p);
                   return (
                     <div className={"flex items-center gap-1 my-2"}>
@@ -126,7 +126,7 @@ export const Preview = () => {
             <span className={"font-bold text-lg"}>Price Limit</span>
           </div>
           <div>
-            <span>{`${priceLimit[0]}-${priceLimit[1]}`}</span>
+            <span>{`${orderLimit[0]}-${orderLimit[1]}`}</span>
           </div>
         </div>
 
@@ -135,7 +135,7 @@ export const Preview = () => {
             <span className={"font-bold text-lg"}>Comment</span>
           </div>
           <div>
-            <p>{comment}</p>
+            <p>{offerComment}</p>
           </div>
         </div>
       </div>

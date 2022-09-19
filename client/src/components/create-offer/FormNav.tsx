@@ -35,22 +35,12 @@ export const FormNav = () => {
     fiat,
     unitPrice,
     quantity,
-    priceLimit,
-    comment,
-    paymentMethods,
+    orderLimit,
+    offerComment,
+    payMethods,
   } = useTypedSelector((state) => state.offerReducer);
 
-  // console.log("crypto", crypto);
-  // console.log("fiat", fiat);
-  // console.log("unitPrice", unitPrice);
-  // console.log("quantity", quantity);
-  // console.log("payment methods", paymentMethods);
-  // console.log("priceLimit", priceLimit);
-  // console.log("comment", comment);
-
-  // console.log(crypto[0]._id);
-
-  const arr = paymentMethods.map((e) => {
+  const arr = payMethods.map((e) => {
     return {
       bank: e.paymentMethod._id,
       cardNumber: e.cardNumber,
@@ -58,8 +48,6 @@ export const FormNav = () => {
       paymentDescription: e.paymentDescription,
     };
   });
-
-  console.log(arr);
 
   const createHandler = () => {
     console.log("create offer");
@@ -70,9 +58,9 @@ export const FormNav = () => {
       unitPrice,
       amount: multiply(unitPrice, quantity),
       quantity,
-      orderLimit: priceLimit,
+      orderLimit,
       crypto: crypto._id,
-      offerComment: comment,
+      offerComment,
       payMethods: arr,
     }).then(() => {
       openSuccessModal(true);

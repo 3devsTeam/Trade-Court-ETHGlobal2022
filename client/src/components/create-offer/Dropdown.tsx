@@ -4,6 +4,7 @@ import { Arrow } from "../Arrow";
 
 interface IDropdown {
   value: string | undefined;
+  fullName?: string;
   onAction: any;
   register?: any;
   label?: string;
@@ -13,6 +14,7 @@ interface IDropdown {
 
 export const Dropdown = ({
   value,
+  fullName,
   onAction,
   label,
   data,
@@ -47,6 +49,7 @@ export const Dropdown = ({
                 alt={""}
               />
               <span className={"font-bold"}>{value}</span>
+              <span className={"font-bold text-gray"}>{fullName}</span>
             </div>
             <div
               className={`transition duration-300 ${isOpen && "rotate-180"}`}

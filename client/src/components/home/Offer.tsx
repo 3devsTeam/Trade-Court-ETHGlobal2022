@@ -2,25 +2,21 @@ import React, { useRef, useState } from "react";
 import { truncateAddress } from "../../utils/truncateAddress";
 import { OfferModal } from "../modal/OfferModal";
 import { Modal } from "../modal/Modal";
-import { off } from "process";
+import { IOffer } from "../../models/models";
 
 export const Offer = ({ offer }: any) => {
-  console.log(offer);
-
   const {
     _id,
-    amount,
     crypto,
     fiat,
     maker,
-    offerComment,
-    offerType,
     orderLimit,
     payMethods,
     quantity,
-    room,
     unitPrice,
   } = offer;
+
+  const payments = payMethods.map((e: any) => e.bank.name);
 
   const { address } = maker;
 
@@ -45,13 +41,13 @@ export const Offer = ({ offer }: any) => {
         <div>
           <div>
             <div>
-              <p>Available </p>
-              <span className="font-bold">{quantity}</span>
+              <p className={"text-gray font-bold"}>Available </p>
+              <span>{quantity}</span>
               <span> {symbol}</span>
             </div>
             <div>
-              <p>Limit </p>
-              <span className="font-bold">
+              <p className={"text-gray font-bold"}>Limit </p>
+              <span>
                 {orderLimit[0]}-{orderLimit[1]}
               </span>
               <span className="font-normal"> {ticker}</span>
@@ -60,12 +56,17 @@ export const Offer = ({ offer }: any) => {
         </div>
 
         <div className="text-md">
-          <span className="text-md font-bold">{unitPrice}</span>
-          <span className="text-sm font-normal"> {ticker}</span>
+          <span className={"text-purple font-bold"}>
+            {unitPrice} {ticker}
+          </span>
         </div>
 
         <div>
-          <div>{"payments"}</div>
+          <div>
+            {payments.map((p: string) => (
+              <div>{p}</div>
+            ))}
+          </div>
         </div>
 
         <div>
@@ -88,7 +89,7 @@ export const Offer = ({ offer }: any) => {
         header={"Transaction"}
         close={() => setOpenOfferModal(false)}
       >
-        <OfferModal />
+        <OfferModal {...offer} />
       </Modal>
     </>
   );

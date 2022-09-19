@@ -6,15 +6,30 @@ export interface IOffer {
     fiat: IFiat
     unitPrice: number
     quantity: number
-    paymentMethods: IPayments[]
+    payMethods: IPayments[]
     paymentMethod?: IBank
     region?: IRegion
     cardNumber?: string
     timeLimit: string
-    priceLimit: [number, number]
-    comment: string   
+    orderLimit: [number, number]
+    offerComment: string   
     paymentDescription?: string
     amount?: number
+    maker: IMaker
+}
+
+export enum ROLES {
+    admin,
+    user,
+    moderator
+}
+
+export interface IMaker {
+    __v: number
+    _id: string
+    address: string
+    offers: IOffer[]
+    role: ROLES
 }
 
 export interface IForm {

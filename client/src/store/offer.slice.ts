@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit"
-import { IOffer } from "../models/models"
+import { IOffer, ROLES } from "../models/models"
 import defaultImg from "../assets/defaultImg.svg"
 
 const initialState: IOffer = {
@@ -8,11 +8,18 @@ const initialState: IOffer = {
         balance: '',
         chainId: 0,
         decimals: 0,
-        logoUrl: defaultImg,
+        logoUrl: '',
         name: '',
-        symbol: 'Unknown token',
+        symbol: '',
         _id: '',
         tokenAmount: 0
+    },
+    maker: {
+        _id: "",
+        address: "",
+        offers: [],
+        role: ROLES.user,
+        __v: 0
     },
     fiat: {
         _id: '',
@@ -24,9 +31,9 @@ const initialState: IOffer = {
     },
     unitPrice: 0,
     quantity: 0,
-    paymentMethods: [],
+    payMethods: [],
     timeLimit: '15',
-    priceLimit: [0, 0],
+    orderLimit: [0, 0],
     paymentMethod: {
         _id: '',
         logoUrl: '',
@@ -42,7 +49,7 @@ const initialState: IOffer = {
     }, 
     cardNumber: '',
     paymentDescription: '',
-    comment: '',
+    offerComment: '',
 }
 
 export const offerSlice = createSlice({
@@ -53,11 +60,11 @@ export const offerSlice = createSlice({
         setFiat: (state, action) => {state.fiat = action.payload},
         setUnitPrice: (state, action) => {state.unitPrice = action.payload},
         setQuantity: (state, action) => {state.quantity = action.payload},
-        addPaymentMethod: (state, action) => { state.paymentMethods.push(action.payload)},
+        addPaymentMethod: (state, action) => { state.payMethods.push(action.payload)},
         setTimeLimit: (state, action) => { state.timeLimit = action.payload },
-        setMinPriceLimit: (state, action) => { state.priceLimit[0] = action.payload},
-        setMaxPriceLimit: (state, action) => { state.priceLimit[1] = action.payload},
-        setComment: (state, action) => { state.comment = action.payload},
+        setMinPriceLimit: (state, action) => { state.orderLimit[0] = action.payload},
+        setMaxPriceLimit: (state, action) => { state.orderLimit[1] = action.payload},
+        setComment: (state, action) => { state.offerComment = action.payload},
         setRegion: (state, action) => { state.region = action.payload},
         setCardNumber: (state, action) => { state.cardNumber = action.payload},
         setPaymentDescription: (state, action) => { state.paymentDescription = action.payload},

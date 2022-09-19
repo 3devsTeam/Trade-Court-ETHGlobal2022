@@ -30,9 +30,9 @@ export const Step1 = () => {
     (state) => state.offerReducer
   );
 
-  const { symbol, logoUrl: cryptoImage } = crypto;
+  const { symbol, logoUrl: cryptoImage, name: cryptoName } = crypto;
 
-  const { ticker, logoUrl: fiatImage } = fiat;
+  const { ticker, logoUrl: fiatImage, name: fiatName } = fiat;
 
   const [isOpen, setIsOpen] = useState(false);
 
@@ -47,14 +47,16 @@ export const Step1 = () => {
       ) : (
         <>
           <ModalInput
+            symbol={symbol}
+            fullName={cryptoName}
             image={cryptoImage}
             onOpen={() => setIsOpen(!isOpen)}
             label={"Crypto"}
-            value={symbol}
           />
           <Dropdown
-            image={fiatImage}
             value={ticker}
+            fullName={fiatName}
+            image={fiatImage}
             onAction={setFiat}
             data={allFiat}
             label={"Fiat"}
@@ -65,15 +67,15 @@ export const Step1 = () => {
             placeholder={"Enter unit price"}
             label={"Unit Price"}
             element={ticker}
-            value={unitPrice}
+            value={unitPrice ? unitPrice : ""}
           />
           <Input
             type={"number"}
             onAction={setQuantity}
             placeholder={"Enter quantity"}
             label={"Quantity"}
-            element={ticker}
-            value={quantity}
+            element={symbol}
+            value={quantity ? quantity : ""}
           />
         </>
       )}

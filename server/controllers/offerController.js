@@ -7,7 +7,7 @@ exports.getAllOffers = catchAsync(async (req, res, next) => {
   const limit = +req.query.limit || 10;
   const offers = await Offer.find()
     .sort({ unitPrice: 1 })
-    .populate("crypto payMethods.bank")
+    .populate("crypto payMethods.bank fiat maker")
     .limit(limit)
     .skip((page - 1) * limit);
 

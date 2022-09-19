@@ -26,7 +26,7 @@ export const Step2 = () => {
     region,
     paymentMethod,
     paymentDescription,
-    paymentMethods,
+    payMethods,
   } = useTypedSelector((state) => state.offerReducer);
 
   const addPayment = () => {
@@ -53,14 +53,14 @@ export const Step2 = () => {
       <div>
         <p className={"text-lg font-bold mb-1 ml-[10px]"}>Payment methods</p>
         <div className={"flex gap-1 overflow-x-auto"}>
-          {!paymentMethods.length && (
+          {!payMethods.length && (
             <div className={"h-[60px] w-full flex items-center justify-center"}>
               <span className={"font-bold text-purple text-lg"}>
                 No payments yet...
               </span>
             </div>
           )}
-          {paymentMethods?.map((payment) => (
+          {payMethods?.map((payment) => (
             <Payment {...payment} />
           ))}
         </div>
