@@ -4,7 +4,7 @@ import { OfferModal } from "../modal/OfferModal";
 import { Modal } from "../modal/Modal";
 import { IOffer } from "../../models/models";
 
-export const Offer = ({ offer }: any) => {
+export const Offer = (offer: IOffer) => {
   const {
     _id,
     crypto,
@@ -15,29 +15,20 @@ export const Offer = ({ offer }: any) => {
     quantity,
     unitPrice,
   } = offer;
-
   const payments = payMethods.map((e: any) => e.bank.name);
-
   const { address } = maker;
-
   const { symbol } = crypto;
   const { ticker } = fiat;
-
   const [openOfferModal, setOpenOfferModal] = useState(false);
-
   const ref = useRef();
   return (
-    <>
-      <div
-        key={_id}
-        className="bg-white shadow-md grid text-sm grid-cols-offer gap-5 items-center h-[100px] w-full px-[20px] rounded-[20px] mb-[20px]"
-      >
+    <div>
+      <div className="bg-white shadow-md grid text-sm grid-cols-offer gap-5 items-center h-[100px] w-full px-[20px] rounded-[20px] mb-[20px]">
         <div className="text-md">
           <div>
             <p className="font-bold">{truncateAddress(address)}</p>
           </div>
         </div>
-
         <div>
           <div>
             <div>
@@ -54,13 +45,11 @@ export const Offer = ({ offer }: any) => {
             </div>
           </div>
         </div>
-
         <div className="text-md">
           <span className={"text-purple font-bold"}>
             {unitPrice} {ticker}
           </span>
         </div>
-
         <div>
           <div>
             {payments.map((p: string) => (
@@ -68,7 +57,6 @@ export const Offer = ({ offer }: any) => {
             ))}
           </div>
         </div>
-
         <div>
           <div>
             <button
@@ -91,6 +79,6 @@ export const Offer = ({ offer }: any) => {
       >
         <OfferModal {...offer} />
       </Modal>
-    </>
+    </div>
   );
 };

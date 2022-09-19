@@ -1,6 +1,7 @@
 import { BigNumber } from "ethers"
 
 export interface IOffer {
+    _id: string,
     offerType?: "buy" | "sell"
     crypto: IToken
     fiat: IFiat

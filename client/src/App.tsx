@@ -7,6 +7,7 @@ import { PrivateRoutes } from "./pages/PrivateRoutes";
 import { Settings } from "./pages/Settings";
 import { Transaction } from "./pages/Transaction";
 import { Navigate } from "react-router-dom";
+import { Profile } from "./pages/Profile";
 
 const App = () => {
   return (
@@ -17,11 +18,12 @@ const App = () => {
           <Route element={<PrivateRoutes />}>
             <Route path={"/create-offer"} element={<CreateOffer />} />
             <Route path={"/settings"} element={<Settings />} />
-            <Route path={"/transaction"} element={<Transaction />} />
+            <Route path={"/transaction/:_id"} element={<Transaction />} />
+            <Route path={"/profile"} element={<Profile />} />
           </Route>
 
           <Route path={"/"} element={<Home />} />
-          <Route path={"*"} element={<Navigate to={"/"} />} />
+          {/* <Route path={"*"} element={<Navigate to={"/"} />} /> */}
         </Routes>
       </main>
     </BrowserRouter>

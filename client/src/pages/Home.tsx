@@ -4,6 +4,7 @@ import { Offer } from "../components/home/Offer";
 import { Header } from "../components/home/Header";
 import { useQuery } from "@tanstack/react-query";
 import { OfferService } from "../services/offer.services";
+import { IOffer } from "../models/models";
 
 export const Home = () => {
   const {
@@ -19,7 +20,7 @@ export const Home = () => {
     <>
       <Header />
 
-      <div>
+      <section>
         {isLoading ? (
           <p>loading</p>
         ) : isError ? (
@@ -27,9 +28,9 @@ export const Home = () => {
         ) : offers?.length === 0 ? (
           <p>no offers</p>
         ) : isSuccess ? (
-          offers?.map((o: any) => <Offer offer={o} />)
+          offers?.map((offer: IOffer) => <Offer key={offer._id} {...offer} />)
         ) : null}
-      </div>
+      </section>
     </>
   );
 };

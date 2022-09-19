@@ -3,6 +3,7 @@ import { IOffer, ROLES } from "../models/models"
 import defaultImg from "../assets/defaultImg.svg"
 
 const initialState: IOffer = {
+    _id: '',
     crypto: {
         address: '',
         balance: '',

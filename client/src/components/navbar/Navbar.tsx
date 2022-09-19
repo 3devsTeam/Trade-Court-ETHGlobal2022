@@ -2,13 +2,13 @@ import React, { useEffect } from "react";
 import { Logo } from "./Logo";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { Link } from "react-router-dom";
-import { LoginButton } from "./LoginButton";
 import { NavLink } from "./NavLink";
 import { useAccount, useSignMessage } from "wagmi";
 import { useMutation } from "@tanstack/react-query";
 import { UserService } from "../../services/user.services";
 import Cookies from "js-cookie";
 import { useActions } from "../../hooks/useActions";
+import { useTypedSelector } from "../../hooks/useTypedSelector";
 
 export const Navbar = () => {
   const { setLogged } = useActions();
@@ -20,8 +20,10 @@ export const Navbar = () => {
     message,
   });
 
+  const { isLogged } = useTypedSelector((state) => state.userReducer);
+
   if (isSuccess) {
-    console.log(data);
+    //console.log(data);
     UserService.login({
       address,
       messageRaw: message,
@@ -58,11 +60,14 @@ export const Navbar = () => {
       <div className={"p-5 flex justify-between items-center w-full"}>
         <Logo />
 
-        <div className={"flex items-center gap-10"}>
-          <NavLink route={"/"} name={"Home"} />
-          <NavLink route={"/create-offer"} name={"Create offer"} />
-          <NavLink route={"/settings"} name={"Settings"} />
-        </div>
+        {isLogged && (
+          <div className={"flex items-center gap-10"}>
+            <NavLink route={"/"} name={"Home"} />
+            <NavLink route={"/profile"} name={"Profile"} />
+            <NavLink route={"/create-offer"} name={"Create offer"} />
+            <NavLink route={"/settings"} name={"Settings"} />
+          </div>
+        )}
 
         <ConnectButton />
       </div>

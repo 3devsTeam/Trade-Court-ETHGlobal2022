@@ -15,5 +15,11 @@ export const OfferService = {
     },
     async getAll() {
         return axios.get(`${API_URl}/api/offer`)
+    },
+    async joinByID(id: string, data: any) {
+        return axios.post(`${API_URl}/api/offer/${id}`, data, {
+            withCredentials: true,
+            headers: { 'Content-Type': 'application/json'}
+        })
     }
 }
