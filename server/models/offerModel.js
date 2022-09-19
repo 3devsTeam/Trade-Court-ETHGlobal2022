@@ -26,29 +26,36 @@ const offerSchema = new mongoose.Schema({
     enum: ['buy', 'sell'],
     required: [true, 'offerType is empty'],
   },
-  payMethods: [
-    {
-      bank: {
-        type: mongoose.Schema.ObjectId,
-        ref: 'Banks',
-        required: [true, 'Bank is empty'],
+  payMethods: {
+    type: [
+      {
+        type: {
+          bank: {
+            type: mongoose.Schema.ObjectId,
+            ref: 'Banks',
+            required: [true, 'Bank is empty'],
+          },
+          cardNumber: {
+            type: String,
+            minLenght: 4,
+            required: [true, 'card Number is empty'],
+          },
+          region: {
+            type: mongoose.Schema.ObjectId,
+            ref: 'Regions',
+            required: [true, 'activeRegion is empty'],
+          },
+          paymentDescription: {
+            type: String,
+            maxLenght: 600,
+          },
+        },
+        required: true,
       },
-      cardNumber: {
-        type: String,
-        minLenght: 4,
-        required: [true, 'card Number is empty'],
-      },
-      region: {
-        type: mongoose.Schema.ObjectId,
-        ref: 'Regions',
-        required: [true, 'activeRegion is empty'],
-      },
-      paymentDescription: {
-        type: String,
-        maxLenght: 600,
-      },
-    },
-  ],
+    ],
+    required: true,
+    validate: (v) => Array.isArray(v) && v.length > 0,
+  },
   fiat: {
     type: mongoose.Schema.ObjectId,
     ref: 'Fiat',

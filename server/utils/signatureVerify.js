@@ -21,19 +21,4 @@ exports.signatureVerify = catchAsync(async (req, res, next) => {
     return next(new AppError('Wrong signature', 400));
   }
   return next();
-  // axios
-  //   .post(
-  //     'https://etherscan.io/verifiedSignatures.aspx/VerifyMessageSignature',
-  //     options
-  //   )
-  //   .then((resp) => {
-  //     console.log(resp['data']['d']['success']);
-  //     if (resp['data']['d']['success']) {
-  //       return next();
-  //     }
-  //     return next(new AppError('wrong signature', 400));
-  //   })
-  //   .catch((err) => {
-  //     return next(new AppError('signatureVerify error', 500));
-  //   });
 });
