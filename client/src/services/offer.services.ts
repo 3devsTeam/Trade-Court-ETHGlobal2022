@@ -21,5 +21,8 @@ export const OfferService = {
             withCredentials: true,
             headers: { 'Content-Type': 'application/json'}
         })
+    },
+    async getUserOffers() {
+        return axios.get(`${API_URl}/api/user/me`, {withCredentials: true })
     }
 }
