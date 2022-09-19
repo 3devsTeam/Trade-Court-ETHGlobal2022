@@ -32,7 +32,7 @@ const offerSchema = new mongoose.Schema({
         type: {
           bank: {
             type: mongoose.Schema.ObjectId,
-            ref: 'Banks',
+            ref: 'Bank',
             required: [true, 'Bank is empty'],
           },
           cardNumber: {
@@ -42,7 +42,7 @@ const offerSchema = new mongoose.Schema({
           },
           region: {
             type: mongoose.Schema.ObjectId,
-            ref: 'Regions',
+            ref: 'Region',
             required: [true, 'activeRegion is empty'],
           },
           paymentDescription: {
