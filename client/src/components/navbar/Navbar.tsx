@@ -21,9 +21,6 @@ export const Navbar = () => {
   });
 
   let isLogged = Boolean(localStorage.getItem("isLogged"));
-  console.log(isLogged);
-
-  useEffect(() => console.log(isLogged), [isLogged]);
 
   if (isSuccess) {
     UserService.login({

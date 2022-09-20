@@ -20,8 +20,6 @@ export const Dropdown = ({
   data,
   image,
 }: IDropdown) => {
-  console.log(image);
-
   const ref = useRef(null);
   useOnClickOutside(ref, () => setIsOpen(false));
   const [isOpen, setIsOpen] = useState(false);

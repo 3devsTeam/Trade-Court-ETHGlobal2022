@@ -2,7 +2,7 @@ import React from "react";
 
 interface IOfferInput {
   setValue: React.Dispatch<any>;
-  maxValue: number;
+  maxValue?: number;
   inputContent: any;
   value: number;
   placeholder: string;
@@ -37,11 +37,18 @@ export const OfferInput = ({
           value={value ? value : ""}
           className={"w-full outline-none p-3 rounded-[20px]"}
         />
-        <div className={"flex gap-1 mr-2"}>
-          <button onClick={() => setValue(maxValue)} className={"text-purple"}>
-            Max
-          </button>
-          <span className={"text-gray"}>|</span>
+        <div className={`flex ${maxValue ? "gap-1" : ""} mr-2`}>
+          {maxValue && (
+            <>
+              <button
+                onClick={() => setValue(maxValue)}
+                className={"text-purple"}
+              >
+                Max
+              </button>
+              <span className={"text-gray"}>|</span>
+            </>
+          )}
           {inputContent}
         </div>
       </div>

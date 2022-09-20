@@ -45,7 +45,7 @@ export const OfferModal = ({
       amount: pay,
     })
       .then((data) => {
-        if (data.data.status === "success") {
+        if (data.data.message === "success") {
           navigate(`/transaction/${_id}`);
         }
       })
@@ -94,7 +94,6 @@ export const OfferModal = ({
         <OfferInput
           readOnly={true}
           label={"You recieve"}
-          maxValue={quantity}
           setValue={setRecieve}
           placeholder={"You recieve"}
           value={recieve}
