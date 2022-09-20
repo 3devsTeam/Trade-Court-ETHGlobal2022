@@ -10,13 +10,19 @@ import { Circle } from "./Circle";
 export const Payment = (props: any) => {
   const { cardNumber, paymentMethod } = props;
 
+  console.log(paymentMethod);
+
   return (
     <div
       className="px-[10px] py-[15px] h-[60px] w-[220px] rounded-[15px] border-2 border-purple flex gap-1 justify-between items-center"
       key={cardNumber}
     >
-      <Circle />
-      <span>{sliceCardNumber(cardNumber)}</span>
+      <img
+        className={"w-8 h-8 rounded-[50%] border border-purple object-cover"}
+        src={paymentMethod.logoUrl}
+        alt={""}
+      />
+      <span className={"font-bold"}>{sliceCardNumber(cardNumber)}</span>
       <CloseButton onClose={null} />
     </div>
   );

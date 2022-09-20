@@ -67,7 +67,7 @@ export const Step1 = () => {
             placeholder={"Enter unit price"}
             label={"Unit Price"}
             element={ticker}
-            value={unitPrice ? unitPrice : ""}
+            value={unitPrice}
           />
           <Input
             type={"number"}
@@ -75,7 +75,7 @@ export const Step1 = () => {
             placeholder={"Enter quantity"}
             label={"Quantity"}
             element={symbol}
-            value={quantity ? quantity : ""}
+            value={quantity}
           />
         </>
       )}

@@ -1,12 +1,10 @@
 import React from "react";
 import { IToken } from "../../models/models";
 import { useActions } from "../../hooks/useActions";
-// import defaultImg from "../../assets/defaultImg.svg";
 
 export const Token = ({ virtualItem, token, onClose }: any) => {
   const { setCrypto } = useActions();
   const { symbol, balance, logoUrl, name, tokenAmount } = token;
-  //console.log(tokenAmount);
 
   const selectHandler = (token: IToken[]) => {
     setCrypto(token);

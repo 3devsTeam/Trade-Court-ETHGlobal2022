@@ -31,7 +31,13 @@ export const Preview = () => {
             <span className={"font-bold text-lg"}>Crypto</span>
           </div>
           <div className={"flex gap-1 items-center"}>
-            <img className={"w-8 h-8"} src={cryptoImage} alt={""} />
+            <img
+              className={
+                "w-8 h-8 rounded-[50%] border border-purple object-cover"
+              }
+              src={cryptoImage}
+              alt={""}
+            />
             <span>{symbol}</span>
           </div>
         </div>
@@ -92,7 +98,6 @@ export const Preview = () => {
           <div>
             {payMethods.length
               ? payMethods.map((p) => {
-                  console.log(p);
                   return (
                     <div className={"flex items-center gap-1 my-2"}>
                       <img

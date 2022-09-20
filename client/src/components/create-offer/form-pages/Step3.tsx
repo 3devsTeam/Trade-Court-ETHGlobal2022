@@ -10,11 +10,12 @@ import { IOffer } from "../../../models/models";
 import { TextArea } from "../TextArea";
 import { Button } from "../Button";
 import { TimeLimit } from "../TimeLimit";
+import { totalAmount } from "../../../utils/totalAmount";
 
 export const Step3 = () => {
   const { setMinPriceLimit, setMaxPriceLimit, setTimeLimit, setComment } =
     useActions();
-  const { fiat, offerComment } = useTypedSelector(
+  const { fiat, offerComment, orderLimit } = useTypedSelector(
     (state) => state.offerReducer
   );
 
@@ -33,12 +34,15 @@ export const Step3 = () => {
         </p>
         <div className={"flex justify-between gap-1"}>
           <Input
+            value={orderLimit[0]}
             type={"number"}
             onAction={setMinPriceLimit}
             placeholder={"Min"}
             element={ticker}
           />
           <Input
+            value={orderLimit[1]}
+            maxValue={totalAmount()}
             type={"number"}
             onAction={setMaxPriceLimit}
             placeholder={"Max"}

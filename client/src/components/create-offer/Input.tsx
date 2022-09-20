@@ -3,18 +3,18 @@ import React from "react";
 export interface IInput {
   type: React.HTMLInputTypeAttribute;
   onAction: any;
-  register?: any;
   label?: string;
   placeholder?: string;
   value?: string | number;
   cursor?: string;
   element?: any;
+  maxValue?: any;
 }
 
 export const Input = ({
+  maxValue,
   type,
   onAction,
-  register,
   label,
   placeholder,
   value,
@@ -28,14 +28,25 @@ export const Input = ({
         <input
           type={type}
           onChange={(e) => onAction(e.target.value)}
-          //{...register}
-          className={`font-bold outline-none p-[10px] rounded-[15px] cursor-${cursor} w-full h-full`}
+          className={`outline-none p-[10px] rounded-[15px] cursor-${cursor} w-full h-full`}
           placeholder={placeholder}
-          value={value}
+          value={value ? value : ""}
         />
-        {element != undefined ? (
-          <div className={"mr-[10px] font-bold"}>{element}</div>
-        ) : null}
+        <div className={`flex ${maxValue && "gap-1"}`}>
+          {maxValue && (
+            <button
+              type="button"
+              onClick={() => onAction(maxValue)}
+              className={"font-bold text-purple"}
+            >
+              Max
+            </button>
+          )}
+          {maxValue && <div className={"text-gray"}>|</div>}
+          {element != undefined ? (
+            <div className={"mr-[10px] font-bold"}>{element}</div>
+          ) : null}
+        </div>
       </div>
     </label>
   );

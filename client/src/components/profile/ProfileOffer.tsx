@@ -4,6 +4,7 @@ import { ButtonOffer } from "./ButtonOffer";
 import { Arrow } from "../Arrow";
 import { Cross } from "../Cross";
 import { OfferService } from "../../services/offer.services";
+import { Label } from "./Label";
 
 export const ProfileOffer = ({
   _id,
@@ -16,6 +17,8 @@ export const ProfileOffer = ({
   payMethods,
   room,
 }: IOffer) => {
+  console.log(room.stage);
+
   return (
     <div
       className={
@@ -60,7 +63,7 @@ export const ProfileOffer = ({
           <ButtonOffer
             onAction={() => OfferService.deleteByID(_id)}
             image={<Cross />}
-            bgColor={"black"}
+            bgColor={"bg-black"}
           />
         ) : (
           <ButtonOffer
@@ -70,10 +73,12 @@ export const ProfileOffer = ({
                 <Arrow />
               </div>
             }
-            bgColor={"purple"}
+            bgColor={"bg-purple"}
           />
         )}
       </div>
+
+      <Label color={"purple"} name={room.stage} />
     </div>
   );
 };
