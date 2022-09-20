@@ -14,7 +14,7 @@ exports.takerSent = catchAsync(async (req, res, next) => {
   } else {
     return next(new AppError('You dont have access', 403));
   }
-  if (offer.room.stage != 'waitng taker') {
+  if (offer.room.stage != 'waiting taker') {
     return next(new AppError("It's not your turn", 400));
   }
   await Offer.findByIdAndUpdate(req.params.id, {
