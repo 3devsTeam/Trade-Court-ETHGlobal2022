@@ -25,13 +25,26 @@ export const Transaction = () => {
   const [payMethod, setPayMethod] = useState({});
   console.log(payMethod);
 
+  //   const { data: offer, isLoading } = useQuery(
+  //     ["get offer by id"],
+  //     () => OfferService.getByID(id!),
+  //     {
+  //       select: (data) => data.data.data.offer,
+  //       onSuccess: (data) => {
+
+  //         const { paymentMethods } = data
+
+  //         setPayMethod(
+  //           {...paymentMethods[0]}
+  //         ),
+
+  //   }
+  // )
+
   const { data: offer, isLoading } = useQuery(
     ["get offer by id"],
     () => OfferService.getByID(id!),
-    {
-      select: (data) => data.data.data.offer,
-      //onSuccess: (data) => console.log(data),
-    }
+    { select: (data) => data.data.data.offer }
   );
 
   return (
@@ -96,6 +109,7 @@ export const Transaction = () => {
 
               <div className={"flex items-center gap-2 mt-[15px]"}>
                 {offer?.payMethods?.map((p: any) => {
+                  console.log(p);
                   return (
                     <div
                       onClick={() => setPayMethod(p)}
@@ -116,12 +130,12 @@ export const Transaction = () => {
               <div className={"flex flex-col gap-[10px] mt-[15px]"}>
                 <div>
                   <p className={"text-sm text-gray font-medium"}>Bank</p>
-                  <p className={"font-bold"}>{payMethod?.bank.name}</p>
+                  <p className={"font-bold"}>{payMethod?.bank?.name}</p>
                 </div>
 
                 <div>
                   <p className={"text-sm text-gray font-medium"}>Region</p>
-                  <p className={"font-bold"}>{payMethod?.region.name}</p>
+                  <p className={"font-bold"}>{payMethod?.region?.name}</p>
                 </div>
 
                 <div>
