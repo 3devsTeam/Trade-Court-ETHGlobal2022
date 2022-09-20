@@ -30,7 +30,13 @@ export const ModalInput = ({
         className="flex items-center border-2 border-purple rounded-[15px] h-[60px] px-[10px] w-full"
       >
         <div className={"flex items-center gap-1"}>
-          <img className={"w-8 h-8"} src={image} alt={""} />
+          <img
+            className={
+              "w-8 h-8 rounded-[50%] border border-purple object-cover"
+            }
+            src={image}
+            alt={""}
+          />
           <span className={"font-bold"}>{symbol}</span>
           <span className={"text-gray font-bold"}>{fullName}</span>
         </div>
