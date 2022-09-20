@@ -11,8 +11,14 @@ export const Profile = () => {
   const { data, isSuccess, isLoading, isError } = useQuery(
     ["get user offers"],
     () => OfferService.getUserOffers(),
-    { select: (data) => data.data.user[0] }
+    {
+      select: (data) => data.data.user,
+    }
   );
+
+  if (isSuccess) {
+    console.log(data);
+  }
 
   return (
     <div>
@@ -25,10 +31,10 @@ export const Profile = () => {
           <p>loading</p>
         ) : isError ? (
           <p>error</p>
-        ) : data?.offers.length === 0 ? (
+        ) : data?.length === 0 ? (
           <p>no offers</p>
         ) : isSuccess ? (
-          data?.offers.map((offer: IOffer, i: number) => (
+          data?.map((offer: IOffer, i: number) => (
             <ProfileOffer key={offer._id} {...offer} />
           ))
         ) : null}

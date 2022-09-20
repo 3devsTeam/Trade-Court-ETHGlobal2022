@@ -1,13 +1,18 @@
 import { useQuery } from "@tanstack/react-query";
 import React from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useSearchParams } from "react-router-dom";
 import { OfferService } from "../services/offer.services";
 
 export const Transaction = () => {
-  let { transaction } = useParams();
-  console.log(transaction);
+  const { id } = useParams();
 
-  const {} = useQuery(["get offer by id", () => OfferService.getByID("")]);
+  const { data, isSuccess } = useQuery(
+    ["get offer by id"],
+    () => OfferService.getByID(id!),
+    {
+      onSuccess: (data) => console.log(data),
+    }
+  );
 
-  return <div>Transaction</div>;
+  return <div>{id}</div>;
 };

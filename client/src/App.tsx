@@ -20,7 +20,7 @@ const App = () => {
           <Route element={<PrivateRoutes />}>
             <Route path={"/create-offer"} element={<CreateOffer />} />
             <Route path={"/settings"} element={<Settings />} />
-            <Route path={"/transaction/:_id"} element={<Transaction />} />
+            <Route path={"/transaction/:id"} element={<Transaction />} />
             <Route path={"/profile"} element={<Profile />} />
           </Route>
 
