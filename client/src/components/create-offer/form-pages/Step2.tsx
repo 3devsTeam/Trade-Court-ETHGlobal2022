@@ -2,11 +2,9 @@ import React from "react";
 import { useTypedSelector } from "../../../hooks/useTypedSelector";
 import { Input } from "../Input";
 import { Dropdown } from "../Dropdown";
-import { Arrow } from "../../Arrow";
-import { FormNav } from "../FormNav";
+
 import { useActions } from "../../../hooks/useActions";
-import { useForm } from "react-hook-form";
-import { IOffer, IRegion, IBank } from "../../../models/models";
+
 import { TextArea } from "../TextArea";
 import { Button } from "../Button";
 import { Payment } from "../Payment";
@@ -60,9 +58,9 @@ export const Step2 = () => {
               </span>
             </div>
           )}
-          {payMethods?.map((payment) => (
-            <Payment {...payment} />
-          ))}
+          {payMethods?.map((p) => {
+            return <Payment payment={p} showCloseButton={true} />;
+          })}
         </div>
       </div>
 
@@ -94,8 +92,6 @@ export const Step2 = () => {
       <TextArea
         value={paymentDescription}
         onAction={setPaymentDescription}
-        // minLength={'110px'}
-        // maxLength={'250px'}
         label={"Payment description"}
         placeholder={"Enter payment description"}
       />

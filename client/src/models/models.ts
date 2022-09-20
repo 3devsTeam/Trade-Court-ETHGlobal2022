@@ -7,7 +7,7 @@ export interface IOffer {
     fiat: IFiat
     unitPrice: number
     quantity: number
-    payMethods: IPayments[]
+    payMethods: IPayment[]
     paymentMethod?: IBank
     region?: IRegion
     cardNumber?: string
@@ -40,7 +40,7 @@ export interface IForm {
     step: number
 }
 
-export interface IPayments {
+export interface IPayment {
     cardNumber: string
     paymentDescription: string
     paymentMethod: IBank

@@ -11,20 +11,20 @@ import { useTokens } from "../../../hooks/useTokens";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import { OfferService } from "../../../services/offer.services";
-import { QueryKey, useQuery } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { IFiat } from "../../../models/models";
 
 export const Step1 = () => {
-  const [allFiat, setAllFiat] = useState([]);
   const { setFiat, setQuantity, setUnitPrice } = useActions();
   const { tokens, isSuccessRequest } = useTokens();
 
-  const { isSuccess } = useQuery(["get fiat"], () => OfferService.getFiat(), {
-    select: (data) => data.data.data.allFiat,
-    onSuccess: (data) => {
-      setAllFiat(data);
-    },
-  });
+  const { data: allFiat, isSuccess } = useQuery(
+    ["get fiat"],
+    () => OfferService.getFiat(),
+    {
+      select: (data) => data.data.data.allFiat,
+    }
+  );
 
   const { crypto, fiat, quantity, unitPrice } = useTypedSelector(
     (state) => state.offerReducer

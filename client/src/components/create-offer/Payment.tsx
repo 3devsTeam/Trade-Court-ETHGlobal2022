@@ -5,12 +5,16 @@ import { useSelector } from "react-redux";
 import { CloseButton } from "../modal/CloseButton";
 import { useTypedSelector } from "../../hooks/useTypedSelector";
 import { Circle } from "./Circle";
-//import { IPayment } from './form-pages/Step2'
+import { IPayment } from "../../models/models";
 
-export const Payment = (props: any) => {
-  const { cardNumber, paymentMethod } = props;
+interface IPaymentButton {
+  payment: IPayment;
+  showCloseButton: boolean;
+}
 
-  console.log(paymentMethod);
+export const Payment = ({ payment, showCloseButton }: IPaymentButton) => {
+  console.log(payment);
+  const { cardNumber, paymentMethod } = payment;
 
   return (
     <div
@@ -23,7 +27,7 @@ export const Payment = (props: any) => {
         alt={""}
       />
       <span className={"font-bold"}>{sliceCardNumber(cardNumber)}</span>
-      <CloseButton onClose={null} />
+      {showCloseButton && <CloseButton onClose={null} />}
     </div>
   );
 };

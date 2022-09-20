@@ -19,6 +19,7 @@ module.exports = {
         modalOverlay: "#313131",
         lightGray: "#f3f4f6",
         transparent: "transparent",
+        yellow: "#F8C011",
       },
       fontSize: {
         xs: "16px",
