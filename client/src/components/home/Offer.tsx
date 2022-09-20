@@ -62,7 +62,7 @@ export const Offer = (offer: IOffer) => {
             <button
               onClick={() => setOpenOfferModal(!openOfferModal)}
               className="bg-lightGreen text-lg text-white rounded-[10px] font-bold p-2
-            transition-all duration-500 hover:bg-white
+            transition-all duration-500 hover:bg-white w-full
              hover:text-purple hover:scale-110 hover:shadow-lg"
             >
               <span className={"text-md"}>Buy {symbol}</span>

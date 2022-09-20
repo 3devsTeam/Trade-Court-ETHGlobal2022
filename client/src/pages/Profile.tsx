@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Badge } from "../components/profile/Badge";
 import { Schedule } from "../components/profile/Schedule";
 import { OfferService } from "../services/offer.services";

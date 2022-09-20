@@ -7,6 +7,7 @@ interface IOfferInput {
   value: number;
   placeholder: string;
   label: string;
+  readOnly?: boolean;
 }
 
 export const OfferInput = ({
@@ -16,6 +17,7 @@ export const OfferInput = ({
   setValue,
   maxValue,
   label,
+  readOnly,
 }: IOfferInput) => {
   return (
     <div>
@@ -29,6 +31,7 @@ export const OfferInput = ({
       >
         <input
           id={label}
+          readOnly={readOnly}
           onChange={(e) => setValue(e.target.value)}
           placeholder={placeholder}
           value={value ? value : ""}

@@ -3,7 +3,7 @@ import { Logo } from "./Logo";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { Link, useNavigate } from "react-router-dom";
 import { NavLink } from "./NavLink";
-import { useAccount, useSignMessage } from "wagmi";
+import { useAccount, useConnect, useSignMessage } from "wagmi";
 import { useMutation } from "@tanstack/react-query";
 import { UserService } from "../../services/user.services";
 import Cookies from "js-cookie";
@@ -20,25 +20,32 @@ export const Navbar = () => {
     message,
   });
 
-  const isLogged = Boolean(localStorage.getItem("isLogged"));
+  let isLogged = Boolean(localStorage.getItem("isLogged"));
+  console.log(isLogged);
+
+  useEffect(() => console.log(isLogged), [isLogged]);
 
   if (isSuccess) {
     UserService.login({
       address,
       messageRaw: message,
       signature: data,
-    });
+    }).then(() => localStorage.setItem("isLogged", "true"));
   }
 
   useEffect(() => {
-    if (connector && isConnected && !Cookies.get("jwt")) {
+    if (connector && isConnected && !isDisconnected && !Cookies.get("jwt")) {
+      console.log("sign useeffect");
       signMessage();
     }
   }, [isConnected, connector]);
 
   useEffect(() => {
     if (isDisconnected) {
-      UserService.logout();
+      console.log("disconnect useeffect");
+      UserService.logout().then(() =>
+        localStorage.setItem("isLogged", "false")
+      );
       navigate("/");
     }
   }, [isDisconnected]);

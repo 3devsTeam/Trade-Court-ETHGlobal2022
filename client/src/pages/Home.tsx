@@ -14,6 +14,7 @@ export const Home = () => {
     isError,
   } = useQuery(["get offers"], () => OfferService.getAll(), {
     select: (data) => data.data.data.offers,
+    //refetchInterval: 5000
   });
 
   return (

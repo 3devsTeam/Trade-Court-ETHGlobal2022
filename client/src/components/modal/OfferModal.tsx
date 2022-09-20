@@ -92,6 +92,7 @@ export const OfferModal = ({
           inputContent={ticker}
         />
         <OfferInput
+          readOnly={true}
           label={"You recieve"}
           maxValue={quantity}
           setValue={setRecieve}
