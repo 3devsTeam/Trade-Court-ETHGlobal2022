@@ -5,10 +5,7 @@ import { useNavigate } from "react-router";
 import { IOffer } from "../../models/models";
 import { OfferInput } from "../home/OfferInput";
 import { OfferService } from "../../services/offer.services";
-
-import { ToastContainer, toast } from "react-toastify";
-// import "react-toastify/dist/ReactToastify.css";
-// console.log(toast);
+import { toast } from "react-toastify";
 
 export const OfferModal = ({
   _id,
@@ -21,9 +18,11 @@ export const OfferModal = ({
   quantity,
   offerComment,
 }: IOffer) => {
-  //const offerNotify = () => toast("you fucked up somewhere");
-
-  //console.log("id", _id);
+  const offerNotify = (error: string) => {
+    toast.error(error, {
+      position: toast.POSITION.BOTTOM_RIGHT,
+    });
+  };
 
   const [pay, setPay] = useState(0);
   const [recieve, setRecieve] = useState(0);
@@ -49,7 +48,10 @@ export const OfferModal = ({
           navigate(`/transaction/${_id}`);
         }
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        console.log(err);
+        offerNotify(err.response.data.message);
+      });
   };
 
   return (
@@ -108,7 +110,6 @@ export const OfferModal = ({
           </button>
         </div>
       </div>
-      {/* <ToastContainer /> */}
     </div>
   );
 };
