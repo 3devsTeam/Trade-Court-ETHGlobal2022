@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { Logo } from "./Logo";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { NavLink } from "./NavLink";
 import { useAccount, useSignMessage } from "wagmi";
 import { useMutation } from "@tanstack/react-query";
@@ -11,8 +11,8 @@ import { useActions } from "../../hooks/useActions";
 import { useTypedSelector } from "../../hooks/useTypedSelector";
 
 export const Navbar = () => {
-  const { setLogged } = useActions();
   const { isConnected, isDisconnected, address, connector } = useAccount();
+  const navigate = useNavigate();
 
   const message = "login";
 
@@ -20,18 +20,13 @@ export const Navbar = () => {
     message,
   });
 
-  const { isLogged } = useTypedSelector((state) => state.userReducer);
+  const isLogged = Boolean(localStorage.getItem("isLogged"));
 
   if (isSuccess) {
-    //console.log(data);
     UserService.login({
       address,
       messageRaw: message,
       signature: data,
-    }).then(() => {
-      if (Cookies.get("jwt")) {
-        setLogged(true);
-      }
     });
   }
 
@@ -42,16 +37,9 @@ export const Navbar = () => {
   }, [isConnected, connector]);
 
   useEffect(() => {
-    if (Cookies.get("jwt")) {
-      setLogged(true);
-    }
-  }, []);
-
-  useEffect(() => {
     if (isDisconnected) {
-      setLogged(false);
-
       UserService.logout();
+      navigate("/");
     }
   }, [isDisconnected]);
 

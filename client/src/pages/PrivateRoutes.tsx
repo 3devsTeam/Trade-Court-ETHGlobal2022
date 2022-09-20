@@ -1,11 +1,10 @@
 import React from "react";
 import { Outlet, Navigate } from "react-router-dom";
-import { useTypedSelector } from "../hooks/useTypedSelector";
+
+import Cookies from "js-cookie";
 
 export const PrivateRoutes = () => {
-  const { isLogged } = useTypedSelector((state) => state.userReducer);
-
-  const auth = { token: isLogged };
+  const auth = { token: Cookies.get("jwt") };
 
   return auth.token ? <Outlet /> : <Navigate to={"/"} />;
 };
