@@ -3,6 +3,7 @@ import ReactDOM from "react-dom/client";
 import App from "./App";
 import "./index.css";
 import "./polyfills";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import "@rainbow-me/rainbowkit/styles.css";
 import {
   RainbowKitProvider,
@@ -58,7 +59,7 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
       <Provider store={store}>
         <QueryClientProvider client={queryClient}>
           <App />
-          {/* <ReactQueryDevtools initialIsOpen={false} /> */}
+          <ReactQueryDevtools initialIsOpen={false} />
         </QueryClientProvider>
       </Provider>
     </RainbowKitProvider>

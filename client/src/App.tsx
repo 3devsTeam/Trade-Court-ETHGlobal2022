@@ -8,6 +8,8 @@ import { Settings } from "./pages/Settings";
 import { Transaction } from "./pages/Transaction";
 import { Navigate } from "react-router-dom";
 import { Profile } from "./pages/Profile";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const App = () => {
   return (
@@ -26,6 +28,7 @@ const App = () => {
           {/* <Route path={"*"} element={<Navigate to={"/"} />} /> */}
         </Routes>
       </main>
+      <ToastContainer />
     </BrowserRouter>
   );
 };

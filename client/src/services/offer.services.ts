@@ -25,6 +25,9 @@ export const OfferService = {
     async getUserOffers() {
         return axios.get(`${API_URl}/api/user/me`, {withCredentials: true })
     },
+    async getByID(id: string) {
+        return axios.get(`${API_URl}/api/offer/${id}`)
+    },
     async deleteByID(id: string) {
         return axios.delete(`${API_URl}/api/offer/${id}`, { withCredentials: true })
     }

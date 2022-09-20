@@ -11,7 +11,7 @@ export const ButtonOffer = ({ onAction, image, bgColor }: IButtonOffer) => {
   return (
     <button
       onClick={() => onAction()}
-      className={`${bgColor} p-[7px] rounded-[10px]`}
+      className={`${bgColor} p-[7px] rounded-[10px] text-white`}
     >
       {image}
     </button>
