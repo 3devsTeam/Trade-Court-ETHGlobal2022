@@ -16,7 +16,10 @@ export interface IOffer {
     offerComment: string   
     paymentDescription?: string
     amount?: number
-    maker: IMaker
+    maker: IMaker,
+    room: {
+        stage: "no taker" | "taker"
+    }
 }
 
 export enum ROLES {

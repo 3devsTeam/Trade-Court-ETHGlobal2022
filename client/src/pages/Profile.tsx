@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import React from "react";
+import React, { useEffect } from "react";
 import { Badge } from "../components/profile/Badge";
 import { Schedule } from "../components/profile/Schedule";
 import { OfferService } from "../services/offer.services";
@@ -14,17 +14,13 @@ export const Profile = () => {
     { select: (data) => data.data.user[0] }
   );
 
-  if (isSuccess) {
-    //console.log(data);
-  }
-
   return (
     <div>
       <div className={"grid grid-cols-profile gap-5"}>
         <Badge />
         <Schedule />
       </div>
-      <div className={"mt-[20px]"}>
+      <div className={"flex flex-col gap-5 mt-[20px]"}>
         {isLoading ? (
           <p>loading</p>
         ) : isError ? (
