@@ -1,6 +1,7 @@
 const dotenv = require('dotenv');
 const mongoose = require('mongoose');
 dotenv.config({ path: './config.env' });
+const socketHandler = require('./socket');
 
 const app = require('./app');
 const DB = process.env.DATABASE.replace('<PASSWORD>', process.env.DB_PASSWORD);
@@ -16,3 +17,9 @@ const port = process.env.PORT || 3000;
 const server = app.listen(port, () => {
   console.log(`app is running port ${port}`);
 });
+
+const io = require('socket.io')(server);
+const onConnection = (socket) => {
+  socketHandler(io, socket);
+};
+io.on('connection', onConnection);
