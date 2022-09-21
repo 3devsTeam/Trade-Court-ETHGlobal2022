@@ -6,38 +6,76 @@ import { OfferService } from "../services/offer.services";
 import { IOffer } from "../models/models";
 import { off } from "process";
 import { ProfileOffer } from "../components/profile/ProfileOffer";
+import { useAccount, useEnsName, useEnsAvatar } from "wagmi";
 
 export const Profile = () => {
+  const { address } = useAccount();
+
+  const {
+    data: ensName,
+    isLoading: ensNameLoading,
+    isSuccess: ensNameSuccess,
+  } = useEnsName({
+    address,
+  });
+
+  const {
+    data: ensAvatar,
+    isLoading: ensAvatarLoading,
+    isSuccess: ensAvatarSuccess,
+  } = useEnsAvatar({
+    addressOrName: address,
+  });
+
+  if (ensAvatarSuccess && ensNameSuccess) {
+    console.log(ensName, ensAvatar);
+  }
+
   const { data, isSuccess, isLoading, isError } = useQuery(
     ["get user offers"],
     () => OfferService.getUserOffers(),
     {
       select: (data) => data.data.user,
+      refetchInterval: 5000,
     }
   );
 
-  if (isSuccess) {
-    console.log(data);
-  }
+  const sections = [
+    "ID",
+    "Type",
+    "Pair",
+    "Unit Price",
+    "Avalaible/Limit",
+    "Pay Methods",
+  ];
 
   return (
     <div>
       <div className={"grid grid-cols-profile gap-5"}>
-        <Badge />
+        <Badge avatar={ensAvatar} name={ensName} />
         <Schedule />
       </div>
-      <div className={"flex flex-col gap-5 mt-[20px]"}>
-        {isLoading ? (
-          <p>loading</p>
-        ) : isError ? (
-          <p>error</p>
-        ) : data?.length === 0 ? (
-          <p>no offers</p>
-        ) : isSuccess ? (
-          data?.map((offer: IOffer, i: number) => (
-            <ProfileOffer key={offer._id} {...offer} />
-          ))
-        ) : null}
+
+      <div>
+        <div className={"grid grid-flow-col mt-[50px]"}>
+          {sections.map((s, i) => (
+            <div className={`font-bold text-lg`}>{s}</div>
+          ))}
+        </div>
+
+        <section className={"flex flex-col gap-5 mt-[50px]"}>
+          {isLoading ? (
+            <p>loading</p>
+          ) : isError ? (
+            <p>error</p>
+          ) : data?.length === 0 ? (
+            <p>no offers</p>
+          ) : isSuccess ? (
+            data?.map((offer: IOffer) => {
+              return <ProfileOffer key={offer._id} {...offer} />;
+            })
+          ) : null}
+        </section>
       </div>
     </div>
   );

@@ -1,17 +1,24 @@
 import React from "react";
 import { truncateAddress } from "../../utils/truncateAddress";
-import avatar from "../../assets/images/profile_pic.png";
+import defaultAvatar from "../../assets/images/profile_pic.png";
 import { Link } from "react-router-dom";
 import { useAccount, useEnsName } from "wagmi";
 
-export const Badge = () => {
+interface IBadge {
+  name: any;
+  avatar: any;
+}
+
+export const Badge = ({ name, avatar }: IBadge) => {
   const { address } = useAccount();
 
   return (
     <div className={"bg-white rounded-[20px] p-[20px] shadow-lg"}>
       <div>
-        <img src={avatar} alt="" />
-        <span className={"font-bold"}>{truncateAddress(address!)}</span>
+        <img src={avatar ? avatar : defaultAvatar} alt={""} />
+        <span className={"font-bold"}>
+          {name ? name : truncateAddress(address!)}
+        </span>
       </div>
 
       <div className={"flex justify-between mt-[20px]"}>

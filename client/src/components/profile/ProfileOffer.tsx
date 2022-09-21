@@ -23,7 +23,7 @@ export const ProfileOffer = ({
   return (
     <div
       className={
-        "bg-white px-[20px] py-[33px] shadow-lg rounded-[20px] flex gap-5 items-center"
+        "bg-white px-[20px] py-[33px] shadow-lg rounded-[20px] grid grid-cols-profileOffer items-center relative"
       }
     >
       <div>
@@ -61,20 +61,40 @@ export const ProfileOffer = ({
       </div>
 
       <div>
-        <p>Available: {quantity}</p>
-        <p>
-          Limit: {orderLimit[0]}-{orderLimit[1]}
+        <p className={"text-sm"}>
+          Available: {quantity} {crypto.symbol}
+        </p>
+        <p className={"text-sm"}>
+          Limit: {orderLimit[0]}-{orderLimit[1]} {fiat.ticker}
         </p>
       </div>
 
       <div>
-        {/* {payments.map((p: string, i: number) => (
-              <div key={i}>{p}</div>
-            ))} */}
+        {payMethods.map((e) => (
+          <p className={"font-bold text-sm"} key={e._id}>
+            {e.bank.name}
+          </p>
+        ))}
       </div>
 
       <div>
-        {room!.stage === "no taker" ? (
+        <div className={"absolute -top-2 right-0"}>
+          <ButtonOffer
+            onAction={() => OfferService.deleteByID(_id)}
+            image={<Cross />}
+            bgColor={"bg-black"}
+          />
+        </div>
+        <ButtonOffer
+          onAction={() => navigate(`/transaction/${_id}`)}
+          image={
+            <div className={"-rotate-90"}>
+              <Arrow />
+            </div>
+          }
+          bgColor={"bg-purple"}
+        />
+        {/* {room!.stage === "no taker" ? (
           <ButtonOffer
             onAction={() => OfferService.deleteByID(_id)}
             image={<Cross />}
@@ -90,7 +110,7 @@ export const ProfileOffer = ({
             }
             bgColor={"bg-purple"}
           />
-        )}
+        )} */}
       </div>
 
       <Label color={"purple"} name={room!.stage} />
