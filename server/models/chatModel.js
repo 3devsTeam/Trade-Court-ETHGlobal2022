@@ -2,13 +2,15 @@ const mongoose = require('mongoose');
 
 const chatSchema = new mongoose.Schema(
   {
-    users: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'User',
-        require: true,
-      },
-    ],
+    maker: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User',
+      require: true,
+    },
+    taker: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User',
+    },
     offer: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Offer',
