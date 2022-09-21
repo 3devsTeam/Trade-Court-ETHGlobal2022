@@ -16,7 +16,7 @@ exports.getAllUsers = catchAsync(async (req, res, next) => {
 exports.getMe = catchAsync(async (req, res, next) => {
   const user = await Offer.find({
     $or: [{ maker: req.user._id }, { 'room.taker': req.user._id }],
-  }).populate('crypto fiat');
+  }).populate('crypto fiat payMethods.bank');
   console.log(user);
   res.status(201).json({
     message: 'success',
