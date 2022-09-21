@@ -10,12 +10,10 @@ import transfer from "../assets/images/transfer.svg";
 import lock from "../assets/images/lock.svg";
 import success from "../assets/images/success.svg";
 import { ProgressBar } from "../components/transaction/ProgressBar";
-import { IOffer, IPayment } from "../models/models";
-import { Payment } from "../components/create-offer/Payment";
-import { sliceCardNumber } from "../utils/sliceCardNumber";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import { Button } from "../components/create-offer/Button";
+import { Info } from "../components/transaction/Info";
 
 export const Transaction = () => {
   const { id } = useParams();
@@ -23,7 +21,7 @@ export const Transaction = () => {
   const [step, setStep] = useState(1);
 
   const [payMethod, setPayMethod] = useState({});
-  console.log(payMethod);
+  //console.log(payMethod);
 
   //   const { data: offer, isLoading } = useQuery(
   //     ["get offer by id"],
@@ -44,7 +42,10 @@ export const Transaction = () => {
   const { data: offer, isLoading } = useQuery(
     ["get offer by id"],
     () => OfferService.getByID(id!),
-    { select: (data) => data.data.data.offer }
+    {
+      select: (data) => data.data.data.offer,
+      onSuccess: (data) => setPayMethod(data.payMethods[0]),
+    }
   );
 
   return (
@@ -52,47 +53,7 @@ export const Transaction = () => {
       {isLoading ? (
         <Skeleton height={100} borderRadius={20} />
       ) : (
-        <div
-          className={
-            "bg-white flex justify-between h-[100px] shadow-lg rounded-[20px] items-center px-[20px] py-[12px]"
-          }
-        >
-          <div className={"flex flex-col"}>
-            <div>
-              <span className={"text-lg font-bold"}>You send </span>
-              <span className={"text-lg font-bold text-purple"}>
-                {offer?.fiat.ticker}
-              </span>
-            </div>
-            <div>
-              <span className={"text-lg font-bold"}>You send </span>
-              <span className={"text-lg font-bold text-purple"}>
-                {offer?.crypto.symbol}
-              </span>
-            </div>
-          </div>
-
-          <div className={"flex flex-col"}>
-            <span className={"text-lg font-bold"}>Amount</span>
-            <span className={"text-lg font-bold text-purple"}>
-              {offer?.amount}
-            </span>
-          </div>
-
-          <div className={"flex flex-col"}>
-            <span className={"text-lg font-bold"}>Unit Price</span>
-            <span className={"text-lg font-bold text-purple"}>
-              {offer?.unitPrice}
-            </span>
-          </div>
-
-          <div className={"flex flex-col"}>
-            <span className={"text-lg font-bold"}>Quantity</span>
-            <span className={"text-lg font-bold text-purple"}>
-              {offer?.quantity}
-            </span>
-          </div>
-        </div>
+        <Info {...offer} />
       )}
 
       <div className={"grid grid-cols-form gap-5 mt-[20px]"}>
@@ -107,18 +68,26 @@ export const Transaction = () => {
                 images={[transfer, lock, success]}
               />
 
-              <div className={"flex items-center gap-2 mt-[15px]"}>
+              <div className={"flex items-center gap-4 mt-[15px]"}>
                 {offer?.payMethods?.map((p: any) => {
                   console.log(p);
                   return (
                     <div
                       onClick={() => setPayMethod(p)}
                       key={p._id}
-                      className={
-                        "cursor-pointer px-[10px] py-[15px] h-[60px] rounded-[25px] border-2 border-gray flex gap-1 items-center min-w-[180px] bg-white"
-                      }
+                      className={`${
+                        payMethod?.bank?._id === p.bank._id
+                          ? "border-purple scale-105 border-[3px] transition-transform duration-300"
+                          : ""
+                      } cursor-pointer px-[10px] py-[15px] h-[60px] rounded-[25px] border-2 border-gray flex gap-1 items-center min-w-[180px] bg-white`}
                     >
-                      <Circle />
+                      <img
+                        className={
+                          "w-8 h-8 rounded-[50%] border border-purple object-cover"
+                        }
+                        src={p.bank.logoUrl}
+                        alt={""}
+                      />
                       <div>
                         <p className={"font-bold"}>{p.bank.name}</p>
                       </div>

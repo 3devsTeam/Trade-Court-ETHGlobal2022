@@ -7,17 +7,23 @@ import { OfferInput } from "../home/OfferInput";
 import { OfferService } from "../../services/offer.services";
 import { toast } from "react-toastify";
 
-export const OfferModal = ({
-  _id,
-  unitPrice,
-  fiat,
-  maker,
-  orderLimit,
-  amount,
-  crypto,
-  quantity,
-  offerComment,
-}: IOffer) => {
+interface IOfferModalProps {
+  close: any;
+  offer: IOffer;
+}
+
+export const OfferModal = ({ close, offer }: IOfferModalProps) => {
+  const {
+    fiat,
+    crypto,
+    maker,
+    unitPrice,
+    _id,
+    quantity,
+    offerComment,
+    orderLimit,
+  } = offer;
+
   const offerNotify = (error: string) => {
     toast.error(error, {
       position: toast.POSITION.BOTTOM_RIGHT,
@@ -45,11 +51,12 @@ export const OfferModal = ({
     })
       .then((data) => {
         if (data.data.message === "success") {
+          close();
           navigate(`/transaction/${_id}`);
         }
       })
+      .then(() => {})
       .catch((err) => {
-        console.log(err);
         offerNotify(err.response.data.message);
       });
   };
@@ -58,29 +65,29 @@ export const OfferModal = ({
     <div className="border-2 border-purple rounded-[15px] grid grid-cols-2">
       <div className="flex flex-col gap-3 p-3 cursor-default">
         <div className={"flex justify-between"}>
-          <p className={"font-bold"}>Maker:</p>
+          <p className={"font-bold text-gray"}>Maker:</p>
           <p>{truncateAddress(address)}</p>
         </div>
         <div className={"flex justify-between"}>
-          <p className={"font-bold"}>Unit Price: </p>
+          <p className={"font-bold text-gray"}>Unit Price: </p>
           <p>
             {unitPrice} {ticker}
           </p>
         </div>
         <div className={"flex justify-between"}>
-          <p className={"font-bold"}>Available: </p>
+          <p className={"font-bold text-gray"}>Available: </p>
           <p>
             {quantity} {symbol}
           </p>
         </div>
         <div className={"flex justify-between"}>
-          <p className={"font-bold"}>Limit: </p>
+          <p className={"font-bold text-gray"}>Limit: </p>
           <p>
             {orderLimit[0]}-{orderLimit[1]} {ticker}
           </p>
         </div>
         <div className="break-words bg-slate-100 p-2 rounded-[20px]">
-          <p>{offerComment}</p>
+          <p className={"text-sm"}>{offerComment}</p>
         </div>
       </div>
 

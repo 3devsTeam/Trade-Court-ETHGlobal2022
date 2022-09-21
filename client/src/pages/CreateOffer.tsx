@@ -13,30 +13,15 @@ import { OfferService } from "../services/offer.services";
 import { totalAmount } from "../utils/totalAmount";
 import { Modal } from "../components/modal/Modal";
 import { Button } from "../components/create-offer/Button";
+import { multiply } from "../utils/multiply";
+import { toast } from "react-toastify";
 
 export const CreateOffer = () => {
   const { step } = useTypedSelector((state) => state.formReducer);
 
   const { nextStep, prevStep } = useActions();
 
-  const [successModal, openSuccessModal] = useState(false);
-
   const navigate = useNavigate();
-
-  useEffect(() => {
-    if (successModal) {
-      const timeOut = 3000;
-
-      const closeTimeout = setTimeout(() => {
-        navigate("/");
-      }, timeOut);
-
-      return () => {
-        openSuccessModal(false);
-        clearTimeout(closeTimeout);
-      };
-    }
-  }, [successModal]);
 
   const {
     crypto,
@@ -57,6 +42,12 @@ export const CreateOffer = () => {
     };
   });
 
+  const successOfferNotify = (message: string) => {
+    toast.success(message, {
+      position: toast.POSITION.BOTTOM_RIGHT,
+    });
+  };
+
   const createHandler = () => {
     console.log("create offer");
 
@@ -64,22 +55,24 @@ export const CreateOffer = () => {
       offerType: "buy",
       fiat: fiat._id,
       unitPrice,
-      amount: totalAmount(),
+      amount: multiply(unitPrice, quantity),
       quantity,
       orderLimit,
       crypto: crypto._id,
       offerComment,
       payMethods: arr,
-    }).then(() => {
-      openSuccessModal(true);
-      //resetOffer();
-    });
+    })
+      .then(
+        () => successOfferNotify("Offer is created!")
+        //resetOffer();
+      )
+      .then(() => navigate("/"));
   };
 
   const steps = ["Offer Price", "Payment method", "Settings"];
 
   return (
-    <>
+    <div>
       <Progressbar steps={steps} step={step} />
       <div className={"grid grid-cols-2 gap-5"}>
         <Form>
@@ -121,17 +114,7 @@ export const CreateOffer = () => {
             tColor={"purple"}
           />
         </FormNav>
-
-        <Modal
-          width={"700px"}
-          canClose={false}
-          isOpen={successModal}
-          close={() => openSuccessModal(false)}
-          header={"You did it!"}
-        >
-          <h1>Offer is created, some magic happens</h1>
-        </Modal>
       </div>
-    </>
+    </div>
   );
 };

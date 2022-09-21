@@ -17,7 +17,8 @@ export interface IOffer {
     paymentDescription?: string
     amount?: number
     maker: IMaker,
-    room: {
+    tokenAmount?: number
+    room?: {
         stage: "no taker" | "taker"
     }
 }

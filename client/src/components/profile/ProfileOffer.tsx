@@ -5,6 +5,7 @@ import { Arrow } from "../Arrow";
 import { Cross } from "../Cross";
 import { OfferService } from "../../services/offer.services";
 import { Label } from "./Label";
+import { useNavigate } from "react-router-dom";
 
 export const ProfileOffer = ({
   _id,
@@ -17,7 +18,7 @@ export const ProfileOffer = ({
   payMethods,
   room,
 }: IOffer) => {
-  console.log(room.stage);
+  const navigate = useNavigate();
 
   return (
     <div
@@ -48,7 +49,15 @@ export const ProfileOffer = ({
       </div>
 
       <div>
-        <p className={"font-bold"}>{unitPrice}</p>
+        <span className={"font-bold"}>
+          {crypto.symbol}/{fiat.ticker}
+        </span>
+      </div>
+
+      <div>
+        <p className={"font-bold"}>
+          {unitPrice} {fiat.ticker}
+        </p>
       </div>
 
       <div>
@@ -59,7 +68,13 @@ export const ProfileOffer = ({
       </div>
 
       <div>
-        {room.stage === "no taker" ? (
+        {/* {payments.map((p: string, i: number) => (
+              <div key={i}>{p}</div>
+            ))} */}
+      </div>
+
+      <div>
+        {room!.stage === "no taker" ? (
           <ButtonOffer
             onAction={() => OfferService.deleteByID(_id)}
             image={<Cross />}
@@ -67,7 +82,7 @@ export const ProfileOffer = ({
           />
         ) : (
           <ButtonOffer
-            onAction={() => console.log("go to offer")}
+            onAction={() => navigate(`/transaction/${_id}`)}
             image={
               <div className={"-rotate-90"}>
                 <Arrow />
@@ -78,7 +93,7 @@ export const ProfileOffer = ({
         )}
       </div>
 
-      <Label color={"purple"} name={room.stage} />
+      <Label color={"purple"} name={room!.stage} />
     </div>
   );
 };

@@ -32,8 +32,8 @@ export const Input = ({
           placeholder={placeholder}
           value={value ? value : ""}
         />
-        <div className={`flex ${maxValue && "gap-1"}`}>
-          {maxValue && (
+        <div className={`flex ${maxValue ? "gap-1" : ""}`}>
+          {maxValue ? (
             <button
               type="button"
               onClick={() => onAction(maxValue)}
@@ -41,11 +41,15 @@ export const Input = ({
             >
               Max
             </button>
+          ) : (
+            ""
           )}
-          {maxValue && <div className={"text-gray"}>|</div>}
-          {element != undefined ? (
+          {maxValue ? <div className={"text-gray"}>|</div> : ""}
+          {element ? (
             <div className={"mr-[10px] font-bold"}>{element}</div>
-          ) : null}
+          ) : (
+            <></>
+          )}
         </div>
       </div>
     </label>

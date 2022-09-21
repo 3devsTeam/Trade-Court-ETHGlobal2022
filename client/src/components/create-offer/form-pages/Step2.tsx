@@ -96,7 +96,6 @@ export const Step2 = () => {
         placeholder={"Enter payment description"}
       />
       <Button
-        type={"button"}
         name={"Add"}
         onAction={addPayment}
         color={"purple"}

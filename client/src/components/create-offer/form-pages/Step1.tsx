@@ -30,6 +30,8 @@ export const Step1 = () => {
     (state) => state.offerReducer
   );
 
+  const { tokenAmount } = crypto;
+
   const { symbol, logoUrl: cryptoImage, name: cryptoName } = crypto;
 
   const { ticker, logoUrl: fiatImage, name: fiatName } = fiat;
@@ -70,6 +72,7 @@ export const Step1 = () => {
             value={unitPrice}
           />
           <Input
+            maxValue={tokenAmount}
             type={"number"}
             onAction={setQuantity}
             placeholder={"Enter quantity"}

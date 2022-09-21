@@ -5,7 +5,6 @@ import { Dropdown } from "../Dropdown";
 import { Arrow } from "../../Arrow";
 import { FormNav } from "../FormNav";
 import { useActions } from "../../../hooks/useActions";
-import { useForm } from "react-hook-form";
 import { IOffer } from "../../../models/models";
 import { TextArea } from "../TextArea";
 import { Button } from "../Button";
