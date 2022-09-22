@@ -1,19 +1,19 @@
-const Offer = require("../models/offerModel");
-const AppError = require("../utils/appError");
-const catchAsync = require("../utils/catchAsync");
+const Offer = require('../models/offerModel');
+const AppError = require('../utils/appError');
+const catchAsync = require('../utils/catchAsync');
 
 exports.getAllOffers = catchAsync(async (req, res, next) => {
   const page = +req.query.page || 1;
   const limit = +req.query.limit || 10;
   const offers = await Offer.find()
-    .find({ "room.stage": { $eq: "no taker" } })
+    .find({ 'room.stage': { $eq: 'no taker' } })
     .sort({ unitPrice: 1 })
-    .populate("crypto payMethods.bank fiat maker")
+    .populate('crypto payMethods.bank fiat maker')
     .limit(limit)
     .skip((page - 1) * limit);
 
   res.status(201).json({
-    message: "success",
+    message: 'success',
     data: {
       offers,
     },
@@ -22,22 +22,28 @@ exports.getAllOffers = catchAsync(async (req, res, next) => {
 
 exports.getOffer = catchAsync(async (req, res, next) => {
   const offer = await Offer.findById(req.params.id).populate(
-    "crypto fiat payMethods.bank payMethods.region maker"
+    'crypto fiat payMethods.bank payMethods.region maker'
   );
   if (!offer) {
-    return next(new AppError("No such offer", 404));
+    return next(new AppError('No such offer', 404));
   }
-  if (offer.maker.toString() != req.user._id.toString()) {
+  let role = 'restricted';
+  if (offer.maker._id.toString() != req.user._id.toString()) {
     if (offer.room.taker) {
       if (offer.room.taker.toString() != req.user._id.toString()) {
-        return next(new AppError("You dont have access", 403));
+        return next(new AppError('You dont have access', 403));
+      } else {
+        role = 'taker';
       }
     } else {
-      return next(new AppError("You dont have access", 403));
+      return next(new AppError('You dont have access', 403));
     }
+  } else {
+    role = 'maker';
   }
   res.status(201).json({
-    message: "success",
+    message: 'success',
+    role,
     data: {
       offer,
     },
@@ -47,21 +53,21 @@ exports.getOffer = catchAsync(async (req, res, next) => {
 exports.joinOffer = catchAsync(async (req, res, next) => {
   const offer = await Offer.findById(req.params.id);
   if (!offer) {
-    return next(new AppError("No such offer", 404));
+    return next(new AppError('No such offer', 404));
   }
   if (offer.maker && offer.taker) {
-    return next(new AppError("Offer is full", 403));
+    return next(new AppError('Offer is full', 403));
   }
   if (offer.maker.toString() != req.user._id.toString()) {
     if (offer.room.taker) {
       if (offer.room.taker.toString() == req.user._id.toString()) {
-        return next(new AppError("You already in this room", 403));
+        return next(new AppError('You already in this room', 403));
       }
     }
   } else {
-    return next(new AppError("You already in this room", 403));
+    return next(new AppError('You already in this room', 403));
   }
-  if (offer.room.stage != "no taker") {
+  if (offer.room.stage != 'no taker') {
     return next(new AppError("It's not your turn", 400));
   }
   if (
@@ -69,10 +75,10 @@ exports.joinOffer = catchAsync(async (req, res, next) => {
     req.body.amount > offer.orderLimit[1] ||
     !req.body.amount
   ) {
-    return next(new AppError("Amount is invalid", 400));
+    return next(new AppError('Amount is invalid', 400));
   }
   if (offer.amount - req.body.amount < 0) {
-    return next(new AppError("Amount is too big", 400));
+    return next(new AppError('Amount is too big', 400));
   }
 
   await Offer.findOneAndUpdate(
@@ -80,42 +86,42 @@ exports.joinOffer = catchAsync(async (req, res, next) => {
     {
       room: {
         taker: req.user._id,
-        stage: "waiting taker",
+        stage: 'waiting taker',
         amount: req.body.amount,
       },
     }
   );
   res.status(200).json({
-    message: "success",
+    message: 'success',
   });
 });
 
 exports.leaveOffer = catchAsync(async (req, res, next) => {
   const offer = await Offer.findById(req.params.id);
   if (!offer) {
-    return next(new AppError("No such offer", 404));
+    return next(new AppError('No such offer', 404));
   }
   if (offer.maker.toString() == req.user._id.toString()) {
-    return next(new AppError("You cant leave this room as owner", 403));
+    return next(new AppError('You cant leave this room as owner', 403));
   } else {
     if (offer.room.taker) {
       if (offer.room.taker.toString() != req.user._id.toString()) {
-        return next(new AppError("You cant leave this room", 403));
+        return next(new AppError('You cant leave this room', 403));
       }
     } else {
-      return next(new AppError("You cant leave this room", 403));
+      return next(new AppError('You cant leave this room', 403));
     }
   }
 
   await Offer.findOneAndUpdate(
     { _id: req.params.id },
     {
-      room: { starge: "no taker" },
+      room: { starge: 'no taker' },
     }
   );
 
   res.status(200).json({
-    message: "success",
+    message: 'success',
   });
 });
 
@@ -137,7 +143,7 @@ exports.createOffer = catchAsync(async (req, res, next) => {
   const newOffer = await Offer.create(offerBody);
 
   res.status(201).json({
-    message: "success",
+    message: 'success',
     data: {
       newOffer,
     },
@@ -147,16 +153,16 @@ exports.createOffer = catchAsync(async (req, res, next) => {
 exports.deleteOffer = catchAsync(async (req, res, next) => {
   const offer = await Offer.findById(req.params.id);
   if (!offer) {
-    return next(new AppError("No such offer", 403));
+    return next(new AppError('No such offer', 403));
   }
   if (offer.maker.toString() != req.user._id.toString()) {
-    return next(new AppError("You dont have access", 403));
+    return next(new AppError('You dont have access', 403));
   }
-  if (offer.room.stage != "no taker") {
-    return next(new AppError("You cant delete with active taker", 403));
+  if (offer.room.stage != 'no taker') {
+    return next(new AppError('You cant delete with active taker', 403));
   }
   await Offer.findByIdAndDelete(req.params.id);
   res.status(200).json({
-    message: "success",
+    message: 'success',
   });
 });
