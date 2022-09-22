@@ -1,9 +1,22 @@
 module.exports = (io, socket) => {
-  socket.on('joinOffer', (data) => {
-    socket.join(data.offerId);
+  socket.on("msg", (data) => console.log(data));
+
+  socket.on("joinOffer", (data) => {
+    socket.join(data.id);
+    console.log(data);
   });
-  socket.on('changeStage', (offerId) => {
-    io.to(offerId).emit('newStage');
+  // socket.on("changeStage", (offerId) => {
+  //   console.log("change stage");
+  //   socket.to(offerId).emit("newStage");
+  // });
+  socket.on("takerConfirmed", (offerId) => {
+    console.log("taker confirmed");
+    socket.to(offerId).emit("approvalStage");
+  });
+
+  socket.on("makerConfirmed", (offerId) => {
+    console.log("maker confirmed!");
+    socket.to(offerId).emit("successStage");
   });
 };
 

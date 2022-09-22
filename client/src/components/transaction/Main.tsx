@@ -122,6 +122,8 @@ export const Main = ({
                 <p>Please, check if funds are recieved</p>
               </div>
             );
+          case 3:
+            return <div>success</div>;
         }
 
       default:

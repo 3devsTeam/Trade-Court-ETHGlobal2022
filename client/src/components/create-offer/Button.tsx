@@ -1,6 +1,7 @@
 import React from "react";
 
 interface IButtonProps {
+  disabled?: boolean;
   onAction: any;
   name: string;
   color?: string;
@@ -11,6 +12,7 @@ interface IButtonProps {
 }
 
 export const Button = ({
+  disabled,
   color,
   rounded,
   name,
@@ -21,9 +23,12 @@ export const Button = ({
 }: IButtonProps) => {
   return (
     <button
+      disabled={disabled}
       type="button"
       onClick={() => onAction()}
-      className={`bg-${color} rounded-[${rounded}] px-4 py-3 font-${fWeight} text-${fSize} text-${tColor} transition duration-150 ease-out hover:ease-in`}
+      className={`bg-${
+        !disabled ? color : "gray"
+      } rounded-[${rounded}] px-4 py-3 font-${fWeight} text-${fSize} text-${tColor} transition duration-150 ease-out hover:ease-in`}
     >
       {name}
     </button>
