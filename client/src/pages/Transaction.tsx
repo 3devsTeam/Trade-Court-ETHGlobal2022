@@ -20,21 +20,9 @@ import { io } from "socket.io-client";
 export const Transaction = () => {
   const { id } = useParams();
 
-  const socket = io("http://127.0.0.1:3031");
+  const socket = io("http://127.0.0.1:3030");
 
-  const [isSocketConnected, setIsSocketConnected] = useState(socket.connected);
-
-  useEffect(() => {
-    socket.on("connect", () => {
-      setIsSocketConnected(true);
-      console.log(isSocketConnected);
-    });
-
-    socket.on("disconnect", () => {
-      setIsSocketConnected(false);
-      console.log(isSocketConnected);
-    });
-  }, []);
+  socket.on("msg", (data) => console.log(data));
 
   const [step, setStep] = useState(1);
 
