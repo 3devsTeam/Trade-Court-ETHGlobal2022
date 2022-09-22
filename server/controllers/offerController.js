@@ -21,7 +21,7 @@ exports.getAllOffers = catchAsync(async (req, res, next) => {
 });
 
 exports.getOffer = catchAsync(async (req, res, next) => {
-  const offer = await Offer.findById(req.params.id).populate(
+  let offer = await Offer.findById(req.params.id).populate(
     'crypto fiat payMethods.bank payMethods.region maker'
   );
   if (!offer) {
@@ -41,9 +41,10 @@ exports.getOffer = catchAsync(async (req, res, next) => {
   } else {
     role = 'maker';
   }
+  offer = JSON.parse(JSON.stringify(offer));
+  offer.role = role;
   res.status(201).json({
     message: 'success',
-    role,
     data: {
       offer,
     },
