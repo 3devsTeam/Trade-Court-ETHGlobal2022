@@ -26,7 +26,9 @@ export interface IOffer {
 export enum ROLES {
     admin,
     user,
-    moderator
+    moderator,
+    taker,
+    maker
 }
 
 export interface IMaker {

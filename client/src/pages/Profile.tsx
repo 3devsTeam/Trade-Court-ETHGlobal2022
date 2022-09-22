@@ -59,7 +59,9 @@ export const Profile = () => {
       <div>
         <div className={"grid grid-flow-col mt-[50px]"}>
           {sections.map((s, i) => (
-            <div className={`font-bold text-lg`}>{s}</div>
+            <div key={i} className={`font-bold text-lg`}>
+              {s}
+            </div>
           ))}
         </div>
 

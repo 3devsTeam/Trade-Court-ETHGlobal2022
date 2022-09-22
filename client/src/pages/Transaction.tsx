@@ -16,30 +16,42 @@ import { Button } from "../components/create-offer/Button";
 import { Info } from "../components/transaction/Info";
 import { WarningMessage } from "../components/transaction/WarningMessage";
 import { io } from "socket.io-client";
+import { Main } from "../components/transaction/Main";
 
 export const Transaction = () => {
   const { id } = useParams();
 
   const socket = io("http://127.0.0.1:3030");
 
-  socket.on("msg", (data) => console.log(data));
+  //socket.on("msg", (data) => console.log(data));
 
   const [step, setStep] = useState(1);
+
+  const [role, setRole] = useState("");
+  //console.log(role);
 
   const [payMethod, setPayMethod] = useState({});
   //console.log(payMethod);
 
-  const { data: offer, isLoading } = useQuery(
-    ["get offer by id"],
-    () => OfferService.getByID(id!),
-    {
-      select: (data) => data.data.data.offer,
-      onSuccess: (data) => setPayMethod(data.payMethods[0]),
-    }
-  );
+  const {
+    data: offer,
+    isLoading,
+    isSuccess,
+  } = useQuery(["get offer by id"], () => OfferService.getByID(id!), {
+    select: (data) => data.data.data.offer,
+    onSuccess: (data) => {
+      setRole(data.role);
+      setPayMethod(data.payMethods[0]);
+    },
+  });
 
   return (
     <div>
+      {/* it just to check role */}
+      <div className={"absolute top-20"}>
+        <h1>{role}</h1>
+      </div>
+
       {isLoading ? (
         <Skeleton height={100} borderRadius={20} />
       ) : (
@@ -57,82 +69,14 @@ export const Transaction = () => {
                 steps={["Transfer", "Approval", "Success"]}
                 images={[transfer, lock, success]}
               />
-
-              <div className={"flex items-center gap-4 mt-[15px]"}>
-                {offer?.payMethods?.map((p: any) => {
-                  //console.log(p);
-                  return (
-                    <div
-                      onClick={() => setPayMethod(p)}
-                      key={p._id}
-                      className={`${
-                        payMethod?.bank?._id === p.bank._id
-                          ? "border-purple scale-105 border-[3px] transition-transform duration-300"
-                          : ""
-                      } cursor-pointer px-[10px] py-[15px] h-[60px] rounded-[25px] border-2 border-gray flex gap-1 items-center min-w-[180px] bg-white`}
-                    >
-                      <img
-                        className={`w-8 h-8 rounded-[50%] border-2 ${
-                          payMethod?.bank?._id === p.bank._id
-                            ? "border-purple"
-                            : "border-none"
-                        } object-cover`}
-                        src={p.bank.logoUrl}
-                        alt={""}
-                      />
-                      <div>
-                        <p className={"font-bold"}>{p.bank.name}</p>
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-
-              <div className={"flex flex-col gap-[10px] mt-[15px]"}>
-                <div>
-                  <p className={"text-sm text-gray font-medium"}>Bank</p>
-                  <p className={"font-bold"}>{payMethod?.bank?.name}</p>
-                </div>
-
-                <div>
-                  <p className={"text-sm text-gray font-medium"}>Region</p>
-                  <p className={"font-bold"}>{payMethod?.region?.name}</p>
-                </div>
-
-                <div>
-                  <p className={"text-sm text-gray font-medium"}>Card number</p>
-                  <p className={"font-bold"}>{payMethod?.cardNumber}</p>
-                </div>
-
-                <div>
-                  <p className={"text-sm text-gray font-medium"}>
-                    Payment Description
-                  </p>
-                  <p>
-                    {payMethod.paymentDescription
-                      ? payMethod.paymentDescription
-                      : "-"}
-                  </p>
-                </div>
-
-                <WarningMessage />
-
-                <div>
-                  <div className={"flex gap-5"}>
-                    <p className={"text-sm text-gray font-medium"}>
-                      Created time
-                    </p>
-                    <p className={"text-sm font-bold"}>хз</p>
-                  </div>
-
-                  <div className={"flex gap-5"}>
-                    <p className={"text-sm text-gray font-medium"}>
-                      Order number:
-                    </p>
-                    <p className={"text-sm font-bold"}>{id}</p>
-                  </div>
-                </div>
-              </div>
+              <Main
+                step={step}
+                role={role}
+                id={id!}
+                offer={offer}
+                setPayMethod={setPayMethod}
+                activePayMethod={payMethod}
+              />
             </div>
           )}
         </Form>
@@ -141,19 +85,18 @@ export const Transaction = () => {
 
         <FormNav>
           <div className={"flex items-center justify-between w-full"}>
-            {step === 1 && (
-              <div>
-                <Button
-                  onAction={() => {}}
-                  name={"Done, next!"}
-                  fWeight={"bold"}
-                  fSize={"lg"}
-                  color={"purple"}
-                  rounded={"15px"}
-                  tColor={"white"}
-                />
-              </div>
-            )}
+            <div>
+              <Button
+                onAction={() => setStep(step + 1)}
+                name={"Done, next!"}
+                fWeight={"bold"}
+                fSize={"lg"}
+                color={"purple"}
+                rounded={"15px"}
+                tColor={"white"}
+              />
+            </div>
+
             <div>
               <Button
                 onAction={() => {}}
@@ -171,8 +114,6 @@ export const Transaction = () => {
               />
             </div>
           </div>
-          {step === 2 && <div></div>}
-          {step === 3 && <div></div>}
         </FormNav>
       </div>
     </div>
