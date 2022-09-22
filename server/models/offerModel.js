@@ -13,7 +13,7 @@ const offerSchema = new mongoose.Schema({
     },
     stage: {
       type: String,
-      enum: ['no taker', 'waiting taker', 'taker sent', 'maker recived'],
+      enum: ['no taker', 'waiting taker', 'taker send', 'maker recieved'],
       default: 'no taker',
     },
     amount: {
