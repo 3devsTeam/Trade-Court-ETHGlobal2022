@@ -1,3 +1,3 @@
 module.exports = (io, socket) => {
-  console.log('connected');
+  console.log("socket connected");
 };

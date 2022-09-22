@@ -20,7 +20,7 @@ import { io } from "socket.io-client";
 export const Transaction = () => {
   const { id } = useParams();
 
-  const socket = io();
+  const socket = io("http://127.0.0.1:3031");
 
   const [isSocketConnected, setIsSocketConnected] = useState(socket.connected);
 
