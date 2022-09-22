@@ -78,7 +78,7 @@ export const ProfileOffer = ({
       </div>
 
       <div>
-        <div className={"absolute -top-2 right-0"}>
+        {/* <div className={"absolute -top-2 right-0"}>
           <ButtonOffer
             onAction={() => OfferService.deleteByID(_id)}
             image={<Cross />}
@@ -93,8 +93,8 @@ export const ProfileOffer = ({
             </div>
           }
           bgColor={"bg-purple"}
-        />
-        {/* {room!.stage === "no taker" ? (
+        /> */}
+        {room!.stage === "no taker" ? (
           <ButtonOffer
             onAction={() => OfferService.deleteByID(_id)}
             image={<Cross />}
@@ -110,7 +110,7 @@ export const ProfileOffer = ({
             }
             bgColor={"bg-purple"}
           />
-        )} */}
+        )}
       </div>
 
       <Label color={"purple"} name={room!.stage} />

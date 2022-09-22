@@ -23,17 +23,23 @@ export const Info = ({ fiat, crypto, amount, unitPrice, quantity }: IOffer) => {
 
       <div className={"flex flex-col"}>
         <span className={"text-lg font-bold"}>Amount</span>
-        <span className={"text-lg font-bold text-purple"}>{amount}</span>
+        <span className={"text-lg font-bold text-purple"}>
+          {amount} {fiat.ticker}
+        </span>
       </div>
 
       <div className={"flex flex-col"}>
         <span className={"text-lg font-bold"}>Unit Price</span>
-        <span className={"text-lg font-bold text-purple"}>{unitPrice}</span>
+        <span className={"text-lg font-bold text-purple"}>
+          {unitPrice} {fiat.ticker}
+        </span>
       </div>
 
       <div className={"flex flex-col"}>
         <span className={"text-lg font-bold"}>Quantity</span>
-        <span className={"text-lg font-bold text-purple"}>{quantity}</span>
+        <span className={"text-lg font-bold text-purple"}>
+          {quantity} {crypto.symbol}
+        </span>
       </div>
     </div>
   );

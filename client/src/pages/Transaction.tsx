@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useParams, useSearchParams } from "react-router-dom";
 import { OfferService } from "../services/offer.services";
 import { Form } from "../components/create-offer/Form";
@@ -14,30 +14,32 @@ import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import { Button } from "../components/create-offer/Button";
 import { Info } from "../components/transaction/Info";
+import { WarningMessage } from "../components/transaction/WarningMessage";
+import { io } from "socket.io-client";
 
 export const Transaction = () => {
   const { id } = useParams();
+
+  const socket = io();
+
+  const [isSocketConnected, setIsSocketConnected] = useState(socket.connected);
+
+  useEffect(() => {
+    socket.on("connect", () => {
+      setIsSocketConnected(true);
+      console.log(isSocketConnected);
+    });
+
+    socket.on("disconnect", () => {
+      setIsSocketConnected(false);
+      console.log(isSocketConnected);
+    });
+  }, []);
 
   const [step, setStep] = useState(1);
 
   const [payMethod, setPayMethod] = useState({});
   //console.log(payMethod);
-
-  //   const { data: offer, isLoading } = useQuery(
-  //     ["get offer by id"],
-  //     () => OfferService.getByID(id!),
-  //     {
-  //       select: (data) => data.data.data.offer,
-  //       onSuccess: (data) => {
-
-  //         const { paymentMethods } = data
-
-  //         setPayMethod(
-  //           {...paymentMethods[0]}
-  //         ),
-
-  //   }
-  // )
 
   const { data: offer, isLoading } = useQuery(
     ["get offer by id"],
@@ -70,7 +72,7 @@ export const Transaction = () => {
 
               <div className={"flex items-center gap-4 mt-[15px]"}>
                 {offer?.payMethods?.map((p: any) => {
-                  console.log(p);
+                  //console.log(p);
                   return (
                     <div
                       onClick={() => setPayMethod(p)}
@@ -82,9 +84,11 @@ export const Transaction = () => {
                       } cursor-pointer px-[10px] py-[15px] h-[60px] rounded-[25px] border-2 border-gray flex gap-1 items-center min-w-[180px] bg-white`}
                     >
                       <img
-                        className={
-                          "w-8 h-8 rounded-[50%] border border-purple object-cover"
-                        }
+                        className={`w-8 h-8 rounded-[50%] border-2 ${
+                          payMethod?.bank?._id === p.bank._id
+                            ? "border-purple"
+                            : "border-none"
+                        } object-cover`}
                         src={p.bank.logoUrl}
                         alt={""}
                       />
@@ -112,17 +116,18 @@ export const Transaction = () => {
                   <p className={"font-bold"}>{payMethod?.cardNumber}</p>
                 </div>
 
-                <div
-                  className={
-                    "bg-yellow rounded-[15px] px-[20px] py-[10px] font-bold mt-[30px]"
-                  }
-                >
-                  <p className={"text-sm"}>
-                    Please check payment info twice before sending transaction.
-                    <br />
-                    Tradecourt are not responsible for lost transactions.
+                <div>
+                  <p className={"text-sm text-gray font-medium"}>
+                    Payment Description
+                  </p>
+                  <p>
+                    {payMethod.paymentDescription
+                      ? payMethod.paymentDescription
+                      : "-"}
                   </p>
                 </div>
+
+                <WarningMessage />
 
                 <div>
                   <div className={"flex gap-5"}>
