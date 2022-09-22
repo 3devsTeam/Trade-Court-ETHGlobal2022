@@ -17,11 +17,27 @@ import { Info } from "../components/transaction/Info";
 import { WarningMessage } from "../components/transaction/WarningMessage";
 import { io } from "socket.io-client";
 import { Main } from "../components/transaction/Main";
+import { toast } from "react-toastify";
+import axios from "axios";
+import { API_URl } from "../services/axios";
 
 export const Transaction = () => {
   const { id } = useParams();
 
   const navigate = useNavigate();
+
+  const txNotify = (message: string, type: string) => {
+    if (type === "error") {
+      toast.error(message, {
+        position: toast.POSITION.BOTTOM_RIGHT,
+      });
+    }
+    if (type === "success") {
+      toast.success(message, {
+        position: toast.POSITION.BOTTOM_RIGHT,
+      });
+    }
+  };
 
   const {
     data: offer,
@@ -32,7 +48,34 @@ export const Transaction = () => {
     onSuccess: (data) => {
       setRole(data.role);
       setPayMethod(data.payMethods[0]);
+      // switch (offer?.room.stage) {
+      //   case "waiting taker":
+      //     console.log("current stage", offer?.room.stage);
+      //     setStep(1);
+      //   case "taker send":
+      //     console.log("current stage", offer?.room.stage);
+      //     setStep(2);
+      //   case "maker recieved":
+      //     console.log("current stage", offer?.room.stage);
+      //     setStep(3);
+      // }
       joinRoom({ id: id, role: data.role });
+      console.log(data.room.stage);
+
+      if (data.room.stage === "waiting taker") {
+        console.log("switch taker send");
+        setStep(1);
+      }
+
+      if (data.room.stage === "taker send") {
+        console.log("switch taker send");
+        setStep(2);
+      }
+
+      if (data.room.stage === "maker recieved") {
+        console.log("switch maker recieved");
+        setStep(3);
+      }
     },
   });
 
@@ -48,15 +91,19 @@ export const Transaction = () => {
   const [role, setRole] = useState("");
   const [payMethod, setPayMethod] = useState({});
 
-  // const nextStep = (id: string) => {
-  //   console.log("next step");
-  //   socket.emit("changeStage", id);
-  // };
-
-  // socket.on("newStage", () => setStep(step + 1));
-
-  const takerConfirmed = (id: string) => {
-    socket.emit("takerConfirmed", id);
+  const takerConfirmed = async (id: string) => {
+    try {
+      axios
+        .get(`${API_URl}/api/offer/${id}/send`, { withCredentials: true })
+        .then((res) => {
+          if (res.data.message === "success") {
+            console.log("taker confirmed");
+            socket.emit("takerConfirmed", id);
+          }
+        });
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   socket.on("approvalStage", () => {
@@ -64,7 +111,18 @@ export const Transaction = () => {
   });
 
   const makerConfirmed = (id: string) => {
-    socket.emit("makerConfirmed", id);
+    try {
+      axios
+        .get(`${API_URl}/api/offer/${id}/recieve`, { withCredentials: true })
+        .then((res) => {
+          if (res.data.message === "success") {
+            console.log("maker confirmed");
+            socket.emit("makerConfirmed", id);
+          }
+        });
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   socket.on("successStage", () => {
@@ -73,10 +131,11 @@ export const Transaction = () => {
 
   return (
     <div>
-      {/* it just to check role */}
+      {/* it just to check role and step */}
       <div className={"absolute top-20"}>
         <h1>user role: {role}</h1>
         <h1>active step: {step}</h1>
+        <h1>current stage: {offer?.room.stage}</h1>
       </div>
 
       {isLoading ? (
