@@ -20,6 +20,11 @@ const offerSchema = new mongoose.Schema({
       type: Number,
       min: 0,
     },
+    roomId: {
+      type: String,
+      required: [true, 'roomId is empty'],
+      unique: true,
+    },
   },
   offerType: {
     type: String,

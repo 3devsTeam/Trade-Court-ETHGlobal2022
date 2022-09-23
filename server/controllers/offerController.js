@@ -139,6 +139,7 @@ exports.createOffer = catchAsync(async (req, res, next) => {
     timeLimit: req.body.timeLimit,
     crypto: req.body.crypto,
     offerComment: req.body.offerComment,
+    room: { roomId: req.body.roomId },
   };
 
   const newOffer = await Offer.create(offerBody);
