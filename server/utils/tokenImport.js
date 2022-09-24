@@ -14,30 +14,27 @@ mongoose
   .then(() => {
     console.log('connected');
   });
-const ethereum = JSON.parse(
-  fs.readFileSync(
-    `${__dirname}/../controllers/balanceController/ethereum/tokenList.json`,
-    'utf-8'
-  )
-);
-const polygon = JSON.parse(
-  fs.readFileSync(
-    `${__dirname}/../controllers/balanceController/polygon/tokenList.json`,
-    'utf-8'
-  )
-);
-const optimism = JSON.parse(
-  fs.readFileSync(
-    `${__dirname}/../controllers/balanceController/optimism/tokenList.json`,
-    'utf-8'
-  )
-);
 
 const importData = async () => {
   try {
-    await Ethereum.create(ethereum);
-    await Polygon.create(polygon);
-    await Optimism.create(optimism);
+    const eth = await Ethereum.find();
+    fs.writeFileSync(
+      `${__dirname}/../controllers/balanceController/ethereum/tokenList.json`,
+      JSON.stringify(eth),
+      'utf-8'
+    );
+    const poly = await Polygon.find();
+    fs.writeFileSync(
+      `${__dirname}/../controllers/balanceController/polygon/tokenList.json`,
+      JSON.stringify(poly),
+      'utf-8'
+    );
+    const opt = await Optimism.find();
+    fs.writeFileSync(
+      `${__dirname}/../controllers/balanceController/optimism/tokenList.json`,
+      JSON.stringify(opt),
+      'utf-8'
+    );
     console.log('OK 🤡');
   } catch (err) {
     console.log(err);
