@@ -30,6 +30,7 @@ export const OfferInput = ({
         }
       >
         <input
+          autoComplete={"off"}
           id={label}
           readOnly={readOnly}
           onChange={(e) => setValue(e.target.value)}

@@ -1,11 +1,10 @@
 import { useQuery } from "@tanstack/react-query";
 import React, { useState, useEffect } from "react";
-import { useNavigate, useParams, useSearchParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { OfferService } from "../services/offer.services";
 import { Form } from "../components/create-offer/Form";
 import { FormNav } from "../components/create-offer/FormNav";
 import { Chat } from "../components/transaction/Chat";
-import { Circle } from "../components/create-offer/Circle";
 import transfer from "../assets/images/transfer.svg";
 import lock from "../assets/images/lock.svg";
 import success from "../assets/images/success.svg";
@@ -14,14 +13,32 @@ import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import { Button } from "../components/create-offer/Button";
 import { Info } from "../components/transaction/Info";
-import { WarningMessage } from "../components/transaction/WarningMessage";
 import { io } from "socket.io-client";
 import { Main } from "../components/transaction/Main";
 import { toast } from "react-toastify";
 import axios from "axios";
 import { API_URl } from "../services/axios";
+import { useAccount, useEnsAvatar, useEnsName } from "wagmi";
 
 export const Transaction = () => {
+  const { address } = useAccount();
+
+  const {
+    data: ensName,
+    isLoading: ensNameLoading,
+    isSuccess: ensNameSuccess,
+  } = useEnsName({
+    address,
+  });
+
+  const {
+    data: ensAvatar,
+    isLoading: ensAvatarLoading,
+    isSuccess: ensAvatarSuccess,
+  } = useEnsAvatar({
+    addressOrName: address,
+  });
+
   const { id } = useParams();
 
   const navigate = useNavigate();
@@ -46,21 +63,17 @@ export const Transaction = () => {
   } = useQuery(["get offer by id"], () => OfferService.getByID(id!), {
     select: (data) => data.data.data.offer,
     onSuccess: (data) => {
+      //console.log(data);
       setRole(data.role);
       setPayMethod(data.payMethods[0]);
-      // switch (offer?.room.stage) {
-      //   case "waiting taker":
-      //     console.log("current stage", offer?.room.stage);
-      //     setStep(1);
-      //   case "taker send":
-      //     console.log("current stage", offer?.room.stage);
-      //     setStep(2);
-      //   case "maker recieved":
-      //     console.log("current stage", offer?.room.stage);
-      //     setStep(3);
-      // }
-      joinRoom({ id: id, role: data.role });
-      console.log(data.room.stage);
+
+      joinRoom({
+        id,
+        role: data.role,
+        addressOrName: ensName ? ensName : address,
+        avatar: ensAvatar,
+      });
+      //console.log(data.room.stage);
 
       if (data.room.stage === "waiting taker") {
         console.log("switch taker send");
@@ -87,9 +100,35 @@ export const Transaction = () => {
     socket.emit("joinOffer", data);
   };
 
+  const [name, setName] = useState("");
+  const [profileImg, setProfileImg] = useState("");
+
+  // socket.on("setChat", (data) => {
+  //   console.log("set chat from client", data);
+  //   setName(data.addressOrName);
+  //   setProfileImg(data.avatar);
+  // });
+
   const [step, setStep] = useState(1);
   const [role, setRole] = useState("");
   const [payMethod, setPayMethod] = useState({});
+  const [message, setMessage] = useState("");
+
+  const sendMessage = (message: string) => {
+    console.log("send from client", message);
+    socket.emit("sendMessage", { message, room: id });
+    setMessage("");
+  };
+
+  const [chatMessages, setChatMessages] = useState([]);
+
+  useEffect(() => {
+    socket.on("messageRecieved", (data) => {
+      console.log(data.message);
+      setChatMessages(data);
+      //setChatMessages([...chatMessages, data.message]);
+    });
+  }, [socket]);
 
   const takerConfirmed = async (id: string) => {
     try {
@@ -166,8 +205,14 @@ export const Transaction = () => {
             </div>
           )}
         </Form>
-
-        <Chat />
+        <Chat
+          chatMessages={chatMessages}
+          sendMessage={sendMessage}
+          message={message}
+          setMessage={setMessage}
+          addressOrName={name}
+          avatar={profileImg}
+        />
 
         <FormNav>
           <div className={"flex items-center justify-between w-full"}>
@@ -209,7 +254,6 @@ export const Transaction = () => {
                 />
               ) : step === 2 ? (
                 <Button
-                  disabled={false}
                   onAction={() => makerConfirmed(id!)}
                   name={"Funds recieved"}
                   fWeight={"bold"}
@@ -220,7 +264,6 @@ export const Transaction = () => {
                 />
               ) : step === 3 ? (
                 <Button
-                  disabled={false}
                   onAction={() => navigate("/")}
                   name={"Go to main page"}
                   fWeight={"bold"}
