@@ -1,0 +1,200 @@
+[
+  {
+    "_id": "632eac04e6726df198216dc7",
+    "address": "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+    "name": "Ethereum",
+    "symbol": "ETH",
+    "decimals": 18,
+    "logoUrl": "https://tokens.1inch.io/0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee.png",
+    "__v": 0
+  },
+  {
+    "_id": "632eac04e6726df198216dc8",
+    "address": "0x4200000000000000000000000000000000000006",
+    "name": "Wrapped Ether",
+    "symbol": "WETH",
+    "decimals": 18,
+    "logoUrl": "https://tokens.1inch.io/0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2.png",
+    "__v": 0
+  },
+  {
+    "_id": "632eac04e6726df198216dc9",
+    "address": "0x8700daec35af8ff88c16bdf0418774cb3d7599b4",
+    "name": "Synthetix",
+    "symbol": "SNX",
+    "decimals": 18,
+    "logoUrl": "https://ethereum-optimism.github.io/logos/SNX.svg",
+    "__v": 0
+  },
+  {
+    "_id": "632eac04e6726df198216dca",
+    "address": "0xda10009cbd5d07dd0cecc66161fc93d7c9000da1",
+    "name": "Dai stable coin",
+    "symbol": "DAI",
+    "decimals": 18,
+    "logoUrl": "https://cryptologos.cc/logos/multi-collateral-dai-dai-logo.svg?v=010",
+    "__v": 0
+  },
+  {
+    "_id": "632eac04e6726df198216dcc",
+    "address": "0x68f180fcce6836688e9084f035309e29bf0a2095",
+    "name": "Wrapped Bitcoin",
+    "symbol": "WBTC",
+    "decimals": 8,
+    "logoUrl": "https://ethereum-optimism.github.io/logos/WBTC.svg",
+    "__v": 0
+  },
+  {
+    "_id": "632eac04e6726df198216dcb",
+    "address": "0x94b008aa00579c1307b0ef2c499ad98a8ce58e58",
+    "name": "Tether USD",
+    "symbol": "USDT",
+    "decimals": 6,
+    "logoUrl": "https://tokens.1inch.io/0x94b008aa00579c1307b0ef2c499ad98a8ce58e58.png",
+    "__v": 0
+  },
+  {
+    "_id": "632eac04e6726df198216dcd",
+    "address": "0x350a791bfc2c21f9ed5d10980dad2e2638ffa7f6",
+    "name": "Chainlink",
+    "symbol": "LINK",
+    "decimals": 18,
+    "logoUrl": "https://tokens.1inch.io/0x350a791bfc2c21f9ed5d10980dad2e2638ffa7f6.png",
+    "__v": 0
+  },
+  {
+    "_id": "632eac04e6726df198216dce",
+    "address": "0x7f5c764cbc14f9669b88837ca1490cca17c31607",
+    "name": "USD Coin",
+    "symbol": "USDC",
+    "decimals": 6,
+    "logoUrl": "https://tokens.1inch.io/0x7f5c764cbc14f9669b88837ca1490cca17c31607.png",
+    "__v": 0
+  },
+  {
+    "_id": "632eac04e6726df198216dd2",
+    "address": "0x7fb688ccf682d58f86d7e38e03f9d22e7705448b",
+    "name": "Rai Reflex Index",
+    "symbol": "RAI",
+    "decimals": 18,
+    "logoUrl": "https://tokens.1inch.io/0x7fb688ccf682d58f86d7e38e03f9d22e7705448b.png",
+    "__v": 0
+  },
+  {
+    "_id": "632eac04e6726df198216dd1",
+    "address": "0x61baadcf22d2565b0f471b291c475db5555e0b76",
+    "name": "Aelin Token",
+    "symbol": "AELIN",
+    "decimals": 18,
+    "logoUrl": "https://tokens.1inch.io/0x61baadcf22d2565b0f471b291c475db5555e0b76.png",
+    "__v": 0
+  },
+  {
+    "_id": "632eac04e6726df198216dd0",
+    "address": "0x217d47011b23bb961eb6d93ca9945b7501a5bb11",
+    "name": "Optimistic Thales Token",
+    "symbol": "THALES",
+    "decimals": 18,
+    "logoUrl": "https://tokens.1inch.io/0x217d47011b23bb961eb6d93ca9945b7501a5bb11.png",
+    "__v": 0
+  },
+  {
+    "_id": "632eac04e6726df198216dcf",
+    "address": "0x8c6f28f2f1a3c87f0f938b96d27520d9751ec8d9",
+    "name": "Synth sUSD",
+    "symbol": "sUSD",
+    "decimals": 18,
+    "logoUrl": "https://tokens.1inch.io/0x57ab1ec28d129707052df4df418d58a2d46d5f51.png",
+    "__v": 0
+  },
+  {
+    "_id": "632eac04e6726df198216dd4",
+    "address": "0x9e1028f5f1d5ede59748ffcee5532509976840e0",
+    "name": "Perpetual",
+    "symbol": "PERP",
+    "decimals": 18,
+    "logoUrl": "https://tokens.1inch.io/0x9e1028f5f1d5ede59748ffcee5532509976840e0.png",
+    "__v": 0
+  },
+  {
+    "_id": "632eac04e6726df198216dd3",
+    "address": "0x50c5725949a6f0c72e6c4a641f24049a917db0cb",
+    "name": "Lyra Token",
+    "symbol": "LYRA",
+    "decimals": 18,
+    "logoUrl": "https://tokens.1inch.io/0x50c5725949a6f0c72e6c4a641f24049a917db0cb.png",
+    "__v": 0
+  },
+  {
+    "_id": "632eac04e6726df198216dda",
+    "address": "0x73cb180bf0521828d8849bc8cf2b920918e23032",
+    "name": "USD+",
+    "symbol": "USD+",
+    "decimals": 6,
+    "logoUrl": "https://tokens.1inch.io/0x73cb180bf0521828d8849bc8cf2b920918e23032.png",
+    "__v": 0
+  },
+  {
+    "_id": "632eac04e6726df198216dd5",
+    "address": "0xf98dcd95217e15e05d8638da4c91125e59590b07",
+    "name": "Kromatika",
+    "symbol": "KROM",
+    "decimals": 18,
+    "logoUrl": "https://tokens.1inch.io/0xf98dcd95217e15e05d8638da4c91125e59590b07.png",
+    "__v": 0
+  },
+  {
+    "_id": "632eac04e6726df198216dd7",
+    "address": "0xeeeeeb57642040be42185f49c52f7e9b38f8eeee",
+    "name": "Elk",
+    "symbol": "ELK",
+    "decimals": 18,
+    "logoUrl": "https://tokens.1inch.io/0xeeeeeb57642040be42185f49c52f7e9b38f8eeee.png",
+    "__v": 0
+  },
+  {
+    "_id": "632eac04e6726df198216dd9",
+    "address": "0xe405de8f52ba7559f9df3c368500b6e6ae6cee49",
+    "name": "Synth sETH",
+    "symbol": "sETH",
+    "decimals": 18,
+    "logoUrl": "https://tokens.1inch.io/0xe405de8f52ba7559f9df3c368500b6e6ae6cee49.png",
+    "__v": 0
+  },
+  {
+    "_id": "632eac04e6726df198216dd8",
+    "address": "0x3c8b650257cfb5f272f799f5e2b4e65093a11a05",
+    "name": "Velodrome",
+    "symbol": "VELO",
+    "decimals": 18,
+    "logoUrl": "https://tokens.1inch.io/0x3c8b650257cfb5f272f799f5e2b4e65093a11a05.png",
+    "__v": 0
+  },
+  {
+    "_id": "632eac04e6726df198216dd6",
+    "address": "0x4200000000000000000000000000000000000042",
+    "name": "Optimism",
+    "symbol": "OP",
+    "decimals": 18,
+    "logoUrl": "https://tokens.1inch.io/0x4200000000000000000000000000000000000042.png",
+    "__v": 0
+  },
+  {
+    "_id": "632eac04e6726df198216ddb",
+    "address": "0x4e720dd3ac5cfe1e1fbde4935f386bb1c66f4642",
+    "name": "beefy.finance",
+    "symbol": "BIFI",
+    "decimals": 18,
+    "logoUrl": "https://tokens.1inch.io/0x4e720dd3ac5cfe1e1fbde4935f386bb1c66f4642.png",
+    "__v": 0
+  },
+  {
+    "_id": "632eac04e6726df198216ddc",
+    "address": "0xae31207ac34423c41576ff59bfb4e036150f9cf7",
+    "name": "Saddle DAO",
+    "symbol": "SDL",
+    "decimals": 18,
+    "logoUrl": "https://tokens.1inch.io/0xae31207ac34423c41576ff59bfb4e036150f9cf7.png",
+    "__v": 0
+  }
+]

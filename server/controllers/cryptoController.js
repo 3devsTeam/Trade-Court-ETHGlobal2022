@@ -1,8 +1,10 @@
-const Crypto = require('../models/cryptoModel');
+const Ethereum = require('../models/cryptoModels/ethereumModel');
+const Optimism = require('../models/cryptoModels/optimismModel');
+const Polygon = require('../models/cryptoModels/polygonModel');
 const catchAsync = require('../utils/catchAsync');
 
 exports.getAllCrypto = catchAsync(async (req, res, next) => {
-  const allCrypto = await Crypto.find();
+  const allCrypto = await Ethereum.find();
 
   res.status(201).json({
     message: 'success',
@@ -13,7 +15,7 @@ exports.getAllCrypto = catchAsync(async (req, res, next) => {
 });
 
 exports.createCrypto = catchAsync(async (req, res, next) => {
-  const newCrypto = await Crypto.create(req.body);
+  const newCrypto = await Ethereum.create(req.body);
   res.status(201).json({
     message: 'success',
     data: {
