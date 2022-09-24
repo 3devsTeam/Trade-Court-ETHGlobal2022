@@ -5,7 +5,6 @@ import { Header } from "../components/home/Header";
 import { useQuery } from "@tanstack/react-query";
 import { OfferService } from "../services/offer.services";
 import { IOffer } from "../models/models";
-import io from "socket.io-client";
 
 export const Home = () => {
   const {
@@ -17,12 +16,6 @@ export const Home = () => {
     select: (data) => data.data.data.offers,
     //refetchInterval: 5000
   });
-
-  // const socket = io("http://127.0.0.1:3030");
-
-  // socket.on("msg", (data) => {
-  //   console.log(data);
-  // });
 
   return (
     <>

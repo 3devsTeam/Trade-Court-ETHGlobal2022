@@ -2,7 +2,7 @@ import { useEffect } from 'react'
 import { BigNumber } from 'ethers'
 import { useQuery } from 'wagmi'
 import { TokenService } from '../services/tokens.services'
-import { useAccount } from 'wagmi'
+import { useAccount, useNetwork } from 'wagmi'
 import { IToken } from '../models/models'
 import { useActions } from "../hooks/useActions";
 
@@ -10,29 +10,40 @@ export const useTokens = () => {
 
     const { setCrypto } = useActions()
 
-	
+	const { chain } = useNetwork()
+
+	const chainName = chain?.name.toLowerCase()
 
     const { address } = useAccount()
 	//console.log('address', address)
 
 	const { data: tokens, isSuccess: successGetTokens } = useQuery(
-		['get tokens'],
-		() => TokenService.getTokens(address!),
+		[`get ${chainName} tokens`],
+		() => TokenService.getTokens(address!, chainName!),
 		{
 			select: (data) => data.data.data,
+			refetchOnWindowFocus: true
 		}
 	)
 
 	const { data: exchangeRate, isSuccess: successGetExchangeTokens } = useQuery(
-		['get exchange token rate erc20'],
-		() => TokenService.getExchangeRateERC20(),
-		{ select: (data) => data.data.data }
+		[`get exchange ${chainName} token rate`],
+		() => TokenService.getExchangeRate(chainName!),
+		{ select: (data) => data.data.data, refetchOnWindowFocus: true }
 	)
 
 	const { data: ethUsdRate, isSuccess: successGetEthUsdRate } = useQuery(
-		['get eth usd rate'],
-		() => TokenService.getEthUsdRate(),
-		{ select: (data) => data.data.ethereum.usd }
+		[`get ${chainName} usd rate`],
+		() => TokenService.getEthUsdRate(chainName!),
+		{ 
+			select: (data) => 
+			chainName === 'polygon'
+			 ? data.data['matic-network'].usd 
+			 :
+			  data.data.ethereum.usd,  
+			  refetchOnWindowFocus: true
+		}
+
 	)
 
 	const isSuccessRequest = successGetTokens && successGetExchangeTokens && successGetEthUsdRate
@@ -68,7 +79,7 @@ export const useTokens = () => {
 					el.tokenAmount = 0
 				}
 			} catch (err) {
-				console.error(err)
+				console.log('error bignumber token list')
 			}
 		})
 	}

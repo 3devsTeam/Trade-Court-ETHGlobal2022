@@ -30,5 +30,8 @@ export const OfferService = {
     },
     async deleteByID(id: string) {
         return axios.delete(`${API_URl}/api/offer/${id}`, { withCredentials: true })
+    },
+    async claimByID(id: string) {
+        return axios.get(`{API_URL}/api/offer/${id}/claim`, { withCredentials: true })
     }
 }

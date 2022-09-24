@@ -2,12 +2,15 @@ import { ethers } from "ethers";
 import { useContractWrite, usePrepareContractWrite, useWaitForTransaction } from "wagmi";
 import ethContractConfig from "../contractConfigs/ethContractConfig"
 
-export const useEthContract = (args: any, functionName: string) => {
+export const useEthContractWithValue = (args: any, value: ethers.BigNumber, functionName: string) => {
 
   const { config, error: prepareError } = usePrepareContractWrite({
       ...ethContractConfig,
       functionName: functionName,
       args: args,
+      overrides: {
+        value: value
+      }
     });
 
     const { data, error, isError, writeAsync } = useContractWrite(config);

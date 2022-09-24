@@ -12,7 +12,7 @@ import { OfferService } from "../services/offer.services";
 import { Button } from "../components/create-offer/Button";
 import { multiply } from "../utils/multiply";
 import { toast } from "react-toastify";
-import { useEthContract } from "../hooks/useEthContract";
+import { useEthContractWithValue } from "../hooks/useEthContractWithValue";
 import { BigNumber, ethers } from "ethers";
 import { randomNumber } from "../utils/randomNumber";
 import { convertToSeconds } from "../utils/convertToSeconds";
@@ -65,7 +65,7 @@ export const CreateOffer = () => {
   // console.log("max limit", args[3].toString());
 
   const { data, isError, isLoading, isSuccess, writeAsync, hash } =
-    useEthContract(args, value, "makeRoomEth");
+    useEthContractWithValue(args, value, "makeRoomEth");
 
   const { step } = useTypedSelector((state) => state.formReducer);
 
@@ -116,6 +116,7 @@ export const CreateOffer = () => {
                 <div>
                   <p>Offer is created!</p>
                   <a
+                    className={"text-purple"}
                     href={`https://rinkeby.etherscan.io/tx/${hash?.transactionHash}`}
                   >
                     View your transaction on Etherscan

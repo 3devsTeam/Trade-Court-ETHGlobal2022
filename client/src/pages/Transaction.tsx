@@ -19,6 +19,7 @@ import { toast } from "react-toastify";
 import axios from "axios";
 import { API_URl } from "../services/axios";
 import { useAccount, useEnsAvatar, useEnsName } from "wagmi";
+import { useEthContract } from "../hooks/useEthContract";
 
 export const Transaction = () => {
   const { address } = useAccount();
@@ -92,6 +93,35 @@ export const Transaction = () => {
     },
   });
 
+  const roomId = offer?.room.roomId;
+
+  const {
+    data: takerApproveData,
+    isError: takerApproveError,
+    isLoading: loadingTakerApprove,
+    isSuccess: successTakerApprove,
+    writeAsync: takerApproveContract,
+    hash: takerApproveHash,
+  } = useEthContract([roomId, 0], "dealDone");
+
+  const {
+    data: makerApproveData,
+    isError: makerApproveError,
+    isLoading: loadingMakerApprove,
+    isSuccess: successMakerApprove,
+    writeAsync: makerApproveContract,
+    hash: makerApproveHash,
+  } = useEthContract([roomId, 0], "approveFromSender");
+
+  const {
+    data: claimData,
+    isError: claimError,
+    isLoading: loadingClaim,
+    isSuccess: successClaim,
+    writeAsync: claimContract,
+    hash: claimHash,
+  } = useEthContract([roomId, 0], "finalWithdraw");
+
   const socket = io("http://127.0.0.1:3030");
 
   //socket.emit("msg", "bruh");
@@ -132,14 +162,16 @@ export const Transaction = () => {
 
   const takerConfirmed = async (id: string) => {
     try {
-      axios
-        .get(`${API_URl}/api/offer/${id}/send`, { withCredentials: true })
-        .then((res) => {
-          if (res.data.message === "success") {
-            console.log("taker confirmed");
-            socket.emit("takerConfirmed", id);
-          }
-        });
+      takerApproveContract?.().then(() => {
+        axios
+          .get(`${API_URl}/api/offer/${id}/send`, { withCredentials: true })
+          .then((res) => {
+            if (res.data.message === "success") {
+              console.log("taker confirmed");
+              socket.emit("takerConfirmed", id);
+            }
+          });
+      });
     } catch (err) {
       console.log(err);
     }
@@ -151,14 +183,26 @@ export const Transaction = () => {
 
   const makerConfirmed = (id: string) => {
     try {
-      axios
-        .get(`${API_URl}/api/offer/${id}/recieve`, { withCredentials: true })
-        .then((res) => {
-          if (res.data.message === "success") {
-            console.log("maker confirmed");
-            socket.emit("makerConfirmed", id);
-          }
-        });
+      makerApproveContract?.().then(() => {
+        axios
+          .get(`${API_URl}/api/offer/${id}/recieve`, { withCredentials: true })
+          .then((res) => {
+            if (res.data.message === "success") {
+              console.log("maker confirmed");
+              socket.emit("makerConfirmed", id);
+            }
+          });
+      });
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const claimTokens = async (id: string) => {
+    try {
+      claimContract?.().then(() => {
+        OfferService.claimByID(id!);
+      });
     } catch (err) {
       console.log(err);
     }
@@ -232,7 +276,7 @@ export const Transaction = () => {
                   <span>Waiting for confirmation...</span>
                 ) : (
                   <Button
-                    onAction={() => alert("ураррарарар бляьб")}
+                    onAction={() => claimTokens(id!)}
                     name={"Claim"}
                     fWeight={"bold"}
                     fSize={"lg"}
