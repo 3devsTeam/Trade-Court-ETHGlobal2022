@@ -10,9 +10,9 @@ const {
   MultiCallService,
   GasLimitService,
 } = require('@1inch/multicall');
-const web3 = new Web3(process.env.ALCHEMY_HTTP_LEO);
+const web3 = new Web3(process.env.ALCHEMY_ETHEREUM);
 const provider = new Web3ProviderConnector(
-  new Web3(process.env.ALCHEMY_HTTP_LEO)
+  new Web3(process.env.ALCHEMY_ETHEREUM)
 );
 
 const DB = process.env.DATABASE.replace('<PASSWORD>', process.env.DB_PASSWORD);
@@ -28,9 +28,9 @@ mongoose
 const getRate = async () => {
   const { OffChainOracleAbi } = require('../data/ABI');
 
-  const contractAddress = process.env.BALANCE_CONTRACT_ADDRESS;
+  const contractAddress = process.env.ETHEREUM_BALANCE_CONTRACT;
   // const tokens = tokenList.tokens;
-  const offChainOracleAddress = process.env.OFF_CHAIN_ORACLE_ADDRESS;
+  const offChainOracleAddress = process.env.ETHEREUM_OFF_CHAIN_ORACLE;
   const offChainOracleContract = new web3.eth.Contract(OffChainOracleAbi);
 
   const gasLimitService = new GasLimitService(provider, contractAddress);

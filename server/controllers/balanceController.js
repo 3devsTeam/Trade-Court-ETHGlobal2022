@@ -37,9 +37,9 @@ exports.getTokenImg = catchAsync(async (req, res, next) => {
 });
 
 exports.getERC20Balances = catchAsync(async (req, res, next) => {
-  const web3 = new Web3(process.env.ALCHEMY_HTTP_LEO);
+  const web3 = new Web3(process.env.ALCHEMY_ETHEREUM);
   const provider = new Web3ProviderConnector(
-    new Web3(process.env.ALCHEMY_HTTP_LEO)
+    new Web3(process.env.ALCHEMY_ETHEREUM)
   );
   if (!req.params.address) {
     return new AppError('Address is empty', 400);
@@ -48,11 +48,11 @@ exports.getERC20Balances = catchAsync(async (req, res, next) => {
   // const tokenList = JSON.parse(JSON.stringify(tmp));
   const gasLimitService = new GasLimitService(
     provider,
-    process.env.BALANCE_CONTRACT_ADDRESS
+    process.env.ETHEREUM_BALANCE_CONTRACT
   );
   const multiCallService = new MultiCallService(
     provider,
-    process.env.BALANCE_CONTRACT_ADDRESS
+    process.env.ETHEREUM_BALANCE_CONTRACT
   );
   const balanceOfGasUsage = 30_000;
   const requests = tokenList.map((el) => {
