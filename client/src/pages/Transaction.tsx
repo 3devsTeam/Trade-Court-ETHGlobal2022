@@ -201,7 +201,7 @@ export const Transaction = () => {
   const claimTokens = async (id: string) => {
     try {
       claimContract?.().then(() => {
-        OfferService.claimByID(id!);
+        OfferService.claimByID(id!).then(() => navigate("/"));
       });
     } catch (err) {
       console.log(err);
