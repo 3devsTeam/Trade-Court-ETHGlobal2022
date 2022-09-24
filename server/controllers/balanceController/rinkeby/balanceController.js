@@ -20,7 +20,7 @@ exports.getBalance = catchAsync(async (req, res, next) => {
         decimals: 18,
         logoUrl:
           'https://tokens.1inch.io/0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee.png',
-        balance: balanceInEth,
+        balance: ethers.utils.parseEther(balanceInEth).toString(),
       },
     ],
   });
