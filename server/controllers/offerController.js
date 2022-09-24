@@ -85,11 +85,9 @@ exports.joinOffer = catchAsync(async (req, res, next) => {
   await Offer.findOneAndUpdate(
     { _id: req.params.id },
     {
-      room: {
-        taker: req.user._id,
-        stage: 'waiting taker',
-        amount: req.body.amount,
-      },
+      $set: { 'room.taker': req.user._id },
+      $set: { 'room.stage': 'waiting taker' },
+      $set: { 'room.amount': req.body.amount },
     }
   );
   res.status(200).json({
