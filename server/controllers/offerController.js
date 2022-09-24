@@ -82,16 +82,20 @@ exports.joinOffer = catchAsync(async (req, res, next) => {
     return next(new AppError('Amount is too big', 400));
   }
 
-  await Offer.findOneAndUpdate(
+  const resp = await Offer.findOneAndUpdate(
     { _id: req.params.id },
     {
-      $set: { 'room.taker': req.user._id },
-      $set: { 'room.stage': 'waiting taker' },
-      $set: { 'room.amount': req.body.amount },
-    }
+      $set: {
+        'room.taker': req.user._id,
+        'room.stage': 'waiting taker',
+        'room.amount': req.body.amount,
+      },
+    },
+    { new: true }
   );
   res.status(200).json({
     message: 'success',
+    resp,
   });
 });
 

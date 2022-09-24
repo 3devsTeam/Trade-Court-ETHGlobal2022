@@ -62,7 +62,7 @@ exports.takerClaimed = catchAsync(async (req, res, next) => {
   const newAmount = offer.amount - offer.room.amount;
   const newQuantity = offer.quantity - offer.room.amount / offer.unitPrice;
   await Offer.findByIdAndUpdate(req.params.id, {
-    room: { starge: 'no taker' },
+    room: { stage: 'no taker' },
     $set: { amount: newAmount, quantity: newQuantity },
   });
   res.status(200).json({
