@@ -1,32 +1,32 @@
-const User = require('../models/userModel');
-const catchAsync = require('../utils/catchAsync');
+const Offer = require("../models/offerModel");
+const User = require("../models/userModel");
+const catchAsync = require("../utils/catchAsync");
 
 exports.getAllUsers = catchAsync(async (req, res, next) => {
   const allUsers = await User.find();
 
   res.status(201).json({
-    status: 'success',
+    message: "success",
     data: {
       allUsers: allUsers,
     },
   });
 });
 
-exports.getUser = catchAsync(async (req, res, next) => {
-  const user = await User.findById(req.params.id);
-
+exports.getMe = catchAsync(async (req, res, next) => {
+  const user = await Offer.find({
+    $or: [{ maker: req.user._id }, { "room.taker": req.user._id }],
+  }).populate("crypto fiat payMethods.bank");
   res.status(201).json({
-    status: 'success',
-    data: {
-      user: user,
-    },
+    message: "success",
+    user,
   });
 });
 
 exports.createUser = catchAsync(async (req, res, next) => {
   const newUser = await User.create(req.body);
   res.status(201).json({
-    status: 'success',
+    message: "success",
     data: {
       newUser: newUser,
     },

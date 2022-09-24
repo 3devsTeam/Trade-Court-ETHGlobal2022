@@ -1,14 +1,10 @@
 const mongoose = require('mongoose');
 
-const cryptoSchema = new mongoose.Schema({
+const ethereumSchema = new mongoose.Schema({
   address: {
     type: String,
     required: true,
     unique: true,
-  },
-  chainId: {
-    type: Number,
-    required: true,
   },
   name: {
     type: String,
@@ -29,5 +25,5 @@ const cryptoSchema = new mongoose.Schema({
   },
 });
 
-const Crypto = mongoose.model('Crypto', cryptoSchema);
-module.exports = Crypto;
+const Ethereum = mongoose.model('ethereum', ethereumSchema);
+module.exports = Ethereum;

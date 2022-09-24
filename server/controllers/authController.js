@@ -17,12 +17,15 @@ const createSendToken = (user, statusCode, res) => {
     expires: new Date(
       Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000
     ),
-    httpOnly: true,
+    httpOnly: false,
+    secure: false,
+    // sameSite: 'none',
   };
   if (process.env.NODE_ENV === 'production') cookieOptions.secure = true;
   res.cookie('jwt', token, cookieOptions);
+  res.set('access-control-expose-headers', 'Set-Cookie');
   res.status(statusCode).json({
-    status: 'success',
+    message: 'success',
     token,
     data: {
       user,
@@ -35,7 +38,6 @@ exports.login = catchAsync(async (req, res, next) => {
   let user = await User.findOne({ address });
   if (!user) {
     user = await User.create({ address: address });
-    console.log(`new user ${address}`);
   }
   createSendToken(user, 201, res);
 });
@@ -55,16 +57,19 @@ exports.protect = catchAsync(async (req, res, next) => {
     return next(new AppError(`user dont exist`, 401));
   }
   req.user = currentUser;
-  console.log(req.user._id);
   return next();
 });
 
 exports.logout = (req, res) => {
   res.cookie('jwt', 'loggedout', {
     expires: new Date(Date.now() + 1),
-    httpOnly: true,
+    httpOnly: false,
+    secure: false,
+    sameSite: 'none',
   });
-  res.status(200).json({ status: 'success' });
+  res.status(200).json({
+    message: 'success',
+  });
 };
 
 exports.accessOnly = (...roles) => {

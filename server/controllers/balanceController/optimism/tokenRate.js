@@ -1,44 +1,44 @@
 const fs = require('fs');
 const dotenv = require('dotenv');
-dotenv.config({ path: './config.env' });
+dotenv.config({ path: '../../../config.env' });
 const Web3 = require('web3');
 const mongoose = require('mongoose');
 const { BigNumber } = require('ethers');
-const Crypto = require('../models/cryptoModel');
+const Crypto = require('../../../models/cryptoModel');
 const {
   Web3ProviderConnector,
   MultiCallService,
   GasLimitService,
 } = require('@1inch/multicall');
-const web3 = new Web3(process.env.ALCHEMY_HTTP_LEO);
+const web3 = new Web3(process.env.ALCHEMY_OPTIMISM);
 const provider = new Web3ProviderConnector(
-  new Web3(process.env.ALCHEMY_HTTP_LEO)
+  new Web3(process.env.ALCHEMY_OPTIMISM)
 );
 
-const DB = process.env.DATABASE.replace('<PASSWORD>', process.env.DB_PASSWORD);
-mongoose
-  .connect(DB, {
-    useNewUrlParser: true,
-  })
-  .then(() => {
-    console.log('connected');
-  });
+// const DB = process.env.DATABASE.replace('<PASSWORD>', process.env.DB_PASSWORD);
+// mongoose
+//   .connect(DB, {
+//     useNewUrlParser: true,
+//   })
+//   .then(() => {
+//     console.log('connected');
+//   });
 
-// const tokenList = require('../data/erc20TokenList');
+const tokens = require('./tokenList.json');
 const getRate = async () => {
-  const { OffChainOracleAbi } = require('../data/ABI');
+  const { OffChainOracleAbi } = require('./ABI');
 
-  const contractAddress = process.env.BALANCE_CONTRACT_ADDRESS;
+  const contractAddress = process.env.OPTIMISM_BALANCE_CONTRACT;
   // const tokens = tokenList.tokens;
-  const offChainOracleAddress = process.env.OFF_CHAIN_ORACLE_ADDRESS;
+  const offChainOracleAddress = process.env.OPTIMISM_OFF_CHAIN_ORACLE;
   const offChainOracleContract = new web3.eth.Contract(OffChainOracleAbi);
 
   const gasLimitService = new GasLimitService(provider, contractAddress);
   const multiCallService = new MultiCallService(provider, contractAddress);
 
   const balanceOfGasUsage = 30_000;
-  const tmp = await Crypto.find().select('-__v');
-  const tokens = JSON.parse(JSON.stringify(tmp));
+  // const tmp = await Crypto.find().select('-__v');
+  // const tokens = JSON.parse(JSON.stringify(tmp));
   const requests = tokens.map((token) => {
     return {
       to: offChainOracleAddress,
@@ -55,7 +55,7 @@ const getRate = async () => {
   const gasLimit = gasLimitService.calculateGasLimit();
 
   const params = {
-    maxChunkSize: 100,
+    maxChunkSize: 50,
     retriesLimit: 3,
     blockNumber: 'latest',
     gasBuffer: 3000000,
@@ -79,16 +79,12 @@ const getRate = async () => {
         }
       }
 
-      fs.writeFileSync(
-        './data/tokenRate.json',
-        JSON.stringify(prices),
-        (err) => {
-          if (err) console.log(err);
-          else {
-            console.log('File written successfully');
-          }
+      fs.writeFileSync('./tokenRate.json', JSON.stringify(prices), (err) => {
+        if (err) console.log(err);
+        else {
+          console.log('File written successfully');
         }
-      );
+      });
     });
 };
 console.log('token rate is running');

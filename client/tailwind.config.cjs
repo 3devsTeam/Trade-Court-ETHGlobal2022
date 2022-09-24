@@ -19,6 +19,7 @@ module.exports = {
         modalOverlay: "#313131",
         lightGray: "#f3f4f6",
         transparent: "transparent",
+        yellow: "#F8C011",
       },
       fontSize: {
         xs: "16px",
@@ -43,7 +44,9 @@ module.exports = {
       },
       gridTemplateColumns: {
         offer: "0.5fr minmax(0, 1fr) 0.6fr 0.7fr 0.5fr",
+        profileOffer: "0.1fr 0.2fr 0.2fr 0.2fr 0.3fr 0.2fr 0.1fr",
         form: "0.6fr 0.4fr",
+        profile: "0.3fr 0.7fr",
       },
     },
   },

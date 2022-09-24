@@ -1,5 +1,5 @@
-const AppError = require('../utils/appError');
-const catchAsync = require('../utils/catchAsync');
+const AppError = require('../../../utils/appError');
+const catchAsync = require('../../../utils/catchAsync');
 const Web3 = require('web3');
 const fs = require('fs');
 const { BigNumber } = require('ethers');
@@ -8,52 +8,46 @@ const {
   MultiCallService,
   GasLimitService,
 } = require('@1inch/multicall');
-// const Crypto = require('../models/cryptoModel');
-const { ERC20ABI } = require('../data/ABI');
-const tokenList = require('../data/erc20TokenList');
+const { ERC20ABI } = require('./ABI');
+const tokenList = require('./tokenList');
 
-exports.getERC20Rate = catchAsync(async (req, res, next) => {
-  const prices = fs.readFileSync('./data/tokenRate.json', 'utf-8');
+exports.getRate = catchAsync(async (req, res, next) => {
+  console.log(__dirname);
+  const prices = fs.readFileSync(`${__dirname}/tokenRate.json`, 'utf-8');
   res.status(200).json({
-    msg: 'success',
+    message: 'success',
     data: JSON.parse(prices),
   });
 });
 
 exports.getTokenImg = catchAsync(async (req, res, next) => {
-  fs.readFile(
-    `${__dirname}/../data/erc20TokenImg/${req.params.url}.png`,
-    function (err, content) {
-      if (err) {
-        res.writeHead(400, { 'Content-type': 'text/html' });
-        console.log(err);
-        res.end('No such image');
-      } else {
-        res.writeHead(200, { 'Content-type': 'image/jpg' });
-        res.end(content);
-      }
+  fs.readFile(`./tokenImg/${req.params.url}.png`, function (err, content) {
+    if (err) {
+      res.writeHead(400, { 'Content-type': 'text/html' });
+      console.log(err);
+      res.end('No such image');
+    } else {
+      res.writeHead(200, { 'Content-type': 'image/jpg' });
+      res.end(content);
     }
-  );
+  });
 });
 
-exports.getERC20Balances = catchAsync(async (req, res, next) => {
-  const web3 = new Web3(process.env.ALCHEMY_HTTP_LEO);
+exports.getBalance = catchAsync(async (req, res, next) => {
+  const web3 = new Web3(process.env.ALCHEMY_POLYGON);
   const provider = new Web3ProviderConnector(
-    new Web3(process.env.ALCHEMY_HTTP_LEO)
+    new Web3(process.env.ALCHEMY_POLYGON)
   );
   if (!req.params.address) {
-    console.log(req.params);
     return new AppError('Address is empty', 400);
   }
-  // const tmp = await Crypto.find().select('-__v');
-  // const tokenList = JSON.parse(JSON.stringify(tmp));
   const gasLimitService = new GasLimitService(
     provider,
-    process.env.BALANCE_CONTRACT_ADDRESS
+    process.env.POLYGON_BALANCE_CONTRACT
   );
   const multiCallService = new MultiCallService(
     provider,
-    process.env.BALANCE_CONTRACT_ADDRESS
+    process.env.POLYGON_BALANCE_CONTRACT
   );
   const balanceOfGasUsage = 30_000;
   const requests = tokenList.map((el) => {
@@ -79,12 +73,12 @@ exports.getERC20Balances = catchAsync(async (req, res, next) => {
     gasLimit,
     params
   );
-  ethBalance = await web3.eth.getBalance(req.params.address);
+  nativeBalance = await web3.eth.getBalance(req.params.address);
   tokenList.forEach((el, index) => {
     const address = el['address'].toString();
     let balance = 0;
     if (address === '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee') {
-      balance = ethBalance;
+      balance = nativeBalance;
     } else {
       if (response[index] !== '0x') {
         const decodedRate = BigNumber.from(response[index]);
@@ -122,7 +116,7 @@ exports.getERC20Balances = catchAsync(async (req, res, next) => {
     }
   }); //TODO: add aplphabetic sort after amount sort
   res.status(200).json({
-    msg: 'success',
+    message: 'success',
     data: tokenList,
   });
 });
