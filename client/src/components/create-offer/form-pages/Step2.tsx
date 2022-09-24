@@ -4,10 +4,11 @@ import { Input } from "../Input";
 import { Dropdown } from "../Dropdown";
 
 import { useActions } from "../../../hooks/useActions";
-
+import { useScrollTop } from "../../../hooks/useScrollTop";
 import { TextArea } from "../TextArea";
 import { Button } from "../Button";
 import { Payment } from "../Payment";
+import { FormWrapper } from "../FormWrapper";
 
 export const Step2 = () => {
   const {
@@ -47,7 +48,7 @@ export const Step2 = () => {
   const regionLogoUrl = region?.logoUrl;
 
   return (
-    <form className={"flex flex-col gap-5"}>
+    <FormWrapper>
       <div>
         <p className={"text-lg font-bold mb-1 ml-[10px]"}>Payment methods</p>
         <div className={"flex gap-1 overflow-x-auto"}>
@@ -104,6 +105,6 @@ export const Step2 = () => {
         tColor={"white"}
         rounded={"15px"}
       />
-    </form>
+    </FormWrapper>
   );
 };

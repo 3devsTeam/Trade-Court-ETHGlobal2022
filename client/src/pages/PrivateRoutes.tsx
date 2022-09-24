@@ -6,7 +6,7 @@ import Cookies from "js-cookie";
 export const PrivateRoutes = () => {
   const isLogged = Boolean(localStorage.getItem("isLogged"));
 
-  console.log(typeof isLogged);
+  //console.log(typeof isLogged);
 
   const auth = { token: isLogged };
 

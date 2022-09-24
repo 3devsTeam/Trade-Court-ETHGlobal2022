@@ -28,7 +28,7 @@ export const Input = ({
         <input
           type={type}
           onChange={(e) => onAction(e.target.value)}
-          className={`outline-none p-[10px] rounded-[15px] cursor-${cursor} w-full h-full`}
+          className={`outline-none p-[10px] rounded-[15px] cursor-${cursor} w-full h-full bg-transparent`}
           placeholder={placeholder}
           value={value ? value : ""}
         />

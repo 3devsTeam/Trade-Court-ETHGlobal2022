@@ -10,6 +10,7 @@ import { TextArea } from "../TextArea";
 import { Button } from "../Button";
 import { TimeLimit } from "../TimeLimit";
 import { totalAmount } from "../../../utils/totalAmount";
+import { FormWrapper } from "../FormWrapper";
 
 export const Step3 = () => {
   const { setMinPriceLimit, setMaxPriceLimit, setTimeLimit, setComment } =
@@ -21,7 +22,7 @@ export const Step3 = () => {
   const { ticker } = fiat;
 
   return (
-    <form className={"flex flex-col gap-5"}>
+    <FormWrapper>
       <TimeLimit
         onAction={setTimeLimit}
         label={"Order time limit"}
@@ -56,6 +57,6 @@ export const Step3 = () => {
         label={"Comment"}
         placeholder={"Enter comment"}
       />
-    </form>
+    </FormWrapper>
   );
 };

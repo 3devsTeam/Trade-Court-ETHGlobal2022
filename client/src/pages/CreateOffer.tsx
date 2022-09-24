@@ -17,6 +17,12 @@ import { BigNumber, ethers } from "ethers";
 import { randomNumber } from "../utils/randomNumber";
 import { convertToSeconds } from "../utils/convertToSeconds";
 import React, { useEffect, useState } from "react";
+import { useScrollTop } from "../hooks/useScrollTop";
+import { useTokens } from "../hooks/useTokens";
+import { useQuery } from "wagmi";
+import { SkeletonWrapper } from "../components/SkeletonWrapper";
+import { is } from "immer/dist/internal";
+import { IFiat } from "../models/models";
 
 export const CreateOffer = () => {
   const {
@@ -30,8 +36,47 @@ export const CreateOffer = () => {
     timeLimit,
   } = useTypedSelector((state) => state.offerReducer);
 
-  // const args = [20, 10000, 10000, ethers.utils.parseEther("0.01"), 0];
-  // const value = ethers.utils.parseEther("0.01");
+  const {
+    setFiat,
+    setPaymentMethod,
+    setRegion,
+    setCrypto,
+    nextStep,
+    prevStep,
+  } = useActions();
+
+  const { tokens, isSuccessRequest } = useTokens();
+
+  const { data: allFiat, isSuccess: fiatSuccess } = useQuery(
+    ["get fiat"],
+    () => OfferService.getFiat(),
+    {
+      select: (data) => data.data.data.allFiat,
+      onSuccess: (data) => setFiat(data[0]),
+    }
+  );
+
+  const isLoaded = isSuccessRequest && fiatSuccess;
+
+  useEffect(() => {
+    if (isLoaded) {
+      setCrypto(tokens[0]);
+      setPaymentMethod(allFiat[0].banks[0]);
+      setRegion(allFiat[0].regions[0]);
+    }
+  }, [isLoaded]);
+
+  useEffect(() => {
+    if (isLoaded) {
+      console.log("fiat changed");
+      console.log(allFiat);
+
+      setPaymentMethod(
+        allFiat.filter((e: IFiat) => e._id === fiat._id)[0].banks[0]
+      );
+      setRegion(allFiat.filter((e: IFiat) => e._id === fiat._id)[0].regions[0]);
+    }
+  }, [fiat]);
 
   const limitPrice = (value: any, unitPrice: any) => {
     if (!BigNumber.from(value).eq(BigNumber.from(0))) {
@@ -57,19 +102,12 @@ export const CreateOffer = () => {
     limitPrice(orderLimit[0], unitPrice), // фиатный минимальный лимит
   ];
 
-  //console.log(args);
   const value = ethers.utils.parseEther(quantity.toString());
-  //console.log(value.toString());
-
-  // console.log("min limit", args[4].toString());
-  // console.log("max limit", args[3].toString());
 
   const { data, isError, isLoading, isSuccess, writeAsync, hash } =
     useEthContractWithValue(args, value, "makeRoomEth");
 
   const { step } = useTypedSelector((state) => state.formReducer);
-
-  const { nextStep, prevStep } = useActions();
 
   const navigate = useNavigate();
 
@@ -137,59 +175,68 @@ export const CreateOffer = () => {
 
   return (
     <div>
-      <Progressbar steps={steps} step={step} />
-      <div className={"grid grid-cols-2 gap-5"}>
-        <Form>
-          {step === 1 && <Step1 />}
-          {step === 2 && <Step2 />}
-          {step === 3 && <Step3 />}
-        </Form>
-        <Preview />
-        <FormNav>
-          <div className="flex gap-3">
-            {step > 1 && (
+      <SkeletonWrapper isLoaded={isLoaded} height={100}>
+        <Progressbar steps={steps} step={step} />
+      </SkeletonWrapper>
+
+      <div className={"grid grid-cols-2 gap-5 mt-[20px]"}>
+        <div>
+          <SkeletonWrapper isLoaded={isLoaded} height={600}>
+            {step === 1 && <Step1 tokens={tokens} allFiat={allFiat} />}
+            {step === 2 && <Step2 />}
+            {step === 3 && <Step3 />}
+          </SkeletonWrapper>
+        </div>
+
+        <SkeletonWrapper isLoaded={isLoaded} height={600}>
+          <Preview />
+        </SkeletonWrapper>
+
+        <SkeletonWrapper isLoaded={isLoaded} height={100}>
+          <div className="flex justify-between items-center p-5 bg-white rounded-[20px] shadow-lg h-[100px]">
+            <div className={"flex items-center gap-3"}>
+              {step > 1 && (
+                <Button
+                  onAction={prevStep}
+                  name={"Back"}
+                  color={"purple"}
+                  rounded={"20px"}
+                  fWeight={"bold"}
+                  fSize={"lg"}
+                  tColor={"white"}
+                />
+              )}
+
               <Button
-                onAction={prevStep}
-                name={"Prev"}
+                onAction={() => {
+                  step < 3 ? nextStep() : step === 3 ? createHandler() : null;
+                }}
+                name={
+                  step === 3
+                    ? "Create offer"
+                    : isLoading
+                    ? "Make Room ERC20"
+                    : "Next"
+                }
                 color={"purple"}
                 rounded={"20px"}
                 fWeight={"bold"}
                 fSize={"lg"}
                 tColor={"white"}
               />
-            )}
-
-            <Button
-              onAction={() => {
-                step < 3 ? nextStep() : step === 3 ? createHandler() : null;
-              }}
-              name={
-                step === 3
-                  ? "Create offer"
-                  : isLoading
-                  ? "Make Room ERC20"
-                  : "Next"
-              }
-              color={"purple"}
-              rounded={"20px"}
-              fWeight={"bold"}
-              fSize={"lg"}
-              tColor={"white"}
-            />
+            </div>
 
             <div>
-              {isLoading}
-              {data?.hash}
+              <Button
+                onAction={null}
+                name={"Help"}
+                fWeight={"bold"}
+                fSize={"lg"}
+                tColor={"purple"}
+              />
             </div>
           </div>
-          <Button
-            onAction={null}
-            name={"Help"}
-            fWeight={"bold"}
-            fSize={"lg"}
-            tColor={"purple"}
-          />
-        </FormNav>
+        </SkeletonWrapper>
       </div>
     </div>
   );

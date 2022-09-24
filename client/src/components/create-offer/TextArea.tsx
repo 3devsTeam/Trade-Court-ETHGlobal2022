@@ -23,10 +23,11 @@ export const TextArea = ({
 
       <div>
         <textarea
+          spellCheck={false}
           value={value}
           onChange={(e) => onAction(e.target.value)}
           placeholder={placeholder}
-          className={`border-2 border-purple rounded-[15px] p-[10px] w-full h-[100px] min-h-[100px]`}
+          className={`border-2 border-purple rounded-[15px] p-3 w-full min-h-[200px]`}
         />
       </div>
     </label>

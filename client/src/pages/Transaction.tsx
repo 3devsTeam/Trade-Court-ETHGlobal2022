@@ -228,26 +228,22 @@ export const Transaction = () => {
       )}
 
       <div className={"grid grid-cols-form gap-5 mt-[20px]"}>
-        <Form>
-          {isLoading ? (
-            <Skeleton height={50} />
-          ) : (
-            <div>
-              <ProgressBar
-                activeStep={step}
-                steps={["Transfer", "Approval", "Success"]}
-                images={[transfer, lock, success]}
-              />
-              <Main
-                step={step}
-                role={role}
-                id={id!}
-                offer={offer}
-                setPayMethod={setPayMethod}
-                activePayMethod={payMethod}
-              />
-            </div>
-          )}
+        <Form isLoaded={!isLoading}>
+          <div>
+            <ProgressBar
+              activeStep={step}
+              steps={["Transfer", "Approval", "Success"]}
+              images={[transfer, lock, success]}
+            />
+            <Main
+              step={step}
+              role={role}
+              id={id!}
+              offer={offer}
+              setPayMethod={setPayMethod}
+              activePayMethod={payMethod}
+            />
+          </div>
         </Form>
         <Chat
           chatMessages={chatMessages}

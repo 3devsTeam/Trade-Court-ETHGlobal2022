@@ -1,6 +1,4 @@
 import React from "react";
-import Skeleton from "react-loading-skeleton";
-import "react-loading-skeleton/dist/skeleton.css";
 
 interface IForm {
   children: React.ReactNode;
@@ -8,7 +6,9 @@ interface IForm {
 
 export const Form = ({ children }: IForm) => {
   return (
-    <div className={`bg-white break-words rounded-[20px] shadow-lg p-5`}>
+    <div
+      className={`flex flex-col gap-5 bg-white break-words rounded-[20px] shadow-lg`}
+    >
       {children}
     </div>
   );

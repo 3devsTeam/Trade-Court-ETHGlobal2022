@@ -8,6 +8,8 @@ import { useActions } from "../hooks/useActions";
 
 export const useTokens = () => {
 
+	console.log('use tokens')
+
     const { setCrypto } = useActions()
 
 	const { chain } = useNetwork()

@@ -21,7 +21,7 @@ import { Provider } from "react-redux";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 const { chains, provider, webSocketProvider } = configureChains(
-  [chain.mainnet, chain.polygon, chain.optimism, chain.arbitrum, chain.rinkeby],
+  [chain.mainnet, chain.rinkeby, chain.polygon, chain.optimism],
   [
     // alchemyProvider({ apiKey: import.meta.env.VITE_ALCHEMY_ID }),
     infuraProvider({ apiKey: import.meta.env.VITE_INFURA_ID }),

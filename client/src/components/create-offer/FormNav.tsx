@@ -6,13 +6,17 @@ import { OfferService } from "../../services/offer.services";
 import { multiply } from "../../utils/multiply";
 import { Modal } from "../modal/Modal";
 import { useNavigate } from "react-router";
+import Skeleton from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
 
-export const FormNav = ({ children }: any) => {
+interface IFormNav {
+  children: React.ReactNode;
+}
+
+export const FormNav = ({ children }: IFormNav) => {
   return (
     <div
-      className={
-        "bg-white rounded-[20px] shadow-lg p-5 max-h-[100px] flex justify-between items-center"
-      }
+      className={`bg-white rounded-[20px] shadow-lg max-h-[100px] flex justify-between items-center`}
     >
       {children}
     </div>
