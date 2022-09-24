@@ -1,7 +1,17 @@
 import React from "react";
 import { IOffer } from "../../models/models";
+import { round } from "../../utils/round";
 
-export const Info = ({ fiat, crypto, amount, unitPrice, quantity }: IOffer) => {
+export const Info = ({
+  fiat,
+  crypto,
+  amount,
+  unitPrice,
+  quantity,
+  room,
+}: IOffer) => {
+  const { amount: roomAmount } = room;
+
   return (
     <div
       className={
@@ -24,7 +34,7 @@ export const Info = ({ fiat, crypto, amount, unitPrice, quantity }: IOffer) => {
       <div className={"flex flex-col"}>
         <span className={"text-lg font-bold"}>Amount</span>
         <span className={"text-lg font-bold text-purple"}>
-          {amount} {fiat.ticker}
+          {roomAmount} {fiat.ticker}
         </span>
       </div>
 
@@ -38,7 +48,7 @@ export const Info = ({ fiat, crypto, amount, unitPrice, quantity }: IOffer) => {
       <div className={"flex flex-col"}>
         <span className={"text-lg font-bold"}>Quantity</span>
         <span className={"text-lg font-bold text-purple"}>
-          {quantity} {crypto.symbol}
+          {round(roomAmount / unitPrice, 4)} {crypto.symbol}
         </span>
       </div>
     </div>

@@ -8,6 +8,9 @@ export const useEthContract = (args: any, functionName: string) => {
       ...ethContractConfig,
       functionName: functionName,
       args: args,
+      overrides: {
+        gasLimit: 400000
+      }
     });
 
     const { data, error, isError, writeAsync } = useContractWrite(config);

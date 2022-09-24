@@ -10,7 +10,7 @@ export const Progressbar = ({ steps, step }: IProgressBar) => {
   return (
     <div
       className={
-        "bg-white flex justify-between mb-[22px] rounded-[20px] px-[21px] py-[12px] shadow-lg"
+        "bg-white flex justify-between mb-[22px] rounded-[20px] px-[21px] py-[12px] shadow-customDark"
       }
     >
       {steps.map((stepElement, i) => {

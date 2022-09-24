@@ -21,9 +21,9 @@ export const OfferInput = ({
 }: IOfferInput) => {
   return (
     <div>
-      <label htmlFor={label}>
+      {/* <label htmlFor={label}>
         <span className={"font-bold"}>{label}</span>
-      </label>
+      </label> */}
       <div
         className={
           "flex items-center border-2 border-purple rounded-[20px] font-bold"

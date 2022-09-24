@@ -21,7 +21,11 @@ export const Preview = () => {
   const { ticker, logoUrl: fiatImage } = fiat;
 
   return (
-    <div className={"bg-white rounded-[20px] shadow-lg row-span-2 break-words"}>
+    <div
+      className={
+        "bg-white rounded-[20px] shadow-customDark row-span-2 break-words"
+      }
+    >
       <div className={"bg-purple rounded-t-[20px] p-5"}>
         <p className={"text-white text-[32px] font-bold"}>Preview</p>
       </div>
@@ -85,7 +89,7 @@ export const Preview = () => {
             <span className={"font-bold text-lg"}>Total Amount</span>
           </div>
           <div>
-            <span>{round(multiply(unitPrice, quantity))}</span>
+            <span>{round(multiply(unitPrice, quantity), 4)}</span>
             <span> {ticker}</span>
           </div>
         </div>

@@ -26,7 +26,7 @@ export const Offer = (offer: IOffer) => {
   const ref = useRef();
   return (
     <div>
-      <div className="bg-white shadow-md grid text-sm grid-cols-offer gap-5 items-center h-[100px] w-full px-[20px] rounded-[20px] mb-[20px]">
+      <div className="bg-white shadow-customDark grid text-sm grid-cols-offer gap-5 items-center h-[100px] w-full px-[20px] rounded-[20px] mb-[20px]">
         <div className="text-md">
           <div>
             <p className="font-bold">{truncateAddress(address)}</p>
@@ -35,28 +35,35 @@ export const Offer = (offer: IOffer) => {
         <div>
           <div>
             <div>
-              <p className={"text-gray font-bold"}>Available </p>
-              <span>{quantity}</span>
-              <span> {symbol}</span>
+              <p className={"text-sm"}>
+                <span className={"font-normal"}>Available: </span>
+                <span className={"font-bold"}>
+                  {quantity} {symbol}
+                </span>
+              </p>
             </div>
             <div>
-              <p className={"text-gray font-bold"}>Limit </p>
-              <span>
-                {orderLimit[0]}-{orderLimit[1]}
-              </span>
-              <span className="font-normal"> {ticker}</span>
+              <p className={"text-sm"}>
+                <span className={"font-normal"}>Limit: </span>
+                <span className={"font-bold"}>
+                  {orderLimit[0]}-{orderLimit[1]} {ticker}
+                </span>
+              </p>
             </div>
           </div>
         </div>
         <div className="text-md">
-          <span className={"text-purple font-bold"}>
-            {unitPrice} {ticker}
-          </span>
+          <p className={""}>
+            <span className={"font-bold text-lg"}>{unitPrice}</span>
+            <span className={"text-sm text-gray font-bold"}> {ticker}</span>
+          </p>
         </div>
         <div>
           <div>
             {payments.map((p: string, i: number) => (
-              <div key={i}>{p}</div>
+              <div key={i} className={"text-sm font-bold"}>
+                {p}
+              </div>
             ))}
           </div>
         </div>
@@ -64,11 +71,10 @@ export const Offer = (offer: IOffer) => {
           <div>
             <button
               onClick={() => setOpenOfferModal(!openOfferModal)}
-              className="bg-lightGreen text-lg text-white rounded-[10px] font-bold p-2
-            transition-all duration-500 hover:bg-white w-full
-             hover:text-purple hover:scale-110 hover:shadow-lg"
+              className="bg-green text-lg text-white rounded-[10px] font-bold p-[6px]
+            transition-all duration-500 hover:bg-lightGreen w-full"
             >
-              <span className={"text-md"}>Buy {symbol}</span>
+              <span className={"text-lg"}>Buy {symbol}</span>
             </button>
           </div>
         </div>

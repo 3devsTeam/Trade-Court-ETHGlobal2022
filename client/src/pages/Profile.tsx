@@ -7,6 +7,7 @@ import { IOffer } from "../models/models";
 import { off } from "process";
 import { ProfileOffer } from "../components/profile/ProfileOffer";
 import { useAccount, useEnsName, useEnsAvatar } from "wagmi";
+import { Header } from "../components/home/Header";
 
 export const Profile = () => {
   const { address } = useAccount();
@@ -36,7 +37,7 @@ export const Profile = () => {
     () => OfferService.getUserOffers(),
     {
       select: (data) => data.data.user,
-      refetchInterval: 5000,
+      // refetchInterval: 5000,
     }
   );
 
@@ -57,15 +58,11 @@ export const Profile = () => {
       </div>
 
       <div>
-        <div className={"grid grid-flow-col mt-[50px]"}>
-          {sections.map((s, i) => (
-            <div key={i} className={`font-bold text-lg`}>
-              {s}
-            </div>
-          ))}
+        <div className={"grid grid-cols-profileOffer mt-[20px] px-6"}>
+          <Header headers={sections} />
         </div>
 
-        <section className={"flex flex-col gap-5 mt-[50px]"}>
+        <section className={"flex flex-col gap-5 mt-[20px]"}>
           {isLoading ? (
             <p>loading</p>
           ) : isError ? (

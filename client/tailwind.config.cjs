@@ -11,7 +11,7 @@ module.exports = {
     extend: {
       colors: {
         gray: "#C6C6C6",
-        green: "#1DB954",
+        green: "#09b25b",
         lightGreen: "#0ee45a",
         purple: "#AE8AEF",
         black: "#0A060A",
@@ -20,6 +20,9 @@ module.exports = {
         lightGray: "#f3f4f6",
         transparent: "transparent",
         yellow: "#F8C011",
+      },
+      boxShadow: {
+        customDark: "0 10px 15px -3px rgba(0, 0, 0, 0.2)",
       },
       fontSize: {
         xs: "16px",

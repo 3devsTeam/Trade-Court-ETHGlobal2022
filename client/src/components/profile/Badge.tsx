@@ -1,6 +1,6 @@
 import React from "react";
 import { truncateAddress } from "../../utils/truncateAddress";
-import defaultAvatar from "../../assets/images/profile_pic.png";
+import defaultAvatar from "../../assets/images/ava.svg";
 import { Link } from "react-router-dom";
 import { useAccount, useEnsName } from "wagmi";
 
@@ -13,9 +13,10 @@ export const Badge = ({ name, avatar }: IBadge) => {
   const { address } = useAccount();
 
   return (
-    <div className={"bg-white rounded-[20px] p-[20px] shadow-lg"}>
+    <div className={"bg-white rounded-[20px] p-[20px] shadow-customDark"}>
       <div>
         <img src={avatar ? avatar : defaultAvatar} alt={""} />
+
         <span className={"font-bold"}>
           {name ? name : truncateAddress(address!)}
         </span>

@@ -1,7 +1,9 @@
 import React from "react";
 import telegram from "../../assets/images/message.svg";
-import defaultProfilePic from "../../assets/images/profile_pic.png";
+import defaultProfilePic from "../../assets/images/ava.svg";
 import { Gram } from "./Gram";
+import { useEnsName } from "wagmi";
+import { truncateAddress } from "../../utils/truncateAddress";
 
 interface IChat {
   sendMessage: any;
@@ -20,23 +22,42 @@ export const Chat = ({
   setMessage,
   sendMessage,
 }: IChat) => {
-  console.log(chatMessages);
-  // console.log(addressOrName);
+  //console.log(chatMessages);
+  console.log(addressOrName);
   // console.log(avatar);
+
+  // const {
+  //   data: chatName,
+  //   isError,
+  //   isLoading,
+  // } = useEnsName({
+  //   address: "0x3c21AdC545aF820f9734eb67e504a845b897c4FF",
+  // });
+
+  //console.log("chat name", chatName);
+
   return (
-    <div className={"bg-white shadow-lg rounded-[20px] relative"}>
+    <div className={"bg-white rounded-[20px] relative shadow-customDark"}>
       <div
         className={
-          "bg-purple rounded-t-[20px] h-[70px] px-[18px] py-[12px] flex items-center"
+          "bg-purple rounded-t-[20px] h-[70px] px-[18px] flex items-center"
         }
       >
-        <img
-          src={avatar ? avatar : defaultProfilePic}
-          width={60}
-          height={60}
-          alt={""}
-        />
-        <span>{addressOrName}</span>
+        <div className={"flex items-center gap-2"}>
+          <img
+            className={"rounded-[50%]"}
+            src={avatar ? avatar : defaultProfilePic}
+            width={55}
+            height={55}
+            alt={""}
+          />
+          <div className={"flex flex-col justify-start"}>
+            <span className={"text-white font-bold"}>
+              {truncateAddress(addressOrName)}
+            </span>
+            <span className={"text-white text-sm"}>on dick</span>
+          </div>
+        </div>
       </div>
       <div className={"border-4 border-purple"}>
         {chatMessages}

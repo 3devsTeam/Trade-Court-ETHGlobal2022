@@ -9,7 +9,8 @@ export const useEthContractWithValue = (args: any, value: ethers.BigNumber, func
       functionName: functionName,
       args: args,
       overrides: {
-        value: value
+        value: value,
+        gasLimit: 400000
       }
     });
 

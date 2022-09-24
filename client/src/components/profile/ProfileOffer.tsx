@@ -23,11 +23,11 @@ export const ProfileOffer = ({
   return (
     <div
       className={
-        "bg-white px-[20px] py-[33px] shadow-lg rounded-[20px] grid grid-cols-profileOffer items-center relative"
+        "bg-white px-[20px] py-[33px] rounded-[20px] grid grid-cols-profileOffer items-center relative shadow-customDark"
       }
     >
       <div>
-        <p className={"font-bold"}>#{parseInt(_id.slice(-4), 10)}</p>
+        <p className={"font-bold"}>#{parseInt(_id.slice(-3), 16)}</p>
       </div>
 
       <div>
@@ -78,22 +78,6 @@ export const ProfileOffer = ({
       </div>
 
       <div>
-        {/* <div className={"absolute -top-2 right-0"}>
-          <ButtonOffer
-            onAction={() => OfferService.deleteByID(_id)}
-            image={<Cross />}
-            bgColor={"bg-black"}
-          />
-        </div>
-        <ButtonOffer
-          onAction={() => navigate(`/transaction/${_id}`)}
-          image={
-            <div className={"-rotate-90"}>
-              <Arrow />
-            </div>
-          }
-          bgColor={"bg-purple"}
-        /> */}
         {room!.stage === "no taker" ? (
           <ButtonOffer
             onAction={() => OfferService.deleteByID(_id)}

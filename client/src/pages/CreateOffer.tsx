@@ -150,10 +150,12 @@ export const CreateOffer = () => {
           .then(
             (data) => {
               console.log(data);
+              console.log("tx hash:", hash?.transactionHash);
               successOfferNotify(
                 <div>
                   <p>Offer is created!</p>
                   <a
+                    target={"_blank"}
                     className={"text-purple"}
                     href={`https://rinkeby.etherscan.io/tx/${hash?.transactionHash}`}
                   >
@@ -193,7 +195,7 @@ export const CreateOffer = () => {
         </SkeletonWrapper>
 
         <SkeletonWrapper isLoaded={isLoaded} height={100}>
-          <div className="flex justify-between items-center p-5 bg-white rounded-[20px] shadow-lg h-[100px]">
+          <div className="flex justify-between items-center p-5 bg-white rounded-[20px] shadow-customDark h-[100px]">
             <div className={"flex items-center gap-3"}>
               {step > 1 && (
                 <Button

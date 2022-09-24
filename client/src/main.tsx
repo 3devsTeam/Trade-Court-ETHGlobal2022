@@ -61,6 +61,7 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
       <Provider store={store}>
         <QueryClientProvider client={queryClient}>
           <App />
+
           <ReactQueryDevtools initialIsOpen={false} />
         </QueryClientProvider>
       </Provider>

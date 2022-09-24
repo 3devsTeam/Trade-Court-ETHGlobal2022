@@ -8,7 +8,7 @@ export const FormWrapper = ({ children }: IFormWrapper) => {
   return (
     <div
       className={
-        "flex flex-col bg-white rounded-[20px] p-5 gap-5 shadow-lg h-full"
+        "flex flex-col bg-white rounded-[20px] p-5 gap-5 shadow-customDark h-full w-full"
       }
     >
       {children}

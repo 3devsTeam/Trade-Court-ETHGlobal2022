@@ -20,25 +20,27 @@ import axios from "axios";
 import { API_URl } from "../services/axios";
 import { useAccount, useEnsAvatar, useEnsName } from "wagmi";
 import { useEthContract } from "../hooks/useEthContract";
+import { SkeletonWrapper } from "../components/SkeletonWrapper";
+import { FormWrapper } from "../components/create-offer/FormWrapper";
 
 export const Transaction = () => {
   const { address } = useAccount();
 
-  const {
-    data: ensName,
-    isLoading: ensNameLoading,
-    isSuccess: ensNameSuccess,
-  } = useEnsName({
-    address,
-  });
+  // const {
+  //   data: ensName,
+  //   isLoading: ensNameLoading,
+  //   isSuccess: ensNameSuccess,
+  // } = useEnsName({
+  //   address,
+  // });
 
-  const {
-    data: ensAvatar,
-    isLoading: ensAvatarLoading,
-    isSuccess: ensAvatarSuccess,
-  } = useEnsAvatar({
-    addressOrName: address,
-  });
+  // const {
+  //   data: ensAvatar,
+  //   isLoading: ensAvatarLoading,
+  //   isSuccess: ensAvatarSuccess,
+  // } = useEnsAvatar({
+  //   addressOrName: address,
+  // });
 
   const { id } = useParams();
 
@@ -57,6 +59,9 @@ export const Transaction = () => {
     }
   };
 
+  const [name, setName] = useState("");
+  const [role, setRole] = useState("");
+
   const {
     data: offer,
     isLoading,
@@ -64,15 +69,14 @@ export const Transaction = () => {
   } = useQuery(["get offer by id"], () => OfferService.getByID(id!), {
     select: (data) => data.data.data.offer,
     onSuccess: (data) => {
-      //console.log(data);
       setRole(data.role);
       setPayMethod(data.payMethods[0]);
 
       joinRoom({
         id,
         role: data.role,
-        addressOrName: ensName ? ensName : address,
-        avatar: ensAvatar,
+        //addressOrName: ensName ? ensName : address,
+        //avatar: ensAvatar,
       });
       //console.log(data.room.stage);
 
@@ -93,7 +97,17 @@ export const Transaction = () => {
     },
   });
 
+  useEffect(() => {
+    if (role === "taker") {
+      setName(offer?.maker.address);
+    } else {
+      setName(offer?.room.taker.address);
+    }
+  }, [role]);
+
   const roomId = offer?.room.roomId;
+  const amount = offer?.room.amount;
+  const ticker = offer?.fiat.ticker;
 
   const {
     data: takerApproveData,
@@ -129,9 +143,7 @@ export const Transaction = () => {
   const joinRoom = (data: object) => {
     socket.emit("joinOffer", data);
   };
-
-  const [name, setName] = useState("");
-  const [profileImg, setProfileImg] = useState("");
+  // const [profileImg, setProfileImg] = useState("");
 
   // socket.on("setChat", (data) => {
   //   console.log("set chat from client", data);
@@ -140,7 +152,6 @@ export const Transaction = () => {
   // });
 
   const [step, setStep] = useState(1);
-  const [role, setRole] = useState("");
   const [payMethod, setPayMethod] = useState({});
   const [message, setMessage] = useState("");
 
@@ -215,27 +226,27 @@ export const Transaction = () => {
   return (
     <div>
       {/* it just to check role and step */}
-      <div className={"absolute top-20"}>
+      <div className={"absolute bottom-0 right-0 z-50"}>
         <h1>user role: {role}</h1>
         <h1>active step: {step}</h1>
         <h1>current stage: {offer?.room.stage}</h1>
       </div>
 
-      {isLoading ? (
-        <Skeleton height={100} borderRadius={20} />
-      ) : (
+      <SkeletonWrapper isLoaded={!isLoading} height={60}>
         <Info {...offer} />
-      )}
+      </SkeletonWrapper>
 
       <div className={"grid grid-cols-form gap-5 mt-[20px]"}>
-        <Form isLoaded={!isLoading}>
-          <div>
+        <SkeletonWrapper isLoaded={!isLoading} height={600}>
+          <FormWrapper>
             <ProgressBar
               activeStep={step}
               steps={["Transfer", "Approval", "Success"]}
               images={[transfer, lock, success]}
             />
             <Main
+              ticker={ticker}
+              amount={amount}
               step={step}
               role={role}
               id={id!}
@@ -243,25 +254,55 @@ export const Transaction = () => {
               setPayMethod={setPayMethod}
               activePayMethod={payMethod}
             />
-          </div>
-        </Form>
-        <Chat
-          chatMessages={chatMessages}
-          sendMessage={sendMessage}
-          message={message}
-          setMessage={setMessage}
-          addressOrName={name}
-          avatar={profileImg}
-        />
+          </FormWrapper>
+        </SkeletonWrapper>
 
-        <FormNav>
+        <SkeletonWrapper isLoaded={!isLoading} height={600}>
+          <Chat
+            chatMessages={chatMessages}
+            sendMessage={sendMessage}
+            message={message}
+            setMessage={setMessage}
+            addressOrName={name ? name : "ya loh"}
+            avatar={""}
+          />
+        </SkeletonWrapper>
+
+        <SkeletonWrapper isLoaded={!isLoading} height={100}>
           <div className={"flex items-center justify-between w-full"}>
-            <div>
-              {role === "taker" ? (
-                step === 1 ? (
+            <FormWrapper>
+              <div>
+                {role === "taker" ? (
+                  step === 1 ? (
+                    <Button
+                      onAction={() => takerConfirmed(id!)}
+                      name={"Done, next!"}
+                      fWeight={"bold"}
+                      fSize={"lg"}
+                      color={"purple"}
+                      rounded={"15px"}
+                      tColor={"white"}
+                    />
+                  ) : step === 2 ? (
+                    <span className={"text-lg font-bold"}>
+                      Waiting for confirmation...
+                    </span>
+                  ) : (
+                    <Button
+                      onAction={() => claimTokens(id!)}
+                      name={"Claim"}
+                      fWeight={"bold"}
+                      fSize={"lg"}
+                      color={"purple"}
+                      rounded={"15px"}
+                      tColor={"white"}
+                    />
+                  )
+                ) : step === 1 ? (
                   <Button
-                    onAction={() => takerConfirmed(id!)}
-                    name={"Done, next!"}
+                    disabled={true}
+                    onAction={() => {}}
+                    name={"Funds recieved"}
                     fWeight={"bold"}
                     fSize={"lg"}
                     color={"purple"}
@@ -269,53 +310,30 @@ export const Transaction = () => {
                     tColor={"white"}
                   />
                 ) : step === 2 ? (
-                  <span>Waiting for confirmation...</span>
-                ) : (
                   <Button
-                    onAction={() => claimTokens(id!)}
-                    name={"Claim"}
+                    onAction={() => makerConfirmed(id!)}
+                    name={"Funds recieved"}
                     fWeight={"bold"}
                     fSize={"lg"}
                     color={"purple"}
                     rounded={"15px"}
                     tColor={"white"}
                   />
-                )
-              ) : step === 1 ? (
-                <Button
-                  disabled={true}
-                  onAction={() => {}}
-                  name={"Funds recieved"}
-                  fWeight={"bold"}
-                  fSize={"lg"}
-                  color={"purple"}
-                  rounded={"15px"}
-                  tColor={"white"}
-                />
-              ) : step === 2 ? (
-                <Button
-                  onAction={() => makerConfirmed(id!)}
-                  name={"Funds recieved"}
-                  fWeight={"bold"}
-                  fSize={"lg"}
-                  color={"purple"}
-                  rounded={"15px"}
-                  tColor={"white"}
-                />
-              ) : step === 3 ? (
-                <Button
-                  onAction={() => navigate("/")}
-                  name={"Go to main page"}
-                  fWeight={"bold"}
-                  fSize={"lg"}
-                  color={"purple"}
-                  rounded={"15px"}
-                  tColor={"white"}
-                />
-              ) : null}
-            </div>
+                ) : step === 3 ? (
+                  <Button
+                    onAction={() => navigate("/")}
+                    name={"Go to main page"}
+                    fWeight={"bold"}
+                    fSize={"lg"}
+                    color={"purple"}
+                    rounded={"15px"}
+                    tColor={"white"}
+                  />
+                ) : null}
+              </div>
+            </FormWrapper>
           </div>
-        </FormNav>
+        </SkeletonWrapper>
       </div>
     </div>
   );

@@ -74,37 +74,40 @@ export const OfferModal = ({ close, offer }: IOfferModalProps) => {
     });
   };
 
+  const info = [
+    {
+      name: "Maker:",
+      value: truncateAddress(address),
+    },
+    {
+      name: "Unit Price:",
+      value: `${unitPrice} ${ticker}`,
+    },
+    {
+      name: "Available:",
+      value: `${quantity} ${symbol}`,
+    },
+    {
+      name: "Limit:",
+      value: `${orderLimit[0]}-${orderLimit[1]} ${ticker}`,
+    },
+  ];
+
   return (
-    <div className="border-2 border-purple rounded-[15px] grid grid-cols-2">
-      <div className="flex flex-col gap-3 p-3 cursor-default">
-        <div className={"flex justify-between"}>
-          <p className={"font-bold text-gray"}>Maker:</p>
-          <p>{truncateAddress(address)}</p>
-        </div>
-        <div className={"flex justify-between"}>
-          <p className={"font-bold text-gray"}>Unit Price: </p>
-          <p>
-            {unitPrice} {ticker}
-          </p>
-        </div>
-        <div className={"flex justify-between"}>
-          <p className={"font-bold text-gray"}>Available: </p>
-          <p>
-            {quantity} {symbol}
-          </p>
-        </div>
-        <div className={"flex justify-between"}>
-          <p className={"font-bold text-gray"}>Limit: </p>
-          <p>
-            {orderLimit[0]}-{orderLimit[1]} {ticker}
-          </p>
-        </div>
-        <div className="break-words bg-slate-100 p-2 rounded-[20px]">
+    <div className="rounded-[15px] grid grid-cols-2">
+      <div className="flex flex-col gap-3 p-3 cursor-default border-2 border-purple rounded-[20px]">
+        {info.map((i) => (
+          <div className={"flex justify-between"}>
+            <p>{i.name}</p>
+            <p className={"font-bold"}>{i.value}</p>
+          </div>
+        ))}
+        <div className="break-words bg-purple bg-opacity-20 p-2 rounded-[10px]">
           <p className={"text-sm"}>{offerComment}</p>
         </div>
       </div>
 
-      <div className="flex flex-col gap-3 border-l border-gray p-3 ">
+      <div className="flex flex-col justify-between px-3">
         <OfferInput
           label={"You pay"}
           maxValue={orderLimit[1]}
@@ -124,7 +127,7 @@ export const OfferModal = ({ close, offer }: IOfferModalProps) => {
         <div>
           <button
             onClick={() => transactionHandler()}
-            className="bg-purple font-bold p-2 shadow-md rounded-[10px] w-full"
+            className="bg-purple font-bold p-2 rounded-[20px] w-full h-[55px]"
           >
             <span className="text-white">Buy {symbol}</span>
           </button>

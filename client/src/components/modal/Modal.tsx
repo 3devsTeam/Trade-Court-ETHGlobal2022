@@ -46,11 +46,11 @@ export const Modal = ({
               width: width,
             }}
             ref={ref}
-            className={`bg-white overflow-y-auto fixed shadow-lg rounded-[20px] top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 p-5 z-50 mobile:w-screen mobile:top-0 tablet:w-screen`}
+            className={`bg-white overflow-y-auto fixed shadow-customDark rounded-[20px] top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 p-5 z-50 mobile:w-screen mobile:top-0 tablet:w-screen`}
           >
-            <div className="flex justify-between items-center mb-[20px]">
+            <div className="flex justify-between items-center mb-[10px]">
               <div>
-                <span className="font-bold text-lg mb-3">{header}</span>
+                <span className="font-bold text-lg">{header}</span>
               </div>
               {canClose && <CloseButton onClose={close} />}
             </div>

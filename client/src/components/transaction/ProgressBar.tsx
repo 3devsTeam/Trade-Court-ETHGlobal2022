@@ -23,6 +23,7 @@ export const ProgressBar = ({ steps, images, activeStep }: IProgressBar) => {
                 alt=""
               />
             </div>
+
             <span
               className={`${
                 activeStep - 1 === i ? "text-black" : "text-gray"
