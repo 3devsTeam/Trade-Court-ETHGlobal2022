@@ -3,12 +3,24 @@ module.exports = (io, socket) => {
 
   socket.on("joinOffer", (data) => {
     socket.join(data.id);
-    console.log(data);
+    // console.log(data);
+    // socket.to(data.id).emit("setChat", data);
+    //socket.to(data.id).emit("setChat", (data) => console.log(data));
+    // socket.to(data.id).emit("setChat", (data) => {
+    //   console.log(data);
+    // return {
+    //   addressOrName: data.addressOrName,
+    //   avatar: data.avatar,
+    // };
+    // });
+    //console.log("join room", data, "------");
   });
-  // socket.on("changeStage", (offerId) => {
-  //   console.log("change stage");
-  //   socket.to(offerId).emit("newStage");
-  // });
+
+  socket.on("sendMessage", (data) => {
+    console.log(data);
+    socket.to(data.room).emit("messageRecieved", data.message);
+  });
+
   socket.on("takerConfirmed", (offerId) => {
     console.log("taker confirmed");
     socket.to(offerId).emit("approvalStage");
@@ -19,13 +31,3 @@ module.exports = (io, socket) => {
     socket.to(offerId).emit("successStage");
   });
 };
-
-// const socket = io('http://127.0.0.1:3030');
-
-// socket.on('msg', (data) => console.log(data));
-// api/joinRoom получешь саксес
-//заходит socket.emit('joinOffer', {userId, offerId})
-
-//socket.emit('changeStage', offerId)
-
-//socket.on('newStage', ()=>{обонвляешь компонент})

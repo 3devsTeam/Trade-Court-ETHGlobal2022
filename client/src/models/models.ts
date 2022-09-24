@@ -27,8 +27,6 @@ export enum ROLES {
     admin,
     user,
     moderator,
-    taker,
-    maker
 }
 
 export interface IMaker {

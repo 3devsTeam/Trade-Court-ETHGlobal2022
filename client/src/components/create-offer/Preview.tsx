@@ -1,7 +1,7 @@
 import React from "react";
 import { useTypedSelector } from "../../hooks/useTypedSelector";
 import { multiply } from "../../utils/multiply";
-import { IPayments } from "../../models/models";
+import { round } from "../../utils/round";
 
 export const Preview = () => {
   const {
@@ -84,7 +84,7 @@ export const Preview = () => {
             <span className={"font-bold text-lg"}>Total Amount</span>
           </div>
           <div>
-            <span>{multiply(unitPrice, quantity)}</span>
+            <span>{round(multiply(unitPrice, quantity))}</span>
             <span> {ticker}</span>
           </div>
         </div>

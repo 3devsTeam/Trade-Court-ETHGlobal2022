@@ -42,7 +42,7 @@ export const OfferModal = ({ close, offer }: IOfferModalProps) => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    setRecieve(+(pay / unitPrice).toFixed(2));
+    setRecieve(+(pay / unitPrice).toFixed(4));
   }, [pay, recieve]);
 
   const transactionHandler = () => {
@@ -101,7 +101,7 @@ export const OfferModal = ({ close, offer }: IOfferModalProps) => {
           inputContent={ticker}
         />
         <OfferInput
-          readOnly={true}
+          readOnly={false}
           label={"You recieve"}
           setValue={setRecieve}
           placeholder={"You recieve"}

@@ -68,7 +68,7 @@ export const useTokens = () => {
 					el.tokenAmount = 0
 				}
 			} catch (err) {
-				console.log(err)
+				console.error(err)
 			}
 		})
 	}

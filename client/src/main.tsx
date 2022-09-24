@@ -13,6 +13,7 @@ import {
 import "@rainbow-me/rainbowkit/styles.css";
 import { chain, configureChains, createClient, WagmiConfig } from "wagmi";
 import { alchemyProvider } from "wagmi/providers/alchemy";
+import { infuraProvider } from "wagmi/providers/infura";
 import { publicProvider } from "wagmi/providers/public";
 
 import { store } from "./store/store";
@@ -20,9 +21,10 @@ import { Provider } from "react-redux";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 const { chains, provider, webSocketProvider } = configureChains(
-  [chain.mainnet, chain.polygon, chain.optimism, chain.arbitrum],
+  [chain.mainnet, chain.polygon, chain.optimism, chain.arbitrum, chain.rinkeby],
   [
-    alchemyProvider({ apiKey: import.meta.env.VITE_ALCHEMY_ID }),
+    // alchemyProvider({ apiKey: import.meta.env.VITE_ALCHEMY_ID }),
+    infuraProvider({ apiKey: import.meta.env.VITE_INFURA_ID }),
     publicProvider(),
   ]
 );

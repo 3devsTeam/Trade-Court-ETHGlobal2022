@@ -20,7 +20,7 @@ export const Offer = (offer: IOffer) => {
   const { symbol } = crypto;
   const { ticker } = fiat;
   const [openOfferModal, setOpenOfferModal] = useState(false);
-  console.log(openOfferModal);
+  // console.log(openOfferModal);
   const ref = useRef();
   return (
     <div>
