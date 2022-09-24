@@ -23,7 +23,9 @@ const offerSchema = new mongoose.Schema({
     roomId: {
       type: String,
       required: [true, 'roomId is empty'],
-      unique: true,
+    },
+    createdAt: {
+      type: Date,
     },
   },
   offerType: {
