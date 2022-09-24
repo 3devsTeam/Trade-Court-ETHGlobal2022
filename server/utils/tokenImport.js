@@ -1,9 +1,7 @@
 const fs = require('fs');
 const dotenv = require('dotenv');
 const mongoose = require('mongoose');
-const Ethereum = require('../models/cryptoModels/ethereumModel');
-const Optimism = require('../models/cryptoModels/optimismModel');
-const Polygon = require('../models/cryptoModels/polygonModel');
+const Crypto = require('../models/cryptoModel');
 dotenv.config({ path: './config.env' });
 
 const DB = process.env.DATABASE.replace('<PASSWORD>', process.env.DB_PASSWORD);
@@ -17,19 +15,19 @@ mongoose
 
 const importData = async () => {
   try {
-    const eth = await Ethereum.find();
+    const eth = await Crypto.find({ chainId: 1 });
     fs.writeFileSync(
       `${__dirname}/../controllers/balanceController/ethereum/tokenList.json`,
       JSON.stringify(eth),
       'utf-8'
     );
-    const poly = await Polygon.find();
+    const poly = await Crypto.find({ chainId: 137 });
     fs.writeFileSync(
       `${__dirname}/../controllers/balanceController/polygon/tokenList.json`,
       JSON.stringify(poly),
       'utf-8'
     );
-    const opt = await Optimism.find();
+    const opt = await Crypto.find({ chainId: 10 });
     fs.writeFileSync(
       `${__dirname}/../controllers/balanceController/optimism/tokenList.json`,
       JSON.stringify(opt),

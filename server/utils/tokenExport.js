@@ -1,9 +1,7 @@
 const fs = require('fs');
 const dotenv = require('dotenv');
 const mongoose = require('mongoose');
-const Ethereum = require('../models/cryptoModels/ethereumModel');
-const Optimism = require('../models/cryptoModels/optimismModel');
-const Polygon = require('../models/cryptoModels/polygonModel');
+const Crypto = require('../models/cryptoModel');
 dotenv.config({ path: './config.env' });
 
 const DB = process.env.DATABASE.replace('<PASSWORD>', process.env.DB_PASSWORD);
@@ -35,9 +33,9 @@ const optimism = JSON.parse(
 
 const importData = async () => {
   try {
-    await Ethereum.create(ethereum);
-    await Polygon.create(polygon);
-    await Optimism.create(optimism);
+    await Crypto.create(ethereum);
+    await Crypto.create(polygon);
+    await Crypto.create(optimism);
     console.log('OK 🤡');
   } catch (err) {
     console.log(err);
@@ -47,9 +45,7 @@ const importData = async () => {
 
 const deleteData = async () => {
   try {
-    await Ethereum.deleteMany();
-    await Polygon.deleteMany();
-    await Optimism.deleteMany();
+    await Crypto.deleteMany();
     console.log('Deleted 🤡');
   } catch (err) {
     console.log(err);
