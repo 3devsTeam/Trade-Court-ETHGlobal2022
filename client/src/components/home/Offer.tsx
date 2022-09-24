@@ -5,6 +5,8 @@ import { Modal } from "../modal/Modal";
 import { IOffer } from "../../models/models";
 
 export const Offer = (offer: IOffer) => {
+  console.log(offer);
+
   const {
     _id,
     crypto,

@@ -4,14 +4,17 @@ import { API_URl } from "./axios"
 
 // axios.defaults.baseURL = API_URl
 export const TokenService = {
-    async getTokens(address: string) {
-        return await axios.get(`${API_URl}/api/balance/ERC20/${address}`)
-     
+
+    async getTokens(address: string, chain: string) {
+        console.log('get tokens', chain)
+        return await axios.get(`${API_URl}/api/balance/${chain}/${address}`)
     },
-    async getExchangeRateERC20() {
-        return await axios.get(`${API_URl}/api/balance/rate/erc20`) 
+    async getExchangeRate(chain: string) {
+        console.log('get exchange rate', chain)
+        return await axios.get(`${API_URl}/api/balance/${chain}/rate`) 
     },
-    async getEthUsdRate() {
-        return await axios.get(`https://api.coingecko.com/api/v3/simple/price?ids=ethereum&vs_currencies=usd`)
+    async getEthUsdRate(chain: string) {
+        console.log('get eth usd rate', chain)
+        return await axios.get(`https://api.coingecko.com/api/v3/simple/price?ids=${chain === 'polygon' ? 'matic-network' : 'ethereum'}&vs_currencies=usd`)
     }
 }

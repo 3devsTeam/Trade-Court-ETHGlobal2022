@@ -18,7 +18,8 @@ export interface IOffer {
     amount?: number
     maker: IMaker,
     tokenAmount?: number
-    room?: {
+    room: {
+        roomId: string
         stage: "no taker" | "taker"
     }
 }

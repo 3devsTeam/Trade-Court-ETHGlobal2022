@@ -27,14 +27,14 @@ export const Modal = ({
     useOnClickOutside(ref, () => close(false));
   }
 
-  useEffect(() => {
-    if (isOpen) {
-      document.body.style.overflow = "hidden";
-    }
-    if (!isOpen) {
-      document.body.style.overflow = "unset";
-    }
-  }, [isOpen]);
+  // useEffect(() => {
+  //   if (isOpen) {
+  //     document.body.style.overflow = "hidden";
+  //   }
+  //   if (!isOpen) {
+  //     document.body.style.overflow = "unset";
+  //   }
+  // }, [isOpen]);
   return (
     <>
       {isOpen && (

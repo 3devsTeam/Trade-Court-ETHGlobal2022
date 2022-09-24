@@ -6,6 +6,8 @@ import { IOffer } from "../../models/models";
 import { OfferInput } from "../home/OfferInput";
 import { OfferService } from "../../services/offer.services";
 import { toast } from "react-toastify";
+import { useEthContract } from "../../hooks/useEthContract";
+import { parseEther } from "../../utils/parseEther";
 
 interface IOfferModalProps {
   close: any;
@@ -22,16 +24,15 @@ export const OfferModal = ({ close, offer }: IOfferModalProps) => {
     quantity,
     offerComment,
     orderLimit,
+    room,
   } = offer;
 
-  const offerNotify = (error: string) => {
-    toast.error(error, {
-      position: toast.POSITION.BOTTOM_RIGHT,
-    });
-  };
+  const navigate = useNavigate();
 
   const [pay, setPay] = useState(0);
   const [recieve, setRecieve] = useState(0);
+
+  const { roomId } = room;
 
   const { ticker } = fiat;
 
@@ -39,26 +40,38 @@ export const OfferModal = ({ close, offer }: IOfferModalProps) => {
 
   const { address } = maker;
 
-  const navigate = useNavigate();
+  const args = [+roomId, parseEther(recieve.toString())];
+  const value = 0;
+  const functionName = "completeDeal";
+
+  const { data, prepareError, isError, isLoading, isSuccess, writeAsync } =
+    useEthContract(args, functionName);
+
+  const offerNotify = (error: string) => {
+    toast.error(error, {
+      position: toast.POSITION.BOTTOM_RIGHT,
+    });
+  };
 
   useEffect(() => {
     setRecieve(+(pay / unitPrice).toFixed(4));
   }, [pay, recieve]);
 
   const transactionHandler = () => {
-    OfferService.joinByID(_id, {
-      amount: pay,
-    })
-      .then((data) => {
-        if (data.data.message === "success") {
-          close();
-          navigate(`/transaction/${_id}`);
-        }
+    writeAsync?.().then(() => {
+      OfferService.joinByID(_id, {
+        amount: pay,
       })
-      .then(() => {})
-      .catch((err) => {
-        offerNotify(err.response.data.message);
-      });
+        .then((data) => {
+          if (data.data.message === "success") {
+            close();
+            navigate(`/transaction/${_id}`);
+          }
+        })
+        .catch((err) => {
+          offerNotify(err.response.data.message);
+        });
+    });
   };
 
   return (
