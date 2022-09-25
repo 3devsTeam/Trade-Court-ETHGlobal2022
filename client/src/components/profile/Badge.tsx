@@ -15,7 +15,13 @@ export const Badge = ({ name, avatar }: IBadge) => {
   return (
     <div className={"bg-white rounded-[20px] p-[20px] shadow-customDark"}>
       <div>
-        <img src={avatar ? avatar : defaultAvatar} alt={""} />
+        <img
+          height={100}
+          width={100}
+          className={"shadow-customDark rounded-[50%] mb-5"}
+          src={avatar ? avatar : defaultAvatar}
+          alt={""}
+        />
 
         <span className={"font-bold"}>
           {name ? name : truncateAddress(address!)}
