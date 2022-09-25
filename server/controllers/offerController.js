@@ -90,6 +90,7 @@ exports.joinOffer = catchAsync(async (req, res, next) => {
         "room.taker": req.user._id,
         "room.stage": "waiting taker",
         "room.amount": req.body.amount,
+        "room.createdAt": new Date(),
       },
     },
     { new: true }

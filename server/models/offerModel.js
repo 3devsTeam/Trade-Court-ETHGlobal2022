@@ -1,20 +1,20 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 const offerSchema = new mongoose.Schema({
   maker: {
     type: mongoose.Schema.ObjectId,
-    ref: 'User',
-    required: [true, 'address is empty'],
+    ref: "User",
+    required: [true, "address is empty"],
   },
   room: {
     taker: {
       type: mongoose.Schema.ObjectId,
-      ref: 'User',
+      ref: "User",
     },
     stage: {
       type: String,
-      enum: ['no taker', 'waiting taker', 'taker send', 'maker recieved'],
-      default: 'no taker',
+      enum: ["no taker", "waiting taker", "taker send", "maker recieved"],
+      default: "no taker",
     },
     amount: {
       type: Number,
@@ -22,14 +22,17 @@ const offerSchema = new mongoose.Schema({
     },
     roomId: {
       type: String,
-      required: [true, 'roomId is empty'],
+      required: [true, "roomId is empty"],
       unique: true,
+    },
+    createdAt: {
+      type: Date,
     },
   },
   offerType: {
     type: String,
-    enum: ['buy', 'sell'],
-    required: [true, 'offerType is empty'],
+    enum: ["buy", "sell"],
+    required: [true, "offerType is empty"],
   },
   payMethods: {
     type: [
@@ -37,18 +40,18 @@ const offerSchema = new mongoose.Schema({
         type: {
           bank: {
             type: mongoose.Schema.ObjectId,
-            ref: 'Bank',
-            required: [true, 'Bank is empty'],
+            ref: "Bank",
+            required: [true, "Bank is empty"],
           },
           cardNumber: {
             type: String,
             minLenght: 4,
-            required: [true, 'card Number is empty'],
+            required: [true, "card Number is empty"],
           },
           region: {
             type: mongoose.Schema.ObjectId,
-            ref: 'Region',
-            required: [true, 'activeRegion is empty'],
+            ref: "Region",
+            required: [true, "activeRegion is empty"],
           },
           paymentDescription: {
             type: String,
@@ -63,33 +66,33 @@ const offerSchema = new mongoose.Schema({
   },
   fiat: {
     type: mongoose.Schema.ObjectId,
-    ref: 'Fiat',
-    required: [true, 'Fiat is empty'],
+    ref: "Fiat",
+    required: [true, "Fiat is empty"],
   },
   unitPrice: {
     type: Number,
-    min: [1, 'unitPrice very small'],
-    required: [true, 'unitPrice is empty'],
+    min: [1, "unitPrice very small"],
+    required: [true, "unitPrice is empty"],
   },
   amount: {
     type: Number,
-    required: [true, 'amount is empty'],
+    required: [true, "amount is empty"],
   },
   quantity: {
     type: Number,
-    min: [0, 'quantity very small'],
-    required: [true, 'quantity is empty'],
+    min: [0, "quantity very small"],
+    required: [true, "quantity is empty"],
   },
   orderLimit: [
     {
       type: Number,
-      required: [true, 'orderLimit is empty'],
+      required: [true, "orderLimit is empty"],
     },
   ],
   crypto: {
     type: mongoose.Schema.ObjectId,
-    ref: 'Crypto',
-    required: [true, 'Crypto is empty'],
+    ref: "Crypto",
+    required: [true, "Crypto is empty"],
   },
   offerComment: {
     type: String,
@@ -97,5 +100,5 @@ const offerSchema = new mongoose.Schema({
   },
 });
 
-const Offer = mongoose.model('Offer', offerSchema);
+const Offer = mongoose.model("Offer", offerSchema);
 module.exports = Offer;

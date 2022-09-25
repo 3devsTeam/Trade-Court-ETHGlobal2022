@@ -8,6 +8,7 @@ import { OfferService } from "../../services/offer.services";
 import { toast } from "react-toastify";
 import { useEthContract } from "../../hooks/useEthContract";
 import { parseEther } from "../../utils/parseEther";
+import { round } from "../../utils/round";
 
 interface IOfferModalProps {
   close: any;
@@ -85,7 +86,7 @@ export const OfferModal = ({ close, offer }: IOfferModalProps) => {
     },
     {
       name: "Available:",
-      value: `${quantity} ${symbol}`,
+      value: `${round(quantity, 4)} ${symbol}`,
     },
     {
       name: "Limit:",
@@ -107,7 +108,7 @@ export const OfferModal = ({ close, offer }: IOfferModalProps) => {
         </div>
       </div>
 
-      <div className="flex flex-col justify-between px-3">
+      <div className="flex flex-col gap-[10px] px-3">
         <OfferInput
           label={"You pay"}
           maxValue={orderLimit[1]}

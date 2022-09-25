@@ -22,6 +22,7 @@ export interface IOffer {
         roomId: string
         stage: "no taker" | "taker"
         amount: number
+        createdAt: any
     }
 }
 

@@ -226,11 +226,11 @@ export const Transaction = () => {
   return (
     <div>
       {/* it just to check role and step */}
-      <div className={"absolute bottom-0 right-0 z-50"}>
+      {/* <div className={"absolute bottom-0 right-0 z-50"}>
         <h1>user role: {role}</h1>
         <h1>active step: {step}</h1>
         <h1>current stage: {offer?.room.stage}</h1>
-      </div>
+      </div> */}
 
       <SkeletonWrapper isLoaded={!isLoading} height={60}>
         <Info {...offer} />
