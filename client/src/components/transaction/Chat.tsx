@@ -55,7 +55,7 @@ export const Chat = ({
             <span className={"text-white font-bold"}>
               {truncateAddress(addressOrName)}
             </span>
-            <span className={"text-white text-sm"}>on dick</span>
+            <span className={"text-white text-sm"}>online</span>
           </div>
         </div>
       </div>
