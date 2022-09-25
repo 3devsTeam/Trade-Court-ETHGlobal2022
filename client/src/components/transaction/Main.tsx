@@ -206,7 +206,27 @@ export const Main = ({
                       <p className={"text-sm text-gray font-medium"}>
                         Created time
                       </p>
-                      <p className={"text-sm font-bold"}>хз</p>
+                      <p className={"text-sm font-bold"}>{`${
+                        date.getMonth() < 10
+                          ? `0${date.getMonth()}`
+                          : date.getMonth()
+                      }.${
+                        date.getDate() < 10
+                          ? `0${date.getDate()}`
+                          : date.getDate()
+                      }.${date.getFullYear()} ${
+                        date.getHours() < 10
+                          ? `0${date.getHours()}`
+                          : date.getHours()
+                      }:${
+                        date.getMinutes() < 10
+                          ? `0${date.getMinutes()}`
+                          : date.getMinutes()
+                      }:${
+                        date.getSeconds() < 10
+                          ? `0${date.getSeconds()}`
+                          : date.getSeconds()
+                      }`}</p>
                     </div>
 
                     <div className={"flex gap-5"}>
@@ -220,7 +240,7 @@ export const Main = ({
               </div>
             );
           case 3:
-            return <SuccessPage id={id} />;
+            return <SuccessPage date={date} id={id} />;
         }
 
       case "maker":
@@ -252,7 +272,7 @@ export const Main = ({
               </div>
             );
           case 3:
-            return <SuccessPage id={id} />;
+            return <SuccessPage date={date} id={id} />;
         }
 
       default:

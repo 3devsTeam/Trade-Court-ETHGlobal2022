@@ -6,9 +6,10 @@ import bad from "../../assets/images/bad.png";
 
 interface ISuccessPage {
   id: string;
+  date: any;
 }
 
-export const SuccessPage = ({ id }: ISuccessPage) => {
+export const SuccessPage = ({ id, date }: ISuccessPage) => {
   return (
     <div>
       <div className={"flex justify-center items-center h-[400px]"}>
@@ -50,7 +51,17 @@ export const SuccessPage = ({ id }: ISuccessPage) => {
       <div>
         <div className={"flex gap-5"}>
           <p className={"text-sm text-gray font-medium"}>Created time</p>
-          <p className={"text-sm font-bold"}>хз</p>
+          <p className={"text-sm font-bold"}>{`${
+            date.getMonth() < 10 ? `0${date.getMonth()}` : date.getMonth()
+          }.${
+            date.getDate() < 10 ? `0${date.getDate()}` : date.getDate()
+          }.${date.getFullYear()} ${
+            date.getHours() < 10 ? `0${date.getHours()}` : date.getHours()
+          }:${
+            date.getMinutes() < 10 ? `0${date.getMinutes()}` : date.getMinutes()
+          }:${
+            date.getSeconds() < 10 ? `0${date.getSeconds()}` : date.getSeconds()
+          }`}</p>
         </div>
 
         <div className={"flex gap-5"}>

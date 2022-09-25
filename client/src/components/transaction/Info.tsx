@@ -10,7 +10,7 @@ export const Info = ({
   quantity,
   room,
 }: IOffer) => {
-  const { amount: roomAmount } = room;
+  const roomAmount = room?.amount;
 
   return (
     <div
