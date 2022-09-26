@@ -9,6 +9,7 @@ import { SearchField } from "../../modal/SearchField";
 import { TokenList } from "../../modal/TokenList";
 import "react-loading-skeleton/dist/skeleton.css";
 import { FormWrapper } from "../FormWrapper";
+import { IToken } from "../../../models/models";
 
 interface IStep1 {
   tokens: any;
@@ -28,6 +29,17 @@ export const Step1 = ({ tokens, allFiat }: IStep1) => {
   const { ticker, logoUrl: fiatImage, name: fiatName } = fiat;
 
   const [isOpen, setIsOpen] = useState(false);
+
+  const [searchTerm, setSearchTerm] = useState("");
+
+  const searchFilter = (tokens: IToken[]) => {
+    return tokens.filter(
+      (t: IToken) =>
+        t.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        t.address.toLowerCase() === searchTerm.toLowerCase() ||
+        t.symbol.toLowerCase() === searchTerm.toLowerCase()
+    );
+  };
 
   return (
     <FormWrapper>
@@ -72,10 +84,13 @@ export const Step1 = ({ tokens, allFiat }: IStep1) => {
       >
         <SearchField
           placeholder={"Enter token name or paste it address"}
-          onAction={null}
-          value={""}
+          setSearchTerm={setSearchTerm}
+          searchTerm={searchTerm}
         />
-        <TokenList tokens={tokens} onClose={() => setIsOpen(false)} />
+        <TokenList
+          tokens={searchFilter(tokens)}
+          onClose={() => setIsOpen(false)}
+        />
       </Modal>
     </FormWrapper>
   );
