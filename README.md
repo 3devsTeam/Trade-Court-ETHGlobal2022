@@ -13,7 +13,7 @@ With help of ENS users can be easily identified by domain names and use web3 ava
 
 P2P offers are validated through smartcontract deployed on polygon/optimism/rinkeby/aurora
 
-Front-end: React, Typescript, Tailwind CSS, Redux Toolkit, React Query, Axios, Wagmi, Rainbow Kit, Vite
+Front-end: React, TypeScript, Tailwind CSS, Redux Toolkit, React Query, Axios, Wagmi, Rainbow Kit, Vite
 
 Back-end: Node.js, express.js, mongoDB, ethers.js + customised 1inch package
 
