@@ -6,7 +6,7 @@ export interface IOffer {
     crypto: IToken
     fiat: IFiat
     unitPrice: number
-    quantity: number
+    quantity: string
     payMethods: IPayment[]
     paymentMethod?: IBank
     region?: IRegion

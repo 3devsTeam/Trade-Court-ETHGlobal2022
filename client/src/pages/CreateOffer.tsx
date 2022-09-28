@@ -21,7 +21,6 @@ import { useScrollTop } from "../hooks/useScrollTop";
 import { useTokens } from "../hooks/useTokens";
 import { useQuery } from "wagmi";
 import { SkeletonWrapper } from "../components/SkeletonWrapper";
-import { is } from "immer/dist/internal";
 import { IFiat } from "../models/models";
 
 export const CreateOffer = () => {
@@ -102,7 +101,9 @@ export const CreateOffer = () => {
     limitPrice(orderLimit[0], unitPrice), // фиатный минимальный лимит
   ];
 
-  const value = ethers.utils.parseEther(quantity.toString());
+  const value = ethers.utils.parseEther(
+    quantity === "" ? "0" : quantity.toString()
+  );
 
   const { data, isError, isLoading, isSuccess, writeAsync, hash } =
     useEthContractWithValue(args, value, "makeRoomEth");
@@ -140,7 +141,7 @@ export const CreateOffer = () => {
           offerType: "buy",
           fiat: fiat._id,
           unitPrice,
-          amount: multiply(unitPrice, quantity),
+          amount: multiply(unitPrice, +quantity),
           quantity,
           orderLimit,
           crypto: crypto._id,
