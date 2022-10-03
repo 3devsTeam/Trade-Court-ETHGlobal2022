@@ -1,4 +1,4 @@
-# Trade-Court-ETHGlobal2022
+# Trade Court
 A decentralized multichain peer-to-peer platform that provides users ability to easily exchange fiat to cryptocurrency
 
 ### Project Description
