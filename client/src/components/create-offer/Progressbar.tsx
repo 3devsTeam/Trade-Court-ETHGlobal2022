@@ -25,7 +25,7 @@ export const Progressbar = ({ steps, step }: IProgressBar) => {
             </p>
             <div
               className={`text-white h-[40px] w-[40px] rounded-[9999px] flex justify-center items-center font-bold ${
-                step === i + 1 ? "bg-purple" : "bg-gray"
+                step === i + 1 ? "bg-purple" : "bg-gray-200"
               } transition duration-300`}
             >
               {i + 1}

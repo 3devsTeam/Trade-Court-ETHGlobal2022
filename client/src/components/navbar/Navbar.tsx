@@ -1,6 +1,5 @@
 import React, { useEffect } from "react";
 import { Logo } from "./Logo";
-import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { Link, useNavigate } from "react-router-dom";
 import { NavLink } from "./NavLink";
 import { useAccount, useConnect, useSignMessage } from "wagmi";
@@ -9,6 +8,8 @@ import { UserService } from "../../services/user.services";
 import Cookies from "js-cookie";
 import { useActions } from "../../hooks/useActions";
 import { useTypedSelector } from "../../hooks/useTypedSelector";
+import { ConnectButton } from "./ConnectButton";
+import { SwitchNetwork } from "./SwitchNetwork";
 
 export const Navbar = () => {
   const { isConnected, isDisconnected, address, connector } = useAccount();
@@ -30,39 +31,33 @@ export const Navbar = () => {
     }).then(() => localStorage.setItem("isLogged", "true"));
   }
 
-  useEffect(() => {
-    if (connector && isConnected && !isDisconnected && !Cookies.get("jwt")) {
-      console.log("sign useeffect");
-      signMessage();
-    }
-  }, [isConnected, connector]);
+  // useEffect(() => {
+  //   if (connector && isConnected && !isDisconnected && !Cookies.get("jwt")) {
+  //     console.log("sign useeffect");
+  //     signMessage();
+  //   }
+  // }, [isConnected, connector]);
 
-  useEffect(() => {
-    if (isDisconnected) {
-      console.log("disconnect useeffect");
-      UserService.logout().then(() =>
-        localStorage.setItem("isLogged", "false")
-      );
-      navigate("/");
-    }
-  }, [isDisconnected]);
+  // useEffect(() => {
+  //   if (isDisconnected) {
+  //     console.log("disconnect useeffect");
+  //     UserService.logout().then(() =>
+  //       localStorage.setItem("isLogged", "false")
+  //     );
+  //     navigate("/");
+  //   }
+  // }, [isDisconnected]);
 
   return (
-    <nav>
+    <header>
       <div className={"p-5 flex justify-between items-center w-full"}>
         <Logo />
 
-        {isLogged && (
-          <div className={"flex items-center gap-10"}>
-            <NavLink route={"/"} name={"Home"} />
-            <NavLink route={"/profile"} name={"Profile"} />
-            <NavLink route={"/create-offer"} name={"Create offer"} />
-            <NavLink route={"/settings"} name={"Settings"} />
-          </div>
-        )}
-
-        <ConnectButton />
+        <div className='flex space-x-5 items-center'>
+          {isConnected && <SwitchNetwork />}
+          <ConnectButton />
+        </div>
       </div>
-    </nav>
+    </header>
   );
 };
