@@ -55,8 +55,9 @@ export const CreateOffer = () => {
     }
   );
 
-  const isLoaded = isSuccessRequest && fiatSuccess;
+  console.log(isSuccessRequest, fiatSuccess);
 
+  const isLoaded = isSuccessRequest && fiatSuccess;
   useEffect(() => {
     if (isLoaded) {
       setCrypto(tokens[0]);
@@ -67,9 +68,6 @@ export const CreateOffer = () => {
 
   useEffect(() => {
     if (isLoaded) {
-      console.log("fiat changed");
-      console.log(allFiat);
-
       setPaymentMethod(
         allFiat.filter((e: IFiat) => e._id === fiat._id)[0].banks[0]
       );
@@ -177,69 +175,71 @@ export const CreateOffer = () => {
   const steps = ["Offer Price", "Payment method", "Settings"];
 
   return (
-    <div>
+    <div className='p-5'>
       <SkeletonWrapper isLoaded={isLoaded} height={100}>
         <Progressbar steps={steps} step={step} />
       </SkeletonWrapper>
 
-      <div className={"grid grid-cols-2 gap-5 mt-[20px]"}>
-        <div>
+      <div className={"grid grid-cols-2 gap-5 mt-5"}>
+        <div className='flex flex-col gap-5'>
           <SkeletonWrapper isLoaded={isLoaded} height={600}>
             {step === 1 && <Step1 tokens={tokens} allFiat={allFiat} />}
             {step === 2 && <Step2 />}
             {step === 3 && <Step3 />}
           </SkeletonWrapper>
-        </div>
 
-        <SkeletonWrapper isLoaded={isLoaded} height={600}>
-          <Preview />
-        </SkeletonWrapper>
+          <SkeletonWrapper isLoaded={isLoaded} height={100}>
+            <div className='flex justify-between items-center p-5 bg-white rounded-[20px] shadow-customDark h-[100px]'>
+              <div className={"flex items-center gap-3"}>
+                {step > 1 && (
+                  <Button
+                    onAction={prevStep}
+                    name={"Back"}
+                    color={"purple"}
+                    rounded={"20px"}
+                    fWeight={"bold"}
+                    fSize={"lg"}
+                    tColor={"white"}
+                  />
+                )}
 
-        <SkeletonWrapper isLoaded={isLoaded} height={100}>
-          <div className="flex justify-between items-center p-5 bg-white rounded-[20px] shadow-customDark h-[100px]">
-            <div className={"flex items-center gap-3"}>
-              {step > 1 && (
                 <Button
-                  onAction={prevStep}
-                  name={"Back"}
+                  onAction={() => {
+                    step < 3 ? nextStep() : step === 3 ? createHandler() : null;
+                  }}
+                  name={
+                    step === 3
+                      ? "Create offer"
+                      : isLoading
+                      ? "Make Room ERC20"
+                      : "Next"
+                  }
                   color={"purple"}
                   rounded={"20px"}
                   fWeight={"bold"}
                   fSize={"lg"}
                   tColor={"white"}
                 />
-              )}
+              </div>
 
-              <Button
-                onAction={() => {
-                  step < 3 ? nextStep() : step === 3 ? createHandler() : null;
-                }}
-                name={
-                  step === 3
-                    ? "Create offer"
-                    : isLoading
-                    ? "Make Room ERC20"
-                    : "Next"
-                }
-                color={"purple"}
-                rounded={"20px"}
-                fWeight={"bold"}
-                fSize={"lg"}
-                tColor={"white"}
-              />
+              <div>
+                <Button
+                  onAction={null}
+                  name={"Help"}
+                  fWeight={"bold"}
+                  fSize={"lg"}
+                  tColor={"purple"}
+                />
+              </div>
             </div>
+          </SkeletonWrapper>
+        </div>
 
-            <div>
-              <Button
-                onAction={null}
-                name={"Help"}
-                fWeight={"bold"}
-                fSize={"lg"}
-                tColor={"purple"}
-              />
-            </div>
-          </div>
-        </SkeletonWrapper>
+        <div>
+          <SkeletonWrapper isLoaded={isLoaded} height={600}>
+            <Preview />
+          </SkeletonWrapper>
+        </div>
       </div>
     </div>
   );

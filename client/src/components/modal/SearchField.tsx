@@ -13,7 +13,7 @@ export const SearchField = ({
   placeholder,
 }: ISearchField) => {
   return (
-    <div className='h-12 px-3 border-2 border-purple bg-white flex items-center justify-between mb-[20px] rounded-[10px]'>
+    <div className='h-12 px-3 border-2 border-purple bg-white flex items-center justify-between rounded-[10px]'>
       {/* <div className="flex items-center justify-between"> */}
       <Loop />
       <input

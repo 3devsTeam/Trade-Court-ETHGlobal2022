@@ -6,6 +6,7 @@ import { WalletConnectConnector } from "wagmi/connectors/walletConnect";
 import { CoinbaseWalletConnector } from "wagmi/connectors/coinbaseWallet";
 
 interface Props {
+  setActiveWalletImg: any;
   img: string;
   onClose: any;
   wallet: MetaMaskConnector | WalletConnectConnector | CoinbaseWalletConnector;
@@ -13,12 +14,20 @@ interface Props {
   children: React.ReactNode;
 }
 
-export const WalletButton = ({ wallet, i, onClose, img }: Props) => {
+export const WalletButton = ({
+  setActiveWalletImg,
+  wallet,
+  i,
+  onClose,
+  img,
+}: Props) => {
   return (
     <button
       onClick={() => {
-        connect({ connector: connectors[i] }).then(() => onClose(false));
-        // onClose(false);
+        connect({ connector: connectors[i] }).then(() => {
+          onClose(false);
+          setActiveWalletImg(img);
+        });
       }}
       className='flex flex-col justify-center shadow rounded-lg p-3'
     >

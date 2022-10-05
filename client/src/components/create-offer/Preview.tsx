@@ -23,7 +23,7 @@ export const Preview = () => {
   return (
     <div
       className={
-        "bg-white rounded-[20px] shadow-customDark row-span-2 break-words"
+        "bg-white rounded-[20px] shadow-customDark row-span-2 break-words h-full"
       }
     >
       <div className={"bg-purple rounded-t-[20px] p-5"}>
@@ -110,7 +110,7 @@ export const Preview = () => {
                           "w-8 h-8 rounded-[50%] border border-purple object-cover"
                         }
                         src={p.paymentMethod.logoUrl}
-                        alt=""
+                        alt=''
                       />
                       <p>{p.paymentMethod.name}</p>
                     </div>

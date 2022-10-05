@@ -13,6 +13,7 @@ import { walletsImages } from "../../walletsImages";
 export const ConnectButton = () => {
   const [openConnectModal, setOpenConnectModal] = useState(false);
   const [openMenu, setOpenMenu] = useState(false);
+  const [activeWalletImg, setActiveWalletImg] = useState("");
   const { isConnected, address } = useAccount();
   const { data, isError, isLoading } = useBalance({
     addressOrName: address,
@@ -31,6 +32,9 @@ export const ConnectButton = () => {
       onClick={() => setOpenMenu(!openMenu)}
     >
       <div className='font-bold flex items-center space-x-2 text-black'>
+        <div>
+          <img src={activeWalletImg} className='w-5 h-5' />
+        </div>
         <span>
           {data?.formatted.slice(0, 8)} {data?.symbol}
         </span>
@@ -61,6 +65,7 @@ export const ConnectButton = () => {
         <div className='grid grid-cols-3 gap-5 '>
           {connectors.map((wallet, i) => (
             <WalletButton
+              setActiveWalletImg={setActiveWalletImg}
               img={walletsImages[i]}
               onClose={setOpenConnectModal}
               wallet={wallet}

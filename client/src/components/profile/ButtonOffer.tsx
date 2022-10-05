@@ -1,5 +1,5 @@
 import React from "react";
-import { Cross } from "../Cross";
+import { Cross } from "../../icons/Cross";
 
 interface IButtonOffer {
   onAction: any;

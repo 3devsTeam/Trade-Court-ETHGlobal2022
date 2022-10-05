@@ -7,6 +7,7 @@ import { OfferService } from "../services/offer.services";
 import { IOffer } from "../models/models";
 import { SkeletonWrapper } from "../components/SkeletonWrapper";
 import { SearchField } from "../components/modal/SearchField";
+import { Dropdown } from "../components/home/Dropdown";
 
 export const Home = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -31,12 +32,27 @@ export const Home = () => {
 
   return (
     <div className='grid grid-cols-homePage gap-5'>
-      <aside className='bg-white shadow-customDark p-5 rounded-[20px]'>
+      <aside className='bg-white shadow-customDark p-5 rounded-[20px] flex flex-col gap-5'>
         <SearchField
           searchTerm={searchTerm}
           setSearchTerm={setSearchTerm}
           placeholder='Search...'
         />
+        <Dropdown activeSelect='Crypto'>
+          <div>tokens</div>
+        </Dropdown>
+        <Dropdown activeSelect='Fiat'>
+          <div>fiat</div>
+        </Dropdown>
+        <Dropdown activeSelect='Bank'>
+          <div>banks</div>
+        </Dropdown>
+        <Dropdown activeSelect='Region'>
+          <div>Regions</div>
+        </Dropdown>
+        <Dropdown activeSelect='Rating'>
+          <div>ratings</div>
+        </Dropdown>
       </aside>
 
       <main>

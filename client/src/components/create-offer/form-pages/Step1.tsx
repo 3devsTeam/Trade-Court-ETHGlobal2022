@@ -76,7 +76,6 @@ export const Step1 = ({ tokens, allFiat }: IStep1) => {
         value={quantity}
       />
       <Modal
-        canClose={true}
         width={"567px"}
         isOpen={isOpen}
         close={() => setIsOpen(false)}
