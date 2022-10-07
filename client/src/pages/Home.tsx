@@ -3,18 +3,16 @@ import axios from "axios";
 import { Offer } from "../components/home/Offer";
 import { Header } from "../components/home/Header";
 import { useQuery } from "@tanstack/react-query";
-import { OfferService } from "../services/offer.services";
-import { IOffer } from "../models/models";
+import { OfferService } from "../api/offer.services";
+import { IBank, IOffer } from "../models/models";
 import { SkeletonWrapper } from "../components/SkeletonWrapper";
-import { Tumbler } from "../components/home/Tumbler";
-import { SimpleDropdown } from "../components/home/SimpleDropdown";
-import demoImg from "../assets/images/usdt.svg";
-import { SearchBar } from "../components/home/SearchBar";
-import reload from "../assets/reload.svg";
-import { FilterDropdown } from "../components/home/FilterDropdown";
-import { StarFilter } from "../components/home/StarFilter";
+import { SearchField } from "../components/modal/SearchField";
+import { Dropdown } from "../components/home/Dropdown";
+import { useFetchFilters } from "../hooks/useFetchFilters";
 
 export const Home = () => {
+  const [searchTerm, setSearchTerm] = useState("");
+
   const {
     data: offers,
     isSuccess,
@@ -22,68 +20,76 @@ export const Home = () => {
     isError,
   } = useQuery(["get offers"], () => OfferService.getAll(), {
     select: (data) => data.data.data.offers,
-    //refetchInterval: 5000
+    refetchInterval: 5000,
   });
 
+  const { banks, isFetchFiltersOk } = useFetchFilters();
+
+  if (isFetchFiltersOk) {
+    console.log(banks.data);
+  }
+
   const headers = [
-    "Maker address",
+    "Maker Address",
     "Avaliable / Limit",
     "Unit Price",
-    "Payment methods",
+    "Payment Methods",
     "Buy / Sell",
   ];
 
   return (
-    <>
-      <div className={"flex flex-col gap-5"}>
-        <SkeletonWrapper isLoaded={!isLoading} height={50}>
-          <div className={"grid grid-flow-col gap-2 h-[50px]"}>
-            <SearchBar />
-            <Tumbler names={["Buy", "Sell"]} activeButton={true} />
-            <SimpleDropdown activeSelect={"USDT"} activeImage={demoImg} />
-            <StarFilter />
-            <SimpleDropdown activeSelect={"5s"} />
-            <div
-              className={
-                "bg-white shadow-customDark rounded-[20px] h-full flex justify-center items-center p-[15px] cursor-pointer"
-              }
-            >
-              <img height={32} width={32} src={reload} />
+    <div className='grid grid-cols-homePage gap-5 mt-5'>
+      <aside className='flex flex-col gap-5 sticky top-0 overflow-auto h-screen'>
+        <SearchField
+          searchTerm={searchTerm}
+          setSearchTerm={setSearchTerm}
+          placeholder='Search...'
+        />
+        <Dropdown activeSelect='Crypto'>
+          <div>tokens</div>
+        </Dropdown>
+        <Dropdown activeSelect='Fiat'>
+          <div>fiat</div>
+        </Dropdown>
+        <Dropdown activeSelect='Bank'>
+          {banks.data?.map((b: IBank) => (
+            <div key={b._id} className='p-3 flex justify-start'>
+              {b.name}
             </div>
-          </div>
-        </SkeletonWrapper>
+          ))}
+        </Dropdown>
+        <Dropdown activeSelect='Region'>
+          <div>Regions</div>
+        </Dropdown>
+        <Dropdown activeSelect='Rating'>
+          <div>ratings</div>
+        </Dropdown>
+      </aside>
 
-        <SkeletonWrapper isLoaded={!isLoading} height={50} margin={"20px"}>
-          <div className={"grid grid-flow-col gap-2 h-[50px] mb-[50px]"}>
-            <FilterDropdown label={"Fiat"} activeSelect={"RUB"} />
-            <FilterDropdown label={"Payment"} activeSelect={"Sberbank"} />
-            <FilterDropdown label={"Region"} activeSelect={"Europe"} />
-          </div>
-        </SkeletonWrapper>
-      </div>
-
-      <SkeletonWrapper height={30} isLoaded={!isLoading} margin={"20px"}>
-        <div className="grid grid-cols-offer gap-5 px-[20px] mb-[20px]">
+      <main>
+        <SkeletonWrapper height={30} isLoaded={!isLoading} margin={"20px"}>
           <Header headers={headers} />
-        </div>
-      </SkeletonWrapper>
+        </SkeletonWrapper>
 
-      <SkeletonWrapper
-        isLoaded={!isLoading}
-        height={100}
-        count={10}
-        margin={"20px"}
-      >
-        <section>
-          {isError ? (
-            <p>error</p>
-          ) : offers?.length === 0 ? (
-            <p>no offers</p>
-          ) : isSuccess ? (
-            offers?.map((offer: IOffer) => <Offer key={offer._id} {...offer} />)
-          ) : null}
-        </section>
-      </SkeletonWrapper>
-    </>
+        <SkeletonWrapper
+          isLoaded={!isLoading}
+          height={100}
+          count={10}
+          margin={"20px"}
+        >
+          <section className='space-y-3'>
+            {isError ? (
+              <p>error</p>
+            ) : offers?.length === 0 ? (
+              <p>no offers</p>
+            ) : isSuccess ? (
+              offers?.map((offer: IOffer) => (
+                <Offer key={offer._id} {...offer} />
+              ))
+            ) : null}
+          </section>
+        </SkeletonWrapper>
+      </main>
+    </div>
   );
 };

@@ -1,12 +1,11 @@
 import React, { useState, useRef } from "react";
 import useOnClickOutside from "use-onclickoutside";
-import { Arrow } from "../Arrow";
+import { Arrow } from "../../icons/Arrow";
 
 interface IDropdown {
   value: string | undefined;
   fullName?: string;
   onAction: any;
-  register?: any;
   label?: string;
   data: any;
   image: string | undefined;
@@ -43,13 +42,13 @@ export const Dropdown = ({
             <div className={"flex items-center gap-1"}>
               <img
                 className={
-                  "w-8 h-8 rounded-[50%] border border-purple object-cover"
+                  "w-8 h-8 rounded-full shadow-customDark object-cover"
                 }
                 src={image}
                 alt={""}
               />
               <span className={"font-bold"}>{value}</span>
-              <span className={"font-bold text-gray"}>{fullName}</span>
+              <span className={"font-bold text-gray-300"}>{fullName}</span>
             </div>
             <div
               className={`transition duration-300 ${isOpen && "rotate-180"}`}
@@ -74,14 +73,15 @@ export const Dropdown = ({
                   >
                     <img
                       className={
-                        "w-8 h-8 rounded-[50%] border border-purple object-cover"
+                        "w-8 h-8 rounded-full shadow-customDark object-cover"
                       }
                       width={32}
                       height={32}
                       src={logoUrl}
-                      alt=""
+                      alt=''
                     />
-                    <span className={"font-bold"}>{ticker || name}</span>
+                    <span className={"font-bold"}>{ticker}</span>
+                    <span className='font-bold'>{name}</span>
                   </div>
                 );
               })}

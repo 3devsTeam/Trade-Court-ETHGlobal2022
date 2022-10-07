@@ -10,7 +10,7 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        gray: "#C6C6C6",
+        // gray: "#C6C6C6",
         green: "#09b25b",
         lightGreen: "#0ee45a",
         purple: "#AE8AEF",
@@ -20,6 +20,7 @@ module.exports = {
         lightGray: "#f3f4f6",
         transparent: "transparent",
         yellow: "#F8C011",
+        hoverGray: "#fafafb",
       },
       boxShadow: {
         customDark: "0 10px 15px -3px rgba(0, 0, 0, 0.2)",
@@ -35,17 +36,8 @@ module.exports = {
         md: 500,
         bold: 700,
       },
-      screens: {
-        mobile: { min: "375px", max: "767px" },
-        // => @media (min-width: 375px and max-width: 767px) { ... }
-
-        tablet: { min: "768px", max: "1023px" },
-        // => @media (min-width: 768px and max-width: 1023px) { ... }
-
-        desktop: { min: "1024px" },
-        // => @media (min-width: 1024px) { ... }
-      },
       gridTemplateColumns: {
+        homePage: "0.3fr 0.7fr",
         offer: "0.5fr minmax(0, 1fr) 0.6fr 0.7fr 0.5fr",
         profileOffer: "0.1fr 0.2fr 0.2fr 0.2fr 0.3fr 0.2fr 0.1fr",
         form: "0.6fr 0.4fr",

@@ -15,7 +15,7 @@ const App = () => {
   return (
     <BrowserRouter>
       <Navbar />
-      <main className="m-auto mobile:px-[3%] tablet:px-[5%] desktop:max-w-[1200px] py-5">
+      <main className='max-w-5xl mx-auto'>
         <Routes>
           <Route element={<PrivateRoutes />}>
             <Route path={"/create-offer"} element={<CreateOffer />} />
@@ -28,7 +28,6 @@ const App = () => {
           {/* <Route path={"*"} element={<Navigate to={"/"} />} /> */}
         </Routes>
       </main>
-      <ToastContainer className={"rounded-[20px]"} />
     </BrowserRouter>
   );
 };

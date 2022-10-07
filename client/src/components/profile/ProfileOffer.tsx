@@ -1,9 +1,9 @@
 import React from "react";
 import { IOffer } from "../../models/models";
 import { ButtonOffer } from "./ButtonOffer";
-import { Arrow } from "../Arrow";
-import { Cross } from "../Cross";
-import { OfferService } from "../../services/offer.services";
+import { Arrow } from "../../icons/Arrow";
+import { Cross } from "../../icons/Cross";
+import { OfferService } from "../../api/offer.services";
 import { Label } from "./Label";
 import { useNavigate } from "react-router-dom";
 

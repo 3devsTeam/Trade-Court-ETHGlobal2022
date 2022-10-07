@@ -4,7 +4,7 @@ import { Input } from "../create-offer/Input";
 import { useNavigate } from "react-router";
 import { IOffer } from "../../models/models";
 import { OfferInput } from "../home/OfferInput";
-import { OfferService } from "../../services/offer.services";
+import { OfferService } from "../../api/offer.services";
 import { toast } from "react-toastify";
 import { useEthContract } from "../../hooks/useEthContract";
 import { parseEther } from "../../utils/parseEther";
@@ -95,20 +95,20 @@ export const OfferModal = ({ close, offer }: IOfferModalProps) => {
   ];
 
   return (
-    <div className="rounded-[15px] grid grid-cols-2">
-      <div className="flex flex-col gap-3 p-3 cursor-default border-2 border-purple rounded-[20px]">
+    <div className='rounded-[15px] grid grid-cols-2'>
+      <div className='flex flex-col gap-3 p-3 cursor-default border-2 border-purple rounded-[20px]'>
         {info.map((i) => (
           <div className={"flex justify-between"}>
             <p>{i.name}</p>
             <p className={"font-bold"}>{i.value}</p>
           </div>
         ))}
-        <div className="break-words bg-purple bg-opacity-20 p-2 rounded-[10px]">
+        <div className='break-words bg-purple bg-opacity-20 p-2 rounded-[10px]'>
           <p className={"text-sm"}>{offerComment}</p>
         </div>
       </div>
 
-      <div className="flex flex-col gap-[10px] px-3">
+      <div className='flex flex-col gap-[10px] px-3'>
         <OfferInput
           label={"You pay"}
           maxValue={orderLimit[1]}
@@ -128,9 +128,9 @@ export const OfferModal = ({ close, offer }: IOfferModalProps) => {
         <div>
           <button
             onClick={() => transactionHandler()}
-            className="bg-purple font-bold p-2 rounded-[20px] w-full h-[55px]"
+            className='bg-purple font-bold p-2 rounded-[20px] w-full h-[55px]'
           >
-            <span className="text-white">Buy {symbol}</span>
+            <span className='text-white'>Buy {symbol}</span>
           </button>
         </div>
       </div>

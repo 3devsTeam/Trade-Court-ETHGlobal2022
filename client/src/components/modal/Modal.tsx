@@ -4,29 +4,16 @@ import { CloseButton } from "./CloseButton";
 import { ModalOverlay } from "./ModalOverlay";
 
 interface IModal {
-  canClose: boolean;
   isOpen: boolean;
   width?: string;
   children: React.ReactNode;
-  close: React.Dispatch<any>;
-  //close: any;
+  close: any;
   header: string;
 }
 
-export const Modal = ({
-  canClose,
-  isOpen,
-  width,
-  children,
-  close,
-  header,
-}: IModal) => {
+export const Modal = ({ isOpen, width, children, close, header }: IModal) => {
   const ref = useRef(null);
-
-  if (canClose) {
-    useOnClickOutside(ref, () => close(false));
-  }
-
+  useOnClickOutside(ref, () => close());
   // useEffect(() => {
   //   if (isOpen) {
   //     document.body.style.overflow = "hidden";
@@ -36,9 +23,9 @@ export const Modal = ({
   //   }
   // }, [isOpen]);
   return (
-    <>
+    <div>
       {isOpen && (
-        <>
+        <div>
           <ModalOverlay />
 
           <div
@@ -48,16 +35,16 @@ export const Modal = ({
             ref={ref}
             className={`bg-white overflow-y-auto fixed shadow-customDark rounded-[20px] top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 p-5 z-50 mobile:w-screen mobile:top-0 tablet:w-screen`}
           >
-            <div className="flex justify-between items-center mb-[10px]">
+            <div className='flex justify-between items-center mb-[10px]'>
               <div>
-                <span className="font-bold text-lg">{header}</span>
+                <span className='font-bold text-lg'>{header}</span>
               </div>
-              {canClose && <CloseButton onClose={close} />}
+              <CloseButton onClose={() => close()} />
             </div>
             {children}
           </div>
-        </>
+        </div>
       )}
-    </>
+    </div>
   );
 };

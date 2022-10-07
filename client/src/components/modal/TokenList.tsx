@@ -27,6 +27,7 @@ export const TokenList = ({ tokens, onClose }: ITokenList) => {
       style={{
         height: `400px`,
         overflow: "auto",
+        marginTop: "20px",
       }}
       ref={parentRef}
     >

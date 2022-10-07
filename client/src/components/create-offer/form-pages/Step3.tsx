@@ -2,17 +2,23 @@ import React from "react";
 import { useTypedSelector } from "../../../hooks/useTypedSelector";
 import { Input } from "../Input";
 import { Dropdown } from "../Dropdown";
-import { Arrow } from "../../Arrow";
-import { FormNav } from "../FormNav";
+import { Arrow } from "../../../icons/Arrow";
 import { useActions } from "../../../hooks/useActions";
 import { IOffer } from "../../../models/models";
 import { TextArea } from "../TextArea";
 import { Button } from "../Button";
 import { TimeLimit } from "../TimeLimit";
 import { totalAmount } from "../../../utils/totalAmount";
-import { FormWrapper } from "../FormWrapper";
+import { Wrapper } from "../Wrapper";
+import { useForm } from "react-hook-form";
 
 export const Step3 = () => {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
+
   const { setMinPriceLimit, setMaxPriceLimit, setTimeLimit, setComment } =
     useActions();
   const { fiat, offerComment, orderLimit } = useTypedSelector(
@@ -22,7 +28,7 @@ export const Step3 = () => {
   const { ticker } = fiat;
 
   return (
-    <FormWrapper>
+    <Wrapper>
       <TimeLimit
         onAction={setTimeLimit}
         label={"Order time limit"}
@@ -34,16 +40,16 @@ export const Step3 = () => {
         </p>
         <div className={"flex justify-between gap-1"}>
           <Input
+            register={register("")}
             value={orderLimit[0]}
-            type={"number"}
             onAction={setMinPriceLimit}
             placeholder={"Min"}
             element={ticker}
           />
           <Input
+            register={register("")}
             value={orderLimit[1]}
             maxValue={totalAmount()}
-            type={"number"}
             onAction={setMaxPriceLimit}
             placeholder={"Max"}
             element={ticker}
@@ -52,11 +58,12 @@ export const Step3 = () => {
       </label>
 
       <TextArea
+        register={register("")}
         value={offerComment ? offerComment : ""}
         onAction={setComment}
         label={"Comment"}
         placeholder={"Enter comment"}
       />
-    </FormWrapper>
+    </Wrapper>
   );
 };

@@ -10,7 +10,7 @@ export const Progressbar = ({ steps, step }: IProgressBar) => {
   return (
     <div
       className={
-        "bg-white flex justify-between mb-[22px] rounded-[20px] px-[21px] py-[12px] shadow-customDark"
+        "bg-white flex justify-between rounded-[20px] px-[21px] py-[12px] shadow-customDark"
       }
     >
       {steps.map((stepElement, i) => {
@@ -25,7 +25,7 @@ export const Progressbar = ({ steps, step }: IProgressBar) => {
             </p>
             <div
               className={`text-white h-[40px] w-[40px] rounded-[9999px] flex justify-center items-center font-bold ${
-                step === i + 1 ? "bg-purple" : "bg-gray"
+                step === i + 1 ? "bg-purple" : "bg-gray-200"
               } transition duration-300`}
             >
               {i + 1}

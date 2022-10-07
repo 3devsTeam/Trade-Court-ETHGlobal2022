@@ -1,7 +1,6 @@
 import React from "react";
 
 export interface IInput {
-  type: React.HTMLInputTypeAttribute;
   onAction: any;
   label?: string;
   placeholder?: string;
@@ -9,47 +8,53 @@ export interface IInput {
   cursor?: string;
   element?: any;
   maxValue?: any;
+  register: any;
+  error?: any;
 }
 
 export const Input = ({
+  error,
   maxValue,
-  type,
   onAction,
   label,
   placeholder,
   value,
   cursor,
   element,
+  register,
 }: IInput) => {
   return (
     <label>
-      <p className={"text-lg font-bold mb-1 ml-[10px]"}>{label}</p>
-      <div className="flex items-center border-2 border-purple rounded-[15px] h-[60px]">
+      <span className={"text-lg font-bold mb-1 ml-[10px]"}>{label}</span>
+      <div
+        className={`flex items-center border-2 border-purple rounded-[15px] h-[60px]`}
+      >
         <input
-          type={type}
+          {...register}
+          autoComplete={"off"}
+          autoCorrect={"off"}
+          spellCheck={false}
           onChange={(e) => onAction(e.target.value)}
           className={`outline-none p-[10px] rounded-[15px] cursor-${cursor} w-full h-full bg-transparent`}
           placeholder={placeholder}
           value={value ? value : ""}
         />
-        <div className={`flex ${maxValue ? "gap-1" : ""}`}>
-          {maxValue ? (
-            <button
-              type="button"
-              onClick={() => onAction(maxValue)}
-              className={"font-bold text-purple"}
-            >
-              Max
-            </button>
-          ) : (
-            ""
+
+        <div className='flex space-x-2 pr-[10px]'>
+          {maxValue && (
+            <div className='flex space-x-2'>
+              <button
+                type='button'
+                onClick={() => onAction(maxValue)}
+                className={"font-bold text-purple"}
+              >
+                Max
+              </button>
+
+              <span className={"text-gray-300"}>|</span>
+            </div>
           )}
-          {maxValue ? <div className={"text-gray"}>|</div> : ""}
-          {element ? (
-            <div className={"mr-[10px] font-bold"}>{element}</div>
-          ) : (
-            <></>
-          )}
+          {element && <div className={"font-bold"}>{element}</div>}
         </div>
       </div>
     </label>

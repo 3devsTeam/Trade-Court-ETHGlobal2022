@@ -1,5 +1,4 @@
 import { Form } from "../components/create-offer/Form";
-import { FormNav } from "../components/create-offer/FormNav";
 import { Preview } from "../components/create-offer/Preview";
 import { Progressbar } from "../components/create-offer/Progressbar";
 import { useTypedSelector } from "../hooks/useTypedSelector";
@@ -8,7 +7,7 @@ import { Step2 } from "../components/create-offer/form-pages/Step2";
 import { Step3 } from "../components/create-offer/form-pages/Step3";
 import { useActions } from "../hooks/useActions";
 import { useNavigate } from "react-router-dom";
-import { OfferService } from "../services/offer.services";
+import { OfferService } from "../api/offer.services";
 import { Button } from "../components/create-offer/Button";
 import { multiply } from "../utils/multiply";
 import { toast } from "react-toastify";
@@ -22,6 +21,7 @@ import { useTokens } from "../hooks/useTokens";
 import { useQuery } from "wagmi";
 import { SkeletonWrapper } from "../components/SkeletonWrapper";
 import { IFiat } from "../models/models";
+import { ErrorBoundary } from "react-error-boundary";
 
 export const CreateOffer = () => {
   const {
@@ -55,8 +55,9 @@ export const CreateOffer = () => {
     }
   );
 
-  const isLoaded = isSuccessRequest && fiatSuccess;
+  console.log(isSuccessRequest, fiatSuccess);
 
+  const isLoaded = isSuccessRequest && fiatSuccess;
   useEffect(() => {
     if (isLoaded) {
       setCrypto(tokens[0]);
@@ -67,9 +68,6 @@ export const CreateOffer = () => {
 
   useEffect(() => {
     if (isLoaded) {
-      console.log("fiat changed");
-      console.log(allFiat);
-
       setPaymentMethod(
         allFiat.filter((e: IFiat) => e._id === fiat._id)[0].banks[0]
       );
@@ -176,70 +174,37 @@ export const CreateOffer = () => {
 
   const steps = ["Offer Price", "Payment method", "Settings"];
 
+  const pageDisplay = () => {
+    switch (step) {
+      case 1:
+        return <Step1 tokens={tokens} allFiat={allFiat} />;
+      case 2:
+        return <Step2 />;
+      case 3:
+        return <Step3 />;
+      default:
+        return;
+    }
+  };
+
   return (
-    <div>
+    <div className='p-5'>
       <SkeletonWrapper isLoaded={isLoaded} height={100}>
         <Progressbar steps={steps} step={step} />
       </SkeletonWrapper>
 
-      <div className={"grid grid-cols-2 gap-5 mt-[20px]"}>
-        <div>
+      <div className={"grid grid-cols-2 gap-5 mt-5"}>
+        <div className='flex flex-col justify-between'>
           <SkeletonWrapper isLoaded={isLoaded} height={600}>
-            {step === 1 && <Step1 tokens={tokens} allFiat={allFiat} />}
-            {step === 2 && <Step2 />}
-            {step === 3 && <Step3 />}
+            {pageDisplay()}
           </SkeletonWrapper>
         </div>
 
-        <SkeletonWrapper isLoaded={isLoaded} height={600}>
-          <Preview />
-        </SkeletonWrapper>
-
-        <SkeletonWrapper isLoaded={isLoaded} height={100}>
-          <div className="flex justify-between items-center p-5 bg-white rounded-[20px] shadow-customDark h-[100px]">
-            <div className={"flex items-center gap-3"}>
-              {step > 1 && (
-                <Button
-                  onAction={prevStep}
-                  name={"Back"}
-                  color={"purple"}
-                  rounded={"20px"}
-                  fWeight={"bold"}
-                  fSize={"lg"}
-                  tColor={"white"}
-                />
-              )}
-
-              <Button
-                onAction={() => {
-                  step < 3 ? nextStep() : step === 3 ? createHandler() : null;
-                }}
-                name={
-                  step === 3
-                    ? "Create offer"
-                    : isLoading
-                    ? "Make Room ERC20"
-                    : "Next"
-                }
-                color={"purple"}
-                rounded={"20px"}
-                fWeight={"bold"}
-                fSize={"lg"}
-                tColor={"white"}
-              />
-            </div>
-
-            <div>
-              <Button
-                onAction={null}
-                name={"Help"}
-                fWeight={"bold"}
-                fSize={"lg"}
-                tColor={"purple"}
-              />
-            </div>
-          </div>
-        </SkeletonWrapper>
+        <div>
+          <SkeletonWrapper isLoaded={isLoaded} height={600}>
+            <Preview />
+          </SkeletonWrapper>
+        </div>
       </div>
     </div>
   );
