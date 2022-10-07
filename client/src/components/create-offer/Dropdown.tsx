@@ -6,7 +6,6 @@ interface IDropdown {
   value: string | undefined;
   fullName?: string;
   onAction: any;
-  register?: any;
   label?: string;
   data: any;
   image: string | undefined;
@@ -43,7 +42,7 @@ export const Dropdown = ({
             <div className={"flex items-center gap-1"}>
               <img
                 className={
-                  "w-8 h-8 rounded-[50%] border border-purple object-cover"
+                  "w-8 h-8 rounded-full shadow-customDark object-cover"
                 }
                 src={image}
                 alt={""}
@@ -74,7 +73,7 @@ export const Dropdown = ({
                   >
                     <img
                       className={
-                        "w-8 h-8 rounded-[50%] border border-purple object-cover"
+                        "w-8 h-8 rounded-full shadow-customDark object-cover"
                       }
                       width={32}
                       height={32}
@@ -82,7 +81,7 @@ export const Dropdown = ({
                       alt=''
                     />
                     <span className={"font-bold"}>{ticker}</span>
-                    <span className='font-bold text-gray-300'>{name}</span>
+                    <span className='font-bold'>{name}</span>
                   </div>
                 );
               })}

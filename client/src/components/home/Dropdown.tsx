@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
+import useOnClickOutside from "use-onclickoutside";
 import { Arrow } from "../../icons/Arrow";
 
 interface Props {
@@ -12,20 +13,24 @@ export const Dropdown = ({ activeSelect, children }: Props) => {
   const toggle = () => setOpen(!open);
 
   return (
-    <button
-      onClick={toggle}
-      className='bg-white px-5 py-4 border-2 border-purple rounded-2xl w-full'
-    >
-      <div className='flex justify-between items-center'>
-        <div>
-          <span className='font-bold'>{activeSelect}</span>
+    <div>
+      <button
+        onClick={toggle}
+        className={`border border-gray-100 px-5 py-4 rounded-[10px] w-full transition-colors duration-300 hover:border-purple`}
+      >
+        <div className='flex justify-between items-center'>
+          <div>
+            <span className='font-bold'>{activeSelect}</span>
+          </div>
+          <div className={`${open && "rotate-180"}`}>
+            <Arrow />
+          </div>
         </div>
-        <div className={`${open && "rotate-180"}`}>
-          <Arrow />
-        </div>
-      </div>
 
-      {open && <div className='bg-white border border-black'>{children}</div>}
-    </button>
+        {open && <div className='bg-white mt-5'>{children}</div>}
+      </button>
+
+      {open && <hr className='mt-5' />}
+    </div>
   );
 };

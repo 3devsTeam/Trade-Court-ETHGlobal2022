@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import React, { useEffect, useState } from "react";
 import { Badge } from "../components/profile/Badge";
 import { Schedule } from "../components/profile/Schedule";
-import { OfferService } from "../services/offer.services";
+import { OfferService } from "../api/offer.services";
 import { IOffer } from "../models/models";
 import { off } from "process";
 import { ProfileOffer } from "../components/profile/ProfileOffer";

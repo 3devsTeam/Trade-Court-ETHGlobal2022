@@ -89,7 +89,7 @@ export const Preview = () => {
             <span className={"font-bold text-lg"}>Total Amount</span>
           </div>
           <div>
-            <span>{round(multiply(unitPrice, quantity), 4)}</span>
+            <span>{round(multiply(unitPrice, +quantity), 2)}</span>
             <span> {ticker}</span>
           </div>
         </div>

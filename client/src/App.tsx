@@ -28,7 +28,6 @@ const App = () => {
           {/* <Route path={"*"} element={<Navigate to={"/"} />} /> */}
         </Routes>
       </main>
-      <ToastContainer className={"rounded-[20px]"} />
     </BrowserRouter>
   );
 };

@@ -13,6 +13,7 @@ interface IModal {
 
 export const Modal = ({ isOpen, width, children, close, header }: IModal) => {
   const ref = useRef(null);
+  useOnClickOutside(ref, () => close());
   // useEffect(() => {
   //   if (isOpen) {
   //     document.body.style.overflow = "hidden";
@@ -22,9 +23,9 @@ export const Modal = ({ isOpen, width, children, close, header }: IModal) => {
   //   }
   // }, [isOpen]);
   return (
-    <>
+    <div>
       {isOpen && (
-        <>
+        <div>
           <ModalOverlay />
 
           <div
@@ -42,8 +43,8 @@ export const Modal = ({ isOpen, width, children, close, header }: IModal) => {
             </div>
             {children}
           </div>
-        </>
+        </div>
       )}
-    </>
+    </div>
   );
 };

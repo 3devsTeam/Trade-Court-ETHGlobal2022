@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import { BigNumber } from 'ethers'
 import { useQuery } from 'wagmi'
-import { TokenService } from '../services/tokens.services'
+import { TokenService } from '../api/tokens.services'
 import { useAccount, useNetwork } from 'wagmi'
 import { IToken } from '../models/models'
 import { useActions } from "../hooks/useActions";
@@ -31,7 +31,9 @@ export const useTokens = () => {
 	const { data: exchangeRate, isSuccess: successGetExchangeTokens } = useQuery(
 		[`get exchange ${chainName} token rate`],
 		() => TokenService.getExchangeRate(chainName!),
-		{ select: (data) => data.data.data, refetchOnWindowFocus: true }
+		{ select: (data) => data.data.data, refetchOnWindowFocus: true,
+			//  refetchInterval: 3000
+			 }
 	)
 
 	const { data: ethUsdRate, isSuccess: successGetEthUsdRate } = useQuery(
@@ -43,7 +45,8 @@ export const useTokens = () => {
 			 ? data.data['matic-network'].usd 
 			 :
 			  data.data.ethereum.usd,  
-			  refetchOnWindowFocus: true
+			  refetchOnWindowFocus: true,
+			//   refetchInterval: 3000
 		}
 
 	)

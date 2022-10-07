@@ -7,6 +7,7 @@ interface ITextArea {
   placeholder: string;
   minLength?: string;
   maxLength?: string;
+  register: any;
 }
 
 export const TextArea = ({
@@ -16,6 +17,7 @@ export const TextArea = ({
   onAction,
   minLength,
   maxLength,
+  register,
 }: ITextArea) => {
   return (
     <label>
@@ -23,6 +25,7 @@ export const TextArea = ({
 
       <div>
         <textarea
+          {...register}
           spellCheck={false}
           value={value}
           onChange={(e) => onAction(e.target.value)}

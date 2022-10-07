@@ -3,11 +3,12 @@ import axios from "axios";
 import { Offer } from "../components/home/Offer";
 import { Header } from "../components/home/Header";
 import { useQuery } from "@tanstack/react-query";
-import { OfferService } from "../services/offer.services";
-import { IOffer } from "../models/models";
+import { OfferService } from "../api/offer.services";
+import { IBank, IOffer } from "../models/models";
 import { SkeletonWrapper } from "../components/SkeletonWrapper";
 import { SearchField } from "../components/modal/SearchField";
 import { Dropdown } from "../components/home/Dropdown";
+import { useFetchFilters } from "../hooks/useFetchFilters";
 
 export const Home = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -22,17 +23,23 @@ export const Home = () => {
     refetchInterval: 5000,
   });
 
+  const { banks, isFetchFiltersOk } = useFetchFilters();
+
+  if (isFetchFiltersOk) {
+    console.log(banks.data);
+  }
+
   const headers = [
-    "Maker address",
+    "Maker Address",
     "Avaliable / Limit",
     "Unit Price",
-    "Payment methods",
+    "Payment Methods",
     "Buy / Sell",
   ];
 
   return (
-    <div className='grid grid-cols-homePage gap-5'>
-      <aside className='bg-white shadow-customDark p-5 rounded-[20px] flex flex-col gap-5'>
+    <div className='grid grid-cols-homePage gap-5 mt-5'>
+      <aside className='flex flex-col gap-5 sticky top-0 overflow-auto h-screen'>
         <SearchField
           searchTerm={searchTerm}
           setSearchTerm={setSearchTerm}
@@ -45,7 +52,11 @@ export const Home = () => {
           <div>fiat</div>
         </Dropdown>
         <Dropdown activeSelect='Bank'>
-          <div>banks</div>
+          {banks.data?.map((b: IBank) => (
+            <div key={b._id} className='p-3 flex justify-start'>
+              {b.name}
+            </div>
+          ))}
         </Dropdown>
         <Dropdown activeSelect='Region'>
           <div>Regions</div>
@@ -57,9 +68,7 @@ export const Home = () => {
 
       <main>
         <SkeletonWrapper height={30} isLoaded={!isLoading} margin={"20px"}>
-          <div className='grid grid-cols-offer gap-5 px-[20px] mb-[20px]'>
-            <Header headers={headers} />
-          </div>
+          <Header headers={headers} />
         </SkeletonWrapper>
 
         <SkeletonWrapper
@@ -68,7 +77,7 @@ export const Home = () => {
           count={10}
           margin={"20px"}
         >
-          <section>
+          <section className='space-y-3'>
             {isError ? (
               <p>error</p>
             ) : offers?.length === 0 ? (

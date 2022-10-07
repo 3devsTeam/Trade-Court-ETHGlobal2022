@@ -32,9 +32,9 @@ export const ConnectButton = () => {
       onClick={() => setOpenMenu(!openMenu)}
     >
       <div className='font-bold flex items-center space-x-2 text-black'>
-        <div>
+        {/* <div>
           <img src={activeWalletImg} className='w-5 h-5' />
-        </div>
+        </div> */}
         <span>
           {data?.formatted.slice(0, 8)} {data?.symbol}
         </span>

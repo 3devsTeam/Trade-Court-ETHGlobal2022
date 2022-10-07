@@ -8,15 +8,24 @@ import { useScrollTop } from "../../../hooks/useScrollTop";
 import { TextArea } from "../TextArea";
 import { Button } from "../Button";
 import { Payment } from "../Payment";
-import { FormWrapper } from "../FormWrapper";
+import { Wrapper } from "../Wrapper";
+import { useForm } from "react-hook-form";
 
 export const Step2 = () => {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
+
   const {
     setPaymentDescription,
     addPaymentMethod,
     setCardNumber,
     setRegion,
     setPaymentMethod,
+    prevStep,
+    nextStep,
     //resetPayment,
   } = useActions();
   const {
@@ -48,63 +57,73 @@ export const Step2 = () => {
   const regionLogoUrl = region?.logoUrl;
 
   return (
-    <FormWrapper>
-      <div>
-        <p className={"text-lg font-bold mb-1 ml-[10px]"}>Payment methods</p>
-        <div className={"flex gap-1 overflow-x-auto"}>
-          {!payMethods.length && (
-            <div className={"h-[60px] w-full flex items-center justify-center"}>
-              <span className={"font-bold text-purple text-lg"}>
-                No payments yet...
-              </span>
-            </div>
-          )}
-          {payMethods?.map((p) => {
-            return <Payment payment={p} showCloseButton={true} />;
-          })}
+    <form className='flex flex-col gap-5'>
+      <Wrapper>
+        <div>
+          <p className={"text-lg font-bold mb-1 ml-[10px]"}>Payment methods</p>
+          <div className={"flex gap-1 overflow-x-auto"}>
+            {!payMethods.length && (
+              <div
+                className={"h-[60px] w-full flex items-center justify-center"}
+              >
+                <span className={"font-bold text-purple text-lg"}>
+                  No payments yet...
+                </span>
+              </div>
+            )}
+            {payMethods?.map((p) => {
+              return <Payment payment={p} showCloseButton={true} />;
+            })}
+          </div>
         </div>
-      </div>
 
-      <label>
-        <p className={"text-lg font-bold mb-1 ml-[10px]"}>Add payment method</p>
-        <div className={"flex items-center gap-1"}>
-          <Dropdown
-            image={paymentLogoUrl}
-            value={paymentName}
-            data={banks}
-            onAction={setPaymentMethod}
-          />
-          <Dropdown
-            image={regionLogoUrl}
-            value={regionName}
-            data={regions}
-            onAction={setRegion}
+        <label>
+          <p className={"text-lg font-bold mb-1 ml-[10px]"}>
+            Add payment method
+          </p>
+          <div className={"flex items-center gap-1"}>
+            <Dropdown
+              image={paymentLogoUrl}
+              value={paymentName}
+              data={banks}
+              onAction={setPaymentMethod}
+            />
+            <Dropdown
+              image={regionLogoUrl}
+              value={regionName}
+              data={regions}
+              onAction={setRegion}
+            />
+          </div>
+        </label>
+
+        <Input
+          register={register("cardNumber")}
+          value={cardNumber}
+          label={"Card Number"}
+          placeholder={"Enter card number"}
+          onAction={setCardNumber}
+        />
+        <TextArea
+          register={register("paymentDescription")}
+          value={paymentDescription}
+          onAction={setPaymentDescription}
+          label={"Payment description"}
+          placeholder={"..."}
+        />
+        <Button type='button' name={"Add"} onAction={addPayment} />
+      </Wrapper>
+      <Wrapper>
+        <div className='flex gap-5'>
+          <Button onAction={() => prevStep()} type='button' name='Back' />
+          <Button
+            onAction={() => nextStep()}
+            width={"100%"}
+            type='button'
+            name='Next'
           />
         </div>
-      </label>
-
-      <Input
-        value={cardNumber}
-        type={"text"}
-        label={"Card Number"}
-        placeholder={"Enter card number"}
-        onAction={setCardNumber}
-      />
-      <TextArea
-        value={paymentDescription}
-        onAction={setPaymentDescription}
-        label={"Payment description"}
-        placeholder={"Enter payment description"}
-      />
-      <Button
-        name={"Add"}
-        onAction={addPayment}
-        color={"purple"}
-        fWeight={"bold"}
-        fSize={"lg"}
-        tColor={"white"}
-        rounded={"15px"}
-      />
-    </FormWrapper>
+      </Wrapper>
+    </form>
   );
 };

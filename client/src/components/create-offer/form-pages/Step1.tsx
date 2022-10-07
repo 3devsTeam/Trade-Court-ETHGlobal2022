@@ -8,16 +8,35 @@ import { Modal } from "../../modal/Modal";
 import { SearchField } from "../../modal/SearchField";
 import { TokenList } from "../../modal/TokenList";
 import "react-loading-skeleton/dist/skeleton.css";
-import { FormWrapper } from "../FormWrapper";
+import { Wrapper } from "../Wrapper";
 import { IToken } from "../../../models/models";
+import { useForm } from "react-hook-form";
+import { Button } from "../Button";
+import { toast } from "react-toastify";
 
 interface IStep1 {
   tokens: any;
   allFiat: any;
 }
 
+interface FormStep1 {
+  tokenAmount: string;
+  unitPrice: string;
+  quantity: string;
+}
+
 export const Step1 = ({ tokens, allFiat }: IStep1) => {
-  const { setCrypto, setFiat, setQuantity, setUnitPrice } = useActions();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<FormStep1>({
+    mode: "onSubmit" && "onSubmit",
+    shouldFocusError: true,
+  });
+
+  const { setCrypto, setFiat, setQuantity, setUnitPrice, nextStep } =
+    useActions();
   const { crypto, fiat, quantity, unitPrice } = useTypedSelector(
     (state) => state.offerReducer
   );
@@ -41,56 +60,92 @@ export const Step1 = ({ tokens, allFiat }: IStep1) => {
     );
   };
 
+  const onSubmit = (data: any) => {
+    console.log("Data", data);
+    console.log("Errors", errors);
+    nextStep();
+  };
+
+  console.log(errors);
+
   return (
-    <FormWrapper>
-      <ModalInput
-        symbol={symbol}
-        fullName={cryptoName}
-        image={cryptoImage}
-        onOpen={() => setIsOpen(!isOpen)}
-        label={"Crypto"}
-      />
-      <Dropdown
-        value={ticker}
-        fullName={fiatName}
-        image={fiatImage}
-        onAction={setFiat}
-        data={allFiat}
-        label={"Fiat"}
-      />
-      <Input
-        type={"number"}
-        onAction={setUnitPrice}
-        placeholder={"Enter unit price"}
-        label={"Unit Price"}
-        element={ticker}
-        value={unitPrice}
-      />
-      <Input
-        maxValue={tokenAmount}
-        type={"number"}
-        onAction={setQuantity}
-        placeholder={"Enter quantity"}
-        label={"Quantity"}
-        element={symbol}
-        value={quantity}
-      />
-      <Modal
-        width={"567px"}
-        isOpen={isOpen}
-        close={() => setIsOpen(false)}
-        header={"Select Token"}
-      >
-        <SearchField
-          placeholder={"Enter token name or paste it address"}
-          setSearchTerm={setSearchTerm}
-          searchTerm={searchTerm}
+    <form className='flex flex-col gap-5' onSubmit={handleSubmit(onSubmit)}>
+      <Wrapper>
+        <ModalInput
+          register={register("tokenAmount", {
+            required: true,
+            validate: {
+              positive: (value) => parseFloat(value) > 0,
+            },
+          })}
+          symbol={symbol}
+          fullName={cryptoName}
+          image={cryptoImage}
+          onOpen={() => setIsOpen(!isOpen)}
+          label={"Crypto"}
         />
-        <TokenList
-          tokens={searchFilter(tokens)}
-          onClose={() => setIsOpen(false)}
+        <Dropdown
+          value={ticker}
+          fullName={fiatName}
+          image={fiatImage}
+          onAction={setFiat}
+          data={allFiat}
+          label={"Fiat"}
         />
-      </Modal>
-    </FormWrapper>
+        <Input
+          register={register("unitPrice", {
+            required: "Unit price is required",
+            // pattern: {
+            //   value: /^[0-9]*[.,]?[0-9]*$/,
+            //   message: "Invalid unit price value",
+            // },
+            validate: {
+              positive: (value) => parseFloat(value) > 0,
+            },
+          })}
+          onAction={setUnitPrice}
+          placeholder={"0"}
+          label={"Unit Price"}
+          element={ticker}
+          value={unitPrice}
+        />
+
+        <Input
+          register={register("quantity", {
+            required: "Quantity is required",
+            validate: {
+              positive: (value) => parseFloat(value) > 0,
+            },
+          })}
+          maxValue={tokenAmount}
+          onAction={setQuantity}
+          placeholder={"0"}
+          label={"Quantity"}
+          element={symbol}
+          value={quantity}
+        />
+
+        <Modal
+          width={"567px"}
+          isOpen={isOpen}
+          close={() => setIsOpen(false)}
+          header={"Select Token"}
+        >
+          <SearchField
+            placeholder={"Enter token name or paste it address"}
+            setSearchTerm={setSearchTerm}
+            searchTerm={searchTerm}
+          />
+          <TokenList
+            tokens={searchFilter(tokens)}
+            onClose={() => setIsOpen(false)}
+          />
+        </Modal>
+      </Wrapper>
+
+      <Wrapper>
+        <Button type='submit' name='Next' />
+      </Wrapper>
+    </form>
   );
 };

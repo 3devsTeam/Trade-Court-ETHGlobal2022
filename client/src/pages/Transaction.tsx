@@ -1,9 +1,8 @@
 import { useQuery } from "@tanstack/react-query";
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { OfferService } from "../services/offer.services";
+import { OfferService } from "../api/offer.services";
 import { Form } from "../components/create-offer/Form";
-import { FormNav } from "../components/create-offer/FormNav";
 import { Chat } from "../components/transaction/Chat";
 import transfer from "../assets/images/transfer.svg";
 import lock from "../assets/images/lock.svg";
@@ -17,11 +16,11 @@ import { io } from "socket.io-client";
 import { Main } from "../components/transaction/Main";
 import { toast } from "react-toastify";
 import axios from "axios";
-import { API_URl } from "../services/axios";
+import { API_URl } from "../api/axios";
 import { useAccount, useEnsAvatar, useEnsName } from "wagmi";
 import { useEthContract } from "../hooks/useEthContract";
 import { SkeletonWrapper } from "../components/SkeletonWrapper";
-import { FormWrapper } from "../components/create-offer/FormWrapper";
+import { Wrapper } from "../components/create-offer/Wrapper";
 
 export const Transaction = () => {
   const { address } = useAccount();
@@ -238,7 +237,7 @@ export const Transaction = () => {
 
       <div className={"grid grid-cols-form gap-5 mt-[20px]"}>
         <SkeletonWrapper isLoaded={!isLoading} height={600}>
-          <FormWrapper>
+          <Wrapper>
             <ProgressBar
               activeStep={step}
               steps={["Transfer", "Approval", "Success"]}
@@ -254,7 +253,7 @@ export const Transaction = () => {
               setPayMethod={setPayMethod}
               activePayMethod={payMethod}
             />
-          </FormWrapper>
+          </Wrapper>
         </SkeletonWrapper>
 
         <SkeletonWrapper isLoaded={!isLoading} height={600}>
@@ -270,68 +269,40 @@ export const Transaction = () => {
 
         <SkeletonWrapper isLoaded={!isLoading} height={100}>
           <div className={"flex items-center justify-between w-full"}>
-            <FormWrapper>
+            <Wrapper>
               <div>
                 {role === "taker" ? (
                   step === 1 ? (
                     <Button
                       onAction={() => takerConfirmed(id!)}
                       name={"Done, next!"}
-                      fWeight={"bold"}
-                      fSize={"lg"}
-                      color={"purple"}
-                      rounded={"15px"}
-                      tColor={"white"}
                     />
                   ) : step === 2 ? (
                     <span className={"text-lg font-bold"}>
                       Waiting for confirmation...
                     </span>
                   ) : (
-                    <Button
-                      onAction={() => claimTokens(id!)}
-                      name={"Claim"}
-                      fWeight={"bold"}
-                      fSize={"lg"}
-                      color={"purple"}
-                      rounded={"15px"}
-                      tColor={"white"}
-                    />
+                    <Button onAction={() => claimTokens(id!)} name={"Claim"} />
                   )
                 ) : step === 1 ? (
                   <Button
                     disabled={true}
                     onAction={() => {}}
                     name={"Funds recieved"}
-                    fWeight={"bold"}
-                    fSize={"lg"}
-                    color={"purple"}
-                    rounded={"15px"}
-                    tColor={"white"}
                   />
                 ) : step === 2 ? (
                   <Button
                     onAction={() => makerConfirmed(id!)}
                     name={"Funds recieved"}
-                    fWeight={"bold"}
-                    fSize={"lg"}
-                    color={"purple"}
-                    rounded={"15px"}
-                    tColor={"white"}
                   />
                 ) : step === 3 ? (
                   <Button
                     onAction={() => navigate("/")}
                     name={"Go to main page"}
-                    fWeight={"bold"}
-                    fSize={"lg"}
-                    color={"purple"}
-                    rounded={"15px"}
-                    tColor={"white"}
                   />
                 ) : null}
               </div>
-            </FormWrapper>
+            </Wrapper>
           </div>
         </SkeletonWrapper>
       </div>
