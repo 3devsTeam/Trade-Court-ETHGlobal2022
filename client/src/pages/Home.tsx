@@ -39,7 +39,7 @@ export const Home = () => {
 
   return (
     <div className='grid grid-cols-homePage gap-5 mt-5'>
-      <aside className='flex flex-col gap-5 sticky top-0 overflow-auto h-screen'>
+      <aside className='flex flex-col gap-5 sticky top-5 overflow-auto h-screen'>
         <SearchField
           searchTerm={searchTerm}
           setSearchTerm={setSearchTerm}
