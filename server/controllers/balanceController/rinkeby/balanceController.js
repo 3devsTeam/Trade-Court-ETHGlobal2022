@@ -4,7 +4,9 @@ const catchAsync = require('../../../utils/catchAsync');
 const ethers = require('ethers');
 
 exports.listTokens = catchAsync(async (req, res, next) => {
-  const tokens = await Crypto.find({ chainId: 4 });
+  const tokens = await Crypto.find({ chainId: 4 }).select(
+    'name symbol logoUrl'
+  );
   res.status(200).json({
     message: 'success',
     tokens,

@@ -13,7 +13,9 @@ const { ERC20ABI } = require('./ABI');
 const tokenList = require('./tokenList');
 
 exports.listTokens = catchAsync(async (req, res, next) => {
-  const tokens = await Crypto.find({ chainId: 10 }).sort({ name: 1 });
+  const tokens = await Crypto.find({ chainId: 10 })
+    .sort({ name: 1 })
+    .select('name symbol logoUrl');
   res.status(200).json({
     message: 'success',
     tokens,
