@@ -1,14 +1,14 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App";
-import "./index.css";
+import "./styles/index.css";
 import "./polyfills";
 import { WagmiConfig } from "wagmi";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
-import { store } from "./store/store";
+import { store } from "./context/store";
 import { Provider } from "react-redux";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { wagmiClient } from "./connectors";
+import { wagmiClient } from "./wallets/connectors";
 import "react-toastify/ReactToastify.min.css";
 import { ToastContainer } from "react-toastify";
 

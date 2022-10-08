@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNetwork, useSwitchNetwork } from "wagmi";
-import { Modal } from "../modal/Modal";
+import { Modal } from "../ui/Modal";
 
 export const SwitchNetwork = () => {
   const { chain, chains } = useNetwork();

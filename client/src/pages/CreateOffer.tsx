@@ -19,7 +19,7 @@ import React, { useEffect, useState } from "react";
 import { useScrollTop } from "../hooks/useScrollTop";
 import { useTokens } from "../hooks/useTokens";
 import { useQuery } from "wagmi";
-import { SkeletonWrapper } from "../components/SkeletonWrapper";
+import { SkeletonWrapper } from "../components/ui/SkeletonWrapper";
 import { IFiat } from "../models/models";
 import { ErrorBoundary } from "react-error-boundary";
 

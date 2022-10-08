@@ -1,5 +1,5 @@
 import { SetStateAction, useState } from "react";
-import { Loop } from "../../icons/Loop";
+import { Loop } from "../../assets/icons/Loop";
 
 interface ISearchField {
   setSearchTerm: React.Dispatch<SetStateAction<string>>;

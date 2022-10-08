@@ -1,7 +1,7 @@
 import React, { useRef, useState } from "react";
 import { truncateAddress } from "../../utils/truncateAddress";
-import { OfferModal } from "../modal/OfferModal";
-import { Modal } from "../modal/Modal";
+import { OfferModal } from "./OfferModal";
+import { Modal } from "../ui/Modal";
 import { IOffer } from "../../models/models";
 import { round } from "../../utils/round";
 

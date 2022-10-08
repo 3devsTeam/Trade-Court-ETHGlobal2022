@@ -1,7 +1,7 @@
-import { offerActions } from "../store/offer.slice"
+import { offerActions } from "../context/offer.slice"
 import { useDispatch } from "react-redux"
 import { bindActionCreators} from "@reduxjs/toolkit"
-import { formActions } from "../store/form.slice"
+import { formActions } from "../context/form.slice"
 
 
 const actions = {
