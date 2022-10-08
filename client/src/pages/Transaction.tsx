@@ -19,7 +19,7 @@ import axios from "axios";
 import { API_URl } from "../api/axios";
 import { useAccount, useEnsAvatar, useEnsName } from "wagmi";
 import { useEthContract } from "../hooks/useEthContract";
-import { SkeletonWrapper } from "../components/SkeletonWrapper";
+import { SkeletonWrapper } from "../components/ui/SkeletonWrapper";
 import { Wrapper } from "../components/create-offer/Wrapper";
 
 export const Transaction = () => {

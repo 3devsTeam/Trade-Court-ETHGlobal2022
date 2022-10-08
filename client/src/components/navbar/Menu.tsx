@@ -6,11 +6,11 @@ import {
 } from "@heroicons/react/20/solid";
 import { useAccount, useDisconnect } from "wagmi";
 import { MenuButton } from "./MenuButton";
-import { CopyToClipBoard } from "../../icons/CopyToClipBoard";
-import { HomeIcon } from "../../icons/HomeIcon";
-import { ProfileIcon } from "../../icons/ProfileIcon";
-import { ThreeDotsIcon } from "../../icons/ThreeDotsIcon";
-import { PlusIcon } from "../../icons/PlusIcon";
+import { CopyToClipBoard } from "../../assets/icons/CopyToClipBoard";
+import { HomeIcon } from "../../assets/icons/HomeIcon";
+import { ProfileIcon } from "../../assets/icons/ProfileIcon";
+import { ThreeDotsIcon } from "../../assets/icons/ThreeDotsIcon";
+import { PlusIcon } from "../../assets/icons/PlusIcon";
 import { useNavigate } from "react-router-dom";
 
 interface Props {

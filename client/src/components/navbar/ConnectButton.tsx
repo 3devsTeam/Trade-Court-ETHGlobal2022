@@ -1,14 +1,14 @@
 import { useRef, useState } from "react";
 import { useAccount, useEnsName, useNetwork, useSwitchNetwork } from "wagmi";
-import { connectors } from "../../connectors";
+import { connectors } from "../../wallets/connectors";
 import { truncateAddress } from "../../utils/truncateAddress";
-import { Modal } from "../modal/Modal";
+import { Modal } from "../ui/Modal";
 import { WalletButton } from "./WalletButton";
 import { useBalance } from "wagmi";
 import { Menu } from "./Menu";
 import { NavLink } from "./NavLink";
 import useOnClickOutside from "use-onclickoutside";
-import { walletsImages } from "../../walletsImages";
+import { walletsImages } from "../../wallets/walletsImages";
 
 export const ConnectButton = () => {
   const [openConnectModal, setOpenConnectModal] = useState(false);

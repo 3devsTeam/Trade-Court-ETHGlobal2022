@@ -1,8 +1,8 @@
 import React from "react";
 import { IOffer } from "../../models/models";
 import { ButtonOffer } from "./ButtonOffer";
-import { Arrow } from "../../icons/Arrow";
-import { Cross } from "../../icons/Cross";
+import { Arrow } from "../../assets/icons/Arrow";
+import { Cross } from "../../assets/icons/Cross";
 import { OfferService } from "../../api/offer.services";
 import { Label } from "./Label";
 import { useNavigate } from "react-router-dom";

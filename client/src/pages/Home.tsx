@@ -5,8 +5,8 @@ import { Header } from "../components/home/Header";
 import { useQuery } from "@tanstack/react-query";
 import { OfferService } from "../api/offer.services";
 import { IBank, IOffer } from "../models/models";
-import { SkeletonWrapper } from "../components/SkeletonWrapper";
-import { SearchField } from "../components/modal/SearchField";
+import { SkeletonWrapper } from "../components/ui/SkeletonWrapper";
+import { SearchField } from "../components/ui/SearchField";
 import { Dropdown } from "../components/home/Dropdown";
 import { useFetchFilters } from "../hooks/useFetchFilters";
 

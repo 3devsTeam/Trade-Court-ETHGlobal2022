@@ -16,12 +16,13 @@ export const Button = ({
   type,
 }: IButtonProps) => {
   return (
-    <input
+    <button
       type={type}
       disabled={disabled}
-      value={name}
       onClick={() => onAction()}
       className={`bg-purple w-[${width}] rounded-[20px] px-4 py-3 font-bold text-lg text-white transition duration-150 ease-out hover:ease-in cursor-pointer`}
-    />
+    >
+      {name}
+    </button>
   );
 };

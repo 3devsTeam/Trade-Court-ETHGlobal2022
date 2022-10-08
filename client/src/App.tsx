@@ -3,7 +3,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Navbar } from "./components/navbar/Navbar";
 import { CreateOffer } from "./pages/CreateOffer";
 import { Home } from "./pages/Home";
-import { PrivateRoutes } from "./pages/PrivateRoutes";
+import { PrivateRoutes } from "./routes/PrivateRoutes";
 import { Settings } from "./pages/Settings";
 import { Transaction } from "./pages/Transaction";
 import { Navigate } from "react-router-dom";

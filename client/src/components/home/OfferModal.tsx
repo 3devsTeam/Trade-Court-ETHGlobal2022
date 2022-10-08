@@ -3,7 +3,7 @@ import { truncateAddress } from "../../utils/truncateAddress";
 import { Input } from "../create-offer/Input";
 import { useNavigate } from "react-router";
 import { IOffer } from "../../models/models";
-import { OfferInput } from "../home/OfferInput";
+import { OfferInput } from "./OfferInput";
 import { OfferService } from "../../api/offer.services";
 import { toast } from "react-toastify";
 import { useEthContract } from "../../hooks/useEthContract";
@@ -86,7 +86,7 @@ export const OfferModal = ({ close, offer }: IOfferModalProps) => {
     },
     {
       name: "Available:",
-      value: `${round(quantity, 4)} ${symbol}`,
+      value: `${round(+quantity, 4)} ${symbol}`,
     },
     {
       name: "Limit:",

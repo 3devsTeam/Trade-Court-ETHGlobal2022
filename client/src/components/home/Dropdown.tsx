@@ -1,6 +1,6 @@
 import React, { useRef, useState } from "react";
 import useOnClickOutside from "use-onclickoutside";
-import { Arrow } from "../../icons/Arrow";
+import { Arrow } from "../../assets/icons/Arrow";
 
 interface Props {
   activeSelect: string;
