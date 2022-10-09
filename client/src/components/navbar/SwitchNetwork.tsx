@@ -21,8 +21,11 @@ export const SwitchNetwork = () => {
         close={setOpenSwitchNetwork}
       >
         <div className='flex flex-col'>
-          {chains.map((chain) => (
-            <button onClick={async () => await switchNetworkAsync(chain.id)}>
+          {chains.map((chain, i) => (
+            <button
+              key={i}
+              onClick={async () => await switchNetworkAsync(chain.id)}
+            >
               <span className='font-bold'>{chain.name}</span>
             </button>
           ))}

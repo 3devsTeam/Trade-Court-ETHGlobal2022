@@ -18,7 +18,7 @@ export const Offer = (offer: IOffer) => {
     quantity,
     unitPrice,
   } = offer;
-  const payments = payMethods.map((e: any) => e.bank.name);
+  const payments = payMethods?.map((e: any) => e.bank.name);
   const { address } = maker;
   const { symbol } = crypto;
   const { ticker } = fiat;
@@ -26,7 +26,7 @@ export const Offer = (offer: IOffer) => {
   // console.log(openOfferModal);
   const ref = useRef();
   return (
-    <div>
+    <div className='space-y-3'>
       <div className='shadow-customDark bg-white grid text-sm grid-cols-offer gap-5 items-center h-[100px] w-full px-[20px] rounded-[20px]'>
         <div className='text-md'>
           <div>

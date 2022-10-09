@@ -1,5 +1,9 @@
 import React from "react";
 
+interface Props {
+  fill: string;
+}
+
 export const Arrow = () => {
   return (
     <svg
