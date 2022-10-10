@@ -1,6 +1,6 @@
 import { SetStateAction } from "react";
-import { Cross } from "../../assets/icons/Cross";
-import { Loop } from "../../assets/icons/Loop";
+import { Cross } from "./icons/Cross";
+import { Loop } from "./icons/Loop";
 
 interface ISearchField {
   setSearchTerm: React.Dispatch<SetStateAction<string>>;

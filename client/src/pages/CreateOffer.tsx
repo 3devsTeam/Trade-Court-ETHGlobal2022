@@ -49,7 +49,7 @@ export const CreateOffer = () => {
 
   const { data: allFiat, isSuccess: fiatSuccess } = useQuery(
     ["get fiat"],
-    () => FiatServices.getAll(),
+    () => FiatServices.getFiat(),
     {
       select: (data) => data.data.allFiat,
       onSuccess: (data) => setFiat(data[0]),

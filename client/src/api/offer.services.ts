@@ -31,7 +31,7 @@ export const OfferService = {
       withCredentials: true,
     });
   },
-  async getAllWithPagination(page: number, limit = 5) {
+  async getAllWithPagination(page: number, limit = 10) {
     const { data } = await axios.get(
       `${API_URl}/api/offer/?page=${page}&limit=${limit}`
     );

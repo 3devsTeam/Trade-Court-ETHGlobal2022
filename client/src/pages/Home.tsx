@@ -53,8 +53,7 @@ export const Home = () => {
 
   // console.log(offers);
 
-  const { banks, crypto, isFetchFiltersOk } = useFetchFilters();
-
+  const { fiat, crypto, isFetchFiltersOk } = useFetchFilters();
   // if (isFetchFiltersOk) {
   //   console.log(banks.data);
   //   console.log(crypto.data);
@@ -70,15 +69,15 @@ export const Home = () => {
 
   return (
     <div className='grid grid-cols-homePage gap-5 my-5'>
-      <aside className='flex flex-col gap-5 sticky top-5 overflow-auto h-screen pr-5'>
+      <aside className='bg-white shadow-customDark p-5 rounded-2xl flex flex-col gap-5 sticky top-5 overflow-auto h-screen pr-5'>
         <SearchField
           searchTerm={searchTerm}
           setSearchTerm={setSearchTerm}
           placeholder='Search...'
         />
         <Dropdown data={crypto.data} activeSelect='Crypto' />
-        <Dropdown data={[]} activeSelect='Fiat' />
-        <Dropdown data={banks.data} activeSelect='Bank' />
+        <Dropdown data={fiat.data} activeSelect='Fiat' />
+        <Dropdown data={[]} activeSelect='Payment Method' />
         <Dropdown data={[]} activeSelect='Region' />
         <Dropdown data={[]} activeSelect='Rating' />
       </aside>
