@@ -1,6 +1,4 @@
-import axios from 'axios';
-
-import { API_URl } from './axios';
+import { api } from "./axios";
 
 interface ILogin {
   address: string | undefined;
@@ -9,11 +7,11 @@ interface ILogin {
 }
 export const UserService = {
   async login(data: ILogin) {
-    return axios.post(`${API_URl}/api/user/login`, data, {
+    return api.post(`/api/user/login`, data, {
       withCredentials: true,
     });
   },
   async logout() {
-    return axios.get(`${API_URl}/api/user/logout`, { withCredentials: true})
-  }
+    return api.get(`/api/user/logout`, { withCredentials: true });
+  },
 };

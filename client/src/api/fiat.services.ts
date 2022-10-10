@@ -1,13 +1,12 @@
-import axios from "axios";
-import { API_URl } from "./axios";
+import { api } from "./axios";
 
 export const FiatServices = {
   async getFiat() {
-    const { data } = await axios.get(`${API_URl}/api/fiat`);
+    const { data } = await api.get(`/api/fiat`);
     return data;
   },
   async getBanks() {
-    const { data } = await axios.get(`${API_URl}/api/bank`);
+    const { data } = await api.get(`/api/bank`);
     return data;
   },
 };
