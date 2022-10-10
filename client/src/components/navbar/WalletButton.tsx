@@ -1,6 +1,6 @@
 import React, { SetStateAction } from "react";
 import { connect } from "@wagmi/core";
-import { connectors } from "../../connectors";
+import { connectors } from "../../wallets/connectors";
 import { MetaMaskConnector } from "wagmi/connectors/metaMask";
 import { WalletConnectConnector } from "wagmi/connectors/walletConnect";
 import { CoinbaseWalletConnector } from "wagmi/connectors/coinbaseWallet";

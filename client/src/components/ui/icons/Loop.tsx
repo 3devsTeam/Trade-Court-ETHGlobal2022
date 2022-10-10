@@ -9,7 +9,7 @@ export const Loop = () => {
         viewBox='0 0 20 20'
         fill='none'
         xmlns='http://www.w3.org/2000/svg'
-        // style="width: 16px; height: 16px;"
+        className='text-gray-300'
       >
         <circle
           cx='9.80297'

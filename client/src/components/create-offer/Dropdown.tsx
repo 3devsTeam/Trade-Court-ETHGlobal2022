@@ -1,6 +1,6 @@
 import React, { useState, useRef } from "react";
 import useOnClickOutside from "use-onclickoutside";
-import { Arrow } from "../../icons/Arrow";
+import { Arrow } from "../ui/icons/Arrow";
 
 interface IDropdown {
   value: string | undefined;

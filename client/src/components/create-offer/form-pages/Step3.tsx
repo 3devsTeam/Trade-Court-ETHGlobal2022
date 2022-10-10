@@ -2,7 +2,7 @@ import React from "react";
 import { useTypedSelector } from "../../../hooks/useTypedSelector";
 import { Input } from "../Input";
 import { Dropdown } from "../Dropdown";
-import { Arrow } from "../../../icons/Arrow";
+import { Arrow } from "../../ui/icons/Arrow";
 import { useActions } from "../../../hooks/useActions";
 import { IOffer } from "../../../models/models";
 import { TextArea } from "../TextArea";

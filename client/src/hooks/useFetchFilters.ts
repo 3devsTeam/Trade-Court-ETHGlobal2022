@@ -1,20 +1,46 @@
-import { useQuery } from "@tanstack/react-query"
-import { API } from "../api/api"
+import { useQuery } from "@tanstack/react-query";
+import { useNetwork } from "wagmi";
+import { FiatServices } from "../api/fiat.services";
+import { CryptoServices } from "../api/crypto.services";
 
 export const useFetchFilters = () => {
-    const { data: banks, isSuccess: banksSuccess, isError: banksError, isLoading: banksLoading } = useQuery(['get banks'], () =>  API.getBanks(), {
-        select: (data) => data.data.data.allBanks
-    })
+  const { chain } = useNetwork();
 
-    return {
+  const {
+    data: fiat,
+    isSuccess: fiatSuccess,
+    isError: fiatError,
+    isLoading: fiatLoading,
+  } = useQuery(["get fiat"], () => FiatServices.getFiat(), {
+    select: (data) => data.data.allFiat,
+  });
 
-        isFetchFiltersOk: banksSuccess,
-        banks: {
-            data: banks,
-            isSuccess: banksSuccess,
-            isError: banksError,
-            isLoading: banksLoading
-        }
+  const {
+    data: crypto,
+    isSuccess: cryptoSuccess,
+    isError: cryptoError,
+    isLoading: cryptoLoading,
+  } = useQuery(
+    ["get crypto by chain"],
+    () => CryptoServices.getByChain(chain!.name),
+    {
+      select: (data) => data.tokens,
     }
+  );
 
-}
+  return {
+    isFetchFiltersOk: fiatSuccess,
+    fiat: {
+      data: fiat,
+      isSuccess: fiatSuccess,
+      isError: fiatError,
+      isLoading: fiatLoading,
+    },
+    crypto: {
+      data: crypto,
+      isSuccess: cryptoSuccess,
+      isError: cryptoError,
+      isLoading: cryptoLoading,
+    },
+  };
+};

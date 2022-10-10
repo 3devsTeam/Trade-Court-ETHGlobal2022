@@ -1,5 +1,6 @@
 const AppError = require('../../../utils/appError');
 const catchAsync = require('../../../utils/catchAsync');
+const Crypto = require('../../../models/cryptoModel');
 const Web3 = require('web3');
 const fs = require('fs');
 const { BigNumber } = require('ethers');
@@ -10,6 +11,16 @@ const {
 } = require('@1inch/multicall');
 const { ERC20ABI } = require('./ABI');
 const tokenList = require('./tokenList');
+
+exports.listTokens = catchAsync(async (req, res, next) => {
+  const tokens = await Crypto.find({ chainId: 137 })
+    .sort({ name: 1 })
+    .select('name symbol logoUrl');
+  res.status(200).json({
+    message: 'success',
+    tokens,
+  });
+});
 
 exports.getRate = catchAsync(async (req, res, next) => {
   console.log(__dirname);
