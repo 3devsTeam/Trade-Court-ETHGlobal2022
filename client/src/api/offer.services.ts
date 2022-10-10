@@ -29,8 +29,8 @@ export const OfferService = {
       withCredentials: true,
     });
   },
-  async getAllWithPagination(page: number, limit = 10) {
+  async getAllWithPagination(page: number, limit = 5) {
     const { data } = await api.get(`/api/offer/?page=${page}&limit=${limit}`);
-    return data;
+    return data.data.offers;
   },
 };

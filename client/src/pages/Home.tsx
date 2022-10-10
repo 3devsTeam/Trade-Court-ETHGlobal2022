@@ -9,55 +9,24 @@ import { SkeletonWrapper } from "../components/ui/SkeletonWrapper";
 import { SearchField } from "../components/ui/SearchField";
 import { Dropdown, Item } from "../components/home/Dropdown";
 import { useFetchFilters } from "../hooks/useFetchFilters";
-import { useInfiniteQuery } from "wagmi";
-import { useInView } from "react-intersection-observer";
+import { useInfiniteOffers } from "../hooks/useInfiniteOffers";
 
 export const Home = () => {
+  const { data, error, status, lastItemRef } = useInfiniteOffers(10);
+
+  const content = data?.pages.map((page) => {
+    return page.map((offer: IOffer, i: number) => {
+      if (page.length === i + 1) {
+        console.log("give ref", lastItemRef);
+        return <Offer ref={lastItemRef} {...offer} key={offer._id} />;
+      }
+      return <Offer {...offer} key={offer._id} />;
+    });
+  });
+
   const [searchTerm, setSearchTerm] = useState("");
 
-  // const {
-  //   data: offers,
-  //   isSuccess,
-  //   isLoading,
-  //   isError,
-  // } = useQuery(["get offers"], () => OfferService.getAll(), {
-  //   select: (data) => data.data.data.offers,
-  //   refetchInterval: 5000,
-  // });
-
-  const { ref, inView } = useInView();
-
-  const {
-    data: offers,
-    isError,
-    isLoading,
-    isSuccess,
-    isFetchingNextPage,
-    hasNextPage,
-    fetchNextPage,
-  } = useInfiniteQuery(
-    ["offers"],
-    async ({ pageParam = 0 }) => OfferService.getAllWithPagination(pageParam),
-    {
-      getPreviousPageParam: (firstPage) => firstPage.data.nextId ?? undefined,
-      getNextPageParam: (lastPage) => lastPage.data.previousId ?? undefined,
-    }
-  );
-
-  useEffect(() => {
-    if (inView) {
-      console.log("fetch new page");
-      fetchNextPage();
-    }
-  }, [inView]);
-
-  // console.log(offers);
-
   const { fiat, crypto, isFetchFiltersOk } = useFetchFilters();
-  // if (isFetchFiltersOk) {
-  //   console.log(banks.data);
-  //   console.log(crypto.data);
-  // }
 
   const headers = [
     "Maker Address",
@@ -69,7 +38,7 @@ export const Home = () => {
 
   return (
     <div className='grid grid-cols-homePage gap-5 my-5'>
-      <aside className='bg-white shadow-customDark p-5 rounded-2xl flex flex-col gap-5 sticky top-5 overflow-auto h-screen pr-5'>
+      <aside className='bg-white shadow-customDark p-5 rounded-2xl flex flex-col gap-5 sticky top-5 overflow-auto h-screen'>
         <SearchField
           searchTerm={searchTerm}
           setSearchTerm={setSearchTerm}
@@ -83,7 +52,8 @@ export const Home = () => {
       </aside>
 
       <main>
-        <SkeletonWrapper height={30} isLoaded={!isLoading} margin={"20px"}>
+        <div className='space-y-2'>{content}</div>
+        {/* <SkeletonWrapper height={30} isLoaded={!isLoading} margin={"20px"}>
           <Header headers={headers} />
         </SkeletonWrapper>
         <SkeletonWrapper
@@ -109,7 +79,7 @@ export const Home = () => {
                 : "nothing to fetch"}
             </span>
           </button>
-        </SkeletonWrapper>
+        </SkeletonWrapper> */}
       </main>
     </div>
   );

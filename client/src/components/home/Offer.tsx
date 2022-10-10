@@ -1,13 +1,10 @@
-import React, { useRef, useState } from "react";
+import React, { forwardRef, useRef, useState } from "react";
 import { truncateAddress } from "../../utils/truncateAddress";
 import { OfferModal } from "./OfferModal";
 import { Modal } from "../ui/Modal";
 import { IOffer } from "../../models/models";
-import { round } from "../../utils/round";
 
-export const Offer = (offer: IOffer) => {
-  // console.log(offer);
-
+export const Offer = forwardRef<any, any>((offer: IOffer, ref) => {
   const {
     _id,
     crypto,
@@ -23,10 +20,9 @@ export const Offer = (offer: IOffer) => {
   const { symbol } = crypto;
   const { ticker } = fiat;
   const [openOfferModal, setOpenOfferModal] = useState(false);
-  // console.log(openOfferModal);
-  const ref = useRef();
-  return (
-    <div className='space-y-3'>
+
+  const offerBody = (
+    <>
       <div className='shadow-customDark bg-white grid text-sm grid-cols-offer gap-5 items-center h-[100px] w-full px-[20px] rounded-[20px]'>
         <div className='text-md'>
           <div>
@@ -39,7 +35,7 @@ export const Offer = (offer: IOffer) => {
               <p className={"text-sm"}>
                 <span className={"font-normal"}>Available: </span>
                 <span className={"font-bold"}>
-                  {round(+quantity, 4)} {symbol}
+                  {parseFloat(quantity).toFixed(4)} {symbol}
                 </span>
               </p>
             </div>
@@ -88,6 +84,14 @@ export const Offer = (offer: IOffer) => {
       >
         <OfferModal close={() => setOpenOfferModal(false)} offer={offer} />
       </Modal>
-    </div>
+    </>
   );
-};
+
+  return ref ? (
+    <div id='lastItem' ref={ref}>
+      {offerBody}
+    </div>
+  ) : (
+    <div>{offerBody}</div>
+  );
+});
