@@ -1,6 +1,17 @@
 const AppError = require('../../../utils/appError');
+const Crypto = require('../../../models/cryptoModel');
 const catchAsync = require('../../../utils/catchAsync');
 const ethers = require('ethers');
+
+exports.listTokens = catchAsync(async (req, res, next) => {
+  const tokens = await Crypto.find({ chainId: 4 }).select(
+    'name symbol logoUrl'
+  );
+  res.status(200).json({
+    message: 'success',
+    tokens,
+  });
+});
 
 exports.getBalance = catchAsync(async (req, res, next) => {
   const provider = new ethers.providers.JsonRpcProvider(

@@ -5,7 +5,7 @@ interface INavLink {
   icon: any;
   name: string;
   route: string;
-  onClose: any;
+  onClose?: any;
 }
 
 export const NavLink = ({ name, route, icon, onClose }: INavLink) => {
@@ -15,7 +15,7 @@ export const NavLink = ({ name, route, icon, onClose }: INavLink) => {
         onClick={() => onClose(false)}
         className='flex items-center w-full hover:bg-gray-100 transition-colors duration-300 p-4 rounded-lg space-x-2'
       >
-        <i>{icon}</i>
+        {icon}
 
         <div
           className={

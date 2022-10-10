@@ -19,9 +19,10 @@ import React, { useEffect, useState } from "react";
 import { useScrollTop } from "../hooks/useScrollTop";
 import { useTokens } from "../hooks/useTokens";
 import { useQuery } from "wagmi";
-import { SkeletonWrapper } from "../components/SkeletonWrapper";
+import { SkeletonWrapper } from "../components/ui/SkeletonWrapper";
 import { IFiat } from "../models/models";
 import { ErrorBoundary } from "react-error-boundary";
+import { FiatServices } from "../api/fiat.services";
 
 export const CreateOffer = () => {
   const {
@@ -48,14 +49,16 @@ export const CreateOffer = () => {
 
   const { data: allFiat, isSuccess: fiatSuccess } = useQuery(
     ["get fiat"],
-    () => OfferService.getFiat(),
+    () => FiatServices.getFiat(),
     {
-      select: (data) => data.data.data.allFiat,
+      select: (data) => data.data.allFiat,
       onSuccess: (data) => setFiat(data[0]),
     }
   );
 
-  console.log(isSuccessRequest, fiatSuccess);
+  // console.log(allFiat);
+
+  // console.log(isSuccessRequest, fiatSuccess);
 
   const isLoaded = isSuccessRequest && fiatSuccess;
   useEffect(() => {

@@ -7,15 +7,19 @@ const balanceControllerRinkeby = require('../controllers/balanceController/rinke
 const router = express.Router();
 
 router.route('/ethereum/rate').get(balanceControllerEthereum.getRate);
+router.route('/ethereum/list').get(balanceControllerEthereum.listTokens);
 router.route('/ethereum/:address').get(balanceControllerEthereum.getBalance);
 
 router.route('/polygon/rate').get(balanceControllerPolygon.getRate);
+router.route('/polygon/list').get(balanceControllerPolygon.listTokens);
 router.route('/polygon/:address').get(balanceControllerPolygon.getBalance);
 
 router.route('/optimism/rate').get(balanceControllerOptimism.getRate);
+router.route('/optimism/list').get(balanceControllerOptimism.listTokens);
 router.route('/optimism/:address').get(balanceControllerOptimism.getBalance);
 
 router.route('/rinkeby/rate').get(balanceControllerEthereum.getRate);
+router.route('/rinkeby/list').get(balanceControllerEthereum.listTokens);
 router.route('/rinkeby/:address').get(balanceControllerRinkeby.getBalance);
 // router.route('/tokens/:url').get(balanceController.getTokenImg);
 module.exports = router;

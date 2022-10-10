@@ -1,26 +1,33 @@
 import React from "react";
 import { NavLink } from "./NavLink";
-import {
-  ArrowTopRightOnSquareIcon,
-  ArrowRightOnRectangleIcon,
-} from "@heroicons/react/20/solid";
-import { useAccount, useDisconnect } from "wagmi";
-import { MenuButton } from "./MenuButton";
-import { CopyToClipBoard } from "../../icons/CopyToClipBoard";
-import { HomeIcon } from "../../icons/HomeIcon";
-import { ProfileIcon } from "../../icons/ProfileIcon";
-import { ThreeDotsIcon } from "../../icons/ThreeDotsIcon";
-import { PlusIcon } from "../../icons/PlusIcon";
+import { useAccount, useBalance, useConnect, useDisconnect } from "wagmi";
 import { useNavigate } from "react-router-dom";
+import { MenuButton } from "./MenuButton";
+import { HomeIcon } from "../ui/icons/HomeIcon";
+import { ProfileIcon } from "../ui/icons/ProfileIcon";
+import { AddIcon } from "../ui/icons/AddIcon";
+import { SettingsIcon } from "../ui/icons/SettingsIcon";
+import { CopyIcon } from "../ui/icons/CopyIcon";
+import { GoToLinkIcon } from "../ui/icons/GoToLinkIcon";
+import { DisconnectIcon } from "../ui/icons/DisconnectIcon";
+import { AvatarIcon } from "../ui/icons/AvatarIcon";
 
 interface Props {
+  address: string;
+  balance: any;
+  ensName: any;
   onClose: any;
   menuRef: React.MutableRefObject<null>;
 }
 
-export const Menu = ({ onClose, menuRef }: Props) => {
+export const Menu = ({
+  address,
+  balance,
+  ensName,
+  onClose,
+  menuRef,
+}: Props) => {
   const navigate = useNavigate();
-  const { address } = useAccount();
   const { disconnect } = useDisconnect();
 
   const copyToClipBoard = (copyText: string) => {
@@ -35,26 +42,22 @@ export const Menu = ({ onClose, menuRef }: Props) => {
 
   const navLinks = [
     {
-      action: () => onClose(false),
       icon: <HomeIcon />,
       route: "/",
       name: "Home",
     },
     {
-      action: () => onClose(false),
       icon: <ProfileIcon />,
       route: "/profile",
       name: "Profile",
     },
     {
-      action: () => onClose(false),
-      icon: <PlusIcon />,
+      icon: <AddIcon />,
       route: "/create-offer",
       name: "Create offer",
     },
     {
-      action: () => onClose(false),
-      icon: <ThreeDotsIcon />,
+      icon: <SettingsIcon />,
       route: "/settings",
       name: "Settings",
     },
@@ -64,54 +67,57 @@ export const Menu = ({ onClose, menuRef }: Props) => {
     {
       caption: "Copy Address",
       onClick: () => copyToClipBoard(address!),
-      icon: <CopyToClipBoard />,
+      icon: <CopyIcon />,
     },
     {
       caption: "Show on Etherscan",
-      icon: <ArrowTopRightOnSquareIcon width={30} height={30} />,
+      icon: <GoToLinkIcon />,
       href: `https://etherscan.io/address/${address}`,
     },
     {
       caption: "Disconnect",
       onClick: () => disconnectHandler(),
-      icon: <ArrowRightOnRectangleIcon width={30} height={30} />,
+      icon: <DisconnectIcon />,
+      captionColor: "bg-red-500",
     },
   ];
 
   return (
     <nav
-      ref={menuRef}
-      className='flex flex-col absolute w-full rounded-lg z-50'
+      // ref={menuRef}
+      className='flex justify-start flex-col absolute top-9 px-2 py-[12px] w-full z-50 bg-white shadow-customDark rounded-[20px]'
     >
-      <div className='mt-3 bg-white p-3 rounded-lg flex flex-col shadow-customDark'>
-        {navLinks.map((link) => (
-          <NavLink
-            onClose={link.action}
-            icon={link.icon}
-            route={link.route}
-            name={link.name}
-          />
-        ))}
-      </div>
+      <div className={"flex justify-between"}>
+        <div className='flex justify-between space-x-2'>
+          <div>
+            <AvatarIcon />
+          </div>
+          <div className={"flex flex-col font-bold"}>
+            <span>{!ensName ? address : ensName}</span>
+            <span>
+              {balance?.formatted.slice(0, 8)} {balance?.symbol}
+            </span>
+          </div>
+        </div>
 
-      <div className='flex justify-between bg-white p-3 rounded-lg shadow-customDark mt-2'>
-        {menuButtons.map((btn) => {
-          if (btn.href) {
-            return (
-              <a target={"_blank"} href={btn.href}>
-                <MenuButton caption={btn.caption} icon={btn.icon} />
-              </a>
-            );
-          } else {
+        <div className={"flex items-center space-x-3"}>
+          {menuButtons.map((button) => {
             return (
               <MenuButton
-                caption={btn.caption}
-                icon={btn.icon}
-                onClick={btn.onClick}
+                onClick={button.onClick}
+                icon={button.icon}
+                href={button.href}
+                caption={button.caption}
               />
             );
-          }
-        })}
+          })}
+        </div>
+      </div>
+
+      <div className={"flex flex-col mt-[10px]"}>
+        {navLinks.map((link) => (
+          <NavLink icon={link.icon} name={link.name} route={link.route} />
+        ))}
       </div>
     </nav>
   );

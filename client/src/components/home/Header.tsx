@@ -7,8 +7,8 @@ interface IHeader {
 export const Header = ({ headers }: IHeader) => {
   return (
     <header className='flex justify-between h-12 items-center'>
-      {headers.map((h) => (
-        <div>
+      {headers.map((h, i) => (
+        <div key={i}>
           <span className='text-md font-bold'>{h}</span>
         </div>
       ))}
