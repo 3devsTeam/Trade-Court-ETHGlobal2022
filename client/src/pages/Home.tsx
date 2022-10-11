@@ -12,7 +12,13 @@ import { useFetchFilters } from "../hooks/useFetchFilters";
 import { useInfiniteOffers } from "../hooks/useInfiniteOffers";
 
 export const Home = () => {
-  const { data, error, status, lastItemRef } = useInfiniteOffers(10);
+  const { fiat, crypto, isFiltersFetchOk } = useFetchFilters();
+  console.log(isFiltersFetchOk);
+
+  const { data, error, status, lastItemRef, hasNextPage, isFetchingNextPage } =
+    useInfiniteOffers(10);
+
+  const isLoaded = isFiltersFetchOk && status === "success";
 
   const content = data?.pages.map((page) => {
     return page.map((offer: IOffer, i: number) => {
@@ -26,8 +32,6 @@ export const Home = () => {
 
   const [searchTerm, setSearchTerm] = useState("");
 
-  const { fiat, crypto, isFetchFiltersOk } = useFetchFilters();
-
   const headers = [
     "Maker Address",
     "Avaliable / Limit",
@@ -38,34 +42,34 @@ export const Home = () => {
 
   return (
     <div className='grid grid-cols-homePage gap-5 my-5'>
-      <aside className='bg-white shadow-customDark p-5 rounded-2xl flex flex-col gap-5 sticky top-5 overflow-auto h-screen'>
-        <SearchField
-          searchTerm={searchTerm}
-          setSearchTerm={setSearchTerm}
-          placeholder='Search...'
-        />
-        <Dropdown data={crypto.data} activeSelect='Crypto' />
-        <Dropdown data={fiat.data} activeSelect='Fiat' />
-        <Dropdown data={[]} activeSelect='Payment Method' />
-        <Dropdown data={[]} activeSelect='Region' />
-        <Dropdown data={[]} activeSelect='Rating' />
-      </aside>
+      <SkeletonWrapper isLoaded={isLoaded} height={1000}>
+        <aside className='bg-white shadow-customDark p-5 rounded-2xl flex flex-col gap-5 sticky top-5 overflow-auto h-screen'>
+          <SearchField
+            searchTerm={searchTerm}
+            setSearchTerm={setSearchTerm}
+            placeholder='Search...'
+          />
+          <Dropdown data={crypto.data} activeSelect='Crypto' />
+          <Dropdown data={fiat.data} activeSelect='Fiat' />
+          <Dropdown data={[]} activeSelect='Payment Method' />
+          <Dropdown data={[]} activeSelect='Region' />
+          <Dropdown data={[]} activeSelect='Rating' />
+        </aside>
+      </SkeletonWrapper>
 
       <main>
-        <SkeletonWrapper
-          height={30}
-          isLoaded={status === "success"}
-          margin={"20px"}
-        >
+        <SkeletonWrapper height={30} isLoaded={isLoaded} margin={"20px"}>
           <Header headers={headers} />
         </SkeletonWrapper>
         <SkeletonWrapper
-          isLoaded={status === "success"}
+          isLoaded={isLoaded}
           height={100}
           count={10}
           margin={"20px"}
         >
           <div className='space-y-2'>{content}</div>
+
+          {!(hasNextPage && isFetchingNextPage) && <h1>That's all for now!</h1>}
         </SkeletonWrapper>
       </main>
     </div>

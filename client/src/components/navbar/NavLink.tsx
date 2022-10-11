@@ -1,20 +1,16 @@
 import React from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 interface INavLink {
   icon: any;
   name: string;
   route: string;
-  onClose?: any;
 }
 
-export const NavLink = ({ name, route, icon, onClose }: INavLink) => {
+export const NavLink = ({ name, route, icon }: INavLink) => {
   return (
     <Link to={route}>
-      <button
-        onClick={() => onClose(false)}
-        className='flex items-center w-full hover:bg-gray-100 transition-colors duration-300 p-4 rounded-lg space-x-2'
-      >
+      <button className='flex items-center w-full hover:bg-gray-100 transition-colors duration-300 p-4 rounded-lg space-x-2'>
         {icon}
 
         <div

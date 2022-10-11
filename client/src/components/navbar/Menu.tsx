@@ -116,12 +116,7 @@ export const Menu = ({
 
       <div className={"flex flex-col mt-[10px]"}>
         {navLinks.map((link) => (
-          <NavLink
-            onClose={() => onClose(false)}
-            icon={link.icon}
-            name={link.name}
-            route={link.route}
-          />
+          <NavLink icon={link.icon} name={link.name} route={link.route} />
         ))}
       </div>
     </nav>

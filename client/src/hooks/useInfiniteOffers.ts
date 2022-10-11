@@ -45,5 +45,5 @@ export const useInfiniteOffers = (limit?: number) => {
     [isFetchingNextPage, hasNextPage, fetchNextPage]
   );
 
-  return { data, status, error, lastItemRef };
+  return { data, status, error, lastItemRef, hasNextPage, isFetchingNextPage };
 };
