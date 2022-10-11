@@ -52,34 +52,21 @@ export const Home = () => {
       </aside>
 
       <main>
-        <div className='space-y-2'>{content}</div>
-        {/* <SkeletonWrapper height={30} isLoaded={!isLoading} margin={"20px"}>
+        <SkeletonWrapper
+          height={30}
+          isLoaded={status === "success"}
+          margin={"20px"}
+        >
           <Header headers={headers} />
         </SkeletonWrapper>
         <SkeletonWrapper
-          isLoaded={!isLoading}
+          isLoaded={status === "success"}
           height={100}
           count={10}
           margin={"20px"}
         >
-          {offers?.pages.map((page) => (
-            <div key={page.nextId}>
-              {page.data.offers.map((offer: IOffer) => (
-                <Offer key={offer._id} {...offer} />
-              ))}
-            </div>
-          ))}
-
-          <button ref={ref} onClick={() => fetchNextPage()}>
-            <span>
-              {isFetchingNextPage
-                ? "fetching new data"
-                : hasNextPage
-                ? "new page"
-                : "nothing to fetch"}
-            </span>
-          </button>
-        </SkeletonWrapper> */}
+          <div className='space-y-2'>{content}</div>
+        </SkeletonWrapper>
       </main>
     </div>
   );

@@ -17,6 +17,7 @@ export const useInfiniteOffers = (limit?: number) => {
       getNextPageParam: (lastPage, allPages) => {
         return lastPage.length ? allPages.length + 1 : undefined;
       },
+      refetchOnMount: true,
     }
   );
 

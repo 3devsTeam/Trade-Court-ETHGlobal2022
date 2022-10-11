@@ -36,7 +36,7 @@ export const ConnectButton = ({
   return isConnected ? (
     <button
       className='rounded-[15px] py-[9px] px-[10px] bg-white shadow-customDark'
-      onClick={() => setOpenMenu(!openMenu)}
+      onMouseEnter={() => setOpenMenu(true)}
     >
       <div className='font-bold flex items-center space-x-2 text-black'>
         {/* <div>
