@@ -4,7 +4,7 @@ import { Offer } from "../components/home/Offer";
 import { Header } from "../components/home/Header";
 import { useQuery } from "@tanstack/react-query";
 import { OfferService } from "../api/offer.services";
-import { IBank, IOffer, IToken } from "../models/models";
+import { IBank, IFiat, IOffer, IRegion, IToken } from "../models/models";
 import { SkeletonWrapper } from "../components/ui/SkeletonWrapper";
 import { SearchField } from "../components/ui/SearchField";
 import { Dropdown, Item } from "../components/home/Dropdown";
@@ -13,7 +13,6 @@ import { useInfiniteOffers } from "../hooks/useInfiniteOffers";
 
 export const Home = () => {
   const { fiat, crypto, isFiltersFetchOk } = useFetchFilters();
-  console.log(isFiltersFetchOk);
 
   const { data, error, status, lastItemRef, hasNextPage, isFetchingNextPage } =
     useInfiniteOffers(10);
@@ -23,7 +22,6 @@ export const Home = () => {
   const content = data?.pages.map((page) => {
     return page.map((offer: IOffer, i: number) => {
       if (page.length === i + 1) {
-        console.log("give ref", lastItemRef);
         return <Offer ref={lastItemRef} {...offer} key={offer._id} />;
       }
       return <Offer {...offer} key={offer._id} />;

@@ -40,25 +40,27 @@ export const Dropdown = ({ activeSelect, data }: Props) => {
   const filteredItems = filterItems(data);
 
   return (
-    <button
-      onClick={toggle}
-      className={`border-2 border-gray-100 rounded-[10px] transition-all duration-300 hover:border-purple px-5 py-4 group`}
-    >
-      <div className='flex justify-between items-center'>
-        <div>
-          <span className='font-bold'>{activeSelect}</span>
+    <div className='border-2 border-gray-100 transition-all duration-300 hover:border-purple rounded-[10px]'>
+      <button
+        onClick={toggle}
+        className='rounded-[10px] px-5 py-4 group w-full'
+      >
+        <div className='flex justify-between items-center'>
+          <div>
+            <span className='font-bold'>{activeSelect}</span>
+          </div>
+          <div
+            className={`${
+              open && "rotate-180 transition-transform duration-300"
+            }`}
+          >
+            <Arrow />
+          </div>
         </div>
-        <div
-          className={`${
-            open && "rotate-180 transition-transform duration-300"
-          }`}
-        >
-          <Arrow />
-        </div>
-      </div>
+      </button>
 
       {open && (
-        <div className='space-y-3 mt-3'>
+        <div className='space-y-3 p-2'>
           <SearchField
             setSearchTerm={setSearchTerm}
             searchTerm={searchTerm}
@@ -84,6 +86,6 @@ export const Dropdown = ({ activeSelect, data }: Props) => {
           </div>
         </div>
       )}
-    </button>
+    </div>
   );
 };
