@@ -6,8 +6,12 @@ import { SearchField } from "../ui/SearchField";
 import { DropdownItem } from "./DropdownItem";
 
 interface Props {
-  data: Item[];
+  data: {
+    items: [Item];
+    option: string;
+  };
   activeSelect: string;
+  onSelect: React.SetStateAction<any>;
 }
 
 export interface Item {
@@ -16,13 +20,15 @@ export interface Item {
   logoUrl: string;
 }
 
-export const Dropdown = ({ activeSelect, data }: Props) => {
+export const Dropdown = ({ activeSelect, data, onSelect }: Props) => {
   const [open, setOpen] = useState(false);
+
+  const { items, option } = data;
 
   const parentRef = useRef(null);
 
   const virtualizer = useVirtualizer({
-    count: data?.length,
+    count: items?.length,
     getScrollElement: () => parentRef.current,
     estimateSize: () => 60,
   });
@@ -37,7 +43,7 @@ export const Dropdown = ({ activeSelect, data }: Props) => {
     );
   };
 
-  const filteredItems = filterItems(data);
+  const filteredItems = filterItems(items);
 
   return (
     <div className='border-2 border-gray-100 transition-all duration-300 hover:border-purple rounded-[10px]'>
@@ -76,6 +82,8 @@ export const Dropdown = ({ activeSelect, data }: Props) => {
 
                 return (
                   <DropdownItem
+                    option={option}
+                    onSelect={onSelect}
                     key={virtualItem.key}
                     virtualItem={virtualItem}
                     item={item}

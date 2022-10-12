@@ -12,10 +12,24 @@ import { useFetchFilters } from "../hooks/useFetchFilters";
 import { useInfiniteOffers } from "../hooks/useInfiniteOffers";
 
 export const Home = () => {
+  const [activeFiat, setActiveFiat] = useState({});
+  const [activeCrypto, setActiveCrypto] = useState({});
+  const [activePayment, setActivePayment] = useState({});
+  const [activeRegion, setActiveRegion] = useState({});
+  const [activeRating, setActiveRating] = useState({});
+
+  const [activeFilters, setActiveFilters] = useState({});
+
+  useEffect(() => {
+    setActiveFilters({
+      crypto: activeCrypto._id,
+    });
+  }, [activeCrypto]);
+
   const { fiat, crypto, isFiltersFetchOk } = useFetchFilters();
 
   const { data, error, status, lastItemRef, hasNextPage, isFetchingNextPage } =
-    useInfiniteOffers(10);
+    useInfiniteOffers(activeFilters);
 
   const isLoaded = isFiltersFetchOk && status === "success";
 
@@ -41,17 +55,52 @@ export const Home = () => {
   return (
     <div className='grid grid-cols-homePage gap-5 my-5'>
       <SkeletonWrapper isLoaded={isLoaded} height={1000}>
-        <aside className='bg-white shadow-customDark p-5 rounded-2xl flex flex-col gap-5 sticky top-5 overflow-auto h-screen'>
+        <aside className='bg-white shadow-customDark p-5 rounded-2xl flex flex-col gap-5 sticky top-5 overflow-auto max-h-screen'>
           <SearchField
             searchTerm={searchTerm}
             setSearchTerm={setSearchTerm}
             placeholder='Search...'
           />
-          <Dropdown data={crypto.data} activeSelect='Crypto' />
-          <Dropdown data={fiat.data} activeSelect='Fiat' />
-          <Dropdown data={[]} activeSelect='Payment Method' />
-          <Dropdown data={[]} activeSelect='Region' />
-          <Dropdown data={[]} activeSelect='Rating' />
+          <Dropdown
+            onSelect={setActiveCrypto}
+            data={{
+              items: crypto.data,
+              option: "item?.symbol",
+            }}
+            activeSelect='Crypto'
+          />
+          <Dropdown
+            onSelect={setActiveFiat}
+            data={{
+              items: fiat.data,
+              option: "item?.ticker",
+            }}
+            activeSelect='Fiat'
+          />
+          <Dropdown
+            onSelect={setActivePayment}
+            data={{
+              items: crypto.data,
+              option: "item?.symbol",
+            }}
+            activeSelect='Payment Method'
+          />
+          <Dropdown
+            onSelect={setActiveRegion}
+            data={{
+              items: crypto.data,
+              option: "item?.symbol",
+            }}
+            activeSelect='Region'
+          />
+          <Dropdown
+            onSelect={setActiveRating}
+            data={{
+              items: crypto.data,
+              option: "item?.symbol",
+            }}
+            activeSelect='Rating'
+          />
         </aside>
       </SkeletonWrapper>
 

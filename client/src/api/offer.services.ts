@@ -29,7 +29,10 @@ export const OfferService = {
       withCredentials: true,
     });
   },
-  async getAllWithPagination(page: number, limit = 5) {
+  async getAll(page: number, limit = 5, keys: any) {
+    if (keys.crypto) {
+      console.log("request for crypto");
+    }
     const { data } = await api.get(`/api/offer/?page=${page}&limit=${limit}`);
     return data.data.offers;
   },

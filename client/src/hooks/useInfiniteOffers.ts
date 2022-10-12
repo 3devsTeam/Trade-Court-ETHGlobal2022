@@ -2,7 +2,9 @@ import { useInfiniteQuery } from "@tanstack/react-query";
 import { useCallback, useRef } from "react";
 import { OfferService } from "../api/offer.services";
 
-export const useInfiniteOffers = (limit?: number) => {
+export const useInfiniteOffers = (activeFilters: any, limit?: number) => {
+  console.log(activeFilters);
+
   const {
     data,
     fetchNextPage,
@@ -11,8 +13,8 @@ export const useInfiniteOffers = (limit?: number) => {
     isFetchingNextPage,
     hasNextPage,
   } = useInfiniteQuery(
-    ["offers"],
-    ({ pageParam = 1 }) => OfferService.getAllWithPagination(pageParam, limit),
+    ["offers", activeFilters],
+    ({ pageParam = 1 }) => OfferService.getAll(pageParam, limit, activeFilters),
     {
       getNextPageParam: (lastPage, allPages) => {
         return lastPage.length ? allPages.length + 1 : undefined;

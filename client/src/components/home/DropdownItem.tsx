@@ -4,11 +4,19 @@ import { Item } from "./Dropdown";
 interface Props {
   virtualItem: any;
   item: Item;
+  onSelect: React.SetStateAction<any>;
+  option: string;
 }
 
-export const DropdownItem = ({ item, virtualItem }: Props) => {
+export const DropdownItem = ({
+  item,
+  virtualItem,
+  onSelect,
+  option,
+}: Props) => {
   return (
     <button
+      onClick={() => onSelect(item)}
       style={{
         position: "absolute",
         top: 0,
@@ -24,7 +32,7 @@ export const DropdownItem = ({ item, virtualItem }: Props) => {
           src={item?.logoUrl}
           className='h-8 w-8 rounded-full object-cover'
         />
-        <span className='font-bold'>{item?.name}</span>
+        <span className='font-bold'>{eval(option)}</span>
       </div>
     </button>
   );

@@ -11,15 +11,15 @@ const { chains, provider, webSocketProvider } = configureChains(
   );
 
 export const connectors = [
-  new MetaMaskConnector( { chains }), 
+  new MetaMaskConnector( { chains }),
   new WalletConnectConnector({ chains, options: { } }),
   new CoinbaseWalletConnector( { chains, options: { appName: 'Trade Court'} })
 ]
 
 
-  
+
 export const wagmiClient = createClient({
-    connectors,
+connectors,
     autoConnect: true,
     provider,
     webSocketProvider,
