@@ -9,6 +9,7 @@ router.post('/login', signatureVerify, authController.login);
 router.get('/logout', authController.logout);
 
 router.use(authController.protect);
+router.route('/offers').get(userController.getMyOffers);
 router.route('/me').get(userController.getMe);
 
 router.use(authController.accessOnly('admin'));

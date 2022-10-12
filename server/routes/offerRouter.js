@@ -10,11 +10,12 @@ router.get('/', offerController.getAllOffers);
 router.use(authController.protect);
 router.post('/', offerController.createOffer);
 router.get('/:id', offerController.getOffer);
-router.post('/:id', offerController.joinOffer);
-router.put('/:id', offerController.leaveOffer);
 router.delete('/:id', offerController.deleteOffer);
+
+router.post('/:id', roomController.joinRoom);
 router.get('/:id/send', roomController.takerSent);
 router.get('/:id/recieve', roomController.makerRecieved);
 router.get('/:id/claim', roomController.takerClaimed);
+router.put('/:id', roomController.leaveRoom);
 
 module.exports = router;

@@ -8,10 +8,14 @@ const userSchema = new mongoose.Schema({
     required: true,
     unique: true,
   },
-  rating: {
+  ratingsAverage: {
     type: Number,
     min: 1,
     max: 5,
+  },
+  ratingsQuantity: {
+    type: Number,
+    default: 0,
   },
   role: {
     type: String,
