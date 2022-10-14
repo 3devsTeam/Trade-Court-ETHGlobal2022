@@ -60,12 +60,14 @@ const offerSchema = new mongoose.Schema({
     min: [0, 'quantity very small'],
     required: [true, 'quantity is empty'],
   },
-  orderLimit: [
-    {
-      type: Number,
-      required: [true, 'orderLimit is empty'],
-    },
-  ],
+  minLimit: {
+    type: Number,
+    required: [true, 'minLimit is empty'],
+  },
+  maxLimit: {
+    type: Number,
+    required: [true, 'minLimit is empty'],
+  },
   crypto: {
     type: mongoose.Schema.ObjectId,
     ref: 'Crypto',
