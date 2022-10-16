@@ -1,16 +1,17 @@
 import { useVirtualizer } from "@tanstack/react-virtual";
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import useOnClickOutside from "use-onclickoutside";
 import { Arrow } from "../ui/icons/Arrow";
 import { SearchField } from "../ui/SearchField";
 import { DropdownItem } from "./DropdownItem";
 
 interface Props {
+  activeSelect: any;
   data: {
     items: [Item];
-    option: string;
+    options: string;
   };
-  activeSelect: string;
+  label: string;
   onSelect: React.SetStateAction<any>;
 }
 
@@ -20,10 +21,10 @@ export interface Item {
   logoUrl: string;
 }
 
-export const Dropdown = ({ activeSelect, data, onSelect }: Props) => {
+export const Dropdown = ({ label, data, onSelect, activeSelect }: Props) => {
   const [open, setOpen] = useState(false);
 
-  const { items, option } = data;
+  const { items, options } = data;
 
   const parentRef = useRef(null);
 
@@ -46,21 +47,36 @@ export const Dropdown = ({ activeSelect, data, onSelect }: Props) => {
   const filteredItems = filterItems(items);
 
   return (
-    <div className='border-2 border-gray-100 transition-all duration-300 hover:border-purple rounded-[10px]'>
-      <button
-        onClick={toggle}
-        className='rounded-[10px] px-5 py-4 group w-full'
-      >
-        <div className='flex justify-between items-center'>
-          <div>
-            <span className='font-bold'>{activeSelect}</span>
-          </div>
-          <div
-            className={`${
-              open && "rotate-180 transition-transform duration-300"
-            }`}
-          >
-            <Arrow />
+    <div className='border-2 border-gray-100 transition-all duration-300 hover:border-purple rounded-[15px]'>
+      <button onClick={toggle} className='rounded-[10px] p-2 group w-full'>
+        <div className='flex flex-col'>
+          <div className='flex justify-between items-center'>
+            {activeSelect ? (
+              <div className='flex items-center gap-3'>
+                <div className='flex items-center gap-1'>
+                  <img
+                    className='w-8 h-8 rounded-[50%] shadow-customDark object-cover'
+                    src={activeSelect.logoUrl}
+                  />
+
+                  <span className='font-bold'>
+                    {eval(`activeSelect.${options}`)}
+                  </span>
+                </div>
+
+                <span className='font-bold text-gray-300'>{label}</span>
+              </div>
+            ) : (
+              <span className='font-bold'>{label}</span>
+            )}
+
+            <div
+              className={`${
+                open && "rotate-180 transition-transform duration-300"
+              }`}
+            >
+              <Arrow />
+            </div>
           </div>
         </div>
       </button>
@@ -82,7 +98,7 @@ export const Dropdown = ({ activeSelect, data, onSelect }: Props) => {
 
                 return (
                   <DropdownItem
-                    option={option}
+                    options={options}
                     onSelect={onSelect}
                     key={virtualItem.key}
                     virtualItem={virtualItem}

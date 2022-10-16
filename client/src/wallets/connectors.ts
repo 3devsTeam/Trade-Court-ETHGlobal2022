@@ -19,7 +19,7 @@ export const connectors = [
 
 
 export const wagmiClient = createClient({
-connectors,
+    connectors,
     autoConnect: true,
     provider,
     webSocketProvider,

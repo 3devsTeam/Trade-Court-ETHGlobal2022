@@ -5,14 +5,14 @@ interface Props {
   virtualItem: any;
   item: Item;
   onSelect: React.SetStateAction<any>;
-  option: string;
+  options: string;
 }
 
 export const DropdownItem = ({
   item,
   virtualItem,
   onSelect,
-  option,
+  options,
 }: Props) => {
   return (
     <button
@@ -30,9 +30,9 @@ export const DropdownItem = ({
       <div className='flex items-center space-x-3 px-4'>
         <img
           src={item?.logoUrl}
-          className='h-8 w-8 rounded-full object-cover'
+          className='w-8 h-8 rounded-[50%] shadow-customDark object-cover'
         />
-        <span className='font-bold'>{eval(option)}</span>
+        <span className='font-bold'>{eval(`item?.${options}`)}</span>
       </div>
     </button>
   );

@@ -6,10 +6,11 @@ import { Dropdown } from "../Dropdown";
 import { useActions } from "../../../hooks/useActions";
 import { useScrollTop } from "../../../hooks/useScrollTop";
 import { TextArea } from "../TextArea";
-import { Button } from "../Button";
 import { Payment } from "../Payment";
 import { Wrapper } from "../Wrapper";
 import { useForm } from "react-hook-form";
+import { SubmitButton } from "../../ui/SubmitButton";
+import { Button } from "../../ui/Button";
 
 export const Step2 = () => {
   const {
@@ -111,17 +112,12 @@ export const Step2 = () => {
           label={"Payment description"}
           placeholder={"..."}
         />
-        <Button type='button' name={"Add"} onAction={addPayment} />
+        <Button name={"Add"} onClick={addPayment} />
       </Wrapper>
       <Wrapper>
         <div className='flex gap-5'>
-          <Button onAction={() => prevStep()} type='button' name='Back' />
-          <Button
-            onAction={() => nextStep()}
-            width={"100%"}
-            type='button'
-            name='Next'
-          />
+          <Button onClick={prevStep} disabled={false} name={"Back"} />
+          <SubmitButton name={"Next"} disabled={false} />
         </div>
       </Wrapper>
     </form>

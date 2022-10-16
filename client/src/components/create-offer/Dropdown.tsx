@@ -31,7 +31,7 @@ export const Dropdown = ({
   return (
     <div className={"w-full relative"} ref={ref}>
       <label>
-        <p className={"text-lg font-bold mb-1 ml-[10px]"}>{label}</p>
+        <span className={"text-lg font-bold mb-1 ml-[10px]"}>{label}</span>
         <div>
           <div
             onClick={() => setIsOpen(!isOpen)}
@@ -42,7 +42,7 @@ export const Dropdown = ({
             <div className={"flex items-center gap-1"}>
               <img
                 className={
-                  "w-8 h-8 rounded-full shadow-customDark object-cover"
+                  "w-8 h-8 rounded-[50%] shadow-customDark object-cover"
                 }
                 src={image}
                 alt={""}

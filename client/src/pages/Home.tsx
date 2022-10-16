@@ -4,7 +4,14 @@ import { Offer } from "../components/home/Offer";
 import { Header } from "../components/home/Header";
 import { useQuery } from "@tanstack/react-query";
 import { OfferService } from "../api/offer.services";
-import { IBank, IFiat, IOffer, IRegion, IToken } from "../models/models";
+import {
+  IBank,
+  IFiat,
+  IOffer,
+  IPayment,
+  IRegion,
+  IToken,
+} from "../models/models";
 import { SkeletonWrapper } from "../components/ui/SkeletonWrapper";
 import { SearchField } from "../components/ui/SearchField";
 import { Dropdown, Item } from "../components/home/Dropdown";
@@ -12,19 +19,19 @@ import { useFetchFilters } from "../hooks/useFetchFilters";
 import { useInfiniteOffers } from "../hooks/useInfiniteOffers";
 
 export const Home = () => {
-  const [activeFiat, setActiveFiat] = useState({});
-  const [activeCrypto, setActiveCrypto] = useState({});
-  const [activePayment, setActivePayment] = useState({});
-  const [activeRegion, setActiveRegion] = useState({});
-  const [activeRating, setActiveRating] = useState({});
-
-  const [activeFilters, setActiveFilters] = useState({});
+  const [activeFiat, setActiveFiat] = useState<IFiat>();
+  const [activeCrypto, setActiveCrypto] = useState<IToken>();
+  // const [activePayment, setActivePayment] = useState<IPayment>();
+  // const [activeRegion, setActiveRegion] = useState<IRegion>();
+  // const [activeRating, setActiveRating] = useState({});
 
   useEffect(() => {
     setActiveFilters({
-      crypto: activeCrypto._id,
+      crypto: activeCrypto?._id,
     });
   }, [activeCrypto]);
+
+  const [activeFilters, setActiveFilters] = useState({});
 
   const { fiat, crypto, isFiltersFetchOk } = useFetchFilters();
 
@@ -34,7 +41,7 @@ export const Home = () => {
   const isLoaded = isFiltersFetchOk && status === "success";
 
   const content = data?.pages.map((page) => {
-    return page.map((offer: IOffer, i: number) => {
+    return page?.map((offer: IOffer, i: number) => {
       if (page.length === i + 1) {
         return <Offer ref={lastItemRef} {...offer} key={offer._id} />;
       }
@@ -54,6 +61,12 @@ export const Home = () => {
 
   return (
     <div className='grid grid-cols-homePage gap-5 my-5'>
+      {/* <div className='absolute flex flex-col top-0'>
+        <span>crypto {activeCrypto?.name}</span>
+        <span>fiat {activeFiat?.name}</span> */}
+      {/* <span>payment {activePayment?.bank.name}</span> */}
+      {/* </div> */}
+
       <SkeletonWrapper isLoaded={isLoaded} height={1000}>
         <aside className='bg-white shadow-customDark p-5 rounded-2xl flex flex-col gap-5 sticky top-5 overflow-auto max-h-screen'>
           <SearchField
@@ -65,31 +78,33 @@ export const Home = () => {
             onSelect={setActiveCrypto}
             data={{
               items: crypto.data,
-              option: "item?.symbol",
+              options: "symbol",
             }}
-            activeSelect='Crypto'
+            label='Crypto'
+            activeSelect={activeCrypto}
           />
           <Dropdown
             onSelect={setActiveFiat}
             data={{
               items: fiat.data,
-              option: "item?.ticker",
+              options: "ticker",
             }}
-            activeSelect='Fiat'
+            label='Fiat'
+            activeSelect={activeFiat}
           />
-          <Dropdown
+          {/* <Dropdown
             onSelect={setActivePayment}
             data={{
-              items: crypto.data,
-              option: "item?.symbol",
+              ,
+              options: "item?.name",
             }}
             activeSelect='Payment Method'
-          />
-          <Dropdown
+          /> */}
+          {/* <Dropdown
             onSelect={setActiveRegion}
             data={{
-              items: crypto.data,
-              option: "item?.symbol",
+              items: fiat.data.regions,
+              options: "item?.name",
             }}
             activeSelect='Region'
           />
@@ -97,10 +112,10 @@ export const Home = () => {
             onSelect={setActiveRating}
             data={{
               items: crypto.data,
-              option: "item?.symbol",
+              options: "item?.symbol",
             }}
             activeSelect='Rating'
-          />
+          /> */}
         </aside>
       </SkeletonWrapper>
 
@@ -115,8 +130,6 @@ export const Home = () => {
           margin={"20px"}
         >
           <div className='space-y-2'>{content}</div>
-
-          {!(hasNextPage && isFetchingNextPage) && <h1>That's all for now!</h1>}
         </SkeletonWrapper>
       </main>
     </div>

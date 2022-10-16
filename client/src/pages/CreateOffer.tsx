@@ -8,7 +8,6 @@ import { Step3 } from "../components/create-offer/form-pages/Step3";
 import { useActions } from "../hooks/useActions";
 import { useNavigate } from "react-router-dom";
 import { OfferService } from "../api/offer.services";
-import { Button } from "../components/create-offer/Button";
 import { multiply } from "../utils/multiply";
 import { toast } from "react-toastify";
 import { useEthContractWithValue } from "../hooks/useEthContractWithValue";
@@ -16,11 +15,10 @@ import { BigNumber, ethers } from "ethers";
 import { randomNumber } from "../utils/randomNumber";
 import { convertToSeconds } from "../utils/convertToSeconds";
 import React, { useEffect, useState } from "react";
-import { useScrollTop } from "../hooks/useScrollTop";
 import { useTokens } from "../hooks/useTokens";
 import { useQuery } from "wagmi";
 import { SkeletonWrapper } from "../components/ui/SkeletonWrapper";
-import { IFiat } from "../models/models";
+import { IFiat, IRegion } from "../models/models";
 import { ErrorBoundary } from "react-error-boundary";
 import { FiatServices } from "../api/fiat.services";
 
@@ -74,7 +72,9 @@ export const CreateOffer = () => {
       setPaymentMethod(
         allFiat.filter((e: IFiat) => e._id === fiat._id)[0].banks[0]
       );
-      setRegion(allFiat.filter((e: IFiat) => e._id === fiat._id)[0].regions[0]);
+      setRegion(
+        allFiat.filter((e: IRegion) => e._id === fiat._id)[0].regions[0]
+      );
     }
   }, [fiat]);
 

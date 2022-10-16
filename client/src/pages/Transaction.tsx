@@ -10,7 +10,7 @@ import success from "../assets/images/success.svg";
 import { ProgressBar } from "../components/transaction/ProgressBar";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
-import { Button } from "../components/create-offer/Button";
+import { Button } from "../components/ui/Button";
 import { Info } from "../components/transaction/Info";
 import { io } from "socket.io-client";
 import { Main } from "../components/transaction/Main";

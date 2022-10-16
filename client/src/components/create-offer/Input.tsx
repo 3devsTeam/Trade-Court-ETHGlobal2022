@@ -2,11 +2,10 @@ import React from "react";
 
 export interface IInput {
   onAction: any;
-  label?: string;
-  placeholder?: string;
-  value?: string | number;
-  cursor?: string;
-  element?: any;
+  label: string;
+  placeholder: string;
+  value: string | number;
+  element: any;
   maxValue?: any;
   register: any;
   error?: any;
@@ -19,29 +18,29 @@ export const Input = ({
   label,
   placeholder,
   value,
-  cursor,
   element,
   register,
 }: IInput) => {
   return (
-    <label>
+    <label htmlFor={label}>
       <span className={"text-lg font-bold mb-1 ml-[10px]"}>{label}</span>
       <div
         className={`flex items-center border-2 border-purple rounded-[15px] h-[60px]`}
       >
         <input
           {...register}
+          name={label}
           autoComplete={"off"}
           autoCorrect={"off"}
           spellCheck={false}
           onChange={(e) => onAction(e.target.value)}
-          className={`outline-none p-[10px] rounded-[15px] cursor-${cursor} w-full h-full bg-transparent`}
+          className={`outline-none p-[10px] rounded-[15px] w-full h-full bg-transparent`}
           placeholder={placeholder}
-          value={value ? value : ""}
+          value={value}
         />
 
         <div className='flex space-x-2 pr-[10px]'>
-          {maxValue && (
+          {maxValue ? (
             <div className='flex space-x-2'>
               <button
                 type='button'
@@ -53,7 +52,7 @@ export const Input = ({
 
               <span className={"text-gray-300"}>|</span>
             </div>
-          )}
+          ) : null}
           {element && <div className={"font-bold"}>{element}</div>}
         </div>
       </div>

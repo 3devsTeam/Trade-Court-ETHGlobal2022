@@ -30,13 +30,20 @@ export const ModalInput = ({
 
   return (
     <div>
-      <span className={"text-lg font-bold mb-1 ml-[10px]"}>{label}</span>
+      <label htmlFor={label}>
+        <span className={"text-lg font-bold mb-1 ml-[10px]"}>{label}</span>
+      </label>
       <button
         type='button'
         onClick={() => onOpen()}
         className='flex items-center border-2 border-purple rounded-[15px] h-[60px] px-[10px] w-full'
       >
-        <input value={crypto.tokenAmount} {...register} className='hidden' />
+        <input
+          name={label}
+          value={crypto.tokenAmount}
+          {...register}
+          className='hidden'
+        />
         <div className={"flex items-center gap-1"}>
           <img
             className={"w-8 h-8 rounded-[50%] shadow-customDark object-cover"}
