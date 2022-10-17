@@ -13,7 +13,9 @@ export const Button = ({ disabled, name, onClick }: IButtonProps) => {
       value={name}
       type='button'
       disabled={disabled}
-      className={`rounded-[20px] px-4 py-3 font-bold text-lg text-white transition duration-150 ease-out hover:ease-in cursor-pointer`}
-    />
+      className={`border-2 border-gray-300 text-gray-300 rounded-[20px] px-4 py-3 font-bold text-lg transition duration-150 ease-out hover:ease-in cursor-pointer`}
+    >
+      {name}
+    </button>
   );
 };

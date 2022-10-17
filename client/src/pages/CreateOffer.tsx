@@ -28,7 +28,8 @@ export const CreateOffer = () => {
     fiat,
     unitPrice,
     quantity,
-    orderLimit,
+    minLimit,
+    maxLimit,
     offerComment,
     payMethods,
     timeLimit,
@@ -98,12 +99,12 @@ export const CreateOffer = () => {
     roomId, // рандомная комната
     convertToSeconds(timeLimit), // время апрува
     convertToSeconds(timeLimit), // время апрува
-    limitPrice(orderLimit[1], unitPrice), // фиатный максимальный лимит
-    limitPrice(orderLimit[0], unitPrice), // фиатный минимальный лимит
+    limitPrice(minLimit, unitPrice), // фиатный максимальный лимит
+    limitPrice(maxLimit, unitPrice), // фиатный минимальный лимит
   ];
 
   const value = ethers.utils.parseEther(
-    quantity === "" ? "0" : quantity.toString()
+    String(quantity) === "" ? "0" : quantity.toString()
   );
 
   const { data, isError, isLoading, isSuccess, writeAsync, hash } =
@@ -113,7 +114,7 @@ export const CreateOffer = () => {
 
   const navigate = useNavigate();
 
-  const arr = payMethods.map((e) => {
+  const payments = payMethods.map((e) => {
     return {
       bank: e.paymentMethod._id,
       cardNumber: e.cardNumber,
@@ -144,10 +145,11 @@ export const CreateOffer = () => {
           unitPrice,
           amount: multiply(unitPrice, +quantity),
           quantity,
-          orderLimit,
+          minLimit,
+          maxLimit,
           crypto: crypto._id,
           offerComment,
-          payMethods: arr,
+          payMethods: payments,
         })
           .then(
             (data) => {
@@ -184,7 +186,7 @@ export const CreateOffer = () => {
       case 2:
         return <Step2 />;
       case 3:
-        return <Step3 />;
+        return <Step3 createHandler={createHandler} />;
       default:
         return;
     }

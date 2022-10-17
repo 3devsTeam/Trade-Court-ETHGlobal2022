@@ -147,7 +147,8 @@ export const Step1 = ({ tokens, allFiat }: IStep1) => {
       </Wrapper>
 
       <Wrapper>
-        <SubmitButton name='Next' disabled={false} />
+        <Button name='Next' onClick={nextStep} />
+        {/* <SubmitButton name='Next' disabled={false} /> */}
       </Wrapper>
     </form>
   );

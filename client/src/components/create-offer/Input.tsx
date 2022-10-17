@@ -2,10 +2,10 @@ import React from "react";
 
 export interface IInput {
   onAction: any;
-  label: string;
+  label?: string;
   placeholder: string;
   value: string | number;
-  element: any;
+  element?: any;
   maxValue?: any;
   register: any;
   error?: any;

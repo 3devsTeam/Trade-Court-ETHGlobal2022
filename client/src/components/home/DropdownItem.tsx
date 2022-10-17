@@ -1,5 +1,6 @@
 import React from "react";
 import { Item } from "./Dropdown";
+import altImg from "../../assets/images/defaultImg.svg";
 
 interface Props {
   virtualItem: any;
@@ -30,6 +31,7 @@ export const DropdownItem = ({
       <div className='flex items-center space-x-3 px-4'>
         <img
           src={item?.logoUrl}
+          alt=''
           className='w-8 h-8 rounded-[50%] shadow-customDark object-cover'
         />
         <span className='font-bold'>{eval(`item?.${options}`)}</span>

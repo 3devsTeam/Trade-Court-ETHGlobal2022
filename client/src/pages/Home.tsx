@@ -14,29 +14,42 @@ import {
 } from "../models/models";
 import { SkeletonWrapper } from "../components/ui/SkeletonWrapper";
 import { SearchField } from "../components/ui/SearchField";
-import { Dropdown, Item } from "../components/home/Dropdown";
+import { Dropdown } from "../components/home/Dropdown";
 import { useFetchFilters } from "../hooks/useFetchFilters";
 import { useInfiniteOffers } from "../hooks/useInfiniteOffers";
+import { Button } from "../components/ui/Button";
+
+export interface IActiveFilters {
+  crypto: string | undefined;
+  fiat: string | undefined;
+}
 
 export const Home = () => {
-  const [activeFiat, setActiveFiat] = useState<IFiat>();
-  const [activeCrypto, setActiveCrypto] = useState<IToken>();
+  const initialFilters: IActiveFilters = {
+    crypto: "",
+    fiat: "",
+  };
+
+  const [activeCrypto, setActiveCrypto] = useState<IToken | null>(null);
+  console.log(activeCrypto);
+  const [activeFiat, setActiveFiat] = useState<IFiat | null>(null);
+  console.log(activeFiat);
   // const [activePayment, setActivePayment] = useState<IPayment>();
   // const [activeRegion, setActiveRegion] = useState<IRegion>();
   // const [activeRating, setActiveRating] = useState({});
+  const [activeFilters, setActiveFilters] =
+    useState<IActiveFilters>(initialFilters);
 
   useEffect(() => {
     setActiveFilters({
-      crypto: activeCrypto?._id,
+      crypto: activeCrypto?._id || "",
+      fiat: activeFiat?._id || "",
     });
-  }, [activeCrypto]);
-
-  const [activeFilters, setActiveFilters] = useState({});
+  }, [activeCrypto, activeFiat]);
 
   const { fiat, crypto, isFiltersFetchOk } = useFetchFilters();
 
-  const { data, error, status, lastItemRef, hasNextPage, isFetchingNextPage } =
-    useInfiniteOffers(activeFilters);
+  const { data, error, status, lastItemRef } = useInfiniteOffers(activeFilters);
 
   const isLoaded = isFiltersFetchOk && status === "success";
 
@@ -61,12 +74,6 @@ export const Home = () => {
 
   return (
     <div className='grid grid-cols-homePage gap-5 my-5'>
-      {/* <div className='absolute flex flex-col top-0'>
-        <span>crypto {activeCrypto?.name}</span>
-        <span>fiat {activeFiat?.name}</span> */}
-      {/* <span>payment {activePayment?.bank.name}</span> */}
-      {/* </div> */}
-
       <SkeletonWrapper isLoaded={isLoaded} height={1000}>
         <aside className='bg-white shadow-customDark p-5 rounded-2xl flex flex-col gap-5 sticky top-5 overflow-auto max-h-screen'>
           <SearchField
@@ -116,6 +123,13 @@ export const Home = () => {
             }}
             activeSelect='Rating'
           /> */}
+          <Button
+            name={"Clear All"}
+            onClick={() => {
+              setActiveCrypto(null);
+              setActiveFiat(null);
+            }}
+          />
         </aside>
       </SkeletonWrapper>
 

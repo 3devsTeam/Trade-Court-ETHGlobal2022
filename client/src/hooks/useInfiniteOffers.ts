@@ -1,10 +1,12 @@
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { useCallback, useRef } from "react";
 import { OfferService } from "../api/offer.services";
+import { IActiveFilters } from "../pages/Home";
 
-export const useInfiniteOffers = (activeFilters: any, limit?: number) => {
-  console.log(activeFilters);
-
+export const useInfiniteOffers = (
+  activeFilters: IActiveFilters,
+  limit?: number
+) => {
   const {
     data,
     fetchNextPage,
@@ -40,7 +42,6 @@ export const useInfiniteOffers = (activeFilters: any, limit?: number) => {
       });
 
       if (ref) {
-        console.log("observe");
         observer.current!.observe(ref);
       }
     },

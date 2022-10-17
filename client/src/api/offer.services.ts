@@ -29,18 +29,14 @@ export const OfferService = {
       withCredentials: true,
     });
   },
-  async getAll(page: number, limit = 5, keys: any) {
-    // const requestSample = () => {
-    //   for (let key in keys) {
-    //     console.log(key);
-    //   }
-    // };
+  async getAll(page: number, limit = 5, tags: any) {
+    if (Object.values(tags).join("") !== "") {
+      const filters = Object.entries(tags)
+        .map((tag) => `search[${tag[0]}]=${tag[1]}`)
+        .join("&");
 
-    // requestSample();
-
-    if (keys.crypto) {
       const { data } = await api.get(
-        `/api/offer/?page=${page}&limit=${limit}&search[crypto]=${keys.crypto}`
+        `/api/offer/?page=${page}&limit=${limit}&${filters}`
       );
       return data.data.offers;
     }

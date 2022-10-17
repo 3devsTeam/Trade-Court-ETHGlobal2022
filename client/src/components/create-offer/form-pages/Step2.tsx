@@ -100,7 +100,7 @@ export const Step2 = () => {
 
         <Input
           register={register("cardNumber")}
-          value={cardNumber}
+          value={cardNumber!}
           label={"Card Number"}
           placeholder={"Enter card number"}
           onAction={setCardNumber}
@@ -117,7 +117,9 @@ export const Step2 = () => {
       <Wrapper>
         <div className='flex gap-5'>
           <Button onClick={prevStep} disabled={false} name={"Back"} />
-          <SubmitButton name={"Next"} disabled={false} />
+          <Button onClick={nextStep} disabled={false} name={"Next"} />
+
+          {/* <SubmitButton name={"Next"} disabled={false} /> */}
         </div>
       </Wrapper>
     </form>
