@@ -84,7 +84,7 @@ export const Menu = ({
 
   return (
     <nav
-      // ref={menuRef}
+      onMouseLeave={() => onClose(false)}
       className='flex justify-start flex-col absolute top-9 px-2 py-[12px] w-full z-50 bg-white shadow-customDark rounded-[20px]'
     >
       <div className={"flex justify-between"}>

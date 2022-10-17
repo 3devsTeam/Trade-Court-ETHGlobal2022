@@ -8,7 +8,6 @@ import { Step3 } from "../components/create-offer/form-pages/Step3";
 import { useActions } from "../hooks/useActions";
 import { useNavigate } from "react-router-dom";
 import { OfferService } from "../api/offer.services";
-import { Button } from "../components/create-offer/Button";
 import { multiply } from "../utils/multiply";
 import { toast } from "react-toastify";
 import { useEthContractWithValue } from "../hooks/useEthContractWithValue";
@@ -16,11 +15,10 @@ import { BigNumber, ethers } from "ethers";
 import { randomNumber } from "../utils/randomNumber";
 import { convertToSeconds } from "../utils/convertToSeconds";
 import React, { useEffect, useState } from "react";
-import { useScrollTop } from "../hooks/useScrollTop";
 import { useTokens } from "../hooks/useTokens";
 import { useQuery } from "wagmi";
 import { SkeletonWrapper } from "../components/ui/SkeletonWrapper";
-import { IFiat } from "../models/models";
+import { IFiat, IRegion } from "../models/models";
 import { ErrorBoundary } from "react-error-boundary";
 import { FiatServices } from "../api/fiat.services";
 
@@ -30,7 +28,8 @@ export const CreateOffer = () => {
     fiat,
     unitPrice,
     quantity,
-    orderLimit,
+    minLimit,
+    maxLimit,
     offerComment,
     payMethods,
     timeLimit,
@@ -74,7 +73,9 @@ export const CreateOffer = () => {
       setPaymentMethod(
         allFiat.filter((e: IFiat) => e._id === fiat._id)[0].banks[0]
       );
-      setRegion(allFiat.filter((e: IFiat) => e._id === fiat._id)[0].regions[0]);
+      setRegion(
+        allFiat.filter((e: IRegion) => e._id === fiat._id)[0].regions[0]
+      );
     }
   }, [fiat]);
 
@@ -98,12 +99,12 @@ export const CreateOffer = () => {
     roomId, // рандомная комната
     convertToSeconds(timeLimit), // время апрува
     convertToSeconds(timeLimit), // время апрува
-    limitPrice(orderLimit[1], unitPrice), // фиатный максимальный лимит
-    limitPrice(orderLimit[0], unitPrice), // фиатный минимальный лимит
+    limitPrice(minLimit, unitPrice), // фиатный максимальный лимит
+    limitPrice(maxLimit, unitPrice), // фиатный минимальный лимит
   ];
 
   const value = ethers.utils.parseEther(
-    quantity === "" ? "0" : quantity.toString()
+    String(quantity) === "" ? "0" : quantity.toString()
   );
 
   const { data, isError, isLoading, isSuccess, writeAsync, hash } =
@@ -113,7 +114,7 @@ export const CreateOffer = () => {
 
   const navigate = useNavigate();
 
-  const arr = payMethods.map((e) => {
+  const payments = payMethods.map((e) => {
     return {
       bank: e.paymentMethod._id,
       cardNumber: e.cardNumber,
@@ -144,10 +145,11 @@ export const CreateOffer = () => {
           unitPrice,
           amount: multiply(unitPrice, +quantity),
           quantity,
-          orderLimit,
+          minLimit,
+          maxLimit,
           crypto: crypto._id,
           offerComment,
-          payMethods: arr,
+          payMethods: payments,
         })
           .then(
             (data) => {
@@ -184,7 +186,7 @@ export const CreateOffer = () => {
       case 2:
         return <Step2 />;
       case 3:
-        return <Step3 />;
+        return <Step3 createHandler={createHandler} />;
       default:
         return;
     }

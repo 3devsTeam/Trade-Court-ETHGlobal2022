@@ -4,20 +4,61 @@ import { Offer } from "../components/home/Offer";
 import { Header } from "../components/home/Header";
 import { useQuery } from "@tanstack/react-query";
 import { OfferService } from "../api/offer.services";
-import { IBank, IOffer, IToken } from "../models/models";
+import {
+  IBank,
+  IFiat,
+  IOffer,
+  IPayment,
+  IRegion,
+  IToken,
+} from "../models/models";
 import { SkeletonWrapper } from "../components/ui/SkeletonWrapper";
 import { SearchField } from "../components/ui/SearchField";
-import { Dropdown, Item } from "../components/home/Dropdown";
+import { Dropdown } from "../components/home/Dropdown";
 import { useFetchFilters } from "../hooks/useFetchFilters";
 import { useInfiniteOffers } from "../hooks/useInfiniteOffers";
+import { Button } from "../components/ui/Button";
+
+export interface IActiveFilters {
+  crypto: string | undefined;
+  fiat: string | undefined;
+  banks: string | undefined;
+  region: string | undefined;
+}
 
 export const Home = () => {
-  const { data, error, status, lastItemRef } = useInfiniteOffers(10);
+  const initialFilters: IActiveFilters = {
+    crypto: "",
+    fiat: "",
+    banks: "",
+    region: "",
+  };
+
+  const [activeCrypto, setActiveCrypto] = useState<IToken | null>(null);
+  const [activeFiat, setActiveFiat] = useState<IFiat | null>(null);
+  const [activePayment, setActivePayment] = useState<IPayment | null>(null);
+  const [activeRegion, setActiveRegion] = useState<IRegion | null>(null);
+  const [activeFilters, setActiveFilters] =
+    useState<IActiveFilters>(initialFilters);
+
+  useEffect(() => {
+    setActiveFilters({
+      crypto: activeCrypto?._id || "",
+      fiat: activeFiat?._id || "",
+      banks: activePayment?._id || "",
+      region: activeRegion?._id || "",
+    });
+  }, [activeCrypto, activeFiat, activePayment, activeRegion]);
+
+  const { fiat, crypto, isFiltersFetchOk } = useFetchFilters();
+
+  const { data, error, status, lastItemRef } = useInfiniteOffers(activeFilters);
+
+  const isLoaded = isFiltersFetchOk && status === "success";
 
   const content = data?.pages.map((page) => {
-    return page.map((offer: IOffer, i: number) => {
+    return page?.map((offer: IOffer, i: number) => {
       if (page.length === i + 1) {
-        console.log("give ref", lastItemRef);
         return <Offer ref={lastItemRef} {...offer} key={offer._id} />;
       }
       return <Offer {...offer} key={offer._id} />;
@@ -25,8 +66,6 @@ export const Home = () => {
   });
 
   const [searchTerm, setSearchTerm] = useState("");
-
-  const { fiat, crypto, isFetchFiltersOk } = useFetchFilters();
 
   const headers = [
     "Maker Address",
@@ -38,48 +77,77 @@ export const Home = () => {
 
   return (
     <div className='grid grid-cols-homePage gap-5 my-5'>
-      <aside className='bg-white shadow-customDark p-5 rounded-2xl flex flex-col gap-5 sticky top-5 overflow-auto h-screen'>
-        <SearchField
-          searchTerm={searchTerm}
-          setSearchTerm={setSearchTerm}
-          placeholder='Search...'
-        />
-        <Dropdown data={crypto.data} activeSelect='Crypto' />
-        <Dropdown data={fiat.data} activeSelect='Fiat' />
-        <Dropdown data={[]} activeSelect='Payment Method' />
-        <Dropdown data={[]} activeSelect='Region' />
-        <Dropdown data={[]} activeSelect='Rating' />
-      </aside>
+      <SkeletonWrapper isLoaded={isLoaded} height={1000}>
+        <aside className='bg-white shadow-customDark p-5 rounded-2xl flex flex-col gap-5 sticky top-5 overflow-auto max-h-screen'>
+          <SearchField
+            searchTerm={searchTerm}
+            setSearchTerm={setSearchTerm}
+            placeholder='Search...'
+          />
+          <Dropdown
+            onSelect={setActiveCrypto}
+            data={{
+              items: crypto.data as [IToken],
+              options: "symbol",
+            }}
+            label='Crypto'
+            activeSelect={activeCrypto}
+          />
+          <Dropdown
+            onSelect={setActiveFiat}
+            data={{
+              items: fiat.data as [IFiat],
+              options: "ticker",
+            }}
+            label='Fiat'
+            activeSelect={activeFiat}
+          />
+          {activeFiat && (
+            <>
+              <Dropdown
+                onSelect={setActivePayment}
+                data={{
+                  items: activeFiat.banks as [IBank],
+                  options: "name",
+                }}
+                activeSelect={activePayment}
+                label='Payment'
+              />
+              <Dropdown
+                onSelect={setActiveRegion}
+                data={{
+                  items: activeFiat.regions as [IRegion],
+                  options: "name",
+                }}
+                activeSelect={activeRegion}
+                label='Region'
+              />
+            </>
+          )}
+          <Button
+            name={"Clear All"}
+            onClick={() => {
+              setActiveCrypto(null);
+              setActiveFiat(null);
+              setActivePayment(null);
+              setActiveRegion(null);
+            }}
+          />
+        </aside>
+      </SkeletonWrapper>
 
       <main>
-        <div className='space-y-2'>{content}</div>
-        {/* <SkeletonWrapper height={30} isLoaded={!isLoading} margin={"20px"}>
+        <SkeletonWrapper height={30} isLoaded={isLoaded} margin={"20px"}>
           <Header headers={headers} />
         </SkeletonWrapper>
         <SkeletonWrapper
-          isLoaded={!isLoading}
+          isLoaded={isLoaded}
           height={100}
           count={10}
           margin={"20px"}
         >
-          {offers?.pages.map((page) => (
-            <div key={page.nextId}>
-              {page.data.offers.map((offer: IOffer) => (
-                <Offer key={offer._id} {...offer} />
-              ))}
-            </div>
-          ))}
-
-          <button ref={ref} onClick={() => fetchNextPage()}>
-            <span>
-              {isFetchingNextPage
-                ? "fetching new data"
-                : hasNextPage
-                ? "new page"
-                : "nothing to fetch"}
-            </span>
-          </button>
-        </SkeletonWrapper> */}
+          <div className='space-y-2'>{content}</div>
+        </SkeletonWrapper>
       </main>
     </div>
   );

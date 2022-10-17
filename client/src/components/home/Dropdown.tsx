@@ -1,13 +1,18 @@
 import { useVirtualizer } from "@tanstack/react-virtual";
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import useOnClickOutside from "use-onclickoutside";
 import { Arrow } from "../ui/icons/Arrow";
 import { SearchField } from "../ui/SearchField";
 import { DropdownItem } from "./DropdownItem";
 
 interface Props {
-  data: Item[];
-  activeSelect: string;
+  activeSelect: any;
+  data: {
+    items: [Item];
+    options: string;
+  };
+  label: string;
+  onSelect: React.SetStateAction<any>;
 }
 
 export interface Item {
@@ -16,13 +21,15 @@ export interface Item {
   logoUrl: string;
 }
 
-export const Dropdown = ({ activeSelect, data }: Props) => {
+export const Dropdown = ({ label, data, onSelect, activeSelect }: Props) => {
   const [open, setOpen] = useState(false);
+
+  const { items, options } = data;
 
   const parentRef = useRef(null);
 
   const virtualizer = useVirtualizer({
-    count: data?.length,
+    count: items?.length,
     getScrollElement: () => parentRef.current,
     estimateSize: () => 60,
   });
@@ -37,28 +44,45 @@ export const Dropdown = ({ activeSelect, data }: Props) => {
     );
   };
 
-  const filteredItems = filterItems(data);
+  const filteredItems = filterItems(items);
 
   return (
-    <button
-      onClick={toggle}
-      className={`border-2 border-gray-100 rounded-[10px] transition-all duration-300 hover:border-purple px-5 py-4 group`}
-    >
-      <div className='flex justify-between items-center'>
-        <div>
-          <span className='font-bold'>{activeSelect}</span>
+    <div className='border-2 border-gray-100 transition-all duration-300 hover:border-purple rounded-[15px]'>
+      <button onClick={toggle} className='rounded-[10px] p-2 group w-full'>
+        <div className='flex flex-col'>
+          <div className='flex justify-between items-center'>
+            {activeSelect ? (
+              <div className='flex items-center gap-3'>
+                <div className='flex items-center gap-1'>
+                  <img
+                    className='w-8 h-8 rounded-[50%] shadow-customDark object-cover'
+                    src={activeSelect.logoUrl}
+                  />
+
+                  <span className='font-bold'>
+                    {eval(`activeSelect.${options}`)}
+                  </span>
+                </div>
+
+                <span className='font-bold text-gray-300'>{label}</span>
+              </div>
+            ) : (
+              <span className='font-bold'>{label}</span>
+            )}
+
+            <div
+              className={`${
+                open && "rotate-180 transition-transform duration-300"
+              }`}
+            >
+              <Arrow />
+            </div>
+          </div>
         </div>
-        <div
-          className={`${
-            open && "rotate-180 transition-transform duration-300"
-          }`}
-        >
-          <Arrow />
-        </div>
-      </div>
+      </button>
 
       {open && (
-        <div className='space-y-3 mt-3'>
+        <div className='space-y-3 p-2'>
           <SearchField
             setSearchTerm={setSearchTerm}
             searchTerm={searchTerm}
@@ -74,6 +98,8 @@ export const Dropdown = ({ activeSelect, data }: Props) => {
 
                 return (
                   <DropdownItem
+                    options={options}
+                    onSelect={onSelect}
                     key={virtualItem.key}
                     virtualItem={virtualItem}
                     item={item}
@@ -84,6 +110,6 @@ export const Dropdown = ({ activeSelect, data }: Props) => {
           </div>
         </div>
       )}
-    </button>
+    </div>
   );
 };

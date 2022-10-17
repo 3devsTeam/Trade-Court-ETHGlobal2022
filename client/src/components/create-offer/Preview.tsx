@@ -11,7 +11,8 @@ export const Preview = () => {
     unitPrice,
     quantity,
     timeLimit,
-    orderLimit,
+    minLimit,
+    maxLimit,
     offerComment,
     payMethods,
   } = useTypedSelector((state) => state.offerReducer);
@@ -37,9 +38,7 @@ export const Preview = () => {
           </div>
           <div className={"flex gap-1 items-center"}>
             <img
-              className={
-                "w-8 h-8 rounded-[50%] border border-purple object-cover"
-              }
+              className={"w-8 h-8 rounded-[50%] shadow-customDark object-cover"}
               src={cryptoImage}
               alt={""}
             />
@@ -53,9 +52,7 @@ export const Preview = () => {
           </div>
           <div className={"flex gap-1 items-center"}>
             <img
-              className={
-                "w-8 h-8 rounded-[50%] border border-purple object-cover"
-              }
+              className={"w-8 h-8 rounded-[50%] shadow-customDark object-cover"}
               src={fiatImage}
               alt={""}
             />
@@ -136,7 +133,9 @@ export const Preview = () => {
             <span className={"font-bold text-lg"}>Price Limit</span>
           </div>
           <div>
-            <span>{`${orderLimit[0]}-${orderLimit[1]}`}</span>
+            <span>{`${minLimit ? minLimit : ""}-${
+              maxLimit ? maxLimit : ""
+            }`}</span>
           </div>
         </div>
 

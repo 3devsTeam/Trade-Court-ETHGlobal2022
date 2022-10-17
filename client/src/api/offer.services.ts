@@ -29,7 +29,22 @@ export const OfferService = {
       withCredentials: true,
     });
   },
-  async getAllWithPagination(page: number, limit = 5) {
+  async getAll(page: number, limit = 5, tags: any) {
+    if (Object.values(tags).join("") !== "") {
+      const filters = Object.entries(tags)
+        .map((tag) => {
+          if (tag[1] !== "") {
+            return `search[${tag[0]}]=${tag[1]}`;
+          }
+        })
+        .join("&");
+
+      const { data } = await api.get(
+        `/api/offer/?page=${page}&limit=${limit}&${filters}`
+      );
+      return data.data.offers;
+    }
+
     const { data } = await api.get(`/api/offer/?page=${page}&limit=${limit}`);
     return data.data.offers;
   },

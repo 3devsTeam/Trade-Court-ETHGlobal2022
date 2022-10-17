@@ -3,7 +3,7 @@ import { truncateAddress } from "../../utils/truncateAddress";
 import { Input } from "../create-offer/Input";
 import { useNavigate } from "react-router";
 import { IOffer } from "../../models/models";
-import { OfferInput } from "./OfferInput";
+import { OfferInput } from "../home/OfferInput";
 import { OfferService } from "../../api/offer.services";
 import { toast } from "react-toastify";
 import { useEthContract } from "../../hooks/useEthContract";
@@ -24,8 +24,8 @@ export const OfferModal = ({ close, offer }: IOfferModalProps) => {
     _id,
     quantity,
     offerComment,
-    orderLimit,
-    room,
+    minLimit,
+    maxLimit,
   } = offer;
 
   const navigate = useNavigate();
@@ -33,7 +33,7 @@ export const OfferModal = ({ close, offer }: IOfferModalProps) => {
   const [pay, setPay] = useState(0);
   const [recieve, setRecieve] = useState(0);
 
-  const { roomId } = room;
+  // const { roomId } = room;
 
   const { ticker } = fiat;
 
@@ -41,7 +41,7 @@ export const OfferModal = ({ close, offer }: IOfferModalProps) => {
 
   const { address } = maker;
 
-  const args = [+roomId, parseEther(recieve.toString())];
+  const args = [1, parseEther(recieve.toString())];
   const value = 0;
   const functionName = "completeDeal";
 
@@ -90,7 +90,7 @@ export const OfferModal = ({ close, offer }: IOfferModalProps) => {
     },
     {
       name: "Limit:",
-      value: `${orderLimit[0]}-${orderLimit[1]} ${ticker}`,
+      value: `${minLimit}-${maxLimit} ${ticker}`,
     },
   ];
 
@@ -111,7 +111,7 @@ export const OfferModal = ({ close, offer }: IOfferModalProps) => {
       <div className='flex flex-col gap-[10px] px-3'>
         <OfferInput
           label={"You pay"}
-          maxValue={orderLimit[1]}
+          maxValue={maxLimit}
           setValue={setPay}
           placeholder={"You pay"}
           value={pay}

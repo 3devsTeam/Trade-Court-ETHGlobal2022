@@ -1,14 +1,23 @@
 import React from "react";
 import { Item } from "./Dropdown";
+import altImg from "../../assets/images/defaultImg.svg";
 
 interface Props {
   virtualItem: any;
   item: Item;
+  onSelect: React.SetStateAction<any>;
+  options: string;
 }
 
-export const DropdownItem = ({ item, virtualItem }: Props) => {
+export const DropdownItem = ({
+  item,
+  virtualItem,
+  onSelect,
+  options,
+}: Props) => {
   return (
     <button
+      onClick={() => onSelect(item)}
       style={{
         position: "absolute",
         top: 0,
@@ -22,9 +31,10 @@ export const DropdownItem = ({ item, virtualItem }: Props) => {
       <div className='flex items-center space-x-3 px-4'>
         <img
           src={item?.logoUrl}
-          className='h-8 w-8 rounded-full object-cover'
+          alt=''
+          className='w-8 h-8 rounded-[50%] shadow-customDark object-cover'
         />
-        <span className='font-bold'>{item?.name}</span>
+        <span className='font-bold'>{eval(`item?.${options}`)}</span>
       </div>
     </button>
   );

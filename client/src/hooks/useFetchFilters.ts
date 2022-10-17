@@ -8,18 +8,16 @@ export const useFetchFilters = () => {
 
   const {
     data: fiat,
-    isSuccess: fiatSuccess,
-    isError: fiatError,
-    isLoading: fiatLoading,
+    status: fiatStatus,
+    error: fiatError,
   } = useQuery(["get fiat"], () => FiatServices.getFiat(), {
     select: (data) => data.data.allFiat,
   });
 
   const {
     data: crypto,
-    isSuccess: cryptoSuccess,
-    isError: cryptoError,
-    isLoading: cryptoLoading,
+    status: cryptoStatus,
+    error: cryptoError,
   } = useQuery(
     ["get crypto by chain"],
     () => CryptoServices.getByChain(chain!.name),
@@ -29,18 +27,16 @@ export const useFetchFilters = () => {
   );
 
   return {
-    isFetchFiltersOk: fiatSuccess,
+    isFiltersFetchOk: fiatStatus === "success" && cryptoStatus === "success",
     fiat: {
       data: fiat,
-      isSuccess: fiatSuccess,
-      isError: fiatError,
-      isLoading: fiatLoading,
+      status: fiatStatus,
+      error: fiatError,
     },
     crypto: {
       data: crypto,
-      isSuccess: cryptoSuccess,
-      isError: cryptoError,
-      isLoading: cryptoLoading,
+      status: cryptoStatus,
+      error: cryptoError,
     },
   };
 };

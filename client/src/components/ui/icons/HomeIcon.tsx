@@ -12,8 +12,8 @@ export const HomeIcon = () => {
       <path
         d='M1 1H12.5M1 4H8M1 7H4M1 10H13'
         stroke='#0A060A'
-        stroke-linecap='round'
-        stroke-linejoin='round'
+        strokeLinecap='round'
+        strokeLinejoin='round'
       />
     </svg>
   );

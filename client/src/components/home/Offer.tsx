@@ -10,7 +10,8 @@ export const Offer = forwardRef<any, any>((offer: IOffer, ref) => {
     crypto,
     fiat,
     maker,
-    orderLimit,
+    minLimit,
+    maxLimit,
     payMethods,
     quantity,
     unitPrice,
@@ -43,7 +44,7 @@ export const Offer = forwardRef<any, any>((offer: IOffer, ref) => {
               <p className={"text-sm"}>
                 <span className={"font-normal"}>Limit: </span>
                 <span className={"font-bold"}>
-                  {orderLimit[0]}-{orderLimit[1]} {ticker}
+                  {minLimit}-{maxLimit} {ticker}
                 </span>
               </p>
             </div>
