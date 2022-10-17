@@ -32,7 +32,11 @@ export const OfferService = {
   async getAll(page: number, limit = 5, tags: any) {
     if (Object.values(tags).join("") !== "") {
       const filters = Object.entries(tags)
-        .map((tag) => `search[${tag[0]}]=${tag[1]}`)
+        .map((tag) => {
+          if (tag[1] !== "") {
+            return `search[${tag[0]}]=${tag[1]}`;
+          }
+        })
         .join("&");
 
       const { data } = await api.get(

@@ -22,21 +22,22 @@ import { Button } from "../components/ui/Button";
 export interface IActiveFilters {
   crypto: string | undefined;
   fiat: string | undefined;
+  banks: string | undefined;
+  region: string | undefined;
 }
 
 export const Home = () => {
   const initialFilters: IActiveFilters = {
     crypto: "",
     fiat: "",
+    banks: "",
+    region: "",
   };
 
   const [activeCrypto, setActiveCrypto] = useState<IToken | null>(null);
-  console.log(activeCrypto);
   const [activeFiat, setActiveFiat] = useState<IFiat | null>(null);
-  console.log(activeFiat);
-  // const [activePayment, setActivePayment] = useState<IPayment>();
-  // const [activeRegion, setActiveRegion] = useState<IRegion>();
-  // const [activeRating, setActiveRating] = useState({});
+  const [activePayment, setActivePayment] = useState<IPayment | null>(null);
+  const [activeRegion, setActiveRegion] = useState<IRegion | null>(null);
   const [activeFilters, setActiveFilters] =
     useState<IActiveFilters>(initialFilters);
 
@@ -44,8 +45,10 @@ export const Home = () => {
     setActiveFilters({
       crypto: activeCrypto?._id || "",
       fiat: activeFiat?._id || "",
+      banks: activePayment?._id || "",
+      region: activeRegion?._id || "",
     });
-  }, [activeCrypto, activeFiat]);
+  }, [activeCrypto, activeFiat, activePayment, activeRegion]);
 
   const { fiat, crypto, isFiltersFetchOk } = useFetchFilters();
 
@@ -84,7 +87,7 @@ export const Home = () => {
           <Dropdown
             onSelect={setActiveCrypto}
             data={{
-              items: crypto.data,
+              items: crypto.data as [IToken],
               options: "symbol",
             }}
             label='Crypto'
@@ -93,41 +96,41 @@ export const Home = () => {
           <Dropdown
             onSelect={setActiveFiat}
             data={{
-              items: fiat.data,
+              items: fiat.data as [IFiat],
               options: "ticker",
             }}
             label='Fiat'
             activeSelect={activeFiat}
           />
-          {/* <Dropdown
-            onSelect={setActivePayment}
-            data={{
-              ,
-              options: "item?.name",
-            }}
-            activeSelect='Payment Method'
-          /> */}
-          {/* <Dropdown
-            onSelect={setActiveRegion}
-            data={{
-              items: fiat.data.regions,
-              options: "item?.name",
-            }}
-            activeSelect='Region'
-          />
-          <Dropdown
-            onSelect={setActiveRating}
-            data={{
-              items: crypto.data,
-              options: "item?.symbol",
-            }}
-            activeSelect='Rating'
-          /> */}
+          {activeFiat && (
+            <>
+              <Dropdown
+                onSelect={setActivePayment}
+                data={{
+                  items: activeFiat.banks as [IBank],
+                  options: "name",
+                }}
+                activeSelect={activePayment}
+                label='Payment'
+              />
+              <Dropdown
+                onSelect={setActiveRegion}
+                data={{
+                  items: activeFiat.regions as [IRegion],
+                  options: "name",
+                }}
+                activeSelect={activeRegion}
+                label='Region'
+              />
+            </>
+          )}
           <Button
             name={"Clear All"}
             onClick={() => {
               setActiveCrypto(null);
               setActiveFiat(null);
+              setActivePayment(null);
+              setActiveRegion(null);
             }}
           />
         </aside>
