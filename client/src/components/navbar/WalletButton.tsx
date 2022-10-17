@@ -29,17 +29,16 @@ export const WalletButton = ({
           setActiveWalletImg(img);
         });
       }}
-      className='flex flex-col justify-center shadow rounded-lg p-3'
+      className='flex items-center flex-col shadow rounded-lg p-3'
     >
-      <div className='flex justify-center'>
-        <img src={img} alt='' className='w-7 h-7 rounded-lg' />
-      </div>
-
-      <div>
-        <span className='text-[16px] font-bold'>
-          {wallet.name === "Coinbase Wallet" ? "Coinbase" : wallet.name}
-        </span>
-      </div>
+      <img
+        src={img}
+        alt=''
+        className='w-10 h-10 shadow-customDark object-cover rounded-full p-2'
+      />
+      <span className='text-[16px] font-bold'>
+        {wallet.name === "Coinbase Wallet" ? "Coinbase" : wallet.name}
+      </span>
     </button>
   );
 };

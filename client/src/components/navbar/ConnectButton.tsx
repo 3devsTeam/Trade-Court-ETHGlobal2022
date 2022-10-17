@@ -12,7 +12,7 @@ import { walletsImages } from "../../wallets/walletsImages";
 
 interface Props {
   isConnected: boolean;
-  address: string;
+  address: string | undefined;
   balance: any;
   ensName: any;
   setOpenConnectModal: React.Dispatch<SetStateAction<boolean>>;

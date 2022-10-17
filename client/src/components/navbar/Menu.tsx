@@ -11,6 +11,7 @@ import { CopyIcon } from "../ui/icons/CopyIcon";
 import { GoToLinkIcon } from "../ui/icons/GoToLinkIcon";
 import { DisconnectIcon } from "../ui/icons/DisconnectIcon";
 import { AvatarIcon } from "../ui/icons/AvatarIcon";
+import { truncateAddress } from "../../utils/truncateAddress";
 
 interface Props {
   address: string;
@@ -93,7 +94,7 @@ export const Menu = ({
             <AvatarIcon />
           </div>
           <div className={"flex flex-col font-bold"}>
-            <span>{!ensName ? address : ensName}</span>
+            <span>{!ensName ? truncateAddress(address) : ensName}</span>
             <span>
               {balance?.formatted.slice(0, 8)} {balance?.symbol}
             </span>
