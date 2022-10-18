@@ -7,6 +7,7 @@ export const Cross = () => {
       height='12'
       viewBox='0 0 10 10'
       fill='none'
+      strokeWidth={3}
       xmlns='http://www.w3.org/2000/svg'
     >
       <path

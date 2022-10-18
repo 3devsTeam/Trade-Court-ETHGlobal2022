@@ -75,6 +75,8 @@ export const Home = () => {
     "Buy / Sell",
   ];
 
+  if (data?.pages[0].length == 0) console.log("ye");
+
   return (
     <div className='grid grid-cols-homePage gap-5 my-5'>
       <SkeletonWrapper isLoaded={isLoaded} height={1000}>
@@ -136,7 +138,7 @@ export const Home = () => {
         </aside>
       </SkeletonWrapper>
 
-      <main>
+      <main className='relative'>
         <SkeletonWrapper height={30} isLoaded={isLoaded} margin={"20px"}>
           <Header headers={headers} />
         </SkeletonWrapper>
@@ -146,7 +148,13 @@ export const Home = () => {
           count={10}
           margin={"20px"}
         >
-          <div className='space-y-2'>{content}</div>
+          {data?.pages[0].length === 0 ? (
+            <div className='absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2'>
+              <span className='text-2xl font-bold'>No items found...</span>
+            </div>
+          ) : (
+            <div className='space-y-2'>{content}</div>
+          )}
         </SkeletonWrapper>
       </main>
     </div>

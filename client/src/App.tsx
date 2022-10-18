@@ -17,12 +17,12 @@ const App = () => {
       <Navbar />
       <main className='max-w-5xl mx-auto'>
         <Routes>
-          <Route element={<PrivateRoutes />}>
-            <Route path={"/create-offer"} element={<CreateOffer />} />
-            <Route path={"/settings"} element={<Settings />} />
-            <Route path={"/transaction/:id"} element={<Transaction />} />
-            <Route path={"/profile"} element={<Profile />} />
-          </Route>
+          {/* <Route element={<PrivateRoutes />}> */}
+          <Route path={"/create-offer"} element={<CreateOffer />} />
+          <Route path={"/settings"} element={<Settings />} />
+          <Route path={"/transaction/:id"} element={<Transaction />} />
+          <Route path={"/profile"} element={<Profile />} />
+          {/* </Route> */}
 
           <Route path={"/"} element={<Home />} />
           {/* <Route path={"*"} element={<Navigate to={"/"} />} /> */}

@@ -9,15 +9,15 @@ import { SearchField } from "../../ui/SearchField";
 import { TokenList } from "../TokenList";
 import "react-loading-skeleton/dist/skeleton.css";
 import { Wrapper } from "../Wrapper";
-import { IToken } from "../../../models/models";
+import { IFiat, IToken } from "../../../models/models";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import { Button } from "../../ui/Button";
 import { SubmitButton } from "../../ui/SubmitButton";
 
 interface IStep1 {
-  tokens: any;
-  allFiat: any;
+  tokens: [IToken];
+  allFiat: [IFiat];
 }
 
 interface FormStep1 {
@@ -30,7 +30,6 @@ export const Step1 = ({ tokens, allFiat }: IStep1) => {
   const {
     register,
     handleSubmit,
-    watch,
     formState: { errors },
   } = useForm<FormStep1>();
   const onSubmit = (data: any) => {
@@ -66,15 +65,7 @@ export const Step1 = ({ tokens, allFiat }: IStep1) => {
     <form onSubmit={handleSubmit(onSubmit)} className='flex flex-col gap-5'>
       <Wrapper>
         <ModalInput
-          register={register(
-            "tokenAmount"
-            // , {
-            //   required: true,
-            // validate: {
-            //   positive: (value) => parseFloat(value) > 0,
-            // },
-            // }
-          )}
+          register={register("tokenAmount")}
           symbol={symbol}
           fullName={cryptoName}
           image={cryptoImage}
@@ -90,19 +81,7 @@ export const Step1 = ({ tokens, allFiat }: IStep1) => {
           label={"Fiat"}
         />
         <Input
-          register={register(
-            "unitPrice"
-            // {
-            //   required: "Unit price is required",
-            // pattern: {
-            //   value: /^[0-9]*[.,]?[0-9]*$/,
-            //   message: "Invalid unit price value",
-            // },
-            // validate: {
-            //   positive: (value) => parseFloat(value) > 0,
-            // },
-            // }
-          )}
+          register={register("unitPrice")}
           onAction={setUnitPrice}
           placeholder={"0"}
           label={"Unit Price"}
@@ -111,15 +90,7 @@ export const Step1 = ({ tokens, allFiat }: IStep1) => {
         />
 
         <Input
-          register={register(
-            "quantity"
-            //  {
-            //   required: "Quantity is required",
-            // validate: {
-            //   positive: (value) => parseFloat(value) > 0,
-            // },
-            // }
-          )}
+          register={register("quantity")}
           maxValue={tokenAmount}
           onAction={setQuantity}
           placeholder={"0"}
@@ -129,7 +100,6 @@ export const Step1 = ({ tokens, allFiat }: IStep1) => {
         />
 
         <Modal
-          width={"567px"}
           isOpen={isOpen}
           close={() => setIsOpen(false)}
           header={"Select Token"}
@@ -148,7 +118,7 @@ export const Step1 = ({ tokens, allFiat }: IStep1) => {
 
       <Wrapper>
         <Button name='Next' onClick={nextStep} />
-        {/* <SubmitButton name='Next' disabled={false} /> */}
+        <SubmitButton name='Next' disabled={false} />
       </Wrapper>
     </form>
   );
