@@ -35,14 +35,8 @@ export const CreateOffer = () => {
     timeLimit,
   } = useTypedSelector((state) => state.offerReducer);
 
-  const {
-    setFiat,
-    setPaymentMethod,
-    setRegion,
-    setCrypto,
-    nextStep,
-    prevStep,
-  } = useActions();
+  const { setFiat, setBank, setRegion, setCrypto, nextStep, prevStep } =
+    useActions();
 
   const { tokens, isSuccessRequest } = useTokens();
 
@@ -63,16 +57,14 @@ export const CreateOffer = () => {
   useEffect(() => {
     if (isLoaded) {
       setCrypto(tokens[0]);
-      setPaymentMethod(allFiat[0].banks[0]);
+      setBank(allFiat[0].banks[0]);
       setRegion(allFiat[0].regions[0]);
     }
   }, [isLoaded]);
 
   useEffect(() => {
     if (isLoaded) {
-      setPaymentMethod(
-        allFiat.filter((e: IFiat) => e._id === fiat._id)[0].banks[0]
-      );
+      setBank(allFiat.filter((e: IFiat) => e._id === fiat._id)[0].banks[0]);
       setRegion(
         allFiat.filter((e: IRegion) => e._id === fiat._id)[0].regions[0]
       );

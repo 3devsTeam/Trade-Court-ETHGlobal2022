@@ -11,15 +11,8 @@ import { Button } from "../../ui/Button";
 import { SubmitButton } from "../../ui/SubmitButton";
 import { totalAmount } from "../../../utils/totalAmount";
 import { Wrapper } from "../Wrapper";
-import { useForm } from "react-hook-form";
 
 export const Step3 = ({ createHandler }: any) => {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm();
-
   const {
     setMinPriceLimit,
     setMaxPriceLimit,
@@ -46,30 +39,27 @@ export const Step3 = ({ createHandler }: any) => {
           </span>
           <div className={"flex justify-between gap-1"}>
             <Input
-              register={register("")}
-              value={0}
+              value={minLimit}
               onAction={setMinPriceLimit}
               placeholder={"Min"}
-              element={""}
+              element={ticker}
             />
-            {/* <Input
-    //         register={register("")}
-    //         value={maxLimit}
-    //         maxValue={totalAmount()}
-    //         onAction={setMaxPriceLimit}
-    //         placeholder={"Max"}
-    //         element={ticker}
-    //       /> */}
+            <Input
+              value={maxLimit}
+              maxValue={totalAmount()}
+              onAction={setMaxPriceLimit}
+              placeholder={"Max"}
+              element={ticker}
+            />
           </div>
         </label>
 
-        {/* <TextArea
-          register={register("")}
+        <TextArea
           value={offerComment ? offerComment : ""}
           onAction={setComment}
           label={"Comment"}
           placeholder={"Enter comment"}
-        />  */}
+        />
       </Wrapper>
 
       <Wrapper>

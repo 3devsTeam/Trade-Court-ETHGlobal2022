@@ -5,9 +5,6 @@ interface ITextArea {
   onAction: any;
   label: string;
   placeholder: string;
-  minLength?: string;
-  maxLength?: string;
-  register: any;
 }
 
 export const TextArea = ({
@@ -15,17 +12,13 @@ export const TextArea = ({
   label,
   placeholder,
   onAction,
-  minLength,
-  maxLength,
-  register,
 }: ITextArea) => {
   return (
     <label>
-      <p className={"text-lg font-bold mb-1 ml-[10px]"}>{label}</p>
+      <span className={"text-lg font-bold mb-1 ml-[10px]"}>{label}</span>
 
       <div>
         <textarea
-          {...register}
           spellCheck={false}
           value={value}
           onChange={(e) => onAction(e.target.value)}

@@ -1,17 +1,15 @@
 import React from "react";
 
 interface ICloseButton {
-  onClose: any;
-  width?: string;
-  height?: string;
+  onAction: any;
 }
 
-export const CloseButton = ({ onClose, width, height }: ICloseButton) => {
+export const CloseButton = ({ onAction }: ICloseButton) => {
   return (
     <button type='button' className='w-8 h-8'>
       <div
         className='flex justify-center items-center rounded-md cursor-pointer w-full h-full hover:bg-lightGray transition-color duration-300'
-        onClick={onClose}
+        onClick={onAction}
       >
         <svg
           width='13'

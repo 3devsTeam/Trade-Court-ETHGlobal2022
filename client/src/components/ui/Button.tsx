@@ -6,7 +6,7 @@ interface IButtonProps {
   onClick: any;
 }
 
-export const Button = ({ disabled, name, onClick }: IButtonProps) => {
+export const Button = ({ disabled = false, name, onClick }: IButtonProps) => {
   return (
     <button
       onClick={() => onClick()}

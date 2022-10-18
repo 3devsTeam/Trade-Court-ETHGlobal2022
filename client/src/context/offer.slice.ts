@@ -54,8 +54,6 @@ const initialState: IOffer = {
     logoUrl: "",
     __v: 0,
   },
-  cardNumber: "",
-  paymentDescription: "",
   offerComment: "",
 };
 
@@ -75,9 +73,6 @@ export const offerSlice = createSlice({
     setQuantity: (state, action) => {
       state.quantity = action.payload;
     },
-    addPaymentMethod: (state, action) => {
-      state.payMethods.push(action.payload);
-    },
     setTimeLimit: (state, action) => {
       state.timeLimit = action.payload;
     },
@@ -93,15 +88,19 @@ export const offerSlice = createSlice({
     setRegion: (state, action) => {
       state.region = action.payload;
     },
-    setCardNumber: (state, action) => {
-      state.cardNumber = action.payload;
-    },
-    setPaymentDescription: (state, action) => {
-      state.paymentDescription = action.payload;
-    },
-    setPaymentMethod: (state, action) => {
+    setBank: (state, action) => {
       state.paymentMethod = action.payload;
     },
+    addPaymentMethod: (state, action) => {
+      state.payMethods.push(action.payload);
+    },
+    removePaymentMethod: (state, action) => {
+      state.payMethods.filter((p) => {
+        p.id === action.payload;
+      });
+    },
+
+    // set,
     // resetOffer: (state) => {
     // {
     //     state.crypto = [{

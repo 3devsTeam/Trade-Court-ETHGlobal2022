@@ -7,7 +7,6 @@ export interface IInput {
   value: string | number;
   element?: any;
   maxValue?: any;
-  register: any;
   error?: any;
 }
 
@@ -19,7 +18,6 @@ export const Input = ({
   placeholder,
   value,
   element,
-  register,
 }: IInput) => {
   return (
     <label htmlFor={label}>
@@ -28,7 +26,6 @@ export const Input = ({
         className={`flex items-center border-2 border-purple rounded-[15px] h-[60px]`}
       >
         <input
-          {...register}
           name={label}
           autoComplete={"off"}
           autoCorrect={"off"}

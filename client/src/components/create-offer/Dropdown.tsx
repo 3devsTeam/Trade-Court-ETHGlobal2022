@@ -30,65 +30,61 @@ export const Dropdown = ({
 
   return (
     <div className={"w-full relative"} ref={ref}>
-      <label>
+      {label && (
         <span className={"text-lg font-bold mb-1 ml-[10px]"}>{label}</span>
-        <div>
+      )}
+      <div>
+        <div
+          onClick={() => setIsOpen(!isOpen)}
+          className={
+            "p-[10px] flex items-center justify-between h-[60px] rounded-[15px] border-2 border-purple cursor-pointer"
+          }
+        >
+          <div className={"flex items-center gap-1"}>
+            <img
+              className={"w-8 h-8 rounded-[50%] shadow-customDark object-cover"}
+              src={image}
+              alt={""}
+            />
+            <span className={"font-bold"}>{value}</span>
+            <span className={"font-bold text-gray-300"}>{fullName}</span>
+          </div>
+          <div className={`transition duration-300 ${isOpen && "rotate-180"}`}>
+            <Arrow />
+          </div>
+        </div>
+        {isOpen && (
           <div
-            onClick={() => setIsOpen(!isOpen)}
             className={
-              "p-[10px] flex items-center justify-between h-[60px] rounded-[15px] border-2 border-purple cursor-pointer"
+              "rounded-[10px] absolute w-full shadow-2xl bg-white h-[250px] overflow-y-auto"
             }
           >
-            <div className={"flex items-center gap-1"}>
-              <img
-                className={
-                  "w-8 h-8 rounded-[50%] shadow-customDark object-cover"
-                }
-                src={image}
-                alt={""}
-              />
-              <span className={"font-bold"}>{value}</span>
-              <span className={"font-bold text-gray-300"}>{fullName}</span>
-            </div>
-            <div
-              className={`transition duration-300 ${isOpen && "rotate-180"}`}
-            >
-              <Arrow />
-            </div>
-          </div>
-          {isOpen && (
-            <div
-              className={
-                "rounded-[10px] absolute w-full shadow-2xl bg-white h-[250px] overflow-y-auto"
-              }
-            >
-              {data.map((select: string, i: number) => {
-                const { ticker, logoUrl, name }: any = select;
+            {data.map((select: string, i: number) => {
+              const { ticker, logoUrl, name }: any = select;
 
-                return (
-                  <div
-                    onClick={() => clickHandler(data[i])}
-                    key={i}
-                    className={"p-2 cursor-pointer flex items-center gap-1"}
-                  >
-                    <img
-                      className={
-                        "w-8 h-8 rounded-full shadow-customDark object-cover"
-                      }
-                      width={32}
-                      height={32}
-                      src={logoUrl}
-                      alt=''
-                    />
-                    <span className={"font-bold"}>{ticker}</span>
-                    <span className='font-bold'>{name}</span>
-                  </div>
-                );
-              })}
-            </div>
-          )}
-        </div>
-      </label>
+              return (
+                <div
+                  onClick={() => clickHandler(data[i])}
+                  key={i}
+                  className={"p-2 cursor-pointer flex items-center gap-1"}
+                >
+                  <img
+                    className={
+                      "w-8 h-8 rounded-full shadow-customDark object-cover"
+                    }
+                    width={32}
+                    height={32}
+                    src={logoUrl}
+                    alt=''
+                  />
+                  <span className={"font-bold"}>{ticker}</span>
+                  <span className='font-bold'>{name}</span>
+                </div>
+              );
+            })}
+          </div>
+        )}
+      </div>
     </div>
   );
 };
