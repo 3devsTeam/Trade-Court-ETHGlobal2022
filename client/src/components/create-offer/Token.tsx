@@ -31,7 +31,7 @@ export const Token = ({ virtualItem, token, onClose }: any) => {
         <img width={48} height={48} src={logoUrl} alt={""} />
         <div className={"flex flex-col items-start"}>
           <span className={"font-bold"}>{name}</span>
-          <span className={"text-gray"}>
+          <span className={"text-gray-300"}>
             {tokenAmount !== 0 && tokenAmount} {symbol}
           </span>
         </div>

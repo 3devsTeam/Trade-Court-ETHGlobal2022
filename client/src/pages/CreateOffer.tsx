@@ -177,7 +177,7 @@ export const CreateOffer = () => {
       .catch((err) => console.log(err));
   };
 
-  const steps = ["Offer Price", "Payment method", "Settings"];
+  const steps = ["Offer Price", "Payment Method", "Settings"];
 
   const pageDisplay = () => {
     switch (step) {

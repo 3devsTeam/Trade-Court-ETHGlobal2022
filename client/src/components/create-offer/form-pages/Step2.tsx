@@ -60,28 +60,31 @@ export const Step2 = () => {
   return (
     <form className='flex flex-col gap-5'>
       <Wrapper>
-        <div>
-          <p className={"text-lg font-bold mb-1 ml-[10px]"}>Payment methods</p>
-          <div className={"flex gap-1 overflow-x-auto"}>
-            {!payMethods.length && (
-              <div
-                className={"h-[60px] w-full flex items-center justify-center"}
-              >
-                <span className={"font-bold text-purple text-lg"}>
-                  No payments yet...
-                </span>
-              </div>
-            )}
-            {payMethods?.map((p) => {
-              return <Payment payment={p} showCloseButton={true} />;
-            })}
+        {payMethods.length ? (
+          <div>
+            <span className={"text-lg font-bold mb-1 ml-[10px]"}>
+              Payment Methods
+            </span>
+            <div className={"flex gap-1 overflow-x-auto"}>
+              {/* <div className={"h-[60px] w-full flex items-center justify-center"}>
+               <span className={"font-bold text-purple text-lg"}>
+                 No payments yet...
+               </span>
+             </div> */}
+
+              {payMethods?.map((p) => {
+                return <Payment payment={p} showCloseButton={true} />;
+              })}
+            </div>
           </div>
-        </div>
+        ) : (
+          <></>
+        )}
 
         <label>
-          <p className={"text-lg font-bold mb-1 ml-[10px]"}>
-            Add payment method
-          </p>
+          <span className={"text-lg font-bold mb-1 ml-[10px]"}>
+            Add Payment Method
+          </span>
           <div className={"flex items-center gap-1"}>
             <Dropdown
               image={paymentLogoUrl}
