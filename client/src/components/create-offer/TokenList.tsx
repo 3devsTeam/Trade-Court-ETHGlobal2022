@@ -2,17 +2,13 @@ import React, { useRef, useEffect } from "react";
 import { useVirtualizer } from "@tanstack/react-virtual";
 import { Token } from "./Token";
 import { IToken } from "../../models/models";
-import { useActions } from "../../hooks/useActions";
-import { useTypedSelector } from "../../hooks/useTypedSelector";
 
 interface ITokenList {
   tokens: IToken[];
-  onClose: React.Dispatch<any>;
+  onClose: React.Dispatch<boolean>;
 }
 
 export const TokenList = ({ tokens, onClose }: ITokenList) => {
-  const { crypto } = useTypedSelector((state) => state.offerReducer);
-
   const parentRef = useRef(null);
 
   const virtualizer = useVirtualizer({

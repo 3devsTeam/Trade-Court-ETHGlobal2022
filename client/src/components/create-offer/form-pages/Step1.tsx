@@ -21,8 +21,7 @@ interface IStep1 {
 }
 
 export const Step1 = ({ tokens, allFiat }: IStep1) => {
-  const { setCrypto, setFiat, setQuantity, setUnitPrice, nextStep } =
-    useActions();
+  const { setFiat, setQuantity, setUnitPrice, nextStep } = useActions();
   const { crypto, fiat, quantity, unitPrice } = useTypedSelector(
     (state) => state.offerReducer
   );
@@ -47,11 +46,9 @@ export const Step1 = ({ tokens, allFiat }: IStep1) => {
   };
 
   const checkStep1 = () => {
-    if (quantity > 0 && quantity <= tokenAmount && unitPrice > 0) {
-      return true;
-    } else {
-      return false;
-    }
+    if (quantity > 0 && quantity <= tokenAmount && unitPrice > 0) return true;
+
+    return false;
   };
 
   return (

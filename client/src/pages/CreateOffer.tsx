@@ -21,6 +21,7 @@ import { SkeletonWrapper } from "../components/ui/SkeletonWrapper";
 import { IFiat, IOffer, IRegion } from "../models/models";
 import { ErrorBoundary } from "react-error-boundary";
 import { FiatServices } from "../api/fiat.services";
+import { useFiat } from "../hooks/useFiat";
 
 export const CreateOffer = () => {
   const {
@@ -35,41 +36,10 @@ export const CreateOffer = () => {
     timeLimit,
   } = useTypedSelector((state) => state.offerReducer);
 
-  const { setFiat, setBank, setRegion, setCrypto, nextStep, prevStep } =
-    useActions();
+  const { tokens, isSuccess: tokensSuccess } = useTokens();
+  const { allFiat, isSuccess: fiatSuccess } = useFiat();
 
-  const { tokens, isSuccessRequest } = useTokens();
-
-  const { data: allFiat, isSuccess: fiatSuccess } = useQuery(
-    ["get fiat"],
-    () => FiatServices.getFiat(),
-    {
-      select: (data) => data.data.allFiat,
-      onSuccess: (data) => setFiat(data[0]),
-    }
-  );
-
-  // console.log(allFiat);
-
-  // console.log(isSuccessRequest, fiatSuccess);
-
-  const isLoaded = isSuccessRequest && fiatSuccess;
-  useEffect(() => {
-    if (isLoaded) {
-      setCrypto(tokens[0]);
-      setBank(allFiat[0].banks[0]);
-      setRegion(allFiat[0].regions[0]);
-    }
-  }, [isLoaded]);
-
-  useEffect(() => {
-    if (isLoaded) {
-      setBank(allFiat.filter((e: IFiat) => e._id === fiat._id)[0].banks[0]);
-      setRegion(
-        allFiat.filter((e: IRegion) => e._id === fiat._id)[0].regions[0]
-      );
-    }
-  }, [fiat]);
+  const isLoaded = tokensSuccess && fiatSuccess;
 
   const limitPrice = (value: any, unitPrice: any) => {
     if (!BigNumber.from(value).eq(BigNumber.from(0))) {
@@ -99,8 +69,14 @@ export const CreateOffer = () => {
     String(quantity) === "" ? "0" : quantity.toString()
   );
 
-  const { data, isError, isLoading, isSuccess, writeAsync, hash } =
-    useEthContractWithValue(args, value, "makeRoomEth");
+  const {
+    data,
+    isError,
+    isLoading,
+    isSuccess: isSuccessMakeRoom,
+    writeAsync,
+    hash,
+  } = useEthContractWithValue(args, value, "makeRoomEth");
 
   const { step } = useTypedSelector((state) => state.formReducer);
 

@@ -11,7 +11,7 @@ import { Wrapper } from "../Wrapper";
 import { useForm } from "react-hook-form";
 import { SubmitButton } from "../../ui/SubmitButton";
 import { Button } from "../../ui/Button";
-import { IPayment } from "../../../models/models";
+import { IFiat, IPayment, IRegion } from "../../../models/models";
 
 export const Step2 = () => {
   const { addPaymentMethod, setRegion, setBank, prevStep, nextStep } =
