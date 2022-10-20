@@ -54,8 +54,6 @@ export const Step1 = ({ tokens, allFiat }: IStep1) => {
     }
   };
 
-  console.log(checkStep1());
-
   return (
     <form className='flex flex-col gap-5'>
       <Wrapper>
@@ -109,7 +107,14 @@ export const Step1 = ({ tokens, allFiat }: IStep1) => {
       </Wrapper>
 
       <Wrapper>
-        <Button name='Next' onClick={nextStep} disabled={!checkStep1()} />
+        <Button
+          name='Next'
+          onClick={nextStep}
+          disabled={
+            // !checkStep1()
+            false
+          }
+        />
       </Wrapper>
     </form>
   );

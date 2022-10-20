@@ -21,6 +21,8 @@ export const Preview = () => {
 
   const { ticker, logoUrl: fiatImage } = fiat;
 
+  const { items: payments } = payMethods;
+
   return (
     <div
       className={
@@ -98,8 +100,8 @@ export const Preview = () => {
             <span className={"font-bold text-lg"}>Payment Methods</span>
           </div>
           <div>
-            {payMethods.length
-              ? payMethods.map((p) => {
+            {payments.length
+              ? payments.map((p) => {
                   return (
                     <div className={"flex items-center gap-1 my-2"}>
                       <img

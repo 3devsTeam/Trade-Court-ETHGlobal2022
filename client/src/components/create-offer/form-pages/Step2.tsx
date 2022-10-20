@@ -20,12 +20,14 @@ export const Step2 = () => {
     (state) => state.offerReducer
   );
 
+  const { items: payments } = payMethods;
+
   const [paymentDescription, setPaymentDescription] = useState("");
   const [cardNumber, setCardNumber] = useState("");
 
   const addPayment = () => {
     const newPayment: IPayment = {
-      id: payMethods.length.toString(),
+      id: payments.length.toString(),
       paymentMethod,
       region,
       cardNumber,
@@ -45,20 +47,20 @@ export const Step2 = () => {
   const regionLogoUrl = region?.logoUrl;
 
   const checkCanAddPayment = () => {
-    if (payMethods.length < 5) return true;
+    if (payments.length < 5) return true;
     return false;
   };
 
   return (
     <form className='flex flex-col gap-5'>
       <Wrapper>
-        {payMethods.length ? (
+        {payments.length ? (
           <div>
             <span className={"text-lg font-bold mb-1 ml-[10px]"}>
               Payment Methods
             </span>
             <div className={"flex gap-1 overflow-x-auto"}>
-              {payMethods.map((p, i) => {
+              {payments.map((p, i) => {
                 return <Payment key={i} payment={p} />;
               })}
             </div>
@@ -96,8 +98,8 @@ export const Step2 = () => {
         <TextArea
           value={paymentDescription}
           onAction={setPaymentDescription}
-          label={"Payment description"}
-          placeholder={"..."}
+          label={"Payment Description"}
+          placeholder={"Here can be written something useful..."}
         />
         <Button
           name={"Add"}

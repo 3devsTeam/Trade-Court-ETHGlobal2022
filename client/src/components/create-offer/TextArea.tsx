@@ -23,7 +23,7 @@ export const TextArea = ({
           value={value}
           onChange={(e) => onAction(e.target.value)}
           placeholder={placeholder}
-          className={`border-2 border-purple rounded-[15px] p-3 w-full min-h-[200px]`}
+          className={`p-3 w-full min-h-[200px] elementBorder outline-none`}
         />
       </div>
     </label>

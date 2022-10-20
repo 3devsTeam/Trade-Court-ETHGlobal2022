@@ -34,7 +34,7 @@ export const ModalInput = ({
       <button
         type='button'
         onClick={() => onOpen()}
-        className='flex items-center border-2 border-purple rounded-[15px] h-[60px] px-[10px] w-full'
+        className='flex items-center h-[60px] px-[10px] w-full elementBorder'
       >
         <div className={"flex items-center gap-1"}>
           <img

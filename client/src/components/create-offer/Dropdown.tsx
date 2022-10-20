@@ -34,10 +34,11 @@ export const Dropdown = ({
         <span className={"text-lg font-bold mb-1 ml-[10px]"}>{label}</span>
       )}
       <div>
-        <div
+        <button
+          type='button'
           onClick={() => setIsOpen(!isOpen)}
           className={
-            "p-[10px] flex items-center justify-between h-[60px] rounded-[15px] border-2 border-purple cursor-pointer"
+            "p-[10px] flex items-center justify-between h-[60px] cursor-pointer elementBorder w-full"
           }
         >
           <div className={"flex items-center gap-1"}>
@@ -52,7 +53,7 @@ export const Dropdown = ({
           <div className={`transition duration-300 ${isOpen && "rotate-180"}`}>
             <Arrow />
           </div>
-        </div>
+        </button>
         {isOpen && (
           <div
             className={

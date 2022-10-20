@@ -22,18 +22,16 @@ export const Input = ({
   return (
     <label htmlFor={label}>
       <span className={"text-lg font-bold mb-1 ml-[10px]"}>{label}</span>
-      <div
-        className={`flex items-center border-2 border-purple rounded-[15px] h-[60px]`}
-      >
+      <div className={`flex items-center h-[60px] elementBorder`}>
         <input
           name={label}
           autoComplete={"off"}
           autoCorrect={"off"}
           spellCheck={false}
           onChange={(e) => onAction(e.target.value)}
-          className={`outline-none p-[10px] rounded-[15px] w-full h-full bg-transparent`}
+          className={`outline-none p-[10px] rounded-[15px] w-full h-full bg-transparent font-medium`}
           placeholder={placeholder}
-          value={value}
+          value={value ? value : ""}
         />
 
         <div className='flex space-x-2 pr-[10px]'>

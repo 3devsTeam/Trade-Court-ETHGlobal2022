@@ -31,11 +31,6 @@ module.exports = {
         md: "20px",
         lg: "24px",
       },
-      fontWeight: {
-        sm: 400,
-        md: 500,
-        bold: 700,
-      },
       gridTemplateColumns: {
         homePage: "0.35fr 1fr",
         offer: "0.5fr minmax(0, 1fr) 0.6fr 0.7fr 0.5fr",

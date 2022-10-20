@@ -30,12 +30,12 @@ export const Step3 = ({ createHandler }: any) => {
       <Wrapper>
         <TimeLimit
           onAction={setTimeLimit}
-          label={"Order time limit"}
+          label={"Order Time Limit"}
           times={["15", "30", "45", "60", "120"]}
         />
         <label>
           <span className={"text-lg font-bold mb-1 ml-[10px]"}>
-            {"Order price limit"}
+            {"Order Price Limit"}
           </span>
           <div className={"flex justify-between gap-1"}>
             <Input

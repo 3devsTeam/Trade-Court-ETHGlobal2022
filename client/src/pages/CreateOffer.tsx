@@ -18,7 +18,7 @@ import React, { useEffect, useState } from "react";
 import { useTokens } from "../hooks/useTokens";
 import { useQuery } from "wagmi";
 import { SkeletonWrapper } from "../components/ui/SkeletonWrapper";
-import { IFiat, IRegion } from "../models/models";
+import { IFiat, IOffer, IRegion } from "../models/models";
 import { ErrorBoundary } from "react-error-boundary";
 import { FiatServices } from "../api/fiat.services";
 
@@ -106,15 +106,6 @@ export const CreateOffer = () => {
 
   const navigate = useNavigate();
 
-  const payments = payMethods.map((e) => {
-    return {
-      bank: e.paymentMethod._id,
-      cardNumber: e.cardNumber,
-      region: e.region._id,
-      paymentDescription: e.paymentDescription,
-    };
-  });
-
   const successOfferNotify = (info: React.ReactNode) => {
     toast.success(info, {
       position: toast.POSITION.BOTTOM_RIGHT,
@@ -141,7 +132,7 @@ export const CreateOffer = () => {
           maxLimit,
           crypto: crypto._id,
           offerComment,
-          payMethods: payments,
+          payMethods: payMethods.items,
         })
           .then(
             (data) => {
@@ -169,7 +160,7 @@ export const CreateOffer = () => {
       .catch((err) => console.log(err));
   };
 
-  const steps = ["Offer Price", "Payment method", "Settings"];
+  const steps = ["Offer Price", "Payment Method", "Settings"];
 
   const pageDisplay = () => {
     switch (step) {

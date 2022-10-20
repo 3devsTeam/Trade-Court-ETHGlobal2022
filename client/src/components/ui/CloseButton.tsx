@@ -9,7 +9,7 @@ export const CloseButton = ({ onAction }: ICloseButton) => {
     <button type='button' className='w-8 h-8'>
       <div
         className='flex justify-center items-center rounded-md cursor-pointer w-full h-full hover:bg-lightGray transition-color duration-300'
-        onClick={onAction}
+        onClick={() => onAction()}
       >
         <svg
           width='13'
