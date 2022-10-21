@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { useTypedSelector } from "../../../hooks/useTypedSelector";
 import { Input } from "../Input";
 import { Dropdown } from "../Dropdown";
-
 import { useActions } from "../../../hooks/useActions";
 import { useScrollTop } from "../../../hooks/useScrollTop";
 import { TextArea } from "../TextArea";
@@ -12,6 +11,7 @@ import { useForm } from "react-hook-form";
 import { SubmitButton } from "../../ui/SubmitButton";
 import { Button } from "../../ui/Button";
 import { IFiat, IPayment, IRegion } from "../../../models/models";
+import { v4 as uuidv4 } from "uuid";
 
 export const Step2 = () => {
   const { addPaymentMethod, setRegion, setBank, prevStep, nextStep } =
@@ -20,14 +20,12 @@ export const Step2 = () => {
     (state) => state.offerReducer
   );
 
-  const { items: payments } = payMethods;
-
   const [paymentDescription, setPaymentDescription] = useState("");
   const [cardNumber, setCardNumber] = useState("");
 
   const addPayment = () => {
     const newPayment: IPayment = {
-      id: payments.length.toString(),
+      id: uuidv4(),
       paymentMethod,
       region,
       cardNumber,
@@ -46,22 +44,44 @@ export const Step2 = () => {
   const regionName = region?.name;
   const regionLogoUrl = region?.logoUrl;
 
-  const checkCanAddPayment = () => {
-    if (payments.length < 5) return true;
-    return false;
+  const editPayment = () => {
+    const updatedItem = {};
+
+    setCardNumber("");
+    setPaymentDescription("");
+    setActive(null);
   };
+
+  const [active, setActive] = useState<IPayment | null>(null);
+  console.log(active);
+
+  useEffect(() => {
+    if (active != null) {
+      setBank(active?.paymentMethod);
+      setRegion(active?.region);
+      setCardNumber(active?.cardNumber);
+      setPaymentDescription(active.paymentDescription);
+    }
+  }, [active]);
 
   return (
     <form className='flex flex-col gap-5'>
       <Wrapper>
-        {payments.length ? (
+        {payMethods.length ? (
           <div>
             <span className={"text-lg font-bold mb-1 ml-[10px]"}>
               Payment Methods
             </span>
             <div className={"flex gap-1 overflow-x-auto"}>
-              {payments.map((p, i) => {
-                return <Payment key={i} payment={p} />;
+              {payMethods.map((p) => {
+                return (
+                  <Payment
+                    active={active?.id}
+                    setActive={setActive}
+                    key={p.id}
+                    payment={p}
+                  />
+                );
               })}
             </div>
           </div>
@@ -102,15 +122,25 @@ export const Step2 = () => {
           placeholder={"Here can be written something useful..."}
         />
         <Button
-          name={"Add"}
-          onClick={addPayment}
-          disabled={!checkCanAddPayment()}
+          name={
+            payMethods.length === 5
+              ? "Maximum"
+              : active != null
+              ? "Save"
+              : "Add"
+          }
+          onClick={active != null ? editPayment : addPayment}
+          disabled={!(payMethods.length < 5)}
         />
       </Wrapper>
       <Wrapper>
         <div className='flex gap-5'>
           <Button onClick={prevStep} disabled={false} name={"Back"} />
-          <Button onClick={nextStep} disabled={false} name={"Next"} />
+          <Button
+            onClick={nextStep}
+            disabled={!(payMethods.length > 0)}
+            name={"Next"}
+          />
         </div>
       </Wrapper>
     </form>

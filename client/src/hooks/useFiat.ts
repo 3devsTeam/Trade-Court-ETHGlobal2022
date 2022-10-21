@@ -22,9 +22,9 @@ export const useFiat = () => {
 
   useEffect(() => {
     if (isSuccess) {
-      setBank(allFiat.filter((e: IFiat) => e._id === fiat._id)[0].banks[0]);
+      setBank(allFiat?.filter((e: IFiat) => e._id === fiat._id)[0].banks[0]);
       setRegion(
-        allFiat.filter((e: IRegion) => e._id === fiat._id)[0].regions[0]
+        allFiat?.filter((e: IRegion) => e._id === fiat._id)[0].regions[0]
       );
     }
   }, [fiat]);

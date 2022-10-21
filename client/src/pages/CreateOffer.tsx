@@ -108,7 +108,7 @@ export const CreateOffer = () => {
           maxLimit,
           crypto: crypto._id,
           offerComment,
-          payMethods: payMethods.items,
+          payMethods: payMethods,
         })
           .then(
             (data) => {

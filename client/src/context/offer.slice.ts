@@ -1,5 +1,13 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { IOffer, ROLES } from "../models/models";
+import {
+  IBank,
+  IFiat,
+  IOffer,
+  IPayment,
+  IRegion,
+  IToken,
+  ROLES,
+} from "../models/models";
 import defaultImg from "../assets/defaultImg.svg";
 
 const initialState: IOffer = {
@@ -38,9 +46,7 @@ const initialState: IOffer = {
   },
   unitPrice: 0,
   quantity: 0,
-  payMethods: {
-    items: [],
-  },
+  payMethods: [],
   timeLimit: "15",
   minLimit: 0,
   maxLimit: 0,
@@ -63,48 +69,52 @@ export const offerSlice = createSlice({
   name: "create-offer",
   initialState,
   reducers: {
-    setCrypto: (state, action) => {
+    setCrypto: (state, action: PayloadAction<IToken>) => {
       state.crypto = action.payload;
     },
-    setFiat: (state, action) => {
+    setFiat: (state, action: PayloadAction<IFiat>) => {
       state.fiat = action.payload;
     },
-    setUnitPrice: (state, action) => {
+    setUnitPrice: (state, action: PayloadAction<number>) => {
       state.unitPrice = action.payload;
     },
-    setQuantity: (state, action) => {
+    setQuantity: (state, action: PayloadAction<number>) => {
       state.quantity = action.payload;
     },
-    setTimeLimit: (state, action) => {
+    setTimeLimit: (state, action: PayloadAction<string>) => {
       state.timeLimit = action.payload;
     },
-    setMinPriceLimit: (state, action) => {
+    setMinPriceLimit: (state, action: PayloadAction<number>) => {
       state.minLimit = action.payload;
     },
-    setMaxPriceLimit: (state, action) => {
+    setMaxPriceLimit: (state, action: PayloadAction<number>) => {
       state.maxLimit = action.payload;
     },
-    setComment: (state, action) => {
+    setComment: (state, action: PayloadAction<string>) => {
       state.offerComment = action.payload;
     },
-    setRegion: (state, action) => {
+    setRegion: (state, action: PayloadAction<IRegion>) => {
       state.region = action.payload;
     },
-    setBank: (state, action) => {
+    setBank: (state, action: PayloadAction<IBank>) => {
       state.paymentMethod = action.payload;
     },
-    addPaymentMethod: (state, action) => {
-      state.payMethods = [
-        {
-          ...state.payMethods,
-          ...action.payload,
-        },
-      ];
+    addPaymentMethod: (state, action: PayloadAction<IPayment>) => {
+      state.payMethods.push(action.payload);
     },
-    // removePaymentMethod: (state, action) => ({
-    //   ...state.payMethods,
-    //   items: state.payMethods.filter((item) => item !== action.payload),
-    // }),
+    removePaymentMethod: (state, action: PayloadAction<string>) => {
+      const newPayments = state.payMethods.filter(
+        (payment) => payment.id !== action.payload
+      );
+      state.payMethods = newPayments;
+    },
+    updatePaymentMethod: (state, action) => {
+      const { id, updatedItem } = action.payload;
+
+      // const updated = state.payMethods.find(
+      //   (payment) => payment.id === action.payload.id
+      // );
+    },
   },
 });
 

@@ -7,9 +7,7 @@ export interface IOffer {
   fiat: IFiat;
   unitPrice: number;
   quantity: number;
-  payMethods: {
-    items: IPayment[];
-  };
+  payMethods: IPayment[];
   paymentMethod?: IBank;
   region?: IRegion;
   cardNumber?: string;
