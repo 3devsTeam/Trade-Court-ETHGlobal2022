@@ -25,8 +25,13 @@ export const Step3 = ({ createHandler }: any) => {
   );
   const { ticker } = fiat;
 
+  const checkStep3 = () => {
+    if (minLimit > 0 && maxLimit > 0 && minLimit < maxLimit) return false;
+    return true;
+  };
+
   return (
-    <form>
+    <form className='flex flex-col gap-5'>
       <Wrapper>
         <TimeLimit
           onAction={setTimeLimit}
@@ -63,8 +68,14 @@ export const Step3 = ({ createHandler }: any) => {
       </Wrapper>
 
       <Wrapper>
-        <Button onClick={prevStep} name='Back' />
-        <Button onClick={createHandler} name='Create' />
+        <div className='flex gap-5'>
+          <Button onClick={prevStep} name='Back' />
+          <Button
+            disabled={checkStep3()}
+            onClick={createHandler}
+            name='Create'
+          />
+        </div>
       </Wrapper>
     </form>
   );

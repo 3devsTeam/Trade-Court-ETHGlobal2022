@@ -21,6 +21,7 @@ export const Step2 = () => {
     prevStep,
     nextStep,
     updatePaymentMethod,
+    removePaymentMethod,
   } = useActions();
   const { fiat, region, paymentMethod, payMethods } = useTypedSelector(
     (state) => state.offerReducer
@@ -40,6 +41,14 @@ export const Step2 = () => {
     addPaymentMethod(newPayment);
     setPaymentDescription("");
     setCardNumber("");
+  };
+
+  const deletePayment = (id: string) => {
+    removePaymentMethod(id);
+    setBank(fiat.banks[0]);
+    setRegion(fiat.regions[0]);
+    setCardNumber("");
+    setPaymentDescription("");
   };
 
   const { banks, regions } = fiat;
@@ -66,9 +75,6 @@ export const Step2 = () => {
     setActive(null);
   };
 
-  //console.log(active?.id);
-  //console.log(active);
-
   useEffect(() => {
     if (active != null) {
       setBank(active?.paymentMethod);
@@ -90,6 +96,7 @@ export const Step2 = () => {
               {payMethods.map((p) => {
                 return (
                   <Payment
+                    deletePayment={deletePayment}
                     active={active?.id}
                     setActive={setActive}
                     key={p.id}

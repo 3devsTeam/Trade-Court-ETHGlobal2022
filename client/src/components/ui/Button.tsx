@@ -22,7 +22,11 @@ export const Button = ({
       value={name}
       type='button'
       disabled={disabled}
-      className={`border-2 border-gray-300 text-gray-300 rounded-[20px] px-4 py-3 font-bold text-lg transition duration-150 ease-out hover:ease-in cursor-pointer w-full`}
+      className={`${
+        disabled
+          ? "border-2 border-gray-300 text-gray-300 cursor-default"
+          : "bg-purple text-white cursor-pointer"
+      } rounded-[20px] px-4 py-3 font-bold text-lg transition duration-150 ease-out hover:ease-in cursor-pointer w-full`}
     >
       {name}
     </button>
