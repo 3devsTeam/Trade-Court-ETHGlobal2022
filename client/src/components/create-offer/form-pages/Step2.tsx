@@ -14,8 +14,14 @@ import { IFiat, IPayment, IRegion } from "../../../models/models";
 import { v4 as uuidv4 } from "uuid";
 
 export const Step2 = () => {
-  const { addPaymentMethod, setRegion, setBank, prevStep, nextStep } =
-    useActions();
+  const {
+    addPaymentMethod,
+    setRegion,
+    setBank,
+    prevStep,
+    nextStep,
+    updatePaymentMethod,
+  } = useActions();
   const { fiat, region, paymentMethod, payMethods } = useTypedSelector(
     (state) => state.offerReducer
   );
@@ -44,16 +50,24 @@ export const Step2 = () => {
   const regionName = region?.name;
   const regionLogoUrl = region?.logoUrl;
 
+  const [active, setActive] = useState<IPayment | null>(null);
+
   const editPayment = () => {
-    const updatedItem = {};
+    updatePaymentMethod({
+      id: active?.id,
+      paymentMethod,
+      region,
+      cardNumber,
+      paymentDescription,
+    });
 
     setCardNumber("");
     setPaymentDescription("");
     setActive(null);
   };
 
-  const [active, setActive] = useState<IPayment | null>(null);
-  console.log(active);
+  //console.log(active?.id);
+  //console.log(active);
 
   useEffect(() => {
     if (active != null) {
