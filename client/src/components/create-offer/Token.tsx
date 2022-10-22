@@ -32,13 +32,13 @@ export const Token = ({ virtualItem, token, onClose }: any) => {
         <div className={"flex flex-col items-start"}>
           <span className={"font-bold"}>{name}</span>
           <span className={"text-gray"}>
-            {tokenAmount !== 0 && tokenAmount} {symbol}
+            {tokenAmount} {symbol}
           </span>
         </div>
       </div>
 
-      <div className={"font-bold"}>
-        {balance !== 0 ? `$${balance}` : balance}
+      <div>
+        <span className={"font-bold"}>{balance}</span>
       </div>
     </button>
   );

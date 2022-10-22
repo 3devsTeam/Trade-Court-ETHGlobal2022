@@ -102,9 +102,10 @@ export const Menu = ({
         </div>
 
         <div className={"flex items-center space-x-3"}>
-          {menuButtons.map((button) => {
+          {menuButtons.map((button, i) => {
             return (
               <MenuButton
+                key={i}
                 onClick={button.onClick}
                 icon={button.icon}
                 href={button.href}
@@ -116,8 +117,13 @@ export const Menu = ({
       </div>
 
       <div className={"flex flex-col mt-[10px]"}>
-        {navLinks.map((link) => (
-          <NavLink icon={link.icon} name={link.name} route={link.route} />
+        {navLinks.map((link, i) => (
+          <NavLink
+            key={i}
+            icon={link.icon}
+            name={link.name}
+            route={link.route}
+          />
         ))}
       </div>
     </nav>

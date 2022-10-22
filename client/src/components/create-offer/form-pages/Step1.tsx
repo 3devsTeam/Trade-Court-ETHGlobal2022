@@ -21,6 +21,8 @@ interface IStep1 {
 }
 
 export const Step1 = ({ tokens, allFiat }: IStep1) => {
+  console.log(tokens);
+
   const { setFiat, setQuantity, setUnitPrice, nextStep } = useActions();
   const { crypto, fiat, quantity, unitPrice } = useTypedSelector(
     (state) => state.offerReducer
@@ -52,67 +54,68 @@ export const Step1 = ({ tokens, allFiat }: IStep1) => {
   };
 
   return (
-    <form className='flex flex-col gap-5'>
-      <Wrapper>
-        <ModalInput
-          symbol={symbol}
-          fullName={cryptoName}
-          image={cryptoImage}
-          onOpen={() => setIsOpen(!isOpen)}
-          label={"Crypto"}
-        />
-        <Dropdown
-          value={ticker}
-          fullName={fiatName}
-          image={fiatImage}
-          onAction={setFiat}
-          data={allFiat}
-          label={"Fiat"}
-        />
-        <Input
-          onAction={setUnitPrice}
-          placeholder={"0"}
-          label={"Unit Price"}
-          element={ticker}
-          value={unitPrice}
-        />
+    <></>
+    // <form className='flex flex-col gap-5'>
+    //   <Wrapper>
+    //     <ModalInput
+    //       symbol={symbol}
+    //       fullName={cryptoName}
+    //       image={cryptoImage}
+    //       onOpen={() => setIsOpen(!isOpen)}
+    //       label={"Crypto"}
+    //     />
+    //     <Dropdown
+    //       value={ticker}
+    //       fullName={fiatName}
+    //       image={fiatImage}
+    //       onAction={setFiat}
+    //       data={allFiat}
+    //       label={"Fiat"}
+    //     />
+    //     <Input
+    //       onAction={setUnitPrice}
+    //       placeholder={"0"}
+    //       label={"Unit Price"}
+    //       element={ticker}
+    //       value={unitPrice}
+    //     />
 
-        <Input
-          maxValue={tokenAmount}
-          onAction={setQuantity}
-          placeholder={"0"}
-          label={"Quantity"}
-          element={symbol}
-          value={quantity}
-        />
+    //     <Input
+    //       maxValue={tokenAmount}
+    //       onAction={setQuantity}
+    //       placeholder={"0"}
+    //       label={"Quantity"}
+    //       element={symbol}
+    //       value={quantity}
+    //     />
 
-        <Modal
-          isOpen={isOpen}
-          close={() => setIsOpen(false)}
-          header={"Select Token"}
-        >
-          <SearchField
-            placeholder={"Enter token name or paste it address"}
-            setSearchTerm={setSearchTerm}
-            searchTerm={searchTerm}
-          />
-          <TokenList
-            tokens={searchFilter(tokens)}
-            onClose={() => setIsOpen(false)}
-          />
-        </Modal>
-      </Wrapper>
+    //     <Modal
+    //       isOpen={isOpen}
+    //       close={() => setIsOpen(false)}
+    //       header={"Select Token"}
+    //     >
+    //       <SearchField
+    //         placeholder={"Enter token name or paste it address"}
+    //         setSearchTerm={setSearchTerm}
+    //         searchTerm={searchTerm}
+    //       />
+    //       <TokenList
+    //         tokens={searchFilter(tokens)}
+    //         onClose={() => setIsOpen(false)}
+    //       />
+    //     </Modal>
+    //   </Wrapper>
 
-      <Wrapper>
-        <Button
-          name='Next'
-          onClick={nextStep}
-          disabled={
-            // !checkStep1()
-            false
-          }
-        />
-      </Wrapper>
-    </form>
+    //   <Wrapper>
+    //     <Button
+    //       name='Next'
+    //       onClick={nextStep}
+    //       disabled={
+    //         // !checkStep1()
+    //         false
+    //       }
+    //     />
+    //   </Wrapper>
+    // </form>
   );
 };
