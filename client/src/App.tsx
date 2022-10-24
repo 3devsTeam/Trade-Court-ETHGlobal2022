@@ -10,6 +10,7 @@ import { Navigate } from "react-router-dom";
 import { Profile } from "./pages/Profile";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import Footer from "./components/footer/Footer";
 
 const App = () => {
   return (
@@ -28,6 +29,7 @@ const App = () => {
           {/* <Route path={"*"} element={<Navigate to={"/"} />} /> */}
         </Routes>
       </main>
+        <Footer message={'Beta Version. Use at your own risk.'}/>
     </BrowserRouter>
   );
 };

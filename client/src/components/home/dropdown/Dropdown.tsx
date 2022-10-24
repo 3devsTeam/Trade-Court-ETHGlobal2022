@@ -1,8 +1,8 @@
 import { useVirtualizer } from "@tanstack/react-virtual";
 import React, { useEffect, useRef, useState } from "react";
 import useOnClickOutside from "use-onclickoutside";
-import { Arrow } from "../ui/icons/Arrow";
-import { SearchField } from "../ui/SearchField";
+import { Arrow } from "../../ui/icons/Arrow";
+import { SearchField } from "../../ui/SearchField";
 import { DropdownItem } from "./DropdownItem";
 
 interface Props {
@@ -55,8 +55,9 @@ export const Dropdown = ({ label, data, onSelect, activeSelect }: Props) => {
               <div className='flex items-center gap-3'>
                 <div className='flex items-center gap-1'>
                   <img
-                    className='w-8 h-8 rounded-[50%] shadow-customDark object-cover'
+                    className={'image'}
                     src={activeSelect.logoUrl}
+                    alt={''}
                   />
 
                   <span className='font-bold'>

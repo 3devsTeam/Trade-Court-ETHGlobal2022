@@ -23,99 +23,99 @@ interface IStep1 {
 export const Step1 = ({ tokens, allFiat }: IStep1) => {
   console.log(tokens);
 
-  const { setFiat, setQuantity, setUnitPrice, nextStep } = useActions();
-  const { crypto, fiat, quantity, unitPrice } = useTypedSelector(
-    (state) => state.offerReducer
-  );
+  // const { setFiat, setQuantity, setUnitPrice, nextStep } = useActions();
+  // const { crypto, fiat, quantity, unitPrice } = useTypedSelector(
+  //   (state) => state.offerReducer
+  // );
 
-  const { tokenAmount } = crypto;
+  // const { tokenAmount } = crypto;
 
-  const { symbol, logoUrl: cryptoImage, name: cryptoName } = crypto;
+  // const { symbol, logoUrl: cryptoImage, name: cryptoName } = crypto;
 
-  const { ticker, logoUrl: fiatImage, name: fiatName } = fiat;
+  // const { ticker, logoUrl: fiatImage, name: fiatName } = fiat;
 
-  const [isOpen, setIsOpen] = useState(false);
+  // const [isOpen, setIsOpen] = useState(false);
 
-  const [searchTerm, setSearchTerm] = useState("");
+  // const [searchTerm, setSearchTerm] = useState("");
 
-  const searchFilter = (tokens: IToken[]) => {
-    return tokens.filter(
-      (t: IToken) =>
-        t.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        t.address.toLowerCase() === searchTerm.toLowerCase() ||
-        t.symbol.toLowerCase() === searchTerm.toLowerCase()
-    );
-  };
+  // const searchFilter = (tokens: IToken[]) => {
+  //   return tokens.filter(
+  //     (t: IToken) =>
+  //       t.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+  //       t.address.toLowerCase() === searchTerm.toLowerCase() ||
+  //       t.symbol.toLowerCase() === searchTerm.toLowerCase()
+  //   );
+  // };
 
-  const checkStep1 = () => {
-    if (quantity > 0 && quantity <= tokenAmount && unitPrice > 0) return true;
+  // const checkStep1 = () => {
+  //   if (quantity > 0 && quantity <= tokenAmount && unitPrice > 0) return true;
 
-    return false;
-  };
+  //   return false;
+  // };
 
-  return (
-    <></>
-    // <form className='flex flex-col gap-5'>
-    //   <Wrapper>
-    //     <ModalInput
-    //       symbol={symbol}
-    //       fullName={cryptoName}
-    //       image={cryptoImage}
-    //       onOpen={() => setIsOpen(!isOpen)}
-    //       label={"Crypto"}
-    //     />
-    //     <Dropdown
-    //       value={ticker}
-    //       fullName={fiatName}
-    //       image={fiatImage}
-    //       onAction={setFiat}
-    //       data={allFiat}
-    //       label={"Fiat"}
-    //     />
-    //     <Input
-    //       onAction={setUnitPrice}
-    //       placeholder={"0"}
-    //       label={"Unit Price"}
-    //       element={ticker}
-    //       value={unitPrice}
-    //     />
+  // return (
 
-    //     <Input
-    //       maxValue={tokenAmount}
-    //       onAction={setQuantity}
-    //       placeholder={"0"}
-    //       label={"Quantity"}
-    //       element={symbol}
-    //       value={quantity}
-    //     />
+  //   <form className='flex flex-col gap-5'>
+  //     <Wrapper>
+  //       <ModalInput
+  //         symbol={symbol}
+  //         fullName={cryptoName}
+  //         image={cryptoImage}
+  //         onOpen={() => setIsOpen(!isOpen)}
+  //         label={"Crypto"}
+  //       />
+  //       <Dropdown
+  //         value={ticker}
+  //         fullName={fiatName}
+  //         image={fiatImage}
+  //         onAction={setFiat}
+  //         data={allFiat}
+  //         label={"Fiat"}
+  //       />
+  //       <Input
+  //         onAction={setUnitPrice}
+  //         placeholder={"0"}
+  //         label={"Unit Price"}
+  //         element={ticker}
+  //         value={unitPrice}
+  //       />
 
-    //     <Modal
-    //       isOpen={isOpen}
-    //       close={() => setIsOpen(false)}
-    //       header={"Select Token"}
-    //     >
-    //       <SearchField
-    //         placeholder={"Enter token name or paste it address"}
-    //         setSearchTerm={setSearchTerm}
-    //         searchTerm={searchTerm}
-    //       />
-    //       <TokenList
-    //         tokens={searchFilter(tokens)}
-    //         onClose={() => setIsOpen(false)}
-    //       />
-    //     </Modal>
-    //   </Wrapper>
+  //       <Input
+  //         maxValue={tokenAmount}
+  //         onAction={setQuantity}
+  //         placeholder={"0"}
+  //         label={"Quantity"}
+  //         element={symbol}
+  //         value={quantity}
+  //       />
 
-    //   <Wrapper>
-    //     <Button
-    //       name='Next'
-    //       onClick={nextStep}
-    //       disabled={
-    //         // !checkStep1()
-    //         false
-    //       }
-    //     />
-    //   </Wrapper>
-    // </form>
-  );
+  //       <Modal
+  //         isOpen={isOpen}
+  //         close={() => setIsOpen(false)}
+  //         header={"Select Token"}
+  //       >
+  //         <SearchField
+  //           placeholder={"Enter token name or paste it address"}
+  //           setSearchTerm={setSearchTerm}
+  //           searchTerm={searchTerm}
+  //         />
+  //         <TokenList
+  //           tokens={searchFilter(tokens)}
+  //           closeModal={() => setIsOpen(false)}
+  //         />
+  //       </Modal>
+  //     </Wrapper>
+
+  //     <Wrapper>
+  //       <Button
+  //         name='Next'
+  //         onClick={nextStep}
+  //         disabled={
+  //           // !checkStep1()
+  //           false
+  //         }
+  //       />
+  //     </Wrapper>
+  //    </form>
+  // );
 };

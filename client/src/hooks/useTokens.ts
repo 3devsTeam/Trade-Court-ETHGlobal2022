@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { BigNumber } from "ethers";
 import { useQuery } from "wagmi";
 import { TokenService } from "../api/tokens.services";
@@ -15,14 +15,19 @@ export const useTokens = () => {
 
   const { address } = useAccount();
 
+  const [newTokens, setNewTokens] = useState([]);
+
   const { data: tokens, isSuccess: successGetTokens } = useQuery(
     [`get ${chainName} tokens`],
     () => TokenService.getTokens(address!, chainName!),
     {
       select: (data) => data.data.data,
       refetchOnWindowFocus: false,
-      refetchOnMount: false,
-      onSuccess: (data) => setCrypto(data[0]),
+      refetchOnMount: true,
+      onSuccess: (data) => {
+        setCrypto(data[0]);
+        setNewTokens(tokens);
+      },
     }
   );
 
@@ -54,10 +59,8 @@ export const useTokens = () => {
   const div36 = BigNumber.from(10).pow(36);
   const div15 = BigNumber.from(10).pow(15);
 
-  // console.log("new tokens", newTokens);
-
   try {
-    tokens?.map((el: IToken, i: number) => {
+    newTokens?.map((el: IToken, i: number) => {
       const weiBalance = BigNumber.from(el.balance);
       //console.log(weiBalance);
       if (!weiBalance.eq(zero)) {
@@ -66,35 +69,33 @@ export const useTokens = () => {
         //console.info("wei balance", weiBalance.toString());
         const weiExchangeRate = BigNumber.from(exchangeRate[`${el.address}`]);
         //console.log(weiExchangeRate.toString());
-        console.log(ethUsdRate);
+        //console.log(ethUsdRate);
         const usdRate = BigNumber.from(parseInt(ethUsdRate) * 100);
-        console.log("usd rate", usdRate);
+        //console.log("usd rate", usdRate);
         const weiPrice = weiBalance
           .mul(weiExchangeRate)
           .mul(usdRate)
           .div(div36);
         const usdAmount = parseInt(weiPrice.toString()) / 100;
-        //console.log(usdAmount);
+        console.log(usdAmount);
         const ethAmount = parseInt(weiBalance.div(div15).toString()) / 1000;
-        //console.log(ethAmount);
-        console.log(el);
+        console.log(ethAmount);
+        //console.log(el);
 
         // el.tokenAmount = ethAmount;
-        // el.balance = usdAmount;
+        el.balance = usdAmount;
         // temp.tokenAmount = ethAmount;
         // temp.balance = usdAmount;
-        return {
-          ...el,
-          tokenAmount: ethAmount,
-          balance: usdAmount,
-        };
+        // return {
+        //   ...el,
+        //   tokenAmount: ethAmount,
+        //   balance: usdAmount,
+        // };
       }
     });
   } catch (err) {
     console.log(err);
   }
 
-  //console.log(tokens);
-
-  return { tokens, isSuccess };
+  return { newTokens, isSuccess };
 };
