@@ -2,11 +2,17 @@ import React from "react";
 import { IToken } from "../../models/models";
 import { useActions } from "../../hooks/useActions";
 
-export const Token = ({ virtualItem, token, onClose }: any) => {
+interface Props {
+  virtualItem: any,
+  token: IToken,
+  onClose: any
+}
+
+export const Token = ({ virtualItem, token, onClose }: Props) => {
   const { setCrypto } = useActions();
   const { symbol, balance, logoUrl, name, tokenAmount } = token;
 
-  const selectHandler = (token: IToken[]) => {
+  const selectHandler = (token: IToken) => {
     setCrypto(token);
     onClose();
   };
@@ -28,17 +34,17 @@ export const Token = ({ virtualItem, token, onClose }: any) => {
       }}
     >
       <div className={"flex items-center gap-3"}>
-        <img width={48} height={48} src={logoUrl} alt={""} />
+        <img className={'image'} src={logoUrl} alt={""} />
         <div className={"flex flex-col items-start"}>
           <span className={"font-bold"}>{name}</span>
-          <span className={"text-gray"}>
-            {tokenAmount !== 0 && tokenAmount} {symbol}
+          <span className={"text-gray tracking-wide font-medium"}>
+            {tokenAmount} {symbol}
           </span>
         </div>
       </div>
 
-      <div className={"font-bold"}>
-        {balance !== 0 ? `$${balance}` : balance}
+      <div>
+        <span className={"font-bold"}>{balance}</span>
       </div>
     </button>
   );

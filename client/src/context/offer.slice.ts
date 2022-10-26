@@ -102,18 +102,22 @@ export const offerSlice = createSlice({
     addPaymentMethod: (state, action: PayloadAction<IPayment>) => {
       state.payMethods.push(action.payload);
     },
-    removePaymentMethod: (state, action: PayloadAction<string>) => {
+    removePaymentMethod: (state, { payload }: PayloadAction<string>) => {
       const newPayments = state.payMethods.filter(
-        (payment) => payment.id !== action.payload
+        (payment) => payment.id !== payload
       );
       state.payMethods = newPayments;
     },
-    updatePaymentMethod: (state, action) => {
-      const { id, updatedItem } = action.payload;
+    updatePaymentMethod: (state, { payload }: PayloadAction<IPayment>) => {
+      const payment = state.payMethods.find((p) => p.id === payload.id);
 
-      // const updated = state.payMethods.find(
-      //   (payment) => payment.id === action.payload.id
-      // );
+      if (payment) {
+        const index = state.payMethods.indexOf(payment);
+        state.payMethods[index] = payload;
+      }
+    },
+    clearPayments: (state) => {
+      state.payMethods = [];
     },
   },
 });

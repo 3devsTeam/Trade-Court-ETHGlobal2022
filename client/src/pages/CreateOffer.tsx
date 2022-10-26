@@ -95,45 +95,45 @@ export const CreateOffer = () => {
   };
 
   const createHandler = async () => {
-    writeAsync?.()
-      .then(() => {
-        OfferService.create({
-          roomId,
-          offerType: "buy",
-          fiat: fiat._id,
-          unitPrice,
-          amount: multiply(unitPrice, +quantity),
-          quantity,
-          minLimit,
-          maxLimit,
-          crypto: crypto._id,
-          offerComment,
-          payMethods: payMethods,
-        })
-          .then(
-            (data) => {
-              console.log(data);
-              console.log("tx hash:", hash?.transactionHash);
-              successOfferNotify(
-                <div>
-                  <p>Offer is created!</p>
-                  <a
-                    target={"_blank"}
-                    className={"text-purple"}
-                    href={`https://rinkeby.etherscan.io/tx/${hash?.transactionHash}`}
-                  >
-                    View your transaction on Etherscan
-                  </a>
-                </div>
-              );
-              navigate("/");
-            }
+    // writeAsync?.()
+    //   .then(() => {
+    OfferService.create({
+      roomId,
+      offerType: "buy",
+      fiat: fiat._id,
+      unitPrice,
+      amount: multiply(unitPrice, quantity),
+      quantity,
+      minLimit,
+      maxLimit,
+      crypto: crypto._id,
+      offerComment,
+      payMethods: payMethods,
+    })
+      .then(
+        (data) => {
+          console.log(data);
+          console.log("tx hash:", hash?.transactionHash);
+          successOfferNotify(
+            <div>
+              <p>Offer is created!</p>
+              <a
+                target={"_blank"}
+                className={"text-purple"}
+                href={`https://rinkeby.etherscan.io/tx/${hash?.transactionHash}`}
+              >
+                View your transaction on Etherscan
+              </a>
+            </div>
+          );
+          navigate("/");
+        }
 
-            //resetOffer();
-          )
-          .catch((data) => errorOfferNotify(data.response.data.message));
-      })
-      .catch((err) => console.log(err));
+        //resetOffer();
+      )
+      .catch((data) => errorOfferNotify(data.response.data.message));
+    // })
+    // .catch((err) => console.log(err));
   };
 
   const steps = ["Offer Price", "Payment Method", "Settings"];

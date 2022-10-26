@@ -8,6 +8,8 @@ import { useTypedSelector } from "./useTypedSelector";
 export const useFiat = () => {
   const { fiat } = useTypedSelector((state) => state.offerReducer);
 
+  const { regions, banks } = fiat;
+
   const { setFiat, setBank, setRegion } = useActions();
 
   const { data: allFiat, isSuccess } = useQuery(
@@ -21,7 +23,7 @@ export const useFiat = () => {
   );
 
   useEffect(() => {
-    if (isSuccess) {
+    if (isSuccess && regions.length != 0 && banks.length != 0) {
       setBank(allFiat?.filter((e: IFiat) => e._id === fiat._id)[0].banks[0]);
       setRegion(
         allFiat?.filter((e: IRegion) => e._id === fiat._id)[0].regions[0]

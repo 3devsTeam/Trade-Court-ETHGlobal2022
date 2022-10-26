@@ -10,12 +10,16 @@ interface IPaymentButton {
   payment: IPayment;
   setActive: any;
   active: string | undefined;
+  deletePayment: any;
 }
 
-export const Payment = ({ payment, setActive, active }: IPaymentButton) => {
+export const Payment = ({
+  payment,
+  setActive,
+  active,
+  deletePayment,
+}: IPaymentButton) => {
   const { paymentMethod, cardNumber, id } = payment;
-
-  const { removePaymentMethod } = useActions();
 
   const activePayment = active === id ? "border-2 border-purple" : "";
   return (
@@ -33,7 +37,7 @@ export const Payment = ({ payment, setActive, active }: IPaymentButton) => {
         />
         <span className={"font-bold"}>{sliceCardNumber(cardNumber)}</span>
       </div>
-      <CloseButton onAction={() => removePaymentMethod(id)} />
+      <CloseButton onAction={() => deletePayment(id)} />
     </div>
   );
 };

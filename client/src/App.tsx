@@ -9,6 +9,7 @@ import { Navigate } from "react-router-dom";
 import { Profile } from "./pages/Profile";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import Footer from "./components/footer/Footer";
 
 const CreateOffer = lazy(() => import("./pages/CreateOffer"));
 
@@ -31,6 +32,7 @@ const App = () => {
           </Routes>
         </Suspense>
       </main>
+        <Footer message={'Beta Version. Use at your own risk.'}/>
     </BrowserRouter>
   );
 };

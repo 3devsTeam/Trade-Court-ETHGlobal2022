@@ -5,10 +5,10 @@ import { IToken } from "../../models/models";
 
 interface ITokenList {
   tokens: IToken[];
-  onClose: React.Dispatch<boolean>;
+  closeModal: any;
 }
 
-export const TokenList = ({ tokens, onClose }: ITokenList) => {
+export const TokenList = ({ tokens, closeModal }: ITokenList) => {
   const parentRef = useRef(null);
 
   const virtualizer = useVirtualizer({
@@ -42,7 +42,7 @@ export const TokenList = ({ tokens, onClose }: ITokenList) => {
               key={virtualItem.key}
               token={token}
               virtualItem={virtualItem}
-              onClose={onClose}
+              onClose={closeModal}
             />
           );
         })}

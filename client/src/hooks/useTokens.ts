@@ -1,10 +1,11 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { BigNumber } from "ethers";
-import { useQuery } from "wagmi";
 import { TokenService } from "../api/tokens.services";
 import { useAccount, useNetwork } from "wagmi";
 import { IToken } from "../models/models";
 import { useActions } from "../hooks/useActions";
+import { useQueries, useQuery } from "@tanstack/react-query";
+import { Preview } from "../components/create-offer/Preview";
 
 export const useTokens = () => {
   const { setCrypto } = useActions();
@@ -21,7 +22,7 @@ export const useTokens = () => {
     {
       select: (data) => data.data.data,
       refetchOnWindowFocus: false,
-      onSuccess: (data) => setCrypto(data[0]),
+      refetchOnMount: true,
     }
   );
 
@@ -53,34 +54,28 @@ export const useTokens = () => {
   const div36 = BigNumber.from(10).pow(36);
   const div15 = BigNumber.from(10).pow(15);
 
-  if (isSuccess) {
-    //tokens.forEach((t: any, i: number) => console.info(i, t))
-    tokens.map((el: IToken, i: number) => {
-      try {
-        const weiBalance = BigNumber.from(el.balance);
-        if (!weiBalance.eq(zero)) {
-          //console.info('wei balance', weiBalance.toString())
-          const weiExchangeRate = BigNumber.from(exchangeRate[`${el.address}`]);
-          const usdRate = BigNumber.from(ethUsdRate * 100);
-          //console.log('usd rate', usdRate.toString())
-          const weiPrice = weiBalance
-            .mul(weiExchangeRate)
-            .mul(usdRate)
-            .div(div36);
-          const result = parseInt(weiPrice.toString()) / 100;
-          //console.log('result', result)
-          el.balance = result;
-          el.tokenAmount = parseInt(weiBalance.div(div15).toString()) / 1000;
-          //console.log(el)
-        } else {
-          el.balance = 0;
-          el.tokenAmount = 0;
-        }
-      } catch (err) {
-        console.log("error bignumber token list");
-      }
-    });
-  }
+  const newTokens = tokens?.map((el: IToken, i: number) => {
+    const weiBalance = BigNumber.from(el.balance);
 
-  return { tokens, isSuccess };
+    if (!weiBalance.eq(zero)) {
+      const weiExchangeRate = BigNumber.from(exchangeRate[`${el.address}`]);
+
+      const usdRate = BigNumber.from(parseInt(ethUsdRate) * 100);
+
+      const weiPrice = weiBalance.mul(weiExchangeRate).mul(usdRate).div(div36);
+      const usdAmount = parseInt(weiPrice.toString()) / 100;
+      console.log(usdAmount);
+      const ethAmount = parseInt(weiBalance.div(div15).toString()) / 1000;
+      console.log(ethAmount);
+
+      return {
+        ...el,
+        tokenAmount: ethAmount,
+        balance: usdAmount,
+      };
+    }
+    return el;
+  });
+
+  return { tokens: newTokens, isSuccess };
 };

@@ -21,6 +21,8 @@ interface IStep1 {
 }
 
 export const Step1 = ({ tokens, allFiat }: IStep1) => {
+  console.log(tokens);
+
   const { setFiat, setQuantity, setUnitPrice, nextStep } = useActions();
   const { crypto, fiat, quantity, unitPrice } = useTypedSelector(
     (state) => state.offerReducer
@@ -98,20 +100,13 @@ export const Step1 = ({ tokens, allFiat }: IStep1) => {
           />
           <TokenList
             tokens={searchFilter(tokens)}
-            onClose={() => setIsOpen(false)}
+            closeModal={() => setIsOpen(false)}
           />
         </Modal>
       </Wrapper>
 
       <Wrapper>
-        <Button
-          name='Next'
-          onClick={nextStep}
-          disabled={
-            // !checkStep1()
-            false
-          }
-        />
+        <Button name='Next' onClick={nextStep} disabled={!checkStep1()} />
       </Wrapper>
     </form>
   );
