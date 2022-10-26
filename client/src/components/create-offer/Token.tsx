@@ -17,8 +17,6 @@ export const Token = ({ virtualItem, token, onClose }: Props) => {
     onClose();
   };
 
-  console.log(balance);
-
   return (
     <button
       type={"button"}
@@ -47,7 +45,7 @@ export const Token = ({ virtualItem, token, onClose }: Props) => {
 
       <div>
         <span className={"font-bold"}>{`${
-          balance > 0 ? `$${balance}` : `${balance}`
+          balance > 0 ? `$${balance}` : balance
         }`}</span>
       </div>
     </button>
