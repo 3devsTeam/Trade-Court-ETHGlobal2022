@@ -12,7 +12,11 @@ import { SubmitButton } from "../../ui/SubmitButton";
 import { totalAmount } from "../../../utils/totalAmount";
 import { Wrapper } from "../Wrapper";
 
-export const Step3 = ({ createHandler }: any) => {
+interface Props {
+  handleCreateOffer: () => void;
+}
+
+export const Step3 = ({ handleCreateOffer }: Props) => {
   const {
     setMinPriceLimit,
     setMaxPriceLimit,
@@ -72,7 +76,7 @@ export const Step3 = ({ createHandler }: any) => {
           <Button onClick={prevStep} name='Back' />
           <Button
             disabled={checkStep3()}
-            onClick={createHandler}
+            onClick={handleCreateOffer}
             name='Create'
           />
         </div>

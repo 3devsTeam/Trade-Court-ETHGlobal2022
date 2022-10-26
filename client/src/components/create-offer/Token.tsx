@@ -3,9 +3,9 @@ import { IToken } from "../../models/models";
 import { useActions } from "../../hooks/useActions";
 
 interface Props {
-  virtualItem: any,
-  token: IToken,
-  onClose: any
+  virtualItem: any;
+  token: IToken;
+  onClose: any;
 }
 
 export const Token = ({ virtualItem, token, onClose }: Props) => {
@@ -16,6 +16,8 @@ export const Token = ({ virtualItem, token, onClose }: Props) => {
     setCrypto(token);
     onClose();
   };
+
+  console.log(balance);
 
   return (
     <button
@@ -34,7 +36,7 @@ export const Token = ({ virtualItem, token, onClose }: Props) => {
       }}
     >
       <div className={"flex items-center gap-3"}>
-        <img className={'image'} src={logoUrl} alt={""} />
+        <img className={"image"} src={logoUrl} alt={""} />
         <div className={"flex flex-col items-start"}>
           <span className={"font-bold"}>{name}</span>
           <span className={"text-gray tracking-wide font-medium"}>
@@ -44,7 +46,9 @@ export const Token = ({ virtualItem, token, onClose }: Props) => {
       </div>
 
       <div>
-        <span className={"font-bold"}>{balance}</span>
+        <span className={"font-bold"}>{`${
+          balance > 0 ? `$${balance}` : `${balance}`
+        }`}</span>
       </div>
     </button>
   );

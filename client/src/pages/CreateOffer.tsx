@@ -23,7 +23,7 @@ import { ErrorBoundary } from "react-error-boundary";
 import { FiatServices } from "../api/fiat.services";
 import { useFiat } from "../hooks/useFiat";
 
-export const CreateOffer = () => {
+const CreateOffer = () => {
   const {
     crypto,
     fiat,
@@ -94,7 +94,7 @@ export const CreateOffer = () => {
     });
   };
 
-  const createHandler = async () => {
+  const handleCreateOffer = async () => {
     // writeAsync?.()
     //   .then(() => {
     OfferService.create({
@@ -145,7 +145,7 @@ export const CreateOffer = () => {
       case 2:
         return <Step2 />;
       case 3:
-        return <Step3 createHandler={createHandler} />;
+        return <Step3 handleCreateOffer={handleCreateOffer} />;
       default:
         return;
     }
@@ -173,3 +173,5 @@ export const CreateOffer = () => {
     </div>
   );
 };
+
+export default CreateOffer;

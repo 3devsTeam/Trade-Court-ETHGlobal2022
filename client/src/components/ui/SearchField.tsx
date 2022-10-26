@@ -15,7 +15,7 @@ export const SearchField = ({
 }: ISearchField) => {
   return (
     <div
-      className={`group border-2 border-gray-200 px-3 bg-transparent flex items-center justify-between rounded-[15px] hover:border-purple hover:bg-white transition-colors duration-300`}
+      className={`group border-2 border-gray-200 pl-3 bg-transparent flex items-center justify-between rounded-[15px] hover:border-purple hover:bg-white transition-colors duration-300`}
     >
       <Loop />
       <input

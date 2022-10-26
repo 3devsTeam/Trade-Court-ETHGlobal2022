@@ -57,11 +57,11 @@ export const Menu = ({
       route: "/create-offer",
       name: "Create offer",
     },
-    {
-      icon: <SettingsIcon />,
-      route: "/settings",
-      name: "Settings",
-    },
+    // {
+    //   icon: <SettingsIcon />,
+    //   route: "/settings",
+    //   name: "Settings",
+    // },
   ];
 
   const menuButtons = [

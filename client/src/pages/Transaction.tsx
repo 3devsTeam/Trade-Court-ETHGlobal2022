@@ -22,7 +22,7 @@ import { useEthContract } from "../hooks/useEthContract";
 import { SkeletonWrapper } from "../components/ui/SkeletonWrapper";
 import { Wrapper } from "../components/create-offer/Wrapper";
 
-export const Transaction = () => {
+const Transaction = () => {
   const { address } = useAccount();
 
   // const {
@@ -309,3 +309,5 @@ export const Transaction = () => {
     </div>
   );
 };
+
+export default Transaction;

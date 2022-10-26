@@ -1,8 +1,9 @@
 interface Props {
-    message: string
+  message: string;
 }
 
-const Footer = ({message}: Props) => <footer className={' left-1/2 -translate-x-1/2 fixed bottom-5 text-purple font-bold'}>{message}</footer>
+const Footer = ({ message }: Props) => (
+  <footer className={"text-center text-purple font-bold"}>{message}</footer>
+);
 
-export default Footer
-
+export default Footer;
