@@ -80,7 +80,12 @@ export const Navbar = () => {
           "p-5 flex justify-between items-center w-full border border-b-gray-300"
         }
       >
-        <Logo />
+        <div>
+          <Logo />
+          <h1 className='text-purple text-sm'>
+            Beta Version. Use at your own risk.
+          </h1>
+        </div>
 
         <div className='flex items-center relative'>
           <div className='space-x-2'>

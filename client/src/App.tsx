@@ -32,7 +32,7 @@ const App = () => {
           </Routes>
         </Suspense>
       </main>
-      <Footer message={"Beta Version. Use at your own risk."} />
+      {/* <Footer message={"Beta Version. Use at your own risk."} /> */}
     </BrowserRouter>
   );
 };
