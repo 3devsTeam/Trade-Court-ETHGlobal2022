@@ -51,31 +51,24 @@ export const Profile = () => {
   ];
 
   return (
-    <div>
-      <div className={"grid grid-cols-profile gap-5"}>
-        <Badge avatar={ensAvatar} name={ensName} />
-        <Schedule />
+    <>
+      <div className={"grid grid-cols-profileOffer mt-[20px] px-6"}>
+        <Header headers={sections} />
       </div>
 
-      <div>
-        <div className={"grid grid-cols-profileOffer mt-[20px] px-6"}>
-          <Header headers={sections} />
-        </div>
-
-        <section className={"flex flex-col gap-5 mt-[20px]"}>
-          {isLoading ? (
-            <p>loading</p>
-          ) : isError ? (
-            <p>error</p>
-          ) : data?.length === 0 ? (
-            <p>no offers</p>
-          ) : isSuccess ? (
-            data?.map((offer: IOffer) => {
-              return <ProfileOffer key={offer._id} {...offer} />;
-            })
-          ) : null}
-        </section>
-      </div>
-    </div>
+      <section className={"flex flex-col gap-5 mt-[20px]"}>
+        {isLoading ? (
+          <p>loading</p>
+        ) : isError ? (
+          <p>error</p>
+        ) : data?.length === 0 ? (
+          <p>no offers</p>
+        ) : isSuccess ? (
+          data?.map((offer: IOffer) => {
+            return <ProfileOffer key={offer._id} {...offer} />;
+          })
+        ) : null}
+      </section>
+    </>
   );
 };
