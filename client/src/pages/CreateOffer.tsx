@@ -24,6 +24,8 @@ import { FiatServices } from "../api/fiat.services";
 import { useFiat } from "../hooks/useFiat";
 
 const CreateOffer = () => {
+  const { resetOffer, resetStep } = useActions();
+
   const {
     crypto,
     fiat,
@@ -35,6 +37,8 @@ const CreateOffer = () => {
     payMethods,
     timeLimit,
   } = useTypedSelector((state) => state.offerReducer);
+
+  const { step } = useTypedSelector((state) => state.formReducer);
 
   const { tokens, isSuccess: tokensSuccess } = useTokens();
   const { allFiat, isSuccess: fiatSuccess } = useFiat();
@@ -77,8 +81,6 @@ const CreateOffer = () => {
     writeAsync,
     hash,
   } = useEthContractWithValue(args, value, "makeRoomEth");
-
-  const { step } = useTypedSelector((state) => state.formReducer);
 
   const navigate = useNavigate();
 
@@ -127,6 +129,8 @@ const CreateOffer = () => {
             </div>
           );
           navigate("/");
+          resetOffer();
+          resetStep();
         }
 
         //resetOffer();

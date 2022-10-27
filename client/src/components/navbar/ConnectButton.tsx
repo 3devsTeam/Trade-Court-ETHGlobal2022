@@ -8,7 +8,7 @@ import { useBalance } from "wagmi";
 import { Menu } from "./Menu";
 import { NavLink } from "./NavLink";
 import useOnClickOutside from "use-onclickoutside";
-import { walletsImages } from "../../wallets/walletsImages";
+import { walletsImages } from "../../wallets/images";
 
 interface Props {
   isConnected: boolean;
@@ -31,11 +31,9 @@ export const ConnectButton = ({
   openMenu,
   openConnectModal,
 }: Props) => {
-  const [activeWalletImg, setActiveWalletImg] = useState("");
-
   return isConnected ? (
     <button
-      className='rounded-[15px] py-[9px] px-[10px] bg-white shadow-customDark'
+      className='rounded-[15px] bg-white shadow-customDark h-full px-[10px]'
       onMouseEnter={() => setOpenMenu(true)}
     >
       <div className='font-bold flex items-center space-x-2 text-black'>
@@ -70,7 +68,6 @@ export const ConnectButton = ({
         <div className='grid grid-cols-3 gap-5 '>
           {connectors.map((wallet, i) => (
             <WalletButton
-              setActiveWalletImg={setActiveWalletImg}
               img={walletsImages[i]}
               onClose={setOpenConnectModal}
               wallet={wallet}

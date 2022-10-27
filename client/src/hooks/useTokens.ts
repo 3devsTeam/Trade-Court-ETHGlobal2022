@@ -8,8 +8,6 @@ import { useQueries, useQuery } from "@tanstack/react-query";
 import { Preview } from "../components/create-offer/Preview";
 
 export const useTokens = () => {
-  const { setCrypto } = useActions();
-
   const { chain } = useNetwork();
 
   const chainName = chain?.name.toLowerCase();
@@ -64,9 +62,7 @@ export const useTokens = () => {
 
       const weiPrice = weiBalance.mul(weiExchangeRate).mul(usdRate).div(div36);
       const usdAmount = parseInt(weiPrice.toString()) / 100;
-      console.log(usdAmount);
       const ethAmount = parseInt(weiBalance.div(div15).toString()) / 1000;
-      console.log(ethAmount);
 
       return {
         ...el,

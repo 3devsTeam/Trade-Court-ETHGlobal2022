@@ -74,45 +74,36 @@ export const Navbar = () => {
   useOnClickOutside(menuRef, () => setOpenMenu(false));
 
   return (
-    <header>
-      <div
-        className={
-          "p-5 flex justify-between items-center w-full border border-b-gray-300"
-        }
-      >
-        <div>
-          <Logo />
-          <h1 className='text-purple text-sm'>
-            Beta Version. Use at your own risk.
-          </h1>
-        </div>
-
-        <div className='flex items-center relative'>
-          <div className='space-x-2'>
-            {isConnected && <SwitchNetwork />}
-            <ConnectButton
-              address={address!}
-              ensName={ensName}
-              balance={balance}
-              isConnected={isConnected}
-              openConnectModal={openConnectModal}
-              openMenu={openMenu}
-              setOpenConnectModal={setOpenConnectModal}
-              setOpenMenu={setOpenMenu}
-            />
-          </div>
-
-          {openMenu && (
-            <Menu
-              address={address!}
-              ensName={ensName}
-              balance={balance}
-              menuRef={menuRef}
-              onClose={setOpenMenu}
-            />
-          )}
-        </div>
+    <nav className={"p-5 flex justify-between items-center w-full"}>
+      <div>
+        <Logo />
+        <h1 className='text-purple text-sm'>
+          Beta Version. Use at your own risk.
+        </h1>
       </div>
-    </header>
+
+      <div className='flex space-x-2 items-center relative h-10'>
+        {isConnected && <SwitchNetwork />}
+        <ConnectButton
+          address={address!}
+          ensName={ensName}
+          balance={balance}
+          isConnected={isConnected}
+          openConnectModal={openConnectModal}
+          openMenu={openMenu}
+          setOpenConnectModal={setOpenConnectModal}
+          setOpenMenu={setOpenMenu}
+        />
+        {openMenu && (
+          <Menu
+            address={address!}
+            ensName={ensName}
+            balance={balance}
+            menuRef={menuRef}
+            onClose={setOpenMenu}
+          />
+        )}
+      </div>
+    </nav>
   );
 };

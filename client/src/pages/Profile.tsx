@@ -1,47 +1,22 @@
 import { useQuery } from "@tanstack/react-query";
 import React, { useEffect, useState } from "react";
-import { Badge } from "../components/profile/Badge";
-import { Schedule } from "../components/profile/Schedule";
 import { OfferService } from "../api/offer.services";
 import { IOffer } from "../models/models";
 import { off } from "process";
 import { ProfileOffer } from "../components/profile/ProfileOffer";
 import { useAccount, useEnsName, useEnsAvatar } from "wagmi";
-import { Header } from "../components/home/Header";
+import { Legend } from "../components/home/Legend";
 
-export const Profile = () => {
-  const { address } = useAccount();
-
-  const {
-    data: ensName,
-    isLoading: ensNameLoading,
-    isSuccess: ensNameSuccess,
-  } = useEnsName({
-    address,
-  });
-
-  const {
-    data: ensAvatar,
-    isLoading: ensAvatarLoading,
-    isSuccess: ensAvatarSuccess,
-  } = useEnsAvatar({
-    addressOrName: address,
-  });
-
-  if (ensAvatarSuccess && ensNameSuccess) {
-    console.log(ensName, ensAvatar);
-  }
-
+const Profile = () => {
   const { data, isSuccess, isLoading, isError } = useQuery(
     ["get user offers"],
     () => OfferService.getUserOffers(),
     {
       select: (data) => data.data.user,
-      // refetchInterval: 5000,
     }
   );
 
-  const sections = [
+  const fields = [
     "ID",
     "Type",
     "Pair",
@@ -52,11 +27,9 @@ export const Profile = () => {
 
   return (
     <>
-      <div className={"grid grid-cols-profileOffer mt-[20px] px-6"}>
-        <Header headers={sections} />
-      </div>
+      <Legend fields={fields} />
 
-      <section className={"flex flex-col gap-5 mt-[20px]"}>
+      <main className={"flex flex-col gap-5 mt-[20px]"}>
         {isLoading ? (
           <p>loading</p>
         ) : isError ? (
@@ -68,7 +41,9 @@ export const Profile = () => {
             return <ProfileOffer key={offer._id} {...offer} />;
           })
         ) : null}
-      </section>
+      </main>
     </>
   );
 };
+
+export default Profile;

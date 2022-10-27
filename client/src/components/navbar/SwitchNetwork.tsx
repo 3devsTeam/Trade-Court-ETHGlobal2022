@@ -11,7 +11,7 @@ export const SwitchNetwork = () => {
   return (
     <button
       onClick={() => setOpenSwitchNetwork(!openSwitchNetwork)}
-      className='rounded-[15px] py-[9px] px-[10px] relative bg-white shadow-customDark h-full'
+      className='rounded-[15px] relative bg-white shadow-customDark h-full px-[10px]'
     >
       <span className='font-bold'>{chain?.name}</span>
 

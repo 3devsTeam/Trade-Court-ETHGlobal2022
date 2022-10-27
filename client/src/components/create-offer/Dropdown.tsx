@@ -11,6 +11,12 @@ interface IDropdown {
   image: string | undefined;
 }
 
+interface ISelect {
+  ticker: string;
+  logoUrl: string;
+  name: string;
+}
+
 export const Dropdown = ({
   value,
   fullName,
@@ -60,8 +66,8 @@ export const Dropdown = ({
               "rounded-[10px] absolute w-full shadow-2xl bg-white h-[250px] overflow-y-auto"
             }
           >
-            {data.map((select: string, i: number) => {
-              const { ticker, logoUrl, name }: any = select;
+            {data.map((select: ISelect, i: number) => {
+              const { ticker, logoUrl, name } = select;
 
               return (
                 <div
