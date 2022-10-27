@@ -11,15 +11,12 @@ import { Button } from "../../ui/Button";
 import { SubmitButton } from "../../ui/SubmitButton";
 import { totalAmount } from "../../../utils/totalAmount";
 import { Wrapper } from "../Wrapper";
-import { useForm } from "react-hook-form";
 
-export const Step3 = ({ createHandler }: any) => {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm();
+interface Props {
+  handleCreateOffer: () => void;
+}
 
+export const Step3 = ({ handleCreateOffer }: Props) => {
   const {
     setMinPriceLimit,
     setMaxPriceLimit,
@@ -32,49 +29,57 @@ export const Step3 = ({ createHandler }: any) => {
   );
   const { ticker } = fiat;
 
+  const checkStep3 = () => {
+    if (minLimit > 0 && maxLimit > 0 && minLimit < maxLimit) return false;
+    return true;
+  };
+
   return (
-    <form>
+    <form className='flex flex-col gap-5'>
       <Wrapper>
         <TimeLimit
           onAction={setTimeLimit}
-          label={"Order time limit"}
+          label={"Order Time Limit"}
           times={["15", "30", "45", "60", "120"]}
         />
         <label>
           <span className={"text-lg font-bold mb-1 ml-[10px]"}>
-            {"Order price limit"}
+            {"Order Price Limit"}
           </span>
           <div className={"flex justify-between gap-1"}>
             <Input
-              register={register("")}
-              value={0}
+              value={minLimit}
               onAction={setMinPriceLimit}
               placeholder={"Min"}
-              element={""}
+              element={ticker}
             />
-            {/* <Input
-    //         register={register("")}
-    //         value={maxLimit}
-    //         maxValue={totalAmount()}
-    //         onAction={setMaxPriceLimit}
-    //         placeholder={"Max"}
-    //         element={ticker}
-    //       /> */}
+            <Input
+              value={maxLimit}
+              maxValue={totalAmount()}
+              onAction={setMaxPriceLimit}
+              placeholder={"Max"}
+              element={ticker}
+            />
           </div>
         </label>
 
-        {/* <TextArea
-          register={register("")}
+        <TextArea
           value={offerComment ? offerComment : ""}
           onAction={setComment}
           label={"Comment"}
           placeholder={"Enter comment"}
-        />  */}
+        />
       </Wrapper>
 
       <Wrapper>
-        <Button onClick={prevStep} name='Back' />
-        <Button onClick={createHandler} name='Create' />
+        <div className='flex gap-5'>
+          <Button onClick={prevStep} name='Back' />
+          <Button
+            disabled={checkStep3()}
+            onClick={handleCreateOffer}
+            name='Create'
+          />
+        </div>
       </Wrapper>
     </form>
   );

@@ -1,8 +1,8 @@
 import React, { forwardRef, useRef, useState } from "react";
-import { truncateAddress } from "../../utils/truncateAddress";
+import { truncateAddress } from "../../../utils/truncateAddress";
 import { OfferModal } from "./OfferModal";
-import { Modal } from "../ui/Modal";
-import { IOffer } from "../../models/models";
+import { Modal } from "../../ui/Modal";
+import { IOffer } from "../../../models/models";
 
 export const Offer = forwardRef<any, any>((offer: IOffer, ref) => {
   const {
@@ -36,7 +36,7 @@ export const Offer = forwardRef<any, any>((offer: IOffer, ref) => {
               <p className={"text-sm"}>
                 <span className={"font-normal"}>Available: </span>
                 <span className={"font-bold"}>
-                  {parseFloat(quantity).toFixed(4)} {symbol}
+                  {parseFloat(quantity.toString()).toFixed(4)} {symbol}
                 </span>
               </p>
             </div>
@@ -79,7 +79,6 @@ export const Offer = forwardRef<any, any>((offer: IOffer, ref) => {
       </div>
       <Modal
         isOpen={openOfferModal}
-        width={"700px"}
         header={"Transaction"}
         close={() => setOpenOfferModal(false)}
       >
@@ -89,10 +88,10 @@ export const Offer = forwardRef<any, any>((offer: IOffer, ref) => {
   );
 
   return ref ? (
-    <div id='lastItem' ref={ref}>
+    <div className='w-full' ref={ref}>
       {offerBody}
     </div>
   ) : (
-    <div>{offerBody}</div>
+    <div className='w-full'>{offerBody}</div>
   );
 });

@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from "react";
-import { truncateAddress } from "../../utils/truncateAddress";
-import { Input } from "../create-offer/Input";
+import { truncateAddress } from "../../../utils/truncateAddress";
+import { Input } from "../../create-offer/Input";
 import { useNavigate } from "react-router";
-import { IOffer } from "../../models/models";
-import { OfferInput } from "../home/OfferInput";
-import { OfferService } from "../../api/offer.services";
+import { IOffer } from "../../../models/models";
+import { OfferInput } from "./OfferInput";
+import { OfferService } from "../../../api/offer.services";
 import { toast } from "react-toastify";
-import { useEthContract } from "../../hooks/useEthContract";
-import { parseEther } from "../../utils/parseEther";
-import { round } from "../../utils/round";
+import { useEthContract } from "../../../hooks/useEthContract";
+import { parseEther } from "../../../utils/parseEther";
+import { round } from "../../../utils/round";
 
 interface IOfferModalProps {
   close: any;
@@ -31,7 +31,7 @@ export const OfferModal = ({ close, offer }: IOfferModalProps) => {
   const navigate = useNavigate();
 
   const [pay, setPay] = useState(0);
-  const [recieve, setRecieve] = useState(0);
+  const [receive, setReceive] = useState(0);
 
   // const { roomId } = room;
 
@@ -41,7 +41,7 @@ export const OfferModal = ({ close, offer }: IOfferModalProps) => {
 
   const { address } = maker;
 
-  const args = [1, parseEther(recieve.toString())];
+  const args = [1, parseEther(receive.toString())];
   const value = 0;
   const functionName = "completeDeal";
 
@@ -55,8 +55,8 @@ export const OfferModal = ({ close, offer }: IOfferModalProps) => {
   };
 
   useEffect(() => {
-    setRecieve(+(pay / unitPrice).toFixed(4));
-  }, [pay, recieve]);
+    setReceive(+(pay / unitPrice).toFixed(4));
+  }, [pay, receive]);
 
   const transactionHandler = () => {
     writeAsync?.().then(() => {
@@ -97,10 +97,10 @@ export const OfferModal = ({ close, offer }: IOfferModalProps) => {
   return (
     <div className='rounded-[15px] grid grid-cols-2'>
       <div className='flex flex-col gap-3 p-3 cursor-default border-2 border-purple rounded-[20px]'>
-        {info.map((i) => (
-          <div className={"flex justify-between"}>
-            <p>{i.name}</p>
-            <p className={"font-bold"}>{i.value}</p>
+        {info.map((h, i) => (
+          <div className={"flex justify-between"} key={i}>
+            <p>{h.name}</p>
+            <p className={"font-bold"}>{h.value}</p>
           </div>
         ))}
         <div className='break-words bg-purple bg-opacity-20 p-2 rounded-[10px]'>
@@ -119,10 +119,10 @@ export const OfferModal = ({ close, offer }: IOfferModalProps) => {
         />
         <OfferInput
           readOnly={false}
-          label={"You recieve"}
-          setValue={setRecieve}
-          placeholder={"You recieve"}
-          value={recieve}
+          label={"You receive"}
+          setValue={setReceive}
+          placeholder={"You receive"}
+          value={receive}
           inputContent={symbol}
         />
         <div>

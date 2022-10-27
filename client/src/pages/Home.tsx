@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
 import axios from "axios";
-import { Offer } from "../components/home/Offer";
+import { Offer } from "../components/home/offer/Offer";
 import { Header } from "../components/home/Header";
 import { useQuery } from "@tanstack/react-query";
 import { OfferService } from "../api/offer.services";
@@ -14,7 +14,7 @@ import {
 } from "../models/models";
 import { SkeletonWrapper } from "../components/ui/SkeletonWrapper";
 import { SearchField } from "../components/ui/SearchField";
-import { Dropdown } from "../components/home/Dropdown";
+import { Dropdown } from "../components/home/dropdown/Dropdown";
 import { useFetchFilters } from "../hooks/useFetchFilters";
 import { useInfiniteOffers } from "../hooks/useInfiniteOffers";
 import { Button } from "../components/ui/Button";
@@ -153,7 +153,7 @@ export const Home = () => {
               <span className='text-2xl font-bold'>No items found...</span>
             </div>
           ) : (
-            <div className='space-y-2'>{content}</div>
+            <div className='space-y-2 flex flex-wrap'>{content}</div>
           )}
         </SkeletonWrapper>
       </main>

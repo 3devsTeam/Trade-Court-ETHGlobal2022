@@ -1,8 +1,8 @@
 import { useVirtualizer } from "@tanstack/react-virtual";
 import React, { useEffect, useRef, useState } from "react";
 import useOnClickOutside from "use-onclickoutside";
-import { Arrow } from "../ui/icons/Arrow";
-import { SearchField } from "../ui/SearchField";
+import { Arrow } from "../../ui/icons/Arrow";
+import { SearchField } from "../../ui/SearchField";
 import { DropdownItem } from "./DropdownItem";
 
 interface Props {
@@ -48,15 +48,16 @@ export const Dropdown = ({ label, data, onSelect, activeSelect }: Props) => {
 
   return (
     <div className='border-2 border-gray-100 transition-all duration-300 hover:border-purple rounded-[15px]'>
-      <button onClick={toggle} className='rounded-[10px] p-2 group w-full'>
+      <button onClick={toggle} className='rounded-[10px] group w-full p-3'>
         <div className='flex flex-col'>
           <div className='flex justify-between items-center'>
             {activeSelect ? (
               <div className='flex items-center gap-3'>
                 <div className='flex items-center gap-1'>
                   <img
-                    className='w-8 h-8 rounded-[50%] shadow-customDark object-cover'
+                    className={"image"}
                     src={activeSelect.logoUrl}
+                    alt={""}
                   />
 
                   <span className='font-bold'>

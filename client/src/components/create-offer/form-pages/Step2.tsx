@@ -1,8 +1,7 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useTypedSelector } from "../../../hooks/useTypedSelector";
 import { Input } from "../Input";
 import { Dropdown } from "../Dropdown";
-
 import { useActions } from "../../../hooks/useActions";
 import { useScrollTop } from "../../../hooks/useScrollTop";
 import { TextArea } from "../TextArea";
@@ -11,42 +10,45 @@ import { Wrapper } from "../Wrapper";
 import { useForm } from "react-hook-form";
 import { SubmitButton } from "../../ui/SubmitButton";
 import { Button } from "../../ui/Button";
+import { IFiat, IPayment, IRegion } from "../../../models/models";
+import { v4 as uuidv4 } from "uuid";
 
 export const Step2 = () => {
   const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm();
-
-  const {
-    setPaymentDescription,
     addPaymentMethod,
-    setCardNumber,
     setRegion,
-    setPaymentMethod,
+    setBank,
     prevStep,
     nextStep,
-    //resetPayment,
+    updatePaymentMethod,
+    removePaymentMethod,
   } = useActions();
-  const {
-    fiat,
-    cardNumber,
-    region,
-    paymentMethod,
-    paymentDescription,
-    payMethods,
-  } = useTypedSelector((state) => state.offerReducer);
+  const { fiat, region, paymentMethod, payMethods } = useTypedSelector(
+    (state) => state.offerReducer
+  );
+
+  const [paymentDescription, setPaymentDescription] = useState("");
+  const [cardNumber, setCardNumber] = useState("");
 
   const addPayment = () => {
-    const newPayment: any = {
+    const newPayment: IPayment = {
+      id: uuidv4(),
       paymentMethod,
       region,
       cardNumber,
       paymentDescription,
     };
     addPaymentMethod(newPayment);
-    //resetPayment();
+    setPaymentDescription("");
+    setCardNumber("");
+  };
+
+  const deletePayment = (id: string) => {
+    removePaymentMethod(id);
+    setBank(fiat.banks[0]);
+    setRegion(fiat.regions[0]);
+    setCardNumber("");
+    setPaymentDescription("");
   };
 
   const { banks, regions } = fiat;
@@ -57,37 +59,67 @@ export const Step2 = () => {
   const regionName = region?.name;
   const regionLogoUrl = region?.logoUrl;
 
+  const [active, setActive] = useState<IPayment | null>(null);
+
+  const editPayment = () => {
+    updatePaymentMethod({
+      id: active?.id,
+      paymentMethod,
+      region,
+      cardNumber,
+      paymentDescription,
+    });
+
+    setCardNumber("");
+    setPaymentDescription("");
+    setActive(null);
+  };
+
+  useEffect(() => {
+    if (active != null) {
+      setBank(active?.paymentMethod);
+      setRegion(active?.region);
+      setCardNumber(active?.cardNumber);
+      setPaymentDescription(active.paymentDescription);
+    }
+  }, [active]);
+
   return (
     <form className='flex flex-col gap-5'>
       <Wrapper>
-        <div>
-          <p className={"text-lg font-bold mb-1 ml-[10px]"}>Payment methods</p>
-          <div className={"flex gap-1 overflow-x-auto"}>
-            {!payMethods.length && (
-              <div
-                className={"h-[60px] w-full flex items-center justify-center"}
-              >
-                <span className={"font-bold text-purple text-lg"}>
-                  No payments yet...
-                </span>
-              </div>
-            )}
-            {payMethods?.map((p) => {
-              return <Payment payment={p} showCloseButton={true} />;
-            })}
+        {payMethods.length ? (
+          <div>
+            <span className={"text-lg font-bold mb-1 ml-[10px]"}>
+              Payment Methods
+            </span>
+            <div className={"flex gap-1 overflow-x-auto"}>
+              {payMethods.map((p) => {
+                return (
+                  <Payment
+                    deletePayment={deletePayment}
+                    active={active?.id}
+                    setActive={setActive}
+                    key={p.id}
+                    payment={p}
+                  />
+                );
+              })}
+            </div>
           </div>
-        </div>
+        ) : (
+          <></>
+        )}
 
-        <label>
-          <p className={"text-lg font-bold mb-1 ml-[10px]"}>
-            Add payment method
-          </p>
+        <div>
+          <span className={"text-lg font-bold ml-[10px]"}>
+            Add Payment Method
+          </span>
           <div className={"flex items-center gap-1"}>
             <Dropdown
               image={paymentLogoUrl}
               value={paymentName}
               data={banks}
-              onAction={setPaymentMethod}
+              onAction={setBank}
             />
             <Dropdown
               image={regionLogoUrl}
@@ -96,30 +128,40 @@ export const Step2 = () => {
               onAction={setRegion}
             />
           </div>
-        </label>
+        </div>
 
         <Input
-          register={register("cardNumber")}
           value={cardNumber!}
           label={"Card Number"}
           placeholder={"Enter card number"}
           onAction={setCardNumber}
         />
         <TextArea
-          register={register("paymentDescription")}
           value={paymentDescription}
           onAction={setPaymentDescription}
-          label={"Payment description"}
-          placeholder={"..."}
+          label={"Payment Description"}
+          placeholder={"Here can be written something useful..."}
         />
-        <Button name={"Add"} onClick={addPayment} />
+        <Button
+          name={
+            payMethods.length === 5
+              ? "Maximum"
+              : active != null
+              ? "Save"
+              : "Add"
+          }
+          onClick={active != null ? editPayment : addPayment}
+          disabled={!(payMethods.length < 5)}
+        />
       </Wrapper>
       <Wrapper>
         <div className='flex gap-5'>
           <Button onClick={prevStep} disabled={false} name={"Back"} />
-          <Button onClick={nextStep} disabled={false} name={"Next"} />
-
-          {/* <SubmitButton name={"Next"} disabled={false} /> */}
+          <Button
+            onClick={nextStep}
+            disabled={!(payMethods.length > 0)}
+            name={"Next"}
+          />
         </div>
       </Wrapper>
     </form>

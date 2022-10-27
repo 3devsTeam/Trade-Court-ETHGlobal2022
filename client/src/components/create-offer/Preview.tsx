@@ -38,11 +38,11 @@ export const Preview = () => {
           </div>
           <div className={"flex gap-1 items-center"}>
             <img
-              className={"w-8 h-8 rounded-[50%] shadow-customDark object-cover"}
+              className={'image'}
               src={cryptoImage}
               alt={""}
             />
-            <span>{symbol}</span>
+            <span className={'font-medium'}>{symbol}</span>
           </div>
         </div>
 
@@ -52,11 +52,11 @@ export const Preview = () => {
           </div>
           <div className={"flex gap-1 items-center"}>
             <img
-              className={"w-8 h-8 rounded-[50%] shadow-customDark object-cover"}
+              className={'image'}
               src={fiatImage}
               alt={""}
             />
-            <span>{ticker}</span>
+            <span className={'font-medium'}>{ticker}</span>
           </div>
         </div>
 
@@ -65,8 +65,7 @@ export const Preview = () => {
             <span className={"font-bold text-lg"}>Unit Price</span>
           </div>
           <div>
-            <span>{unitPrice}</span>
-            <span> {ticker}</span>
+            <span className={'font-medium'}>{unitPrice} {ticker}</span>
           </div>
         </div>
 
@@ -75,7 +74,7 @@ export const Preview = () => {
             <span className={"font-bold text-lg"}>Quantity</span>
           </div>
           <div>
-            <span>
+            <span className={'font-medium'}>
               {quantity} {symbol}
             </span>
           </div>
@@ -86,8 +85,7 @@ export const Preview = () => {
             <span className={"font-bold text-lg"}>Total Amount</span>
           </div>
           <div>
-            <span>{round(multiply(unitPrice, +quantity), 2)}</span>
-            <span> {ticker}</span>
+            <span className={'font-medium'}>{round(multiply(unitPrice, +quantity), 2)} {ticker}</span>
           </div>
         </div>
 
@@ -99,12 +97,12 @@ export const Preview = () => {
           </div>
           <div>
             {payMethods.length
-              ? payMethods.map((p) => {
+              ? payMethods?.map((p, i) => {
                   return (
-                    <div className={"flex items-center gap-1 my-2"}>
+                    <div key={i} className={"flex items-center gap-1 my-2"}>
                       <img
                         className={
-                          "w-8 h-8 rounded-[50%] border border-purple object-cover"
+                          'image'
                         }
                         src={p.paymentMethod.logoUrl}
                         alt=''
@@ -124,7 +122,7 @@ export const Preview = () => {
             <span className={"font-bold text-lg"}>Time Limit</span>
           </div>
           <div>
-            <span>{timeLimit} min</span>
+            <span className={'font-medium'}>{timeLimit} min</span>
           </div>
         </div>
 
@@ -133,7 +131,7 @@ export const Preview = () => {
             <span className={"font-bold text-lg"}>Price Limit</span>
           </div>
           <div>
-            <span>{`${minLimit ? minLimit : ""}-${
+            <span className={'font-medium'}>{`${minLimit ? minLimit : ""}-${
               maxLimit ? maxLimit : ""
             }`}</span>
           </div>
@@ -144,7 +142,7 @@ export const Preview = () => {
             <span className={"font-bold text-lg"}>Comment</span>
           </div>
           <div>
-            <p>{offerComment}</p>
+            <p className={'font-medium'}>{offerComment}</p>
           </div>
         </div>
       </div>

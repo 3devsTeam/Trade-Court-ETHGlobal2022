@@ -8,25 +8,36 @@ import { IPayment } from "../../models/models";
 
 interface IPaymentButton {
   payment: IPayment;
-  showCloseButton: boolean;
+  setActive: any;
+  active: string | undefined;
+  deletePayment: any;
 }
 
-export const Payment = ({ payment, showCloseButton }: IPaymentButton) => {
-  console.log(payment);
-  const { cardNumber, paymentMethod } = payment;
+export const Payment = ({
+  payment,
+  setActive,
+  active,
+  deletePayment,
+}: IPaymentButton) => {
+  const { paymentMethod, cardNumber, id } = payment;
 
+  const activePayment = active === id ? "border-2 border-purple" : "";
   return (
     <div
-      className='px-[10px] py-[15px] h-[60px] w-[220px] rounded-[15px] border-2 border-purple flex gap-1 justify-between items-center'
-      key={cardNumber}
+      className={`${activePayment} h-[60px] elementBorder p-2 flex gap-2 cursor-pointer`}
     >
-      <img
-        className={"w-8 h-8 rounded-[50%] border border-purple object-cover"}
-        src={paymentMethod.logoUrl}
-        alt={""}
-      />
-      <span className={"font-bold"}>{sliceCardNumber(cardNumber)}</span>
-      {showCloseButton && <CloseButton onClose={null} />}
+      <div
+        onClick={() => setActive(payment)}
+        className={` flex gap-1 justify-between items-center`}
+      >
+        <img
+          className={"w-8 h-8 rounded-full border border-purple object-cover"}
+          src={paymentMethod.logoUrl}
+          alt={""}
+        />
+        <span className={"font-bold"}>{sliceCardNumber(cardNumber)}</span>
+      </div>
+      <CloseButton onAction={() => deletePayment(id)} />
     </div>
   );
 };

@@ -18,11 +18,12 @@ import React, { useEffect, useState } from "react";
 import { useTokens } from "../hooks/useTokens";
 import { useQuery } from "wagmi";
 import { SkeletonWrapper } from "../components/ui/SkeletonWrapper";
-import { IFiat, IRegion } from "../models/models";
+import { IFiat, IOffer, IRegion } from "../models/models";
 import { ErrorBoundary } from "react-error-boundary";
 import { FiatServices } from "../api/fiat.services";
+import { useFiat } from "../hooks/useFiat";
 
-export const CreateOffer = () => {
+const CreateOffer = () => {
   const {
     crypto,
     fiat,
@@ -35,49 +36,10 @@ export const CreateOffer = () => {
     timeLimit,
   } = useTypedSelector((state) => state.offerReducer);
 
-  const {
-    setFiat,
-    setPaymentMethod,
-    setRegion,
-    setCrypto,
-    nextStep,
-    prevStep,
-  } = useActions();
+  const { tokens, isSuccess: tokensSuccess } = useTokens();
+  const { allFiat, isSuccess: fiatSuccess } = useFiat();
 
-  const { tokens, isSuccessRequest } = useTokens();
-
-  const { data: allFiat, isSuccess: fiatSuccess } = useQuery(
-    ["get fiat"],
-    () => FiatServices.getFiat(),
-    {
-      select: (data) => data.data.allFiat,
-      onSuccess: (data) => setFiat(data[0]),
-    }
-  );
-
-  // console.log(allFiat);
-
-  // console.log(isSuccessRequest, fiatSuccess);
-
-  const isLoaded = isSuccessRequest && fiatSuccess;
-  useEffect(() => {
-    if (isLoaded) {
-      setCrypto(tokens[0]);
-      setPaymentMethod(allFiat[0].banks[0]);
-      setRegion(allFiat[0].regions[0]);
-    }
-  }, [isLoaded]);
-
-  useEffect(() => {
-    if (isLoaded) {
-      setPaymentMethod(
-        allFiat.filter((e: IFiat) => e._id === fiat._id)[0].banks[0]
-      );
-      setRegion(
-        allFiat.filter((e: IRegion) => e._id === fiat._id)[0].regions[0]
-      );
-    }
-  }, [fiat]);
+  const isLoaded = tokensSuccess && fiatSuccess;
 
   const limitPrice = (value: any, unitPrice: any) => {
     if (!BigNumber.from(value).eq(BigNumber.from(0))) {
@@ -107,21 +69,18 @@ export const CreateOffer = () => {
     String(quantity) === "" ? "0" : quantity.toString()
   );
 
-  const { data, isError, isLoading, isSuccess, writeAsync, hash } =
-    useEthContractWithValue(args, value, "makeRoomEth");
+  const {
+    data,
+    isError,
+    isLoading,
+    isSuccess: isSuccessMakeRoom,
+    writeAsync,
+    hash,
+  } = useEthContractWithValue(args, value, "makeRoomEth");
 
   const { step } = useTypedSelector((state) => state.formReducer);
 
   const navigate = useNavigate();
-
-  const payments = payMethods.map((e) => {
-    return {
-      bank: e.paymentMethod._id,
-      cardNumber: e.cardNumber,
-      region: e.region._id,
-      paymentDescription: e.paymentDescription,
-    };
-  });
 
   const successOfferNotify = (info: React.ReactNode) => {
     toast.success(info, {
@@ -135,49 +94,49 @@ export const CreateOffer = () => {
     });
   };
 
-  const createHandler = async () => {
-    writeAsync?.()
-      .then(() => {
-        OfferService.create({
-          roomId,
-          offerType: "buy",
-          fiat: fiat._id,
-          unitPrice,
-          amount: multiply(unitPrice, +quantity),
-          quantity,
-          minLimit,
-          maxLimit,
-          crypto: crypto._id,
-          offerComment,
-          payMethods: payments,
-        })
-          .then(
-            (data) => {
-              console.log(data);
-              console.log("tx hash:", hash?.transactionHash);
-              successOfferNotify(
-                <div>
-                  <p>Offer is created!</p>
-                  <a
-                    target={"_blank"}
-                    className={"text-purple"}
-                    href={`https://rinkeby.etherscan.io/tx/${hash?.transactionHash}`}
-                  >
-                    View your transaction on Etherscan
-                  </a>
-                </div>
-              );
-              navigate("/");
-            }
+  const handleCreateOffer = async () => {
+    // writeAsync?.()
+    //   .then(() => {
+    OfferService.create({
+      roomId,
+      offerType: "buy",
+      fiat: fiat._id,
+      unitPrice,
+      amount: multiply(unitPrice, quantity),
+      quantity,
+      minLimit,
+      maxLimit,
+      crypto: crypto._id,
+      offerComment,
+      payMethods: payMethods,
+    })
+      .then(
+        (data) => {
+          console.log(data);
+          console.log("tx hash:", hash?.transactionHash);
+          successOfferNotify(
+            <div>
+              <p>Offer is created!</p>
+              <a
+                target={"_blank"}
+                className={"text-purple"}
+                href={`https://rinkeby.etherscan.io/tx/${hash?.transactionHash}`}
+              >
+                View your transaction on Etherscan
+              </a>
+            </div>
+          );
+          navigate("/");
+        }
 
-            //resetOffer();
-          )
-          .catch((data) => errorOfferNotify(data.response.data.message));
-      })
-      .catch((err) => console.log(err));
+        //resetOffer();
+      )
+      .catch((data) => errorOfferNotify(data.response.data.message));
+    // })
+    // .catch((err) => console.log(err));
   };
 
-  const steps = ["Offer Price", "Payment method", "Settings"];
+  const steps = ["Offer Price", "Payment Method", "Settings"];
 
   const pageDisplay = () => {
     switch (step) {
@@ -186,7 +145,7 @@ export const CreateOffer = () => {
       case 2:
         return <Step2 />;
       case 3:
-        return <Step3 createHandler={createHandler} />;
+        return <Step3 handleCreateOffer={handleCreateOffer} />;
       default:
         return;
     }
@@ -214,3 +173,5 @@ export const CreateOffer = () => {
     </div>
   );
 };
+
+export default CreateOffer;

@@ -20,24 +20,10 @@ interface IStep1 {
   allFiat: [IFiat];
 }
 
-interface FormStep1 {
-  tokenAmount: string;
-  unitPrice: string;
-  quantity: string;
-}
-
 export const Step1 = ({ tokens, allFiat }: IStep1) => {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<FormStep1>();
-  const onSubmit = (data: any) => {
-    console.log(data);
-  };
+  console.log(tokens);
 
-  const { setCrypto, setFiat, setQuantity, setUnitPrice, nextStep } =
-    useActions();
+  const { setFiat, setQuantity, setUnitPrice, nextStep } = useActions();
   const { crypto, fiat, quantity, unitPrice } = useTypedSelector(
     (state) => state.offerReducer
   );
@@ -61,11 +47,16 @@ export const Step1 = ({ tokens, allFiat }: IStep1) => {
     );
   };
 
+  const checkStep1 = () => {
+    if (quantity > 0 && quantity <= tokenAmount && unitPrice > 0) return true;
+
+    return false;
+  };
+
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className='flex flex-col gap-5'>
+    <form className='flex flex-col gap-5'>
       <Wrapper>
         <ModalInput
-          register={register("tokenAmount")}
           symbol={symbol}
           fullName={cryptoName}
           image={cryptoImage}
@@ -81,7 +72,6 @@ export const Step1 = ({ tokens, allFiat }: IStep1) => {
           label={"Fiat"}
         />
         <Input
-          register={register("unitPrice")}
           onAction={setUnitPrice}
           placeholder={"0"}
           label={"Unit Price"}
@@ -90,7 +80,6 @@ export const Step1 = ({ tokens, allFiat }: IStep1) => {
         />
 
         <Input
-          register={register("quantity")}
           maxValue={tokenAmount}
           onAction={setQuantity}
           placeholder={"0"}
@@ -111,14 +100,13 @@ export const Step1 = ({ tokens, allFiat }: IStep1) => {
           />
           <TokenList
             tokens={searchFilter(tokens)}
-            onClose={() => setIsOpen(false)}
+            closeModal={() => setIsOpen(false)}
           />
         </Modal>
       </Wrapper>
 
       <Wrapper>
-        <Button name='Next' onClick={nextStep} />
-        <SubmitButton name='Next' disabled={false} />
+        <Button name='Next' onClick={nextStep} disabled={!checkStep1()} />
       </Wrapper>
     </form>
   );

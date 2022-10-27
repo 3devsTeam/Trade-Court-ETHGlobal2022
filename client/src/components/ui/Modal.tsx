@@ -32,7 +32,7 @@ export const Modal = ({ isOpen, children, close, header }: IModal) => {
               <div>
                 <span className='font-bold text-lg'>{header}</span>
               </div>
-              <CloseButton onClose={() => close()} />
+              <CloseButton onAction={() => close()} />
             </div>
             {children}
           </div>
