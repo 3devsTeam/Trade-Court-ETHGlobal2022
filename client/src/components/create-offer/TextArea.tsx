@@ -1,4 +1,5 @@
 import React from "react";
+import { Label } from "../ui/Label";
 
 interface ITextArea {
   value: string | undefined;
@@ -14,18 +15,16 @@ export const TextArea = ({
   onAction,
 }: ITextArea) => {
   return (
-    <label>
-      <span className={"text-lg font-bold mb-1 ml-[10px]"}>{label}</span>
+    <div>
+      <Label label={label} />
 
-      <div>
-        <textarea
-          spellCheck={false}
-          value={value}
-          onChange={(e) => onAction(e.target.value)}
-          placeholder={placeholder}
-          className={`p-3 w-full min-h-[200px] elementBorder outline-none`}
-        />
-      </div>
-    </label>
+      <textarea
+        spellCheck={false}
+        value={value}
+        onChange={(e) => onAction(e.target.value)}
+        placeholder={placeholder}
+        className={`p-3 w-full min-h-[200px] rounded-[15px] inputBorder`}
+      />
+    </div>
   );
 };

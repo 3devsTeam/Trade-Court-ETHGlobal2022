@@ -12,6 +12,7 @@ import { SubmitButton } from "../../ui/SubmitButton";
 import { Button } from "../../ui/Button";
 import { IFiat, IPayment, IRegion } from "../../../models/models";
 import { v4 as uuidv4 } from "uuid";
+import { Label } from "../../ui/Label";
 
 export const Step2 = () => {
   const {
@@ -85,85 +86,86 @@ export const Step2 = () => {
   }, [active]);
 
   return (
-    <form className='flex flex-col gap-5'>
+    <form>
       <Wrapper>
-        {payMethods.length ? (
+        <div className='flex flex-col gap-5'>
+          {payMethods.length ? (
+            <div>
+              <Label label={"Payment Methods"} />
+              <div className={"flex flex-col gap-2"}>
+                {payMethods.map((p) => {
+                  return (
+                    <Payment
+                      deletePayment={deletePayment}
+                      active={active?.id}
+                      setActive={setActive}
+                      key={p.id}
+                      payment={p}
+                    />
+                  );
+                })}
+              </div>
+            </div>
+          ) : (
+            <></>
+          )}
+
           <div>
-            <span className={"text-lg font-bold mb-1 ml-[10px]"}>
-              Payment Methods
-            </span>
-            <div className={"flex gap-1 overflow-x-auto"}>
-              {payMethods.map((p) => {
-                return (
-                  <Payment
-                    deletePayment={deletePayment}
-                    active={active?.id}
-                    setActive={setActive}
-                    key={p.id}
-                    payment={p}
-                  />
-                );
-              })}
+            <Label label={"Add Payment Method"} />
+            <div className={"flex items-center gap-1"}>
+              <Dropdown
+                image={paymentLogoUrl}
+                value={paymentName}
+                data={banks}
+                onAction={setBank}
+              />
+              <Dropdown
+                image={regionLogoUrl}
+                value={regionName}
+                data={regions}
+                onAction={setRegion}
+              />
             </div>
           </div>
-        ) : (
-          <></>
-        )}
 
-        <div>
-          <span className={"text-lg font-bold ml-[10px]"}>
-            Add Payment Method
-          </span>
-          <div className={"flex items-center gap-1"}>
-            <Dropdown
-              image={paymentLogoUrl}
-              value={paymentName}
-              data={banks}
-              onAction={setBank}
-            />
-            <Dropdown
-              image={regionLogoUrl}
-              value={regionName}
-              data={regions}
-              onAction={setRegion}
-            />
-          </div>
-        </div>
-
-        <Input
-          value={cardNumber!}
-          label={"Card Number"}
-          placeholder={"Enter card number"}
-          onAction={setCardNumber}
-        />
-        <TextArea
-          value={paymentDescription}
-          onAction={setPaymentDescription}
-          label={"Payment Description"}
-          placeholder={"Here can be written something useful..."}
-        />
-        <Button
-          name={
-            payMethods.length === 5
-              ? "Maximum"
-              : active != null
-              ? "Save"
-              : "Add"
-          }
-          onClick={active != null ? editPayment : addPayment}
-          disabled={!(payMethods.length < 5)}
-        />
-      </Wrapper>
-      <Wrapper>
-        <div className='flex gap-5'>
-          <Button onClick={prevStep} disabled={false} name={"Back"} />
+          <Input
+            value={cardNumber!}
+            label={"Card Number"}
+            placeholder={"Enter card number"}
+            onAction={setCardNumber}
+          />
+          <TextArea
+            value={paymentDescription}
+            onAction={setPaymentDescription}
+            label={"Payment Description"}
+            placeholder={"Here can be written something useful..."}
+          />
           <Button
-            onClick={nextStep}
-            disabled={!(payMethods.length > 0)}
-            name={"Next"}
+            name={
+              payMethods.length === 5
+                ? "Maximum"
+                : active != null
+                ? "Save"
+                : "Add"
+            }
+            onClick={active != null ? editPayment : addPayment}
+            disabled={!(payMethods.length < 5)}
           />
         </div>
       </Wrapper>
+
+      <div className='mt-5'>
+        <Wrapper>
+          <div className='flex gap-5'>
+            <Button onClick={prevStep} disabled={false} name={"Back"} />
+            <Button
+              onClick={nextStep}
+              disabled={!(payMethods.length > 0)}
+              name={"Next"}
+            />
+          </div>
+        </Wrapper>
+      </div>
     </form>
   );
 };

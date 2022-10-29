@@ -35,52 +35,56 @@ export const Step3 = ({ handleCreateOffer }: Props) => {
   };
 
   return (
-    <form className='flex flex-col gap-5'>
+    <form>
       <Wrapper>
-        <TimeLimit
-          onAction={setTimeLimit}
-          label={"Order Time Limit"}
-          times={["15", "30", "45", "60", "120"]}
-        />
-        <label>
-          <span className={"text-lg font-bold mb-1 ml-[10px]"}>
-            {"Order Price Limit"}
-          </span>
-          <div className={"flex justify-between gap-1"}>
-            <Input
-              value={minLimit}
-              onAction={setMinPriceLimit}
-              placeholder={"Min"}
-              element={ticker}
-            />
-            <Input
-              value={maxLimit}
-              maxValue={totalAmount()}
-              onAction={setMaxPriceLimit}
-              placeholder={"Max"}
-              element={ticker}
-            />
-          </div>
-        </label>
+        <div className='flex flex-col gap-5'>
+          <TimeLimit
+            onAction={setTimeLimit}
+            label={"Order Time Limit"}
+            times={["15", "30", "45", "60", "120"]}
+          />
+          <label>
+            <span className={"text-lg font-bold mb-1 ml-[10px]"}>
+              {"Order Price Limit"}
+            </span>
+            <div className={"flex justify-between gap-1"}>
+              <Input
+                value={minLimit}
+                onAction={setMinPriceLimit}
+                placeholder={"Min"}
+                element={ticker}
+              />
+              <Input
+                value={maxLimit}
+                maxValue={totalAmount()}
+                onAction={setMaxPriceLimit}
+                placeholder={"Max"}
+                element={ticker}
+              />
+            </div>
+          </label>
 
-        <TextArea
-          value={offerComment ? offerComment : ""}
-          onAction={setComment}
-          label={"Comment"}
-          placeholder={"Enter comment"}
-        />
-      </Wrapper>
-
-      <Wrapper>
-        <div className='flex gap-5'>
-          <Button onClick={prevStep} name='Back' />
-          <Button
-            disabled={checkStep3()}
-            onClick={handleCreateOffer}
-            name='Create'
+          <TextArea
+            value={offerComment ? offerComment : ""}
+            onAction={setComment}
+            label={"Comment"}
+            placeholder={"Enter comment"}
           />
         </div>
       </Wrapper>
+
+      <div className='mt-5'>
+        <Wrapper>
+          <div className='flex gap-5'>
+            <Button onClick={prevStep} name='Back' />
+            <Button
+              disabled={checkStep3()}
+              onClick={handleCreateOffer}
+              name='Create'
+            />
+          </div>
+        </Wrapper>
+      </div>
     </form>
   );
 };

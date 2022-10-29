@@ -20,16 +20,13 @@ export const Payment = ({
   deletePayment,
 }: IPaymentButton) => {
   const { paymentMethod, cardNumber, id } = payment;
-
-  const activePayment = active === id ? "border-2 border-purple" : "";
   return (
-    <div
-      className={`${activePayment} h-[60px] elementBorder p-2 flex gap-2 cursor-pointer`}
+    <button
+      type='button'
+      onClick={() => setActive(payment)}
+      className={`flex items-center w-full p-3 rounded-[15px] inputBorder relative`}
     >
-      <div
-        onClick={() => setActive(payment)}
-        className={` flex gap-1 justify-between items-center`}
-      >
+      <div className={`flex space-x-2 items-center`}>
         <img
           className={"w-8 h-8 rounded-full border border-purple object-cover"}
           src={paymentMethod.logoUrl}
@@ -37,7 +34,9 @@ export const Payment = ({
         />
         <span className={"font-bold"}>{sliceCardNumber(cardNumber)}</span>
       </div>
-      <CloseButton onAction={() => deletePayment(id)} />
-    </div>
+      <div className='absolute right-3'>
+        <CloseButton onAction={() => deletePayment(id)} />
+      </div>
+    </button>
   );
 };

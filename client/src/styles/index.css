@@ -5,15 +5,13 @@
 @tailwind utilities;
 
 @layer components {
-  .elementBorder {
-    @apply border-2 border-gray-100 transition-all duration-300 hover:border-purple rounded-[15px];
+  .inputBorder {
+    @apply border-2 border-gray-300 focus:outline-none focus:border-purple active:border-purple transition-colors duration-300;
   }
   .image {
     @apply w-8 h-8 rounded-full shadow-customDark object-cover;
   }
 }
-
-
 
 html,
 body {
