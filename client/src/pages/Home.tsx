@@ -18,8 +18,10 @@ import { Dropdown } from "../components/home/dropdown/Dropdown";
 import { useFetchFilters } from "../hooks/useFetchFilters";
 import { useInfiniteOffers } from "../hooks/useInfiniteOffers";
 import { Button } from "../components/ui/Button";
+import useDebounce from "../hooks/useDebounce";
 
 export interface IActiveFilters {
+  amount: "";
   crypto: string | undefined;
   fiat: string | undefined;
   banks: string | undefined;
@@ -28,12 +30,15 @@ export interface IActiveFilters {
 
 export const Home = () => {
   const initialFilters: IActiveFilters = {
+    amount: "",
     crypto: "",
     fiat: "",
     banks: "",
     region: "",
   };
 
+  const [amount, setAmount] = useState<string>("");
+  const debouncedAmount = useDebounce(amount, 500);
   const [activeCrypto, setActiveCrypto] = useState<IToken | null>(null);
   const [activeFiat, setActiveFiat] = useState<IFiat | null>(null);
   const [activePayment, setActivePayment] = useState<IPayment | null>(null);
@@ -43,12 +48,13 @@ export const Home = () => {
 
   useEffect(() => {
     setActiveFilters({
+      amount: debouncedAmount,
       crypto: activeCrypto?._id || "",
       fiat: activeFiat?._id || "",
       banks: activePayment?._id || "",
       region: activeRegion?._id || "",
     });
-  }, [activeCrypto, activeFiat, activePayment, activeRegion]);
+  }, [activeCrypto, activeFiat, activePayment, activeRegion, debouncedAmount]);
 
   const { fiat, crypto, isFiltersFetchOk } = useFetchFilters();
 
@@ -65,8 +71,6 @@ export const Home = () => {
     });
   });
 
-  const [searchTerm, setSearchTerm] = useState("");
-
   const fields = [
     "Maker Address",
     "Avaliable / Limit",
@@ -80,8 +84,8 @@ export const Home = () => {
       <SkeletonWrapper isLoaded={isLoaded} height={1000}>
         <aside className='bg-white shadow-customDark p-5 rounded-2xl flex flex-col gap-5 sticky top-5 overflow-auto max-h-screen'>
           <SearchField
-            searchTerm={searchTerm}
-            setSearchTerm={setSearchTerm}
+            searchTerm={amount}
+            setSearchTerm={setAmount}
             placeholder='Search...'
           />
           <Dropdown
