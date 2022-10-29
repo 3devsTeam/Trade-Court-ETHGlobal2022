@@ -21,8 +21,6 @@ interface IStep1 {
 }
 
 export const Step1 = ({ tokens, allFiat }: IStep1) => {
-  console.log(tokens);
-
   const { setFiat, setQuantity, setUnitPrice, nextStep } = useActions();
   const { crypto, fiat, quantity, unitPrice } = useTypedSelector(
     (state) => state.offerReducer
@@ -68,7 +66,7 @@ export const Step1 = ({ tokens, allFiat }: IStep1) => {
           fullName={fiatName}
           image={fiatImage}
           onAction={setFiat}
-          data={allFiat}
+          data={allFiat as IFiat[]}
           label={"Fiat"}
         />
         <Input

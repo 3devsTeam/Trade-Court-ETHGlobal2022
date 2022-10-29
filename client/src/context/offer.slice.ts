@@ -119,6 +119,7 @@ export const offerSlice = createSlice({
     clearPayments: (state) => {
       state.payMethods = [];
     },
+    resetOffer: () => initialState,
   },
 });
 

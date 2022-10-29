@@ -4,38 +4,29 @@ import { connectors } from "../../wallets/connectors";
 import { MetaMaskConnector } from "wagmi/connectors/metaMask";
 import { WalletConnectConnector } from "wagmi/connectors/walletConnect";
 import { CoinbaseWalletConnector } from "wagmi/connectors/coinbaseWallet";
+import { useSignMessage } from "wagmi";
 
 interface Props {
-  setActiveWalletImg: any;
+  sign: () => void;
   img: string;
-  onClose: any;
+  close: React.Dispatch<SetStateAction<boolean>>;
   wallet: MetaMaskConnector | WalletConnectConnector | CoinbaseWalletConnector;
   i: number;
   children: React.ReactNode;
 }
 
-export const WalletButton = ({
-  setActiveWalletImg,
-  wallet,
-  i,
-  onClose,
-  img,
-}: Props) => {
+export const WalletButton = ({ sign, wallet, i, close, img }: Props) => {
   return (
     <button
       onClick={() => {
         connect({ connector: connectors[i] }).then(() => {
-          onClose(false);
-          setActiveWalletImg(img);
+          close(false);
+          sign();
         });
       }}
       className='flex items-center flex-col shadow rounded-lg p-3'
     >
-      <img
-        src={img}
-        alt=''
-        className='w-10 h-10 shadow-customDark object-cover rounded-full p-2'
-      />
+      <img src={img} alt='' className='w-8 h-8' />
       <span className='text-[16px] font-bold'>
         {wallet.name === "Coinbase Wallet" ? "Coinbase" : wallet.name}
       </span>

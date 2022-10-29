@@ -71,11 +71,7 @@ export const Dropdown = ({ label, data, onSelect, activeSelect }: Props) => {
               <span className='font-bold'>{label}</span>
             )}
 
-            <div
-              className={`${
-                open && "rotate-180 transition-transform duration-300"
-              }`}
-            >
+            <div className={`transition duration-300 ${open && "rotate-180"}`}>
               <Arrow />
             </div>
           </div>

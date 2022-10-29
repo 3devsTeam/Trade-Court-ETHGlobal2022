@@ -5,13 +5,12 @@ import { Home } from "./pages/Home";
 import { PrivateRoutes } from "./routes/PrivateRoutes";
 import { Settings } from "./pages/Settings";
 import { Navigate } from "react-router-dom";
-import { Profile } from "./pages/Profile";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import Footer from "./components/footer/Footer";
 
 const CreateOffer = lazy(() => import("./pages/CreateOffer"));
 const Transaction = lazy(() => import("./pages/Transaction"));
+const Profile = lazy(() => import("./pages/Profile"));
 
 const App = () => {
   return (
@@ -28,11 +27,10 @@ const App = () => {
             {/* </Route> */}
 
             <Route path={"/"} element={<Home />} />
-            {/* <Route path={"*"} element={<Navigate to={"/"} />} /> */}
+            <Route path={"*"} element={<Navigate to={"/"} />} />
           </Routes>
         </Suspense>
       </main>
-      {/* <Footer message={"Beta Version. Use at your own risk."} /> */}
     </BrowserRouter>
   );
 };

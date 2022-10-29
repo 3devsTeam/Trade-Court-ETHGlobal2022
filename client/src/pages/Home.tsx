@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import axios from "axios";
 import { Offer } from "../components/home/offer/Offer";
-import { Header } from "../components/home/Header";
+import { Legend } from "../components/home/Legend";
 import { useQuery } from "@tanstack/react-query";
 import { OfferService } from "../api/offer.services";
 import {
@@ -67,15 +67,13 @@ export const Home = () => {
 
   const [searchTerm, setSearchTerm] = useState("");
 
-  const headers = [
+  const fields = [
     "Maker Address",
     "Avaliable / Limit",
     "Unit Price",
     "Payment Methods",
     "Buy / Sell",
   ];
-
-  if (data?.pages[0].length == 0) console.log("ye");
 
   return (
     <div className='grid grid-cols-homePage gap-5 my-5'>
@@ -140,7 +138,7 @@ export const Home = () => {
 
       <main className='relative'>
         <SkeletonWrapper height={30} isLoaded={isLoaded} margin={"20px"}>
-          <Header headers={headers} />
+          <Legend fields={fields} />
         </SkeletonWrapper>
         <SkeletonWrapper
           isLoaded={isLoaded}
