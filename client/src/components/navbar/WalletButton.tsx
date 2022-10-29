@@ -4,21 +4,24 @@ import { connectors } from "../../wallets/connectors";
 import { MetaMaskConnector } from "wagmi/connectors/metaMask";
 import { WalletConnectConnector } from "wagmi/connectors/walletConnect";
 import { CoinbaseWalletConnector } from "wagmi/connectors/coinbaseWallet";
+import { useSignMessage } from "wagmi";
 
 interface Props {
+  sign: () => void;
   img: string;
-  onClose: any;
+  close: React.Dispatch<SetStateAction<boolean>>;
   wallet: MetaMaskConnector | WalletConnectConnector | CoinbaseWalletConnector;
   i: number;
   children: React.ReactNode;
 }
 
-export const WalletButton = ({ wallet, i, onClose, img }: Props) => {
+export const WalletButton = ({ sign, wallet, i, close, img }: Props) => {
   return (
     <button
       onClick={() => {
         connect({ connector: connectors[i] }).then(() => {
-          onClose(false);
+          close(false);
+          sign();
         });
       }}
       className='flex items-center flex-col shadow rounded-lg p-3'

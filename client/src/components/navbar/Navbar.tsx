@@ -22,6 +22,8 @@ import useOnClickOutside from "use-onclickoutside";
 export const Navbar = () => {
   const navigate = useNavigate();
 
+  const { signMessageAsync } = useSignMessage();
+
   const message = "login";
 
   // const { data, isError, isSuccess, signMessage } = useSignMessage({
@@ -54,6 +56,8 @@ export const Navbar = () => {
   //     navigate("/");
   //   }
   // }, [isDisconnected]);
+
+  const login = () => {};
 
   const { isConnected, address } = useAccount();
   const {
