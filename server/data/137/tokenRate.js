@@ -10,35 +10,35 @@ const {
   MultiCallService,
   GasLimitService,
 } = require('@1inch/multicall');
-const web3 = new Web3(process.env.ALCHEMY_ETHEREUM);
+const web3 = new Web3(process.env.ALCHEMY_POLYGON);
 const provider = new Web3ProviderConnector(
-  new Web3(process.env.ALCHEMY_ETHEREUM)
+  new Web3(process.env.ALCHEMY_POLYGON)
 );
 
-const DB = process.env.DATABASE.replace('<PASSWORD>', process.env.DB_PASSWORD);
-mongoose
-  .connect(DB, {
-    useNewUrlParser: true,
-  })
-  .then(() => {
-    console.log('connected');
-  });
+// const DB = process.env.DATABASE.replace('<PASSWORD>', process.env.DB_PASSWORD);
+// mongoose
+//   .connect(DB, {
+//     useNewUrlParser: true,
+//   })
+//   .then(() => {
+//     console.log('connected');
+//   });
 
-// const tokenList = require('../data/erc20TokenList');
+const tokens = require('./tokenList.json');
 const getRate = async () => {
-  const { OffChainOracleAbi } = require('./ABI');
+  const { OffChainOracleAbi } = require('../ABI');
 
-  const contractAddress = process.env.ETHEREUM_BALANCE_CONTRACT;
+  const contractAddress = process.env.POLYGON_BALANCE_CONTRACT;
   // const tokens = tokenList.tokens;
-  const offChainOracleAddress = process.env.ETHEREUM_OFF_CHAIN_ORACLE;
+  const offChainOracleAddress = process.env.POLYGON_OFF_CHAIN_ORACLE;
   const offChainOracleContract = new web3.eth.Contract(OffChainOracleAbi);
 
   const gasLimitService = new GasLimitService(provider, contractAddress);
   const multiCallService = new MultiCallService(provider, contractAddress);
 
   const balanceOfGasUsage = 30_000;
-  const tmp = await Crypto.find().select('-__v');
-  const tokens = JSON.parse(JSON.stringify(tmp));
+  // const tmp = await Crypto.find().select('-__v');
+  // const tokens = JSON.parse(JSON.stringify(tmp));
   const requests = tokens.map((token) => {
     return {
       to: offChainOracleAddress,
@@ -55,7 +55,7 @@ const getRate = async () => {
   const gasLimit = gasLimitService.calculateGasLimit();
 
   const params = {
-    maxChunkSize: 100,
+    maxChunkSize: 50,
     retriesLimit: 3,
     blockNumber: 'latest',
     gasBuffer: 3000000,
