@@ -1,6 +1,6 @@
-const AppError = require('../../../utils/appError');
-const catchAsync = require('../../../utils/catchAsync');
-const Crypto = require('../../../models/cryptoModel');
+const AppError = require('../utils/appError');
+const catchAsync = require('../utils/catchAsync');
+const Crypto = require('../models/cryptoModel');
 const Web3 = require('web3');
 const fs = require('fs');
 const { BigNumber } = require('ethers');
@@ -9,13 +9,33 @@ const {
   MultiCallService,
   GasLimitService,
 } = require('@1inch/multicall');
-const { ERC20ABI } = require('./ABI');
-const tokenList = require('./tokenList');
+const { ERC20ABI } = require('../data/ABI');
 
 exports.listTokens = catchAsync(async (req, res, next) => {
-  const tokens = await Crypto.find({ chainId: 10 })
-    .sort({ name: 1 })
-    .select('name symbol logoUrl');
+  const tokens = await Crypto.aggregate([
+    {
+      $match: {
+        chainId: +req.params.chainId,
+      },
+    },
+    {
+      $lookup: {
+        from: 'offers',
+        localField: '_id',
+        foreignField: 'crypto',
+        as: 'offers',
+      },
+    },
+    {
+      $project: {
+        name: '$name',
+        symbol: '$symbol',
+        logoUrl: '$logoUrl',
+        chainId: '$chainId',
+        numOfOffers: { $size: '$offers' },
+      },
+    },
+  ]).sort({ numOfOffers: -1, name: 1 });
   res.status(200).json({
     message: 'success',
     tokens,
@@ -23,8 +43,11 @@ exports.listTokens = catchAsync(async (req, res, next) => {
 });
 
 exports.getRate = catchAsync(async (req, res, next) => {
-  console.log(__dirname);
-  const prices = fs.readFileSync(`${__dirname}/tokenRate.json`, 'utf-8');
+  console.log(`${__dirname}/../data/${req.params.chainId}/tokenRate.json`);
+  const prices = fs.readFileSync(
+    `${__dirname}/../data/${req.params.chainId}/tokenRate.json`,
+    'utf-8'
+  );
   res.status(200).json({
     message: 'success',
     data: JSON.parse(prices),
@@ -45,21 +68,39 @@ exports.getTokenImg = catchAsync(async (req, res, next) => {
 });
 
 exports.getBalance = catchAsync(async (req, res, next) => {
-  const web3 = new Web3(process.env.ALCHEMY_OPTIMISM);
-  const provider = new Web3ProviderConnector(
-    new Web3(process.env.ALCHEMY_OPTIMISM)
-  );
+  console.log(req.params);
+  chainId = +req.params.chainId;
+  let web3;
+  let provider;
+  let balanceContract;
+  let tokenList;
+  if (chainId === 1) {
+    web3 = new Web3(process.env.ALCHEMY_ETHEREUM);
+    provider = new Web3ProviderConnector(
+      new Web3(process.env.ALCHEMY_ETHEREUM)
+    );
+    balanceContract = process.env.ETHEREUM_BALANCE_CONTRACT;
+    tokenList = require(`../data/${chainId}/tokenList`);
+  } else if (chainId === 10) {
+    web3 = new Web3(process.env.ALCHEMY_OPTIMISM);
+    provider = new Web3ProviderConnector(
+      new Web3(process.env.ALCHEMY_OPTIMISM)
+    );
+    balanceContract = process.env.OPTIMISM_BALANCE_CONTRACT;
+    tokenList = require(`../data/${chainId}/tokenList`);
+  } else if (chainId === 137) {
+    web3 = new Web3(process.env.ALCHEMY_POLYGON);
+    provider = new Web3ProviderConnector(new Web3(process.env.ALCHEMY_POLYGON));
+    balanceContract = process.env.POLYGON_BALANCE_CONTRACT;
+    tokenList = require(`../data/${chainId}/tokenList`);
+  } else {
+    return new AppError('Unsupported Chain', 400);
+  }
   if (!req.params.address) {
     return new AppError('Address is empty', 400);
   }
-  const gasLimitService = new GasLimitService(
-    provider,
-    process.env.OPTIMISM_BALANCE_CONTRACT
-  );
-  const multiCallService = new MultiCallService(
-    provider,
-    process.env.OPTIMISM_BALANCE_CONTRACT
-  );
+  const gasLimitService = new GasLimitService(provider, balanceContract);
+  const multiCallService = new MultiCallService(provider, balanceContract);
   const balanceOfGasUsage = 30_000;
   const requests = tokenList.map((el) => {
     return {
@@ -70,7 +111,6 @@ exports.getBalance = catchAsync(async (req, res, next) => {
       gas: balanceOfGasUsage,
     };
   });
-
   const gasLimit = gasLimitService.calculateGasLimit();
   const params = {
     maxChunkSize: 500,

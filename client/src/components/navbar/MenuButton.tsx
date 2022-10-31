@@ -21,7 +21,7 @@ export const MenuButton = ({ href, icon, onClick, caption }: Props) => {
     </a>
   ) : (
     <button
-      onClick={() => onClick()}
+      onClick={onClick}
       className='hover:bg-gray-200 transition-colors duration-500 rounded-md relative group p-2'
     >
       {icon}

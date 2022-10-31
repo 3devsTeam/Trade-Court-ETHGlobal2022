@@ -19,8 +19,8 @@ exports.joinRoom = catchAsync(async (req, res, next) => {
     return next(new AppError('You have already joined this room', 403));
   }
   if (
-    req.body.amount < offer.orderLimit[0] ||
-    req.body.amount > offer.orderLimit[1] ||
+    req.body.amount < offer.minLimit ||
+    req.body.amount > offer.maxLimit ||
     !req.body.amount
   ) {
     return next(new AppError('Amount is invalid', 400));

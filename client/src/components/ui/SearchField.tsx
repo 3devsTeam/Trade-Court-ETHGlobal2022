@@ -15,22 +15,24 @@ export const SearchField = ({
 }: ISearchField) => {
   return (
     <div
-      className={`group border-2 border-gray-200 pl-3 bg-transparent flex items-center justify-between rounded-[15px] hover:border-purple hover:bg-white transition-colors duration-300`}
+      className={`flex items-center justify-between rounded-[15px] relative`}
     >
-      <Loop />
+      <div className='absolute left-2'>
+        <Loop />
+      </div>
       <input
         value={searchTerm}
         onChange={(e) => setSearchTerm(e.target.value)}
         placeholder={placeholder}
-        className='w-full outline-none py-3 bg-transparent rounded-md font-bold ml-2'
+        className='w-full font-bold pl-8 pr-6 py-2 rounded-[15px] inputBorder'
       />
       {searchTerm.length ? (
-        <button onClick={() => setSearchTerm("")} className='cursor-pointer'>
-          <Cross />
-        </button>
-      ) : (
-        <></>
-      )}
+        <div className='absolute right-3'>
+          <button onClick={() => setSearchTerm("")} className='cursor-pointer'>
+            <Cross />
+          </button>
+        </div>
+      ) : null}
     </div>
   );
 };

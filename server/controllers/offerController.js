@@ -6,7 +6,7 @@ const catchAsync = require('../utils/catchAsync');
 exports.getAllOffers = catchAsync(async (req, res, next) => {
   const page = +req.query.page || 1;
   const limit = +req.query.limit || 10;
-  const amountReq = +req.query.search?.amount || 0;
+  const amountReq = +req.query.search?.amount;
   const fiatReq = req.query.search?.fiat || '63209e46243d0ba1ebc616f6';
   const cryptoReq = req.query.search?.crypto || '6303a23c229dc6a74b1b1191';
   const offerTypeReq = req.query.search?.offerType || 'buy';
@@ -65,7 +65,7 @@ exports.getAllOffers = catchAsync(async (req, res, next) => {
   });
 });
 
-exports.getOffer = catchAsync(async (req, res, next) => {
+exports.getRoom = catchAsync(async (req, res, next) => {
   let room = await Room.findById(req.params.id).populate([
     {
       path: 'offer',

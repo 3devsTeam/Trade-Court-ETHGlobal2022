@@ -12,6 +12,8 @@ export const useTokens = () => {
 
   const chainName = chain?.name.toLowerCase();
 
+  const { setCrypto } = useActions();
+
   const { address } = useAccount();
 
   const { data: tokens, isSuccess: successGetTokens } = useQuery(

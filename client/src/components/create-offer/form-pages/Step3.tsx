@@ -11,6 +11,7 @@ import { Button } from "../../ui/Button";
 import { SubmitButton } from "../../ui/SubmitButton";
 import { totalAmount } from "../../../utils/totalAmount";
 import { Wrapper } from "../Wrapper";
+import { Label } from "../../ui/Label";
 
 interface Props {
   handleCreateOffer: () => void;
@@ -24,9 +25,8 @@ export const Step3 = ({ handleCreateOffer }: Props) => {
     setComment,
     prevStep,
   } = useActions();
-  const { fiat, offerComment, minLimit, maxLimit } = useTypedSelector(
-    (state) => state.offerReducer
-  );
+  const { fiat, offerComment, minLimit, maxLimit, quantity, unitPrice } =
+    useTypedSelector((state) => state.offerReducer);
   const { ticker } = fiat;
 
   const checkStep3 = () => {
@@ -35,17 +35,16 @@ export const Step3 = ({ handleCreateOffer }: Props) => {
   };
 
   return (
-    <form className='flex flex-col gap-5'>
+    <form>
       <Wrapper>
-        <TimeLimit
-          onAction={setTimeLimit}
-          label={"Order Time Limit"}
-          times={["15", "30", "45", "60", "120"]}
-        />
-        <label>
-          <span className={"text-lg font-bold mb-1 ml-[10px]"}>
-            {"Order Price Limit"}
-          </span>
+        <div className='flex flex-col gap-5'>
+          <TimeLimit
+            onAction={setTimeLimit}
+            label={"Order Time Limit"}
+            times={["15", "30", "45", "60", "120"]}
+          />
+
+          <Label label={"Order Price Limit"} />
           <div className={"flex justify-between gap-1"}>
             <Input
               value={minLimit}
@@ -55,32 +54,34 @@ export const Step3 = ({ handleCreateOffer }: Props) => {
             />
             <Input
               value={maxLimit}
-              maxValue={totalAmount()}
+              maxValue={parseInt((quantity * unitPrice).toString())}
               onAction={setMaxPriceLimit}
               placeholder={"Max"}
               element={ticker}
             />
           </div>
-        </label>
 
-        <TextArea
-          value={offerComment ? offerComment : ""}
-          onAction={setComment}
-          label={"Comment"}
-          placeholder={"Enter comment"}
-        />
-      </Wrapper>
-
-      <Wrapper>
-        <div className='flex gap-5'>
-          <Button onClick={prevStep} name='Back' />
-          <Button
-            disabled={checkStep3()}
-            onClick={handleCreateOffer}
-            name='Create'
+          <TextArea
+            value={offerComment ? offerComment : ""}
+            onAction={setComment}
+            label={"Comment"}
+            placeholder={"Enter comment"}
           />
         </div>
       </Wrapper>
+
+      <div className='mt-5'>
+        <Wrapper>
+          <div className='flex gap-5'>
+            <Button onClick={prevStep} name='Back' />
+            <Button
+              disabled={checkStep3()}
+              onClick={handleCreateOffer}
+              name='Create'
+            />
+          </div>
+        </Wrapper>
+      </div>
     </form>
   );
 };

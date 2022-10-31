@@ -26,7 +26,7 @@ const provider = new Web3ProviderConnector(
 
 const tokens = require('./tokenList.json');
 const getRate = async () => {
-  const { OffChainOracleAbi } = require('./ABI');
+  const { OffChainOracleAbi } = require('../ABI');
 
   const contractAddress = process.env.OPTIMISM_BALANCE_CONTRACT;
   // const tokens = tokenList.tokens;

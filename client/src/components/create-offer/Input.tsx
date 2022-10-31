@@ -1,4 +1,5 @@
 import React from "react";
+import { Label } from "../ui/Label";
 
 export interface IInput {
   onAction: any;
@@ -20,23 +21,27 @@ export const Input = ({
   element,
 }: IInput) => {
   return (
-    <label htmlFor={label}>
-      <span className={"text-lg font-bold mb-1 ml-[10px]"}>{label}</span>
-      <div className={`flex items-center h-[60px] elementBorder`}>
+    <div className='relative'>
+      <Label label={label!} />
+      <div className='flex items-center'>
         <input
           name={label}
           autoComplete={"off"}
           autoCorrect={"off"}
           spellCheck={false}
           onChange={(e) => onAction(e.target.value)}
-          className={`outline-none p-[10px] rounded-[15px] w-full h-full bg-transparent font-medium`}
+          className={`rounded-[15px] w-full bg-transparent p-3 inputBorder`}
           placeholder={placeholder}
           value={value ? value : ""}
         />
 
-        <div className='flex space-x-2 pr-[10px]'>
+        <div
+          className={`absolute right-3 ${
+            maxValue ? "flex space-x-2 items-center" : null
+          }`}
+        >
           {maxValue ? (
-            <div className='flex space-x-2'>
+            <>
               <button
                 type='button'
                 onClick={() => onAction(maxValue)}
@@ -44,13 +49,12 @@ export const Input = ({
               >
                 Max
               </button>
-
               <span className={"text-gray-300"}>|</span>
-            </div>
+            </>
           ) : null}
           {element && <div className={"font-bold"}>{element}</div>}
         </div>
       </div>
-    </label>
+    </div>
   );
 };

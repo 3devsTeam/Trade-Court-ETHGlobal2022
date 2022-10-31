@@ -52,39 +52,41 @@ export const Step1 = ({ tokens, allFiat }: IStep1) => {
   };
 
   return (
-    <form className='flex flex-col gap-5'>
+    <form>
       <Wrapper>
-        <ModalInput
-          symbol={symbol}
-          fullName={cryptoName}
-          image={cryptoImage}
-          onOpen={() => setIsOpen(!isOpen)}
-          label={"Crypto"}
-        />
-        <Dropdown
-          value={ticker}
-          fullName={fiatName}
-          image={fiatImage}
-          onAction={setFiat}
-          data={allFiat as IFiat[]}
-          label={"Fiat"}
-        />
-        <Input
-          onAction={setUnitPrice}
-          placeholder={"0"}
-          label={"Unit Price"}
-          element={ticker}
-          value={unitPrice}
-        />
+        <div className='flex flex-col gap-5'>
+          <ModalInput
+            symbol={symbol}
+            fullName={cryptoName}
+            image={cryptoImage}
+            onOpen={() => setIsOpen(!isOpen)}
+            label={"Crypto"}
+          />
+          <Dropdown
+            value={ticker}
+            fullName={fiatName}
+            image={fiatImage}
+            onAction={setFiat}
+            data={allFiat as IFiat[]}
+            label={"Fiat"}
+          />
+          <Input
+            onAction={setUnitPrice}
+            placeholder={"0"}
+            label={"Unit Price"}
+            element={ticker}
+            value={unitPrice}
+          />
 
-        <Input
-          maxValue={tokenAmount}
-          onAction={setQuantity}
-          placeholder={"0"}
-          label={"Quantity"}
-          element={symbol}
-          value={quantity}
-        />
+          <Input
+            maxValue={tokenAmount}
+            onAction={setQuantity}
+            placeholder={"0"}
+            label={"Quantity"}
+            element={symbol}
+            value={quantity}
+          />
+        </div>
 
         <Modal
           isOpen={isOpen}
@@ -103,9 +105,11 @@ export const Step1 = ({ tokens, allFiat }: IStep1) => {
         </Modal>
       </Wrapper>
 
-      <Wrapper>
-        <Button name='Next' onClick={nextStep} disabled={!checkStep1()} />
-      </Wrapper>
+      <div className='mt-5'>
+        <Wrapper>
+          <Button name='Next' onClick={nextStep} disabled={!checkStep1()} />
+        </Wrapper>
+      </div>
     </form>
   );
 };

@@ -12,6 +12,7 @@ import { GoToLinkIcon } from "../ui/icons/GoToLinkIcon";
 import { DisconnectIcon } from "../ui/icons/DisconnectIcon";
 import { AvatarIcon } from "../ui/icons/AvatarIcon";
 import { truncateAddress } from "../../utils/truncateAddress";
+import { UserService } from "../../api/user.services";
 
 interface Props {
   address: string;
@@ -35,10 +36,11 @@ export const Menu = ({
     navigator.clipboard.writeText(copyText);
   };
 
-  const disconnectHandler = () => {
+  const logout = () => {
     disconnect();
     onClose(false);
     navigate("/");
+    UserService.logout();
   };
 
   const navLinks = [
@@ -77,7 +79,7 @@ export const Menu = ({
     },
     {
       caption: "Disconnect",
-      onClick: () => disconnectHandler(),
+      onClick: logout,
       icon: <DisconnectIcon />,
       captionColor: "bg-red-500",
     },

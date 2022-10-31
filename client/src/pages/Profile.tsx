@@ -16,6 +16,8 @@ const Profile = () => {
     }
   );
 
+  console.log(data);
+
   const fields = [
     "ID",
     "Type",
@@ -27,9 +29,9 @@ const Profile = () => {
 
   return (
     <>
-      <Legend fields={fields} />
+      {/* <Legend fields={fields} />
 
-      <main className={"flex flex-col gap-5 mt-[20px]"}>
+      <section className={"flex flex-col gap-5 mt-[20px]"}>
         {isLoading ? (
           <p>loading</p>
         ) : isError ? (
@@ -41,7 +43,7 @@ const Profile = () => {
             return <ProfileOffer key={offer._id} {...offer} />;
           })
         ) : null}
-      </main>
+      </section> */}
     </>
   );
 };

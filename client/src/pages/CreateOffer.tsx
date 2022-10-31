@@ -18,7 +18,7 @@ import React, { useEffect, useState } from "react";
 import { useTokens } from "../hooks/useTokens";
 import { useQuery } from "wagmi";
 import { SkeletonWrapper } from "../components/ui/SkeletonWrapper";
-import { IFiat, IOffer, IRegion } from "../models/models";
+import { IFiat, IOffer, IPayment, IRegion } from "../models/models";
 import { ErrorBoundary } from "react-error-boundary";
 import { FiatServices } from "../api/fiat.services";
 import { useFiat } from "../hooks/useFiat";
@@ -100,17 +100,27 @@ const CreateOffer = () => {
     // writeAsync?.()
     //   .then(() => {
     OfferService.create({
-      roomId,
       offerType: "buy",
+      payMethods: payMethods.map((payment: IPayment) => {
+        const { paymentMethod, cardNumber, region, paymentDescription } =
+          payment;
+
+        return {
+          bank: paymentMethod,
+          cardNumber,
+          region,
+          paymentDescription,
+        };
+      }),
       fiat: fiat._id,
+      roomId,
       unitPrice,
-      amount: multiply(unitPrice, quantity),
+      amount: unitPrice * quantity,
       quantity,
       minLimit,
       maxLimit,
       crypto: crypto._id,
       offerComment,
-      payMethods: payMethods,
     })
       .then(
         (data) => {
