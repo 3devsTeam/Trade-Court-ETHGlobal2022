@@ -1,3 +1,4 @@
+import { IOffer } from "../models/models";
 import { api } from "./axios";
 
 export const OfferService = {

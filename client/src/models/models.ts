@@ -46,7 +46,7 @@ export interface IForm {
 }
 
 export interface IPayment {
-  _id: string;
+  id: string;
   cardNumber: string;
   paymentDescription: string;
   paymentMethod: IBank;

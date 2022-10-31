@@ -24,7 +24,7 @@ export const SearchField = ({
         value={searchTerm}
         onChange={(e) => setSearchTerm(e.target.value)}
         placeholder={placeholder}
-        className='border-2 border-gray-300 w-full transition-colors duration-300 font-bold pl-8 pr-6 py-2 rounded-[15px] focus:outline-none focus:border-purple'
+        className='w-full font-bold pl-8 pr-6 py-2 rounded-[15px] inputBorder'
       />
       {searchTerm.length ? (
         <div className='absolute right-3'>
