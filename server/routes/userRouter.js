@@ -10,6 +10,7 @@ router.get('/logout', authController.logout);
 
 router.use(authController.protect);
 router.route('/offers').get(userController.getMyOffers);
+router.route('/rooms').get(userController.getMyRooms);
 router.route('/me').get(userController.getMe);
 
 router.use(authController.accessOnly('admin'));
