@@ -142,9 +142,7 @@ export const Home = () => {
 
       <main className='relative'>
         <SkeletonWrapper height={30} isLoaded={isLoaded} margin={"20px"}>
-          <div className='flex items-center font-bold px-4'>
-            {fields.map((field) => field)}
-          </div>
+          <Legend fields={fields} />
         </SkeletonWrapper>
         <SkeletonWrapper
           isLoaded={isLoaded}
