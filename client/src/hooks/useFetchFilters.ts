@@ -6,6 +6,8 @@ import { CryptoServices } from "../api/crypto.services";
 export const useFetchFilters = () => {
   const { chain } = useNetwork();
 
+  const chainId = chain?.id.toString();
+
   const {
     data: fiat,
     status: fiatStatus,
@@ -20,7 +22,7 @@ export const useFetchFilters = () => {
     error: cryptoError,
   } = useQuery(
     ["get crypto by chain"],
-    () => CryptoServices.getByChain(chain!.name),
+    () => CryptoServices.getByChain(chainId!),
     {
       select: (data) => data.tokens,
     }

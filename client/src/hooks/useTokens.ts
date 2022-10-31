@@ -10,15 +10,15 @@ import { Preview } from "../components/create-offer/Preview";
 export const useTokens = () => {
   const { chain } = useNetwork();
 
+  // const chainName = chain?.name.toLowerCase();
+  const chainId = chain?.id.toString();
   const chainName = chain?.name.toLowerCase();
-
-  const { setCrypto } = useActions();
 
   const { address } = useAccount();
 
   const { data: tokens, isSuccess: successGetTokens } = useQuery(
-    [`get ${chainName} tokens`],
-    () => TokenService.getTokens(address!, chainName!),
+    [`get ${chainId} tokens`],
+    () => TokenService.getTokens(address!, chainId!),
     {
       select: (data) => data.data.data,
       refetchOnWindowFocus: false,
@@ -27,8 +27,8 @@ export const useTokens = () => {
   );
 
   const { data: exchangeRate, isSuccess: successGetExchangeTokens } = useQuery(
-    [`get exchange ${chainName} token rate`],
-    () => TokenService.getExchangeRate(chainName!),
+    [`get exchange ${chainId} token rate`],
+    () => TokenService.getExchangeRate(chainId!),
     {
       select: (data) => data.data.data,
       refetchInterval: 60000,

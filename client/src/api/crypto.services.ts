@@ -1,8 +1,8 @@
 import { api } from "./axios";
 
 export const CryptoServices = {
-  async getByChain(chain: string) {
-    const { data } = await api.get(`/api/balance/${chain}/list`);
+  async getByChain(chainId: string) {
+    const { data } = await api.get(`/api/balance/list/${chainId}`);
     return data;
   },
 };
