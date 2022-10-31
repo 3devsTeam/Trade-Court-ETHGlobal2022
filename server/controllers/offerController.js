@@ -65,7 +65,7 @@ exports.getAllOffers = catchAsync(async (req, res, next) => {
   });
 });
 
-exports.getOffer = catchAsync(async (req, res, next) => {
+exports.getRoom = catchAsync(async (req, res, next) => {
   let room = await Room.findById(req.params.id).populate([
     {
       path: 'offer',
