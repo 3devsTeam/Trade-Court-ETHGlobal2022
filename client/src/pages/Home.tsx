@@ -72,11 +72,11 @@ export const Home = () => {
   });
 
   const fields = [
-    "Maker Address",
-    "Avaliable / Limit",
-    "Unit Price",
-    "Payment Methods",
-    "Buy / Sell",
+    <div className='flex-1'>Maker</div>,
+    <div className='flex-1'>Price</div>,
+    <div className='flex-[2_0]'>Avaliable / Limit</div>,
+    <div className='flex-1'>Payment</div>,
+    <div className='flex-1'>Trade</div>,
   ];
 
   return (
@@ -142,7 +142,9 @@ export const Home = () => {
 
       <main className='relative'>
         <SkeletonWrapper height={30} isLoaded={isLoaded} margin={"20px"}>
-          <Legend fields={fields} />
+          <div className='flex items-center font-bold px-4'>
+            {fields.map((field) => field)}
+          </div>
         </SkeletonWrapper>
         <SkeletonWrapper
           isLoaded={isLoaded}

@@ -43,7 +43,7 @@ export const Dropdown = ({
         type='button'
         onClick={() => setIsOpen(!isOpen)}
         className={
-          "flex items-center justify-between cursor-pointer w-full inputBorder rounded-[15px] p-3"
+          "flex items-center justify-between cursor-pointer w-full inputBorder rounded-[15px] p-2"
         }
       >
         <div className={"flex items-center space-x-2"}>

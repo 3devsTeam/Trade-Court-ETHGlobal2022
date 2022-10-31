@@ -25,7 +25,7 @@ export const ModalInput = ({
       <button
         type='button'
         onClick={() => onOpen()}
-        className='flex items-center space-x-2 w-full p-3 inputBorder rounded-[15px]'
+        className='flex items-center space-x-2 w-full p-2 inputBorder rounded-[15px]'
       >
         <img
           className={"w-8 h-8 rounded-[50%] shadow-customDark object-cover"}

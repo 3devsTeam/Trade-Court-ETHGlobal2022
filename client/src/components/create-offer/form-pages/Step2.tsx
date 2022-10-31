@@ -92,7 +92,7 @@ export const Step2 = () => {
           {payMethods.length ? (
             <div>
               <Label label={"Payment Methods"} />
-              <div className={"flex flex-col gap-2"}>
+              <div className={"flex flex-col gap-3"}>
                 {payMethods.map((p) => {
                   return (
                     <Payment
@@ -106,9 +106,7 @@ export const Step2 = () => {
                 })}
               </div>
             </div>
-          ) : (
-            <></>
-          )}
+          ) : null}
 
           <div>
             <Label label={"Add Payment Method"} />

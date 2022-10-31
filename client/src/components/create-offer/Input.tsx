@@ -30,7 +30,7 @@ export const Input = ({
           autoCorrect={"off"}
           spellCheck={false}
           onChange={(e) => onAction(e.target.value)}
-          className={`rounded-[15px] w-full bg-transparent p-4 inputBorder`}
+          className={`rounded-[15px] w-full bg-transparent p-3 inputBorder`}
           placeholder={placeholder}
           value={value ? value : ""}
         />

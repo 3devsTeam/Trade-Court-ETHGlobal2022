@@ -11,6 +11,7 @@ import { Button } from "../../ui/Button";
 import { SubmitButton } from "../../ui/SubmitButton";
 import { totalAmount } from "../../../utils/totalAmount";
 import { Wrapper } from "../Wrapper";
+import { Label } from "../../ui/Label";
 
 interface Props {
   handleCreateOffer: () => void;
@@ -24,9 +25,8 @@ export const Step3 = ({ handleCreateOffer }: Props) => {
     setComment,
     prevStep,
   } = useActions();
-  const { fiat, offerComment, minLimit, maxLimit } = useTypedSelector(
-    (state) => state.offerReducer
-  );
+  const { fiat, offerComment, minLimit, maxLimit, quantity, unitPrice } =
+    useTypedSelector((state) => state.offerReducer);
   const { ticker } = fiat;
 
   const checkStep3 = () => {
@@ -43,26 +43,23 @@ export const Step3 = ({ handleCreateOffer }: Props) => {
             label={"Order Time Limit"}
             times={["15", "30", "45", "60", "120"]}
           />
-          <label>
-            <span className={"text-lg font-bold mb-1 ml-[10px]"}>
-              {"Order Price Limit"}
-            </span>
-            <div className={"flex justify-between gap-1"}>
-              <Input
-                value={minLimit}
-                onAction={setMinPriceLimit}
-                placeholder={"Min"}
-                element={ticker}
-              />
-              <Input
-                value={maxLimit}
-                maxValue={totalAmount()}
-                onAction={setMaxPriceLimit}
-                placeholder={"Max"}
-                element={ticker}
-              />
-            </div>
-          </label>
+
+          <Label label={"Order Price Limit"} />
+          <div className={"flex justify-between gap-1"}>
+            <Input
+              value={minLimit}
+              onAction={setMinPriceLimit}
+              placeholder={"Min"}
+              element={ticker}
+            />
+            <Input
+              value={maxLimit}
+              maxValue={parseInt((quantity * unitPrice).toString())}
+              onAction={setMaxPriceLimit}
+              placeholder={"Max"}
+              element={ticker}
+            />
+          </div>
 
           <TextArea
             value={offerComment ? offerComment : ""}

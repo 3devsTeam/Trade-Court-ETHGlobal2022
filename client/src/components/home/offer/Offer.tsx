@@ -23,60 +23,60 @@ export const Offer = forwardRef<any, any>((offer: IOffer, ref) => {
   const [openOfferModal, setOpenOfferModal] = useState(false);
 
   const offerBody = (
-    <>
-      <div className='shadow-customDark bg-white grid text-sm grid-cols-offer gap-5 items-center h-[100px] w-full px-[20px] rounded-[20px]'>
-        <div className='text-md'>
-          <div>
-            <p className='font-bold'>{truncateAddress(address)}</p>
-          </div>
+    <div className='flex bg-white py-6 px-4 shadow-customDark w-full rounded-[20px]'>
+      <div className='flex items-center w-full'>
+        <div className='flex-1'>
+          <span className='font-bold text-purple'>
+            {truncateAddress(address)}
+          </span>
         </div>
-        <div>
+
+        <div className='flex-1'>
+          <span className='font-bold'>
+            {unitPrice} <span className='font-normal'>{ticker}</span>
+          </span>
+        </div>
+
+        <div className='flex-[2_0]'>
           <div>
             <div>
-              <p className={"text-sm"}>
-                <span className={"font-normal"}>Available: </span>
+              <span>
+                Available:{" "}
                 <span className={"font-bold"}>
                   {parseFloat(quantity.toString()).toFixed(4)} {symbol}
                 </span>
-              </p>
+              </span>
             </div>
             <div>
-              <p className={"text-sm"}>
-                <span className={"font-normal"}>Limit: </span>
+              <span>
+                Limit:{" "}
                 <span className={"font-bold"}>
                   {minLimit}-{maxLimit} {ticker}
                 </span>
-              </p>
+              </span>
             </div>
           </div>
         </div>
-        <div className='text-md'>
-          <p className={""}>
-            <span className={"font-bold text-lg"}>{unitPrice}</span>
-            <span className={"text-sm text-gray font-bold"}> {ticker}</span>
-          </p>
+
+        <div className='flex-1'>
+          {payments.map((payment: string, i: number) => (
+            <div key={i} className={"text-sm font-bold"}>
+              {payment}
+            </div>
+          ))}
         </div>
-        <div>
-          <div>
-            {payments.map((p: string, i: number) => (
-              <div key={i} className={"text-sm font-bold"}>
-                {p}
-              </div>
-            ))}
-          </div>
-        </div>
-        <div>
-          <div>
-            <button
-              onClick={() => setOpenOfferModal(!openOfferModal)}
-              className='bg-green text-lg text-white rounded-[10px] font-bold p-[6px]
+
+        <div className='flex-1'>
+          <button
+            onClick={() => setOpenOfferModal(!openOfferModal)}
+            className='bg-green text-lg text-white rounded-[10px] font-bold p-[6px]
             transition-all duration-500 hover:bg-lightGreen w-full'
-            >
-              <span className={"text-lg"}>Buy {symbol}</span>
-            </button>
-          </div>
+          >
+            Buy {symbol}
+          </button>
         </div>
       </div>
+
       <Modal
         isOpen={openOfferModal}
         header={"Transaction"}
@@ -84,7 +84,7 @@ export const Offer = forwardRef<any, any>((offer: IOffer, ref) => {
       >
         <OfferModal close={() => setOpenOfferModal(false)} offer={offer} />
       </Modal>
-    </>
+    </div>
   );
 
   return ref ? (

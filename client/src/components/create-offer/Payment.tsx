@@ -7,10 +7,11 @@ import { useTypedSelector } from "../../hooks/useTypedSelector";
 import { IPayment } from "../../models/models";
 
 interface IPaymentButton {
+  id: string;
   payment: IPayment;
   setActive: any;
   active: string | undefined;
-  deletePayment: any;
+  deletePayment: (id: string) => void;
 }
 
 export const Payment = ({
@@ -24,19 +25,19 @@ export const Payment = ({
     <button
       type='button'
       onClick={() => setActive(payment)}
-      className={`flex items-center w-full p-3 rounded-[15px] inputBorder relative`}
+      className={`flex justify-between items-center p-2 rounded-[15px] inputBorder w-full`}
     >
-      <div className={`flex space-x-2 items-center`}>
+      <div className='flex items-center space-x-2'>
         <img
-          className={"w-8 h-8 rounded-full border border-purple object-cover"}
+          className={"w-8 h-8 rounded-full object-cover"}
           src={paymentMethod.logoUrl}
           alt={""}
         />
-        <span className={"font-bold"}>{sliceCardNumber(cardNumber)}</span>
+        <span>{paymentMethod.name}</span>
+        <span className={"font-bold"}>{cardNumber}</span>
       </div>
-      <div className='absolute right-3'>
-        <CloseButton onAction={() => deletePayment(id)} />
-      </div>
+
+      <CloseButton onAction={() => deletePayment(id)} />
     </button>
   );
 };
