@@ -1,6 +1,6 @@
 import React from 'react'
 import { useTypedSelector } from '../../hooks/useTypedSelector'
-import { IOffer } from '../../models/models'
+import { IOffer } from '../../interfaces/models'
 import { SuccessPage } from './SuccessPage'
 import { WarningMessage } from './WarningMessage'
 
@@ -45,8 +45,7 @@ export const Main = ({
                           activePayMethod?.bank?._id === p.bank._id
                             ? 'border-purple scale-105 border-[3px] transition-transform duration-300'
                             : ''
-                        } cursor-pointer px-[10px] py-[15px] h-[60px] rounded-[25px] border-2 border-gray flex gap-1 items-center min-w-[180px] bg-white`}
-                      >
+                        } cursor-pointer px-[10px] py-[15px] h-[60px] rounded-[25px] border-2 border-gray flex gap-1 items-center min-w-[180px] bg-white`}>
                         <img
                           className={`w-8 h-8 rounded-[50%] border-2 ${
                             activePayMethod?.bank?._id === p.bank._id
@@ -127,8 +126,7 @@ export const Main = ({
                           activePayMethod?.bank?._id === p.bank._id
                             ? 'border-purple scale-105 border-[3px] transition-transform duration-300'
                             : ''
-                        } cursor-pointer px-[10px] py-[15px] h-[60px] rounded-[25px] border-2 border-gray flex gap-1 items-center min-w-[180px] bg-white`}
-                      >
+                        } cursor-pointer px-[10px] py-[15px] h-[60px] rounded-[25px] border-2 border-gray flex gap-1 items-center min-w-[180px] bg-white`}>
                         <img
                           className={`w-8 h-8 rounded-[50%] border-2 ${
                             activePayMethod?.bank?._id === p.bank._id

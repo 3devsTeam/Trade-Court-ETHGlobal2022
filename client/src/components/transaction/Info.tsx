@@ -1,5 +1,5 @@
 import React from 'react'
-import { IOffer } from '../../models/models'
+import { IOffer } from '../../interfaces/models'
 import { round } from '../../utils/round'
 
 export const Info = ({ fiat, crypto, amount, unitPrice, quantity, room }: IOffer) => {
@@ -9,8 +9,7 @@ export const Info = ({ fiat, crypto, amount, unitPrice, quantity, room }: IOffer
     <div
       className={
         'bg-white flex justify-between h-[100px] shadow-lg rounded-[20px] items-center px-[20px] py-[12px]'
-      }
-    >
+      }>
       <div className={'flex flex-col'}>
         <div>
           <span className={'text-lg font-bold'}>You send </span>
