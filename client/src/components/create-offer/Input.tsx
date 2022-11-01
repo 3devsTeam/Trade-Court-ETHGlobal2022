@@ -1,14 +1,14 @@
-import React from "react";
-import { Label } from "../ui/Label";
+import React from 'react'
+import { Label } from '../ui/Label'
 
 export interface IInput {
-  onAction: any;
-  label?: string;
-  placeholder: string;
-  value: string | number;
-  element?: any;
-  maxValue?: any;
-  error?: any;
+  onAction: any
+  label?: string
+  placeholder: string
+  value: string | number
+  element?: any
+  maxValue?: any
+  error?: any
 }
 
 export const Input = ({
@@ -18,43 +18,39 @@ export const Input = ({
   label,
   placeholder,
   value,
-  element,
+  element
 }: IInput) => {
   return (
-    <div className='relative'>
+    <div className="relative">
       <Label label={label!} />
-      <div className='flex items-center'>
+      <div className="flex items-center">
         <input
           name={label}
-          autoComplete={"off"}
-          autoCorrect={"off"}
+          autoComplete={'off'}
+          autoCorrect={'off'}
           spellCheck={false}
           onChange={(e) => onAction(e.target.value)}
           className={`rounded-[15px] w-full bg-transparent p-3 inputBorder`}
           placeholder={placeholder}
-          value={value ? value : ""}
+          value={value ? value : ''}
         />
 
-        <div
-          className={`absolute right-3 ${
-            maxValue ? "flex space-x-2 items-center" : null
-          }`}
-        >
+        <div className={`absolute right-3 ${maxValue ? 'flex space-x-2 items-center' : null}`}>
           {maxValue ? (
             <>
               <button
-                type='button'
+                type="button"
                 onClick={() => onAction(maxValue)}
-                className={"font-bold text-purple"}
+                className={'font-bold text-purple'}
               >
                 Max
               </button>
-              <span className={"text-gray-300"}>|</span>
+              <span className={'text-gray-300'}>|</span>
             </>
           ) : null}
-          {element && <div className={"font-bold"}>{element}</div>}
+          {element && <div className={'font-bold'}>{element}</div>}
         </div>
       </div>
     </div>
-  );
-};
+  )
+}

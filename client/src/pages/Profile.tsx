@@ -1,37 +1,38 @@
-import { useQuery } from "@tanstack/react-query";
-import React, { useEffect, useState } from "react";
-import { OfferService } from "../api/offer.services";
-import { IOffer } from "../models/models";
-import { off } from "process";
-import { ProfileOffer } from "../components/profile/ProfileOffer";
-import { useAccount, useEnsName, useEnsAvatar } from "wagmi";
-import { Legend } from "../components/home/Legend";
+import { useQuery } from '@tanstack/react-query'
+import React, { useEffect, useState } from 'react'
+import { Offer } from '../components/profile/Offer'
+import { useAccount, useEnsName, useEnsAvatar } from 'wagmi'
+import { Legend } from '../components/home/Legend'
+import { UserService } from '../api/user.services'
+import { Divider } from '../components/profile/Divider'
+import { IProfileOffer } from '../interfaces/IProfileOffer'
 
 const Profile = () => {
   const { data, isSuccess, isLoading, isError } = useQuery(
-    ["get user offers"],
-    () => OfferService.getUserOffers(),
+    ['get user offers'],
+    () => UserService.getOffers(),
     {
-      select: (data) => data.data.user,
+      select: (data) => data.data.offers
     }
-  );
+  )
 
-  console.log(data);
+  console.log(data)
 
   const fields = [
-    "ID",
-    "Type",
-    "Pair",
-    "Unit Price",
-    "Avalaible/Limit",
-    "Pay Methods",
-  ];
+    <div className="flex-[1.5_0]">Ad number</div>,
+    <div className="flex-[0.5_0]">Type</div>,
+    <div className="flex-1">Price</div>,
+    <div className="flex-1">Pair</div>,
+    <div className="flex-1">Pay Methods</div>,
+    <div className="flex-1">Info</div>
+  ]
 
   return (
     <>
-      {/* <Legend fields={fields} />
+      <Legend fields={fields} />
 
-      <section className={"flex flex-col gap-5 mt-[20px]"}>
+      <Divider name="All offers" />
+      <section className={'flex flex-col gap-5 mt-[20px]'}>
         {isLoading ? (
           <p>loading</p>
         ) : isError ? (
@@ -39,13 +40,13 @@ const Profile = () => {
         ) : data?.length === 0 ? (
           <p>no offers</p>
         ) : isSuccess ? (
-          data?.map((offer: IOffer) => {
-            return <ProfileOffer key={offer._id} {...offer} />;
+          data?.map((offer: IProfileOffer) => {
+            return <Offer key={offer._id} {...offer} />
           })
         ) : null}
-      </section> */}
+      </section>
     </>
-  );
-};
+  )
+}
 
-export default Profile;
+export default Profile

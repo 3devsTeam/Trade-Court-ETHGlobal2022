@@ -1,10 +1,10 @@
-import React from "react";
-import { Cross } from "../ui/icons/Cross";
+import React from 'react'
+import { Cross } from '../ui/icons/Cross'
 
 interface IButtonOffer {
-  onAction: any;
-  image: React.ReactNode;
-  bgColor: string;
+  onAction: any
+  image: React.ReactNode
+  bgColor: string
 }
 
 export const ButtonOffer = ({ onAction, image, bgColor }: IButtonOffer) => {
@@ -15,5 +15,5 @@ export const ButtonOffer = ({ onAction, image, bgColor }: IButtonOffer) => {
     >
       {image}
     </button>
-  );
-};
+  )
+}

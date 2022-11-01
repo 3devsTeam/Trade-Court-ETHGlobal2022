@@ -1,19 +1,14 @@
-import React from "react";
-import { Label } from "../ui/Label";
+import React from 'react'
+import { Label } from '../ui/Label'
 
 interface ITextArea {
-  value: string | undefined;
-  onAction: any;
-  label: string;
-  placeholder: string;
+  value: string | undefined
+  onAction: any
+  label: string
+  placeholder: string
 }
 
-export const TextArea = ({
-  value,
-  label,
-  placeholder,
-  onAction,
-}: ITextArea) => {
+export const TextArea = ({ value, label, placeholder, onAction }: ITextArea) => {
   return (
     <div>
       <Label label={label} />
@@ -26,5 +21,5 @@ export const TextArea = ({
         className={`p-3 w-full min-h-[200px] rounded-[15px] inputBorder`}
       />
     </div>
-  );
-};
+  )
+}

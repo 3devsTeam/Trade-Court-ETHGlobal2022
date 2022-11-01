@@ -1,23 +1,26 @@
-import { createSlice } from "@reduxjs/toolkit";
-import { IForm } from "../models/models";
+import { createSlice } from '@reduxjs/toolkit'
+
+interface IForm {
+  step: number
+}
 
 const initialState: IForm = {
-  step: 1,
-};
+  step: 1
+}
 
 const formSlice = createSlice({
-  name: "form-slice",
+  name: 'form-slice',
   initialState,
   reducers: {
     nextStep: (state) => {
-      state.step++;
+      state.step++
     },
     prevStep: (state) => {
-      state.step--;
+      state.step--
     },
-    resetStep: () => initialState,
-  },
-});
+    resetStep: () => initialState
+  }
+})
 
-export const formReducer = formSlice.reducer;
-export const formActions = formSlice.actions;
+export const formReducer = formSlice.reducer
+export const formActions = formSlice.actions

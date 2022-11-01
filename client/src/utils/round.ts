@@ -1,3 +1,3 @@
-export const round = (n: number, decimals: number ) => {
-    return n.toFixed(decimals)
+export const round = (n: number, decimals: number) => {
+  return n.toFixed(decimals)
 }
