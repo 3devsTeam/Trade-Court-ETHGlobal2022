@@ -5,7 +5,7 @@ import { Cross } from '../ui/icons/Cross'
 import { OfferService } from '../../api/offer.services'
 import { Label } from './Label'
 import { useNavigate } from 'react-router-dom'
-import { IProfileOffer } from '../../interfaces/IProfileOffer'
+import { IProfileOffer } from '../../types/interfaces/profile-offer.interface'
 
 export const Offer = ({
   _id,

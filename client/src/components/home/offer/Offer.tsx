@@ -2,7 +2,7 @@ import React, { forwardRef, useRef, useState } from 'react'
 import { truncateAddress } from '../../../utils/truncateAddress'
 import { OfferModal } from './OfferModal'
 import { Modal } from '../../ui/Modal'
-import { IOffer } from '../../../interfaces/IOffer'
+import { IOffer } from '../../../types/interfaces/offer.interface'
 
 export const Offer = forwardRef<any, any>((offer: IOffer, ref) => {
   const { _id, crypto, fiat, maker, minLimit, maxLimit, payMethods, quantity, unitPrice } = offer

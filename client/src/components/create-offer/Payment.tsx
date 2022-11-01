@@ -1,20 +1,16 @@
-import React, { useState } from 'react'
-import { sliceCardNumber } from '../../utils/sliceCardNumber'
-import { useActions } from '../../hooks/useActions'
-import { useSelector } from 'react-redux'
+import React, {Dispatch, SetStateAction, useState} from 'react'
 import { CloseButton } from '../ui/CloseButton'
-import { useTypedSelector } from '../../hooks/useTypedSelector'
-import { IPayment } from '../../interfaces/IPayment'
+import { IPayment } from '../../types/interfaces/payment.interface'
 
-interface IPaymentButton {
+interface Props {
   id: string
   payment: IPayment
-  setActive: any
+  setActive: Dispatch<SetStateAction<IPayment>>
   active: string | undefined
   deletePayment: (id: string) => void
 }
 
-export const Payment = ({ payment, setActive, active, deletePayment }: IPaymentButton) => {
+export const Payment = ({ payment, setActive, active, deletePayment }: Props) => {
   const { paymentMethod, cardNumber, id } = payment
   return (
     <button

@@ -1,5 +1,5 @@
-import { ROLES } from './ERoles'
-import { IOffer } from './IOffer'
+import { ROLES } from './roles.enum'
+import { IOffer } from './offer.interface'
 
 export interface IMaker {
   __v: number

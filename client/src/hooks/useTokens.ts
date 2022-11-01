@@ -5,7 +5,7 @@ import { useAccount, useNetwork } from 'wagmi'
 import { useActions } from '../hooks/useActions'
 import { useQueries, useQuery } from '@tanstack/react-query'
 import { Preview } from '../components/create-offer/Preview'
-import { IToken } from '../interfaces/IToken'
+import { IToken } from '../types/interfaces/crypto.interface'
 
 export const useTokens = () => {
   const { chain } = useNetwork()

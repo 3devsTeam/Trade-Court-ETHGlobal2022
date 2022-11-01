@@ -8,7 +8,7 @@ import { toast } from 'react-toastify'
 import { useEthContract } from '../../../hooks/useEthContract'
 import { parseEther } from '../../../utils/parseEther'
 import { round } from '../../../utils/round'
-import { IOffer } from '../../../interfaces/IOffer'
+import { IOffer } from '../../../types/interfaces/offer.interface'
 
 interface IOfferModalProps {
   close: any

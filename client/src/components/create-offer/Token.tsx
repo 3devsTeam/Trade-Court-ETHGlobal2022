@@ -1,10 +1,10 @@
 import React from 'react'
 import { useActions } from '../../hooks/useActions'
-import { IToken } from '../../interfaces/IToken'
+import { ICrypto } from '../../types/interfaces/crypto.interface'
 
 interface Props {
   virtualItem: any
-  token: IToken
+  token: ICrypto
   onClose: any
 }
 
@@ -12,7 +12,7 @@ export const Token = ({ virtualItem, token, onClose }: Props) => {
   const { setCrypto } = useActions()
   const { symbol, balance, logoUrl, name, tokenAmount } = token
 
-  const selectHandler = (token: IToken) => {
+  const selectHandler = (token: ICrypto) => {
     setCrypto(token)
     onClose()
   }

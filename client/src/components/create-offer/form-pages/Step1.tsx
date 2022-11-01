@@ -13,8 +13,8 @@ import { useForm } from 'react-hook-form'
 import { toast } from 'react-toastify'
 import { Button } from '../../ui/Button'
 import { SubmitButton } from '../../ui/SubmitButton'
-import { IToken } from '../../../interfaces/IToken'
-import { IFiat } from '../../../interfaces/IFiat'
+import { IToken } from '../../../types/interfaces/crypto.interface'
+import { IFiat } from '../../../types/interfaces/fiat.interface'
 
 interface IStep1 {
   tokens: [IToken]

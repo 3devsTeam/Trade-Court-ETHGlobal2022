@@ -1,6 +1,6 @@
 import { BigNumber } from 'ethers'
 
-export interface IToken {
+export interface ICrypto {
   tokenAmount: number
   address: string
   balance: number | BigNumber | string

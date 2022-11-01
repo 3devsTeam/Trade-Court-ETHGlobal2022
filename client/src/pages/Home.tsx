@@ -11,11 +11,11 @@ import { useFetchFilters } from '../hooks/useFetchFilters'
 import { useInfiniteOffers } from '../hooks/useInfiniteOffers'
 import { Button } from '../components/ui/Button'
 import useDebounce from '../hooks/useDebounce'
-import { IToken } from '../interfaces/IToken'
-import { IFiat } from '../interfaces/IFiat'
-import { IPayment } from '../interfaces/IPayment'
-import { IRegion } from '../interfaces/IRegion'
-import { IBank } from '../interfaces/IBank'
+import { IToken } from '../types/interfaces/crypto.interface'
+import { IFiat } from '../types/interfaces/fiat.interface'
+import { PaymentInterface } from '../types/interfaces/payment.interface'
+import { IRegion } from '../types/interfaces/region.interface'
+import { IBank } from '../types/interfaces/bank.interface'
 
 export interface IActiveFilters {
   amount: string
@@ -38,7 +38,7 @@ export const Home = () => {
   const debouncedAmount = useDebounce(amount, 500)
   const [activeCrypto, setActiveCrypto] = useState<IToken | null>(null)
   const [activeFiat, setActiveFiat] = useState<IFiat | null>(null)
-  const [activePayment, setActivePayment] = useState<IPayment | null>(null)
+  const [activePayment, setActivePayment] = useState<PaymentInterface | null>(null)
   const [activeRegion, setActiveRegion] = useState<IRegion | null>(null)
   const [activeFilters, setActiveFilters] = useState<IActiveFilters>(initialFilters)
 

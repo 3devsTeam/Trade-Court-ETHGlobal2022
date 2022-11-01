@@ -5,7 +5,7 @@ import { useAccount, useEnsName, useEnsAvatar } from 'wagmi'
 import { Legend } from '../components/home/Legend'
 import { UserService } from '../api/user.services'
 import { Divider } from '../components/profile/Divider'
-import { IProfileOffer } from '../interfaces/IProfileOffer'
+import { IProfileOffer } from '../types/interfaces/profile-offer.interface'
 
 const Profile = () => {
   const { data, isSuccess, isLoading, isError } = useQuery(

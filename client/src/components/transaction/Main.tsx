@@ -1,6 +1,6 @@
 import React from 'react'
 import { useTypedSelector } from '../../hooks/useTypedSelector'
-import { IOffer } from '../../interfaces/models'
+import { IOffer } from '../../types/models'
 import { SuccessPage } from './SuccessPage'
 import { WarningMessage } from './WarningMessage'
 

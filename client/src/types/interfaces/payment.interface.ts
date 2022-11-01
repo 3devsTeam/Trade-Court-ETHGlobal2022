@@ -1,5 +1,5 @@
-import { IBank } from './IBank'
-import { IRegion } from './IRegion'
+import { IBank } from './bank.interface'
+import { IRegion } from './region.interface'
 
 export interface IPayment {
   id: string
