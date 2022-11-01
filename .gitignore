@@ -3,3 +3,4 @@ node_modules
 erc20TokenImg
 uploads
 .DS_Store
+.idea
