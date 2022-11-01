@@ -11,7 +11,7 @@ router.use(authController.protect);
 router.post('/', offerController.createOffer);
 router.delete('/:id', offerController.deleteOffer);
 
-router.get('/:id', offerController.getRoom);
+router.get('/:id', roomController.getRoom);
 router.post('/:id', roomController.joinRoom);
 router.get('/:id/send', roomController.takerSent);
 router.get('/:id/recieve', roomController.makerRecieved);

@@ -3,6 +3,28 @@ const Room = require('../models/roomModel');
 const AppError = require('../utils/appError');
 const catchAsync = require('../utils/catchAsync');
 
+exports.getMyRooms = catchAsync(async (req, res, next) => {
+  const rooms = await Room.aggregate([
+    {
+      $lookup: {
+        from: 'offers',
+        localField: 'offer',
+        foreignField: '_id',
+        as: 'offers',
+      },
+    },
+    {
+      $match: {
+        $or: [{ 'offers.maker': req.user._id }, { taker: req.user._id }],
+      },
+    },
+  ]);
+  res.status(201).json({
+    message: 'success',
+    rooms,
+  });
+});
+
 exports.joinRoom = catchAsync(async (req, res, next) => {
   const offer = await Offer.findById(req.params.id);
   if (!offer) {
@@ -38,6 +60,54 @@ exports.joinRoom = catchAsync(async (req, res, next) => {
   res.status(200).json({
     message: 'success',
     newRoom,
+  });
+});
+
+exports.getRoom = catchAsync(async (req, res, next) => {
+  let room = await Room.findById(req.params.id).populate([
+    {
+      path: 'offer',
+      populate: [
+        {
+          path: 'maker',
+        },
+        {
+          path: 'fiat',
+          select: '-banks -regions',
+        },
+        {
+          path: 'crypto',
+        },
+        {
+          path: 'payMethods.bank',
+        },
+        {
+          path: 'payMethods.region',
+        },
+      ],
+    },
+    { path: 'taker' },
+  ]);
+  if (!room) {
+    return next(new AppError('No such offer', 404));
+  }
+  let role = 'restricted';
+  if (room.offer.maker._id.toString() != req.user._id.toString()) {
+    if (room.taker._id.toString() != req.user._id.toString()) {
+      return next(new AppError('You dont have access', 403));
+    } else {
+      role = 'taker';
+    }
+  } else {
+    role = 'maker';
+  }
+  room = JSON.parse(JSON.stringify(room));
+  room.role = role;
+  res.status(201).json({
+    message: 'success',
+    data: {
+      room,
+    },
   });
 });
 
