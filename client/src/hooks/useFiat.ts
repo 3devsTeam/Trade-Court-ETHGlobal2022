@@ -3,8 +3,8 @@ import React, { useEffect } from 'react'
 import { FiatServices } from '../api/fiat.services'
 import { useActions } from './useActions'
 import { useTypedSelector } from './useTypedSelector'
-import { IFiat } from '../interfaces/IFiat'
-import { IRegion } from '../interfaces/IRegion'
+import { IFiat } from '../types/interfaces/fiat.interface'
+import { IRegion } from '../types/interfaces/region.interface'
 
 export const useFiat = () => {
   const { fiat } = useTypedSelector((state) => state.offerReducer)

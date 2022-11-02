@@ -1,21 +1,20 @@
-import { IBank } from './IBank'
-import { IFiat } from './IFiat'
-import { IPayment } from './IPayment'
-import { IRegion } from './IRegion'
-import { IToken } from './IToken'
-import { IMaker } from './IMaker'
+import { IBank } from './bank.interface'
+import { IFiat } from './fiat.interface'
+import { IPayment } from './payment.interface'
+import { IRegion } from './region.interface'
+import { ICrypto } from './crypto.interface'
+import { IMaker } from './maker.interface'
 
 export interface IOffer {
   _id: string
   offerType?: 'buy' | 'sell'
-  crypto: IToken
+  crypto: ICrypto
   fiat: IFiat
   unitPrice: number
   quantity: number
   payMethods: IPayment[]
   paymentMethod?: IBank
-  region?: IRegion
-  cardNumber?: string
+  region: IRegion
   timeLimit: string
   minLimit: number
   maxLimit: number

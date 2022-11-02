@@ -14,12 +14,6 @@ const Transaction = lazy(() => import('./pages/Transaction'))
 const Profile = lazy(() => import('./pages/Profile'))
 
 const App = () => {
-  useEffect(() => {
-    if (Cookies.get('jwt')) {
-      console.log('yes')
-    }
-  }, [])
-
   return (
     <BrowserRouter>
       <Navbar />

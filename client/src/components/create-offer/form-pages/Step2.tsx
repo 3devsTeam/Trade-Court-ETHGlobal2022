@@ -12,7 +12,7 @@ import { SubmitButton } from '../../ui/SubmitButton'
 import { Button } from '../../ui/Button'
 import { v4 as uuidv4 } from 'uuid'
 import { Label } from '../../ui/Label'
-import { IPayment } from '../../../interfaces/IPayment'
+import { PaymentInterface } from '../../../types/interfaces/payment.interface'
 
 export const Step2 = () => {
   const {
@@ -32,7 +32,7 @@ export const Step2 = () => {
   const [cardNumber, setCardNumber] = useState('')
 
   const addPayment = () => {
-    const newPayment: IPayment = {
+    const newPayment: PaymentInterface = {
       id: uuidv4(),
       paymentMethod,
       region,
@@ -60,7 +60,7 @@ export const Step2 = () => {
   const regionName = region?.name
   const regionLogoUrl = region?.logoUrl
 
-  const [active, setActive] = useState<IPayment | null>(null)
+  const [active, setActive] = useState<PaymentInterface | null>(null)
 
   const editPayment = () => {
     updatePaymentMethod({

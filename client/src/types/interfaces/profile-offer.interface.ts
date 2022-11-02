@@ -1,4 +1,4 @@
-import { IOffer } from './IOffer'
+import { IOffer } from './offer.interface'
 
 export interface IProfileOffer extends IOffer {}
 

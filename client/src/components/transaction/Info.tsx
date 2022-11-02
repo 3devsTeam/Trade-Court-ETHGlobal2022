@@ -1,5 +1,5 @@
 import React from 'react'
-import { IOffer } from '../../interfaces/models'
+import { IOffer } from '../../types/models'
 import { round } from '../../utils/round'
 
 export const Info = ({ fiat, crypto, amount, unitPrice, quantity, room }: IOffer) => {

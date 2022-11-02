@@ -1,10 +1,10 @@
 import React, { useRef, useEffect } from 'react'
 import { useVirtualizer } from '@tanstack/react-virtual'
 import { Token } from './Token'
-import { IToken } from '../../interfaces/IToken'
+import { ICrypto } from '../../types/interfaces/crypto.interface'
 
 interface ITokenList {
-  tokens: IToken[]
+  tokens: ICrypto[]
   closeModal: any
 }
 

@@ -21,7 +21,7 @@ import { SkeletonWrapper } from '../components/ui/SkeletonWrapper'
 import { ErrorBoundary } from 'react-error-boundary'
 import { FiatServices } from '../api/fiat.services'
 import { useFiat } from '../hooks/useFiat'
-import { IPayment } from '../interfaces/IPayment'
+import { PaymentInterface } from '../types/interfaces/payment.interface'
 
 const CreateOffer = () => {
   const { resetOffer, resetStep } = useActions()
@@ -97,7 +97,7 @@ const CreateOffer = () => {
     //   .then(() => {
     OfferService.create({
       offerType: 'buy',
-      payMethods: payMethods.map((payment: IPayment) => {
+      payMethods: payMethods.map((payment: PaymentInterface) => {
         const { paymentMethod, cardNumber, region, paymentDescription } = payment
 
         return {

@@ -14,38 +14,6 @@ exports.getAllUsers = catchAsync(async (req, res, next) => {
   });
 });
 
-exports.getMyOffers = catchAsync(async (req, res, next) => {
-  const offers = await Offer.find({
-    maker: req.user._id,
-  }).populate('crypto fiat payMethods.bank');
-  res.status(201).json({
-    message: 'success',
-    offers,
-  });
-});
-
-exports.getMyRooms = catchAsync(async (req, res, next) => {
-  const rooms = await Room.aggregate([
-    {
-      $lookup: {
-        from: 'offers',
-        localField: 'offer',
-        foreignField: '_id',
-        as: 'offers',
-      },
-    },
-    {
-      $match: {
-        $or: [{ 'offers.maker': req.user._id }, { taker: req.user._id }],
-      },
-    },
-  ]);
-  res.status(201).json({
-    message: 'success',
-    rooms,
-  });
-});
-
 exports.getMe = catchAsync(async (req, res, next) => {
   const user = await User.findById(req.user._id);
   res.status(201).json({
