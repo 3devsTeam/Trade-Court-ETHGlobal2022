@@ -51,9 +51,18 @@ const offerSchema = new mongoose.Schema({
     min: [1, 'unitPrice very small'],
     required: [true, 'unitPrice is empty'],
   },
+  totalAmount: {
+    type: Number,
+    required: [true, 'total Amount is empty'],
+  },
   amount: {
     type: Number,
-    required: [true, 'amount is empty'],
+    required: [true, 'factual Amount is empty'],
+  },
+  totalQuantity: {
+    type: Number,
+    min: [0, 'quantity very small'],
+    required: [true, 'quantity is empty'],
   },
   quantity: {
     type: Number,

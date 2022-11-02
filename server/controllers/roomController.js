@@ -54,8 +54,15 @@ exports.joinRoom = catchAsync(async (req, res, next) => {
     offer: req.params.id,
     taker: req.user._id,
     amount: req.body.amount,
+    unitPrice: offer.unitPrice,
     roomId: req.body.roomId,
     createdAt: new Date(),
+  });
+  await Offer.findByIdAndUpdate(req.params.id, {
+    $inc: {
+      amount: req.body.amount * -1,
+      quantity: (req.body.amount / offer.unitPrice) * -1,
+    },
   });
   res.status(200).json({
     message: 'success',
@@ -160,13 +167,6 @@ exports.takerClaimed = catchAsync(async (req, res, next) => {
   if (room.stage != 'maker recieved') {
     return next(new AppError("It's not your turn", 400));
   }
-  const offer = await Offer.findById(room.offer);
-
-  const newAmount = offer.amount - room.amount;
-  const newQuantity = offer.quantity - room.amount / offer.unitPrice;
-  await Offer.findByIdAndUpdate(req.params.id, {
-    $set: { amount: newAmount, quantity: newQuantity },
-  });
   await Room.findByIdAndDelete(req.params.id);
   res.status(200).json({
     message: 'success',
@@ -184,6 +184,10 @@ exports.leaveRoom = catchAsync(async (req, res, next) => {
   ) {
     return next(new AppError('You cant leave this room', 403));
   }
+  console.log(room.amount, room.amount / room.unitPrice);
+  await Offer.findByIdAndUpdate(room.offer, {
+    $inc: { amount: room.amount, quantity: room.amount / room.unitPrice },
+  });
   await Room.findByIdAndDelete(req.params.id);
   res.status(200).json({
     message: 'success',
