@@ -96,7 +96,7 @@ export const Navbar = () => {
             ensName={ensName}
             balance={balance}
             menuRef={menuRef}
-            onClose={setOpenMenu}
+            setOpenMenu={setOpenMenu}
           />
         )}
       </div>

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { Dispatch } from 'react'
 import { NavLink } from './NavLink'
 import { useAccount, useBalance, useConnect, useDisconnect } from 'wagmi'
 import { useNavigate } from 'react-router-dom'
@@ -18,11 +18,11 @@ interface Props {
   address: string
   balance: any
   ensName: any
-  onClose: any
+  setOpenMenu: any
   menuRef: React.MutableRefObject<null>
 }
 
-export const Menu = ({ address, balance, ensName, onClose, menuRef }: Props) => {
+export const Menu = ({ address, balance, ensName, setOpenMenu, menuRef }: Props) => {
   const navigate = useNavigate()
   const { disconnect } = useDisconnect()
 
@@ -81,9 +81,8 @@ export const Menu = ({ address, balance, ensName, onClose, menuRef }: Props) => 
 
   return (
     <nav
-      onMouseLeave={() => onClose(false)}
-      className="flex justify-start flex-col absolute top-11 right-0 px-2 py-[12px] w-full z-50 bg-white shadow-customDark rounded-[20px]"
-    >
+      onMouseLeave={() => setOpenMenu(false)}
+      className="flex justify-start flex-col absolute top-11 right-0 px-2 py-[12px] w-full z-50 bg-white shadow-customDark rounded-[20px]">
       <div className={'flex justify-between'}>
         <div className="flex justify-between space-x-2">
           <div>
