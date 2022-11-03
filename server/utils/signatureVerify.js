@@ -17,7 +17,7 @@ exports.signatureVerify = catchAsync(async (req, res, next) => {
     );
   }
   const signer = await web3.eth.accounts.recover(messageRaw, messageSignature);
-  if (signer != address) {
+  if (signer.toLowerCase() != address.toLowerCase()) {
     return next(new AppError('Wrong signature', 400));
   }
   return next();

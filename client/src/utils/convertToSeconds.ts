@@ -1,3 +1,3 @@
 export const convertToSeconds = (value: string) => {
-    return parseInt(value) * 60
+  return parseInt(value) * 60
 }

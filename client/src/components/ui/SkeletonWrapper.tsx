@@ -1,12 +1,12 @@
-import React from "react";
-import Skeleton from "react-loading-skeleton";
+import React from 'react'
+import Skeleton from 'react-loading-skeleton'
 
 interface ISkeletonWrapper {
-  children: any;
-  isLoaded: boolean;
-  height: number;
-  count?: number;
-  margin?: string;
+  children: any
+  isLoaded: boolean
+  height: number
+  count?: number
+  margin?: string
 }
 
 export const SkeletonWrapper = ({
@@ -14,7 +14,7 @@ export const SkeletonWrapper = ({
   isLoaded,
   height,
   count,
-  margin,
+  margin
 }: ISkeletonWrapper) => {
   return isLoaded ? (
     children
@@ -24,8 +24,8 @@ export const SkeletonWrapper = ({
       borderRadius={20}
       count={count}
       style={{
-        marginBottom: margin,
+        marginBottom: margin
       }}
     />
-  );
-};
+  )
+}

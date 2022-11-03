@@ -31,18 +31,14 @@
       "type": "function"
     },
     {
-      "inputs": [
-        { "internalType": "address", "name": "_newAdmin", "type": "address" }
-      ],
+      "inputs": [{ "internalType": "address", "name": "_newAdmin", "type": "address" }],
       "name": "changeAdmin",
       "outputs": [],
       "stateMutability": "nonpayable",
       "type": "function"
     },
     {
-      "inputs": [
-        { "internalType": "uint256", "name": "_roomNumber", "type": "uint256" }
-      ],
+      "inputs": [{ "internalType": "uint256", "name": "_roomNumber", "type": "uint256" }],
       "name": "closeRoom",
       "outputs": [],
       "stateMutability": "nonpayable",
@@ -73,9 +69,7 @@
       "type": "function"
     },
     {
-      "inputs": [
-        { "internalType": "uint256", "name": "_roomNumber", "type": "uint256" }
-      ],
+      "inputs": [{ "internalType": "uint256", "name": "_roomNumber", "type": "uint256" }],
       "name": "continueRoom",
       "outputs": [],
       "stateMutability": "nonpayable",
@@ -159,9 +153,7 @@
       "type": "function"
     },
     {
-      "inputs": [
-        { "internalType": "uint256", "name": "_roomNumber", "type": "uint256" }
-      ],
+      "inputs": [{ "internalType": "uint256", "name": "_roomNumber", "type": "uint256" }],
       "name": "getRoomDynamic",
       "outputs": [
         { "internalType": "bool", "name": "", "type": "bool" },
@@ -175,9 +167,7 @@
       "type": "function"
     },
     {
-      "inputs": [
-        { "internalType": "uint256", "name": "_roomNumber", "type": "uint256" }
-      ],
+      "inputs": [{ "internalType": "uint256", "name": "_roomNumber", "type": "uint256" }],
       "name": "getRoomStatic",
       "outputs": [
         { "internalType": "address", "name": "", "type": "address" },
@@ -277,9 +267,7 @@
       "type": "function"
     },
     {
-      "inputs": [
-        { "internalType": "uint8", "name": "_commissions", "type": "uint8" }
-      ],
+      "inputs": [{ "internalType": "uint8", "name": "_commissions", "type": "uint8" }],
       "name": "setCommissions",
       "outputs": [],
       "stateMutability": "nonpayable",
@@ -351,9 +339,7 @@
       "type": "function"
     },
     {
-      "inputs": [
-        { "internalType": "uint256", "name": "_roomNumber", "type": "uint256" }
-      ],
+      "inputs": [{ "internalType": "uint256", "name": "_roomNumber", "type": "uint256" }],
       "name": "stopRoom",
       "outputs": [],
       "stateMutability": "nonpayable",

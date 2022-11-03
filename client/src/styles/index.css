@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;700&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;700&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -15,7 +15,7 @@
 
 html,
 body {
-  font-family: "Nunito", sans-serif;
+  font-family: 'Nunito', sans-serif;
   font-size: 20px;
   background-color: #f4f2f8;
   /* background-color: "#cccccc"; */

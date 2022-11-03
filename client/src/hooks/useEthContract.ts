@@ -1,10 +1,6 @@
-import { ethers } from "ethers";
-import {
-  useContractWrite,
-  usePrepareContractWrite,
-  useWaitForTransaction,
-} from "wagmi";
-import ethContractConfig from "../abis/ethContractConfig";
+import { ethers } from 'ethers'
+import { useContractWrite, usePrepareContractWrite, useWaitForTransaction } from 'wagmi'
+import ethContractConfig from '../abis/ethContractConfig'
 
 export const useEthContract = (args: any, functionName: string) => {
   const { config, error: prepareError } = usePrepareContractWrite({
@@ -12,19 +8,19 @@ export const useEthContract = (args: any, functionName: string) => {
     functionName: functionName,
     args: args,
     overrides: {
-      gasLimit: 400000,
-    },
-  });
+      gasLimit: 400000
+    }
+  })
 
-  const { data, error, isError, writeAsync } = useContractWrite(config);
+  const { data, error, isError, writeAsync } = useContractWrite(config)
 
   const {
     isSuccess,
     isLoading,
-    data: hash,
+    data: hash
   } = useWaitForTransaction({
-    hash: data?.hash,
-  });
+    hash: data?.hash
+  })
 
   return {
     data,
@@ -33,10 +29,10 @@ export const useEthContract = (args: any, functionName: string) => {
     isError,
     isLoading,
     hash,
-    prepareError,
-  };
+    prepareError
+  }
 
   // } catch(err) {
   //   console.log(err)
   // }
-};
+}

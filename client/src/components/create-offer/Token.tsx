@@ -1,53 +1,51 @@
-import React from "react";
-import { IToken } from "../../models/models";
-import { useActions } from "../../hooks/useActions";
+import React from 'react'
+import { useActions } from '../../hooks/useActions'
+import { ICrypto } from '../../types/interfaces/crypto.interface'
 
 interface Props {
-  virtualItem: any;
-  token: IToken;
-  onClose: any;
+  virtualItem: any
+  token: ICrypto
+  onClose: any
 }
 
 export const Token = ({ virtualItem, token, onClose }: Props) => {
-  const { setCrypto } = useActions();
-  const { symbol, balance, logoUrl, name, tokenAmount } = token;
+  const { setCrypto } = useActions()
+  const { symbol, balance, logoUrl, name, tokenAmount } = token
 
-  const selectHandler = (token: IToken) => {
-    setCrypto(token);
-    onClose();
-  };
+  const selectHandler = (token: ICrypto) => {
+    setCrypto(token)
+    onClose()
+  }
 
   return (
     <button
-      type={"button"}
+      type={'button'}
       onClick={() => selectHandler(token)}
       className={
-        "flex items-center justify-between gap-2 px-3 cursor-pointer hover:bg-lightGray transition-colors duration-300 rounded-[15px]"
+        'flex items-center justify-between gap-2 px-3 cursor-pointer hover:bg-lightGray transition-colors duration-300 rounded-[15px]'
       }
       style={{
-        position: "absolute",
+        position: 'absolute',
         top: 0,
         left: 0,
-        width: "100%",
+        width: '100%',
         height: `${virtualItem.size}px`,
-        transform: `translateY(${virtualItem.start}px)`,
+        transform: `translateY(${virtualItem.start}px)`
       }}
     >
-      <div className={"flex items-center gap-3"}>
-        <img className={"image"} src={logoUrl} alt={""} />
-        <div className={"flex flex-col items-start"}>
-          <span className={"font-bold"}>{name}</span>
-          <span className={"text-gray tracking-wide font-medium"}>
+      <div className={'flex items-center gap-3'}>
+        <img className={'image'} src={logoUrl} alt={''} />
+        <div className={'flex flex-col items-start'}>
+          <span className={'font-bold'}>{name}</span>
+          <span className={'text-gray tracking-wide font-medium'}>
             {tokenAmount} {symbol}
           </span>
         </div>
       </div>
 
       <div>
-        <span className={"font-bold"}>{`${
-          balance > 0 ? `$${balance}` : balance
-        }`}</span>
+        <span className={'font-bold'}>{`${balance > 0 ? `$${balance}` : balance}`}</span>
       </div>
     </button>
-  );
-};
+  )
+}
