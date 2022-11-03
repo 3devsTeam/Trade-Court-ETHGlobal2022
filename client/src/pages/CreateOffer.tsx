@@ -2,9 +2,9 @@ import { Form } from '../components/create-offer/Form'
 import { Preview } from '../components/create-offer/Preview'
 import { Progressbar } from '../components/create-offer/Progressbar'
 import { useTypedSelector } from '../hooks/useTypedSelector'
-import { Step1 } from '../components/create-offer/form-pages/Step1'
-import { Step2 } from '../components/create-offer/form-pages/Step2'
-import { Step3 } from '../components/create-offer/form-pages/Step3'
+import { CreateOfferStepOne } from '../components/create-offer/form-steps/CreateOfferStepOne'
+import { CreateOfferStepTwo } from '../components/create-offer/form-steps/CreateOfferStepTwo'
+import { CreateOfferStepThree } from '../components/create-offer/form-steps/CreateOfferStepThree'
 import { useActions } from '../hooks/useActions'
 import { useNavigate } from 'react-router-dom'
 import { OfferService } from '../api/offer.services'
@@ -150,11 +150,11 @@ const CreateOffer = () => {
   const pageDisplay = () => {
     switch (step) {
       case 1:
-        return <Step1 tokens={tokens} allFiat={allFiat} />
+        return <CreateOfferStepOne tokens={tokens} allFiat={allFiat} />
       case 2:
-        return <Step2 />
+        return <CreateOfferStepTwo />
       case 3:
-        return <Step3 handleCreateOffer={handleCreateOffer} />
+        return <CreateOfferStepThree handleCreateOffer={handleCreateOffer} />
       default:
         return
     }

@@ -13,15 +13,15 @@ import { useForm } from 'react-hook-form'
 import { toast } from 'react-toastify'
 import { Button } from '../../ui/Button'
 import { SubmitButton } from '../../ui/SubmitButton'
-import { IToken } from '../../../types/interfaces/crypto.interface'
+import { ICrypto } from '../../../types/interfaces/crypto.interface'
 import { IFiat } from '../../../types/interfaces/fiat.interface'
 
 interface IStep1 {
-  tokens: [IToken]
+  tokens: [ICrypto]
   allFiat: [IFiat]
 }
 
-export const Step1 = ({ tokens, allFiat }: IStep1) => {
+export const CreateOfferStepOne = ({ tokens, allFiat }: IStep1) => {
   const { setFiat, setQuantity, setUnitPrice, nextStep } = useActions()
   const { crypto, fiat, quantity, unitPrice } = useTypedSelector((state) => state.offerReducer)
 
@@ -35,9 +35,9 @@ export const Step1 = ({ tokens, allFiat }: IStep1) => {
 
   const [searchTerm, setSearchTerm] = useState('')
 
-  const searchFilter = (tokens: IToken[]) => {
+  const searchFilter = (tokens: ICrypto[]) => {
     return tokens.filter(
-      (t: IToken) =>
+      (t: ICrypto) =>
         t.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
         t.address.toLowerCase() === searchTerm.toLowerCase() ||
         t.symbol.toLowerCase() === searchTerm.toLowerCase()
