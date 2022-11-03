@@ -4,9 +4,7 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "client": "npm run dev",
-    "server": "npm run start:dev",
-    "start": "concurrently \"npm:client\" \"cd ..\" \"cd server\"",
+    "start": "concurrently \"npm run dev\" \"cd .. && cd server && npm run start:dev\"",
     "dev": "vite",
     "build": "tsc && vite build",
     "preview": "vite preview",
