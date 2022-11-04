@@ -1,21 +1,22 @@
 import React, { useEffect, useState, useRef } from 'react'
 import axios from 'axios'
-import { Offer } from '../components/home/offer/Offer'
+import { Offer } from '../components/home/Offer'
 import { Legend } from '../components/home/Legend'
 import { useQuery } from '@tanstack/react-query'
 import { OfferService } from '../api/offer.services'
 import { SkeletonWrapper } from '../components/ui/SkeletonWrapper'
 import { SearchField } from '../components/ui/SearchField'
-import { Dropdown } from '../components/home/dropdown/Dropdown'
+import { Dropdown } from '../components/home/Dropdown'
 import { useFetchFilters } from '../hooks/useFetchFilters'
 import { useInfiniteOffers } from '../hooks/useInfiniteOffers'
 import { Button } from '../components/ui/Button'
 import useDebounce from '../hooks/useDebounce'
-import { IToken } from '../types/interfaces/crypto.interface'
+import { ICrypto } from '../types/interfaces/crypto.interface'
 import { IFiat } from '../types/interfaces/fiat.interface'
-import { PaymentInterface } from '../types/interfaces/payment.interface'
+import { IPayment } from '../types/interfaces/payment.interface'
 import { IRegion } from '../types/interfaces/region.interface'
 import { IBank } from '../types/interfaces/bank.interface'
+import { IOffer } from '../types/interfaces/offer.interface'
 
 export interface IActiveFilters {
   amount: string
@@ -92,74 +93,77 @@ export const Home = () => {
 
   return (
     <div className="grid grid-cols-homePage gap-5 my-5">
-      <SkeletonWrapper isLoaded={isLoaded} height={1000}>
-        <aside className="bg-white shadow-customDark p-5 rounded-2xl flex flex-col gap-5 sticky top-5 overflow-auto max-h-screen">
-          <SearchField searchTerm={amount} setSearchTerm={setAmount} placeholder="Search..." />
-          <Dropdown
-            onSelect={setActiveCrypto}
-            data={{
-              items: crypto.data as [IToken],
-              options: 'symbol'
-            }}
-            label="Crypto"
-            activeSelect={activeCrypto}
-          />
-          <Dropdown
-            onSelect={setActiveFiat}
-            data={{
-              items: fiat.data as [IFiat],
-              options: 'ticker'
-            }}
-            label="Fiat"
-            activeSelect={activeFiat}
-          />
-          {activeFiat && (
-            <>
-              <Dropdown
-                onSelect={setActivePayment}
-                data={{
-                  items: activeFiat.banks as [IBank],
-                  options: 'name'
-                }}
-                activeSelect={activePayment}
-                label="Payment"
-              />
-              <Dropdown
-                onSelect={setActiveRegion}
-                data={{
-                  items: activeFiat.regions as [IRegion],
-                  options: 'name'
-                }}
-                activeSelect={activeRegion}
-                label="Region"
-              />
-            </>
-          )}
-          <Button
-            name={'Clear All'}
-            onClick={() => {
-              setActiveCrypto(null)
-              setActiveFiat(null)
-              setActivePayment(null)
-              setActiveRegion(null)
-            }}
-          />
-        </aside>
-      </SkeletonWrapper>
+      {/* <SkeletonWrapper isLoadeding={isLoaded} height={1000}> */}
+      <aside className="bg-white shadow-customDark p-5 rounded-2xl flex flex-col gap-5 sticky top-5 overflow-auto max-h-screen">
+        <SearchField searchTerm={amount} setSearchTerm={setAmount} placeholder="Search..." />
+        <Dropdown
+          onSelect={setActiveCrypto}
+          data={{
+            items: crypto.data as [ICrypto],
+            options: 'symbol'
+          }}
+          label="Crypto"
+          activeSelect={activeCrypto}
+        />
+        <Dropdown
+          onSelect={setActiveFiat}
+          data={{
+            items: fiat.data as [IFiat],
+            options: 'ticker'
+          }}
+          label="Fiat"
+          activeSelect={activeFiat}
+        />
+        {activeFiat && (
+          <>
+            <Dropdown
+              onSelect={setActivePayment}
+              data={{
+                items: activeFiat.banks as [IBank],
+                options: 'name'
+              }}
+              activeSelect={activePayment}
+              label="Payment"
+            />
+            <Dropdown
+              onSelect={setActiveRegion}
+              data={{
+                items: activeFiat.regions as [IRegion],
+                options: 'name'
+              }}
+              activeSelect={activeRegion}
+              label="Region"
+            />
+          </>
+        )}
+        <Button
+          textColor="text-black"
+          border="border"
+          name={'Clear All'}
+          color={'transparent'}
+          onClick={() => {
+            setActiveCrypto(null)
+            setActiveFiat(null)
+            setActivePayment(null)
+            setActiveRegion(null)
+          }}
+        />
+      </aside>
+      {/* </SkeletonWrapper> */}
 
       <main className="relative">
-        <SkeletonWrapper height={30} isLoaded={isLoaded} margin={'20px'}>
-          <Legend fields={fields} />
-        </SkeletonWrapper>
-        <SkeletonWrapper isLoaded={isLoaded} height={100} count={10} margin={'20px'}>
-          {data?.pages[0].length === 0 ? (
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
-              <span className="text-2xl font-bold">No items found...</span>
-            </div>
-          ) : (
-            <div className="space-y-2 flex flex-wrap">{content}</div>
-          )}
-        </SkeletonWrapper>
+        {/* <SkeletonWrapper height={30} isLoaded={isLoaded} margin={'20px'}> */}
+        <Legend fields={fields} />
+        {/* </SkeletonWrapper> */}
+        {/* <SkeletonWrapper isLoaded={isLoaded} height={100} count={10} margin={'20px'}> */}
+        {data?.pages[0].length === 0 ? (
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
+            <span className="text-2xl font-bold">No items found...</span>
+          </div>
+        ) : (
+          <div className="space-y-2 flex flex-wrap">{content}</div>
+        )}
+        {/* </SkeletonWrapper> */}
       </main>
     </div>
   )

@@ -7,10 +7,9 @@ import { Chat } from '../components/transaction/Chat'
 import transfer from '../assets/images/transfer.svg'
 import lock from '../assets/images/lock.svg'
 import success from '../assets/images/success.svg'
-import { ProgressBar } from '../components/transaction/ProgressBar'
 import Skeleton from 'react-loading-skeleton'
 import 'react-loading-skeleton/dist/skeleton.css'
-import { Button } from '../components/ui/Button'
+import { Button } from '../components/ui/ButtonDisabled'
 import { Info } from '../components/transaction/Info'
 import { io } from 'socket.io-client'
 import { Main } from '../components/transaction/Main'
@@ -219,75 +218,76 @@ const Transaction = () => {
   })
 
   return (
-    <div>
-      {/* it just to check role and step */}
-      {/* <div className={"absolute bottom-0 right-0 z-50"}>
-        <h1>user role: {role}</h1>
-        <h1>active step: {step}</h1>
-        <h1>current stage: {offer?.room.stage}</h1>
-      </div> */}
+    <h1>transaction</h1>
+    // <div>
+    //   {/* it just to check role and step */}
+    //   {/* <div className={"absolute bottom-0 right-0 z-50"}>
+    //     <h1>user role: {role}</h1>
+    //     <h1>active step: {step}</h1>
+    //     <h1>current stage: {offer?.room.stage}</h1>
+    //   </div> */}
 
-      <SkeletonWrapper isLoaded={!isLoading} height={60}>
-        <Info {...offer} />
-      </SkeletonWrapper>
+    //   <SkeletonWrapper isLoaded={!isLoading} height={60}>
+    //     <Info {...offer} />
+    //   </SkeletonWrapper>
 
-      <div className={'grid grid-cols-form gap-5 mt-[20px]'}>
-        <SkeletonWrapper isLoaded={!isLoading} height={600}>
-          <Wrapper>
-            <ProgressBar
-              activeStep={step}
-              steps={['Transfer', 'Approval', 'Success']}
-              images={[transfer, lock, success]}
-            />
-            <Main
-              ticker={ticker}
-              amount={amount}
-              step={step}
-              role={role}
-              id={id!}
-              offer={offer}
-              setPayMethod={setPayMethod}
-              activePayMethod={payMethod}
-            />
-          </Wrapper>
-        </SkeletonWrapper>
+    //   <div className={'grid grid-cols-form gap-5 mt-[20px]'}>
+    //     <SkeletonWrapper isLoaded={!isLoading} height={600}>
+    //       <Wrapper>
+    //         <ProgressBar
+    //           activeStep={step}
+    //           steps={['Transfer', 'Approval', 'Success']}
+    //           images={[transfer, lock, success]}
+    //         />
+    //         <Main
+    //           ticker={ticker}
+    //           amount={amount}
+    //           step={step}
+    //           role={role}
+    //           id={id!}
+    //           offer={offer}
+    //           setPayMethod={setPayMethod}
+    //           activePayMethod={payMethod}
+    //         />
+    //       </Wrapper>
+    //     </SkeletonWrapper>
 
-        <SkeletonWrapper isLoaded={!isLoading} height={600}>
-          <Chat
-            chatMessages={chatMessages}
-            sendMessage={sendMessage}
-            message={message}
-            setMessage={setMessage}
-            addressOrName={name ? name : 'ya loh'}
-            avatar={''}
-          />
-        </SkeletonWrapper>
+    //     <SkeletonWrapper isLoaded={!isLoading} height={600}>
+    //       <Chat
+    //         chatMessages={chatMessages}
+    //         sendMessage={sendMessage}
+    //         message={message}
+    //         setMessage={setMessage}
+    //         addressOrName={name ? name : 'ya loh'}
+    //         avatar={''}
+    //       />
+    //     </SkeletonWrapper>
 
-        <SkeletonWrapper isLoaded={!isLoading} height={100}>
-          <div className={'flex items-center justify-between w-full'}>
-            <Wrapper>
-              <div>
-                {role === 'taker' ? (
-                  step === 1 ? (
-                    <Button onAction={() => takerConfirmed(id!)} name={'Done, next!'} />
-                  ) : step === 2 ? (
-                    <span className={'text-lg font-bold'}>Waiting for confirmation...</span>
-                  ) : (
-                    <Button onAction={() => claimTokens(id!)} name={'Claim'} />
-                  )
-                ) : step === 1 ? (
-                  <Button disabled={true} onAction={() => {}} name={'Funds recieved'} />
-                ) : step === 2 ? (
-                  <Button onAction={() => makerConfirmed(id!)} name={'Funds recieved'} />
-                ) : step === 3 ? (
-                  <Button onAction={() => navigate('/')} name={'Go to main page'} />
-                ) : null}
-              </div>
-            </Wrapper>
-          </div>
-        </SkeletonWrapper>
-      </div>
-    </div>
+    //     <SkeletonWrapper isLoaded={!isLoading} height={100}>
+    //       <div className={'flex items-center justify-between w-full'}>
+    //         <Wrapper>
+    //           <div>
+    //             {role === 'taker' ? (
+    //               step === 1 ? (
+    //                 <Button onAction={() => takerConfirmed(id!)} name={'Done, next!'} />
+    //               ) : step === 2 ? (
+    //                 <span className={'text-lg font-bold'}>Waiting for confirmation...</span>
+    //               ) : (
+    //                 <Button onAction={() => claimTokens(id!)} name={'Claim'} />
+    //               )
+    //             ) : step === 1 ? (
+    //               <Button disabled={true} onAction={() => {}} name={'Funds recieved'} />
+    //             ) : step === 2 ? (
+    //               <Button onAction={() => makerConfirmed(id!)} name={'Funds recieved'} />
+    //             ) : step === 3 ? (
+    //               <Button onAction={() => navigate('/')} name={'Go to main page'} />
+    //             ) : null}
+    //           </div>
+    //         </Wrapper>
+    //       </div>
+    //     </SkeletonWrapper>
+    //   </div>
+    // </div>
   )
 }
 

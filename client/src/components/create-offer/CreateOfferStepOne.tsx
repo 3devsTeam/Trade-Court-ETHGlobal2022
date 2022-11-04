@@ -11,7 +11,7 @@ import 'react-loading-skeleton/dist/skeleton.css'
 import { Wrapper } from './Wrapper'
 import { useForm } from 'react-hook-form'
 import { toast } from 'react-toastify'
-import { Button } from '../ui/Button'
+import { Button } from '../ui/ButtonDisabled'
 import { SubmitButton } from '../ui/SubmitButton'
 import { ICrypto } from '../../types/interfaces/crypto.interface'
 import { IFiat } from '../../types/interfaces/fiat.interface'
@@ -86,15 +86,16 @@ export const CreateOfferStepOne = ({ tokens, allFiat }: IStep1) => {
             value={quantity}
           />
         </div>
-
-        <Modal isOpen={isOpen} close={() => setIsOpen(false)} header={'Select Token'}>
-          <SearchField
-            placeholder={'Enter token name or paste it address'}
-            setSearchTerm={setSearchTerm}
-            searchTerm={searchTerm}
-          />
-          <TokenList tokens={searchFilter(tokens)} closeModal={() => setIsOpen(false)} />
-        </Modal>
+        {isOpen ? (
+          <Modal close={() => setIsOpen(false)} header={'Select Token'}>
+            <SearchField
+              placeholder={'Enter token name or paste it address'}
+              setSearchTerm={setSearchTerm}
+              searchTerm={searchTerm}
+            />
+            <TokenList tokens={searchFilter(tokens)} closeModal={() => setIsOpen(false)} />
+          </Modal>
+        ) : null}
       </Wrapper>
 
       <div className="mt-5">

@@ -9,7 +9,7 @@ import { Payment } from './Payment'
 import { Wrapper } from './Wrapper'
 import { useForm } from 'react-hook-form'
 import { SubmitButton } from '../ui/SubmitButton'
-import { Button } from '../ui/Button'
+import { Button } from '../ui/ButtonDisabled'
 import { v4 as uuidv4 } from 'uuid'
 import { Label } from '../ui/Label'
 import { IPayment } from '../../types/interfaces/payment.interface'
@@ -64,7 +64,7 @@ export const CreateOfferStepTwo = () => {
 
   const editPayment = () => {
     updatePaymentMethod({
-      id: active?.id,
+      id: active?.id!,
       paymentMethod,
       region,
       cardNumber,
