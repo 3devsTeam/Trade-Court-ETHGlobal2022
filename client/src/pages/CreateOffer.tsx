@@ -1,10 +1,9 @@
 import { Form } from '../components/create-offer/Form'
 import { Preview } from '../components/create-offer/Preview'
-import { Progressbar } from '../components/create-offer/Progressbar'
 import { useTypedSelector } from '../hooks/useTypedSelector'
-import { CreateOfferStepOne } from '../components/create-offer/form-steps/CreateOfferStepOne'
-import { CreateOfferStepTwo } from '../components/create-offer/form-steps/CreateOfferStepTwo'
-import { CreateOfferStepThree } from '../components/create-offer/form-steps/CreateOfferStepThree'
+import { CreateOfferStepOne } from '../components/create-offer/CreateOfferStepOne'
+import { CreateOfferStepTwo } from '../components/create-offer/CreateOfferStepTwo'
+import { CreateOfferStepThree } from '../components/create-offer/CreateOfferStepThree'
 import { useActions } from '../hooks/useActions'
 import { useNavigate } from 'react-router-dom'
 import { OfferService } from '../api/offer.services'
@@ -21,7 +20,8 @@ import { SkeletonWrapper } from '../components/ui/SkeletonWrapper'
 import { ErrorBoundary } from 'react-error-boundary'
 import { FiatServices } from '../api/fiat.services'
 import { useFiat } from '../hooks/useFiat'
-import { PaymentInterface } from '../types/interfaces/payment.interface'
+import { IPayment } from '../types/interfaces/payment.interface'
+import { ProgressBar } from '../components/create-offer/ProgressBar'
 
 const CreateOffer = () => {
   const { resetOffer, resetStep } = useActions()
@@ -97,7 +97,7 @@ const CreateOffer = () => {
     //   .then(() => {
     OfferService.create({
       offerType: 'buy',
-      payMethods: payMethods.map((payment: PaymentInterface) => {
+      payMethods: payMethods.map((payment: IPayment) => {
         const { paymentMethod, cardNumber, region, paymentDescription } = payment
 
         return {
@@ -127,8 +127,7 @@ const CreateOffer = () => {
               <a
                 target={'_blank'}
                 className={'text-purple'}
-                href={`https://rinkeby.etherscan.io/tx/${hash?.transactionHash}`}
-              >
+                href={`https://rinkeby.etherscan.io/tx/${hash?.transactionHash}`}>
                 View your transaction on Etherscan
               </a>
             </div>
@@ -145,7 +144,20 @@ const CreateOffer = () => {
     // .catch((err) => console.log(err));
   }
 
-  const steps = ['Offer Price', 'Payment Method', 'Settings']
+  const steps = [
+    {
+      step: 1,
+      name: 'Offer Price'
+    },
+    {
+      step: 2,
+      name: 'Payment Method'
+    },
+    {
+      step: 3,
+      name: 'Settings'
+    }
+  ]
 
   const pageDisplay = () => {
     switch (step) {
@@ -163,7 +175,7 @@ const CreateOffer = () => {
   return (
     <div className="p-5">
       <SkeletonWrapper isLoaded={isLoaded} height={100}>
-        <Progressbar steps={steps} step={step} />
+        <ProgressBar steps={steps} />
       </SkeletonWrapper>
 
       <div className={'grid grid-cols-2 gap-5 mt-5'}>

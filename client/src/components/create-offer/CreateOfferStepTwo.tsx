@@ -1,18 +1,18 @@
 import React, { useEffect, useState } from 'react'
-import { useTypedSelector } from '../../../hooks/useTypedSelector'
-import { Input } from '../Input'
-import { Dropdown } from '../Dropdown'
-import { useActions } from '../../../hooks/useActions'
-import { useScrollTop } from '../../../hooks/useScrollTop'
-import { TextArea } from '../TextArea'
-import { Payment } from '../Payment'
-import { Wrapper } from '../Wrapper'
+import { useTypedSelector } from '../../hooks/useTypedSelector'
+import { Input } from './Input'
+import { Dropdown } from './Dropdown'
+import { useActions } from '../../hooks/useActions'
+import { useScrollTop } from '../../hooks/useScrollTop'
+import { TextArea } from './TextArea'
+import { Payment } from './Payment'
+import { Wrapper } from './Wrapper'
 import { useForm } from 'react-hook-form'
-import { SubmitButton } from '../../ui/SubmitButton'
-import { Button } from '../../ui/Button'
+import { SubmitButton } from '../ui/SubmitButton'
+import { Button } from '../ui/Button'
 import { v4 as uuidv4 } from 'uuid'
-import { Label } from '../../ui/Label'
-import { IPayment } from '../../../types/interfaces/payment.interface'
+import { Label } from '../ui/Label'
+import { IPayment } from '../../types/interfaces/payment.interface'
 
 export const CreateOfferStepTwo = () => {
   const {
@@ -60,7 +60,7 @@ export const CreateOfferStepTwo = () => {
   const regionName = region?.name
   const regionLogoUrl = region?.logoUrl
 
-  const [active, setActive] = useState<PaymentInterface | null>(null)
+  const [active, setActive] = useState<IPayment | null>(null)
 
   const editPayment = () => {
     updatePaymentMethod({
@@ -97,7 +97,6 @@ export const CreateOfferStepTwo = () => {
                   return (
                     <Payment
                       deletePayment={deletePayment}
-                      active={active?.id}
                       setActive={setActive}
                       key={p.id}
                       payment={p}
