@@ -16,22 +16,41 @@ const Profile = () => {
     }
   )
 
-  console.log(data)
-
   const fields = [
-    <div className="flex-[1.5_0]">Ad number</div>,
-    <div className="flex-[0.5_0]">Type</div>,
-    <div className="flex-1">Price</div>,
-    <div className="flex-1">Pair</div>,
-    <div className="flex-1">Pay Methods</div>,
-    <div className="flex-1">Info</div>
+    {
+      name: 'Ad number',
+      className: 'flex-[1.5_0]'
+    },
+    {
+      name: 'Type',
+      className: 'flex-[0.5_0]'
+    },
+    {
+      name: 'Price',
+      className: 'flex-1'
+    },
+    {
+      name: 'Pair',
+      className: 'flex-1'
+    },
+    {
+      name: 'Pay Methods',
+      className: 'flex-1'
+    },
+    {
+      name: 'Info',
+      className: 'flex-1'
+    }
   ]
 
   return (
     <>
       <Legend fields={fields} />
 
-      <Divider name="All offers" />
+      <Divider name="Active offers" margin={'my-5'} />
+
+      <Divider name="My offers" margin={'my-5'} />
+
       <section className={'flex flex-col gap-5 mt-[20px]'}>
         {isLoading ? (
           <p>loading</p>

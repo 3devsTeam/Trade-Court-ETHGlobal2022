@@ -68,11 +68,26 @@ export const Home = () => {
   })
 
   const fields = [
-    <div className="flex-1">Maker</div>,
-    <div className="flex-1">Price</div>,
-    <div className="flex-[2_0]">Avaliable / Limit</div>,
-    <div className="flex-1">Payment</div>,
-    <div className="flex-1">Trade</div>
+    {
+      name: 'Maker',
+      className: 'flex-1'
+    },
+    {
+      name: 'Price',
+      className: 'flex-1'
+    },
+    {
+      name: 'Avaliable / Limit',
+      className: 'flex-[2_0]'
+    },
+    {
+      name: 'Payment',
+      className: 'flex-1'
+    },
+    {
+      name: 'Trade',
+      className: 'flex-1'
+    }
   ]
 
   return (

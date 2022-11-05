@@ -53,8 +53,7 @@ export const ConnectButton = ({
   return isConnected ? (
     <button
       className="rounded-[15px] bg-white shadow-customDark h-full px-[10px]"
-      onMouseEnter={() => setOpenMenu(true)}
-    >
+      onMouseEnter={() => setOpenMenu(true)}>
       <div className="font-bold flex items-center space-x-2 text-black">
         <span>
           {balance?.formatted.slice(0, 8)} {balance?.symbol}
@@ -68,16 +67,14 @@ export const ConnectButton = ({
     <>
       <button
         className="rounded-[15px] p-2 relative bg-purple  text-white shadow-customDark"
-        onClick={() => setOpenConnectModal(!openConnectModal)}
-      >
+        onClick={() => setOpenConnectModal(!openConnectModal)}>
         <span className="font-bold">Connect</span>
       </button>
 
       <Modal
         isOpen={openConnectModal}
         close={() => setOpenConnectModal(false)}
-        header={'Select wallet'}
-      >
+        header={'Select wallet'}>
         <div className="grid grid-cols-3 gap-5 ">
           {connectors.map((wallet, i) => (
             <WalletButton
@@ -86,8 +83,7 @@ export const ConnectButton = ({
               close={setOpenConnectModal}
               wallet={wallet}
               i={i}
-              key={wallet.id}
-            >
+              key={wallet.id}>
               <span>{wallet.name}</span>
             </WalletButton>
           ))}

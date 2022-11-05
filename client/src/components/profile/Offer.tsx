@@ -1,5 +1,4 @@
 import React from 'react'
-import { ButtonOffer } from './ButtonOffer'
 import { Arrow } from '../ui/icons/Arrow'
 import { Cross } from '../ui/icons/Cross'
 import { OfferService } from '../../api/offer.services'
@@ -42,7 +41,7 @@ export const Offer = ({
         </div>
         <div className="flex-1">
           {payMethods.map((payment) => (
-            <div>{payment.bank.name}</div>
+            <div className={'text-[12px]'}>{payment.bank.name}</div>
           ))}
         </div>
         <div className="flex-1">InfoInfoInfo</div>
