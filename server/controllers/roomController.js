@@ -10,7 +10,7 @@ exports.getMyRooms = catchAsync(async (req, res, next) => {
         from: 'offers',
         localField: 'offer',
         foreignField: '_id',
-        as: 'offers',
+        as: 'offer',
       },
     },
     {
