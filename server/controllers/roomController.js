@@ -18,10 +18,33 @@ exports.getMyRooms = catchAsync(async (req, res, next) => {
         $or: [{ 'offers.maker': req.user._id }, { taker: req.user._id }],
       },
     },
+    {
+      $lookup: {
+        from: 'banks',
+        localField: 'offer.payMethods.bank',
+        foreignField: '_id',
+        as: 'banks',
+      },
+    },
+    {
+      $lookup: {
+        from: 'cryptos',
+        localField: 'offer.crypto',
+        foreignField: '_id',
+        as: 'crypto',
+      },
+    },
   ]);
+  const populateQuery = [
+    {
+      path: 'payMethod.bank',
+      select: '_id name',
+    },
+  ];
+  room_tmp = await Room.populate(rooms, populateQuery);
   res.status(201).json({
     message: 'success',
-    rooms,
+    room_tmp,
   });
 });
 
