@@ -5,6 +5,6 @@ export interface IPayment {
   id: string
   cardNumber: string
   paymentDescription: string
-  paymentMethod: IBank
+  bank: IBank
   region: IRegion
 }

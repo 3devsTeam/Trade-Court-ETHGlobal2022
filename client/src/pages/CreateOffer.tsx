@@ -53,11 +53,7 @@ const CreateOffer = () => {
     }
   }
 
-  const [roomId, setRoomId] = useState(0)
-
-  useEffect(() => {
-    setRoomId(randomNumber(1, 10000))
-  }, [])
+  const roomId = 10
 
   const args = [
     roomId, // рандомная комната
@@ -98,10 +94,10 @@ const CreateOffer = () => {
     OfferService.create({
       offerType: 'buy',
       payMethods: payMethods.map((payment: IPayment) => {
-        const { paymentMethod, cardNumber, region, paymentDescription } = payment
+        const { bank, cardNumber, region, paymentDescription } = payment
 
         return {
-          bank: paymentMethod,
+          bank,
           cardNumber,
           region,
           paymentDescription
@@ -117,31 +113,23 @@ const CreateOffer = () => {
       crypto: crypto._id,
       offerComment
     })
-      .then(
-        (data) => {
-          console.log(data)
-          console.log('tx hash:', hash?.transactionHash)
-          successOfferNotify(
-            <div>
-              <p>Offer is created!</p>
-              <a
-                target={'_blank'}
-                className={'text-purple'}
-                href={`https://rinkeby.etherscan.io/tx/${hash?.transactionHash}`}>
-                View your transaction on Etherscan
-              </a>
-            </div>
-          )
-          navigate('/')
-          resetOffer()
-          resetStep()
-        }
-
-        //resetOffer();
-      )
+      .then(() => {
+        successOfferNotify(
+          <div>
+            <p>Offer is created!</p>
+            <a
+              target={'_blank'}
+              className={'text-purple'}
+              href={`https://rinkeby.etherscan.io/tx/${hash?.transactionHash}`}>
+              View your transaction on Etherscan
+            </a>
+          </div>
+        )
+        navigate('/')
+        resetOffer()
+        resetStep()
+      })
       .catch((data) => errorOfferNotify(data.response.data.message))
-    // })
-    // .catch((err) => console.log(err));
   }
 
   const steps = [
@@ -174,21 +162,21 @@ const CreateOffer = () => {
 
   return (
     <div className="p-5">
-      <SkeletonWrapper isLoaded={isLoaded} height={100}>
-        <ProgressBar steps={steps} />
-      </SkeletonWrapper>
+      {/* <SkeletonWrapper isLoading={isLoaded} height={100}> */}
+      <ProgressBar steps={steps} />
+      {/* </SkeletonWrapper> */}
 
       <div className={'grid grid-cols-2 gap-5 mt-5'}>
         <div className="flex flex-col justify-between">
-          <SkeletonWrapper isLoaded={isLoaded} height={600}>
-            {pageDisplay()}
-          </SkeletonWrapper>
+          {/* <SkeletonWrapper isLoading={isLoaded} height={600}> */}
+          {pageDisplay()}
+          {/* </SkeletonWrapper> */}
         </div>
 
         <div>
-          <SkeletonWrapper isLoaded={isLoaded} height={600}>
-            <Preview />
-          </SkeletonWrapper>
+          {/* <SkeletonWrapper isLoading={isLoaded} height={600}> */}
+          <Preview />
+          {/* </SkeletonWrapper> */}
         </div>
       </div>
     </div>

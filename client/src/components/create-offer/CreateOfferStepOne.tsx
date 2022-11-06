@@ -11,7 +11,7 @@ import 'react-loading-skeleton/dist/skeleton.css'
 import { Wrapper } from './Wrapper'
 import { useForm } from 'react-hook-form'
 import { toast } from 'react-toastify'
-import { Button } from '../ui/ButtonDisabled'
+import { ButtonDisabled } from '../ui/ButtonDisabled'
 import { SubmitButton } from '../ui/SubmitButton'
 import { ICrypto } from '../../types/interfaces/crypto.interface'
 import { IFiat } from '../../types/interfaces/fiat.interface'
@@ -100,7 +100,7 @@ export const CreateOfferStepOne = ({ tokens, allFiat }: IStep1) => {
 
       <div className="mt-5">
         <Wrapper>
-          <Button name="Next" onClick={nextStep} disabled={!checkStep1()} />
+          <ButtonDisabled name="Next" onClick={nextStep} disabled={!checkStep1()} />
         </Wrapper>
       </div>
     </form>

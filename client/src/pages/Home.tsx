@@ -37,9 +37,9 @@ export const Home = () => {
 
   const [amount, setAmount] = useState<string>('')
   const debouncedAmount = useDebounce(amount, 500)
-  const [activeCrypto, setActiveCrypto] = useState<IToken | null>(null)
+  const [activeCrypto, setActiveCrypto] = useState<ICrypto | null>(null)
   const [activeFiat, setActiveFiat] = useState<IFiat | null>(null)
-  const [activePayment, setActivePayment] = useState<PaymentInterface | null>(null)
+  const [activePayment, setActivePayment] = useState<IPayment | null>(null)
   const [activeRegion, setActiveRegion] = useState<IRegion | null>(null)
   const [activeFilters, setActiveFilters] = useState<IActiveFilters>(initialFilters)
 
@@ -48,7 +48,7 @@ export const Home = () => {
       amount: debouncedAmount,
       crypto: activeCrypto?._id || '',
       fiat: activeFiat?._id || '',
-      banks: activePayment?._id || '',
+      banks: activePayment?.id || '',
       region: activeRegion?._id || ''
     })
   }, [activeCrypto, activeFiat, activePayment, activeRegion, debouncedAmount])

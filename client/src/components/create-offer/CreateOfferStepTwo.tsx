@@ -9,7 +9,7 @@ import { Payment } from './Payment'
 import { Wrapper } from './Wrapper'
 import { useForm } from 'react-hook-form'
 import { SubmitButton } from '../ui/SubmitButton'
-import { Button } from '../ui/ButtonDisabled'
+import { ButtonDisabled } from '../ui/ButtonDisabled'
 import { v4 as uuidv4 } from 'uuid'
 import { Label } from '../ui/Label'
 import { IPayment } from '../../types/interfaces/payment.interface'
@@ -24,9 +24,7 @@ export const CreateOfferStepTwo = () => {
     updatePaymentMethod,
     removePaymentMethod
   } = useActions()
-  const { fiat, region, paymentMethod, payMethods } = useTypedSelector(
-    (state) => state.offerReducer
-  )
+  const { fiat, region, bank, payMethods } = useTypedSelector((state) => state.offerReducer)
 
   const [paymentDescription, setPaymentDescription] = useState('')
   const [cardNumber, setCardNumber] = useState('')
@@ -34,7 +32,7 @@ export const CreateOfferStepTwo = () => {
   const addPayment = () => {
     const newPayment: IPayment = {
       id: uuidv4(),
-      paymentMethod,
+      bank,
       region,
       cardNumber,
       paymentDescription
@@ -54,8 +52,8 @@ export const CreateOfferStepTwo = () => {
 
   const { banks, regions } = fiat
 
-  const paymentName = paymentMethod?.name
-  const paymentLogoUrl = paymentMethod?.logoUrl
+  const paymentName = bank?.name
+  const paymentLogoUrl = bank?.logoUrl
 
   const regionName = region?.name
   const regionLogoUrl = region?.logoUrl
@@ -65,7 +63,7 @@ export const CreateOfferStepTwo = () => {
   const editPayment = () => {
     updatePaymentMethod({
       id: active?.id!,
-      paymentMethod,
+      bank,
       region,
       cardNumber,
       paymentDescription
@@ -137,7 +135,7 @@ export const CreateOfferStepTwo = () => {
             label={'Payment Description'}
             placeholder={'Here can be written something useful...'}
           />
-          <Button
+          <ButtonDisabled
             name={payMethods.length === 5 ? 'Maximum' : active != null ? 'Save' : 'Add'}
             onClick={active != null ? editPayment : addPayment}
             disabled={!(payMethods.length < 5)}
@@ -148,8 +146,8 @@ export const CreateOfferStepTwo = () => {
       <div className="mt-5">
         <Wrapper>
           <div className="flex gap-5">
-            <Button onClick={prevStep} disabled={false} name={'Back'} />
-            <Button onClick={nextStep} disabled={!(payMethods.length > 0)} name={'Next'} />
+            <ButtonDisabled onClick={prevStep} disabled={false} name={'Back'} />
+            <ButtonDisabled onClick={nextStep} disabled={!(payMethods.length > 0)} name={'Next'} />
           </div>
         </Wrapper>
       </div>

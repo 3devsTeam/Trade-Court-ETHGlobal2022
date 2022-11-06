@@ -5,7 +5,6 @@ import { useAccount, useEnsName, useEnsAvatar } from 'wagmi'
 import { Legend } from '../components/home/Legend'
 import { UserService } from '../api/user.services'
 import { Divider } from '../components/profile/Divider'
-import { IProfileOffer } from '../types/interfaces/profile-offer.interface'
 import { SkeletonWrapper } from '../components/ui/SkeletonWrapper'
 
 const Profile = () => {
@@ -85,7 +84,7 @@ const Profile = () => {
           <p>no offers</p>
         ) : isSuccess ? (
           data?.map((offer: IProfileOffer) => {
-            return <Offer offer={offer} refetch={refetch} activeOffer={false} key={offer._id} />
+            return <Offer offer={offer} refetch={refetch} key={offer._id} />
           })
         ) : null}
       </section>

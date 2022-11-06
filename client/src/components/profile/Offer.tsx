@@ -10,14 +10,14 @@ import { SkeletonWrapper } from '../ui/SkeletonWrapper'
 import { Modal } from '../ui/Modal'
 import { useMutation } from '@tanstack/react-query'
 import { totalAmount } from '../../utils/totalAmount'
+import { IPayment } from '../../types/interfaces/payment.interface'
 
 interface Props {
   offer: IProfileOffer
   refetch?: () => Promise<any>
-  activeOffer: boolean
 }
 
-export const Offer: React.FC<Props> = ({ offer, refetch, activeOffer }) => {
+export const Offer: React.FC<Props> = ({ offer, refetch }) => {
   const {
     _id,
     maker,
@@ -72,7 +72,7 @@ export const Offer: React.FC<Props> = ({ offer, refetch, activeOffer }) => {
       </div>
 
       <div>
-        {payMethods.map((payment) => (
+        {payMethods.map((payment: IPayment) => (
           <div>
             <span>{payment.bank.name}</span>
           </div>
@@ -86,24 +86,20 @@ export const Offer: React.FC<Props> = ({ offer, refetch, activeOffer }) => {
         <span className="font-bold">{(amount / totalAmount) * 100}%</span>
       </div>
 
-      {activeOffer ? null : (
-        <>
-          <div>
-            <Button onClick={() => setOpen(true)} color="bg-black" icon={<Cross />} />
-          </div>
+      <div>
+        <Button onClick={() => setOpen(true)} color="bg-black" icon={<Cross />} />
+      </div>
 
-          {open ? (
-            <Modal close={() => setOpen(false)} header={'Delete this Offer?'}>
-              <button
-                onClick={() => handleDelete.mutate()}
-                disabled={handleDelete.isLoading}
-                className="text-white p-2 w-full rounded-lg bg-red-500 font-bold hover:opacity-70">
-                {handleDelete.isLoading ? 'Deleting Offer...' : 'Delete'}
-              </button>
-            </Modal>
-          ) : null}
-        </>
-      )}
+      {open ? (
+        <Modal close={() => setOpen(false)} header={'Delete this Offer?'}>
+          <button
+            onClick={() => handleDelete.mutate()}
+            disabled={handleDelete.isLoading}
+            className="text-white p-2 w-full rounded-lg bg-red-500 font-bold hover:opacity-70">
+            {handleDelete.isLoading ? 'Deleting Offer...' : 'Delete'}
+          </button>
+        </Modal>
+      ) : null}
     </div>
   )
 }

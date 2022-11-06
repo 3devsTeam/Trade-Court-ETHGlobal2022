@@ -1,12 +1,12 @@
-import {createSlice, PayloadAction} from '@reduxjs/toolkit'
+import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
-import {IBank} from '../types/interfaces/bank.interface'
-import {IFiat} from '../types/interfaces/fiat.interface'
-import {IOffer} from '../types/interfaces/offer.interface'
-import {IPayment} from '../types/interfaces/payment.interface'
-import {IRegion} from '../types/interfaces/region.interface'
-import {ICrypto} from '../types/interfaces/crypto.interface'
-import {ROLES} from '../types/interfaces/roles.enum'
+import { IBank } from '../types/interfaces/bank.interface'
+import { IFiat } from '../types/interfaces/fiat.interface'
+import { IOffer } from '../types/interfaces/offer.interface'
+import { IPayment } from '../types/interfaces/payment.interface'
+import { IRegion } from '../types/interfaces/region.interface'
+import { ICrypto } from '../types/interfaces/crypto.interface'
+import { ROLES } from '../types/interfaces/roles.enum'
 
 const initialState: IOffer = {
   room: {
@@ -48,7 +48,7 @@ const initialState: IOffer = {
   timeLimit: '15',
   minLimit: 0,
   maxLimit: 0,
-  paymentMethod: {
+  bank: {
     _id: '',
     logoUrl: '',
     name: '',
@@ -73,7 +73,7 @@ export const offerSlice = createSlice({
     setFiat: (state, { payload }: PayloadAction<IFiat>) => {
       state.fiat = payload
     },
-    setUnitPrice: (state, { payload}: PayloadAction<number>) => {
+    setUnitPrice: (state, { payload }: PayloadAction<number>) => {
       state.unitPrice = payload
     },
     setQuantity: (state, { payload }: PayloadAction<number>) => {
@@ -91,11 +91,11 @@ export const offerSlice = createSlice({
     setComment: (state, { payload }: PayloadAction<string>) => {
       state.offerComment = payload
     },
-    setRegion: (state, {  payload }: PayloadAction<IRegion>) => {
+    setRegion: (state, { payload }: PayloadAction<IRegion>) => {
       state.region = payload
     },
     setBank: (state, { payload }: PayloadAction<IBank>) => {
-      state.paymentMethod = payload
+      state.bank = payload
     },
     addPaymentMethod: (state, { payload }: PayloadAction<IPayment>) => {
       state.payMethods.push(payload)
