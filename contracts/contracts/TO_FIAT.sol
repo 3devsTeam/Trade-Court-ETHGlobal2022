@@ -4,7 +4,7 @@ pragma solidity ^0.8.0;
 import "./@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "./@openzeppelin/contracts/access/AccessControl.sol";
 
-contract TO_FIAT6 is AccessControl {
+contract TO_FIAT is AccessControl {
 
     // =============================================================
     //                            STORAGE
