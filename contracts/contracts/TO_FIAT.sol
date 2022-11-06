@@ -2,21 +2,23 @@
 pragma solidity ^0.8.0;
 
 import "./@openzeppelin/contracts/token/ERC20/IERC20.sol";
+import "./@openzeppelin/contracts/access/AccessControl.sol";
 
-// сделать единный таймлимит на апрув и для сендера и для экзекутера (переменная timeEnd чтобы была одна)
+contract TO_FIAT6 is AccessControl {
 
-// переписать структуру RoomNumber так, чтобы структура Taker внутри была сделана как массив, мб газ на этом хорошо сэкономить получится
+    // =============================================================
+    //                            STORAGE
+    // =============================================================
 
-contract TO_FIAT {
-
-    address public admin;
-    uint8 public commissions;
-    uint256 public comissionSumEth;
-    mapping(address => uint256) public comissionSumToken;
-    uint256 public minTimeForTakerAndMaker;
-    uint256 public maxTimeForTakerAndMaker;
-    uint256 public multiplicityOfTime;
-    address public TCMultisig;
+    uint8 public commissions; // комиссия в тысячных (10 = 1% комиссий)
+    uint256 public comissionSumEth; // сумма комиссий в эфире
+    mapping(address => uint256) public comissionSumToken; // сумма комиссий в токенах
+    uint256 public minTimeForTakerAndMaker; // минимальное время для апрувов обемими сторонами
+    uint256 public maxTimeForTakerAndMaker; // максимальное время для апрувов обемими сторонами
+    uint256 public multiplicityOfTime; // модуль от введенного времени (чтобы время было красивыми числами)
+    
+    // роль мультисига
+    bytes32 public constant TCmultisig = keccak256("TC_MULTISIG");
 
     // структура описывающая комнату
     struct RoomNumber {
@@ -50,8 +52,15 @@ contract TO_FIAT {
         uint256 lowLimit;
 
         // эта переменная отвечает за статус комнаты
-        uint8 roomStatus; // 0 - None, 1 - Continue, 2 - Paused, 3 - Stopped
+        roomStatusENUM roomStatus; // 0 - None, 1 - Continue, 2 - Paused, 3 - Closed
 
+    }
+
+    enum roomStatusENUM {
+        None,
+        Continue,
+        Paused,
+        Closed
     }
 
     // это структура, которая хранит в себе всю информацию об одном из исполнителей сделки
@@ -69,36 +78,43 @@ contract TO_FIAT {
         bool isScam;
 
         // тут мы указываем решение о скаме, который принял админ по данному исполнителю
-        uint8 moderDecision; // 0 - None, 1 - scamReal, 2 - scamFake, 3 - scamHalf
+        moderDecisionENUM moderDecision; // 0 - None, 1 - scamReal, 2 - scamFake, 3 - scamHalf
 
         // эта переменная отвечает за статус сделки
-        uint8 dealStatus; // 0 - None, 1 - Continue, 2 - ApprovedByExecutor, 3 - ApprovedBySender, 4 - Closed
+        dealStatusENUM dealStatus; // 0 - None, 1 - Continue, 2 - ApprovedByTaker, 3 - ApprovedByMaker, 4 - Closed
 
+    }
+
+    enum dealStatusENUM {
+        None,
+        Continue,
+        ApprovedByTaker,
+        ApprovedByMaker,
+        Closed
+    }
+
+    enum moderDecisionENUM {
+        None,
+        scamReal,
+        scamFake,
+        scamHalf
     }
 
     // маппинг со структурой комнаты
     mapping(uint256 => RoomNumber) roomNumberMap;
-    
-    // классические модификатор только для админа
-    modifier onlyAdmin {
-        require(msg.sender == admin);
-        _;
-    }
-    
-    // проверка на модератора (может принимать решение о скаме в сделке)
-    modifier onlyModerAddr {
-        require(msg.sender == TCMultisig);
-        _;
-    }
+
+    // =============================================================
+    //                            Modifiers
+    // =============================================================
 
     // модификатор для более красивой проверки статуса комнаты
-    modifier roomStatusCheck(bool decision, uint256 _roomNumber, uint8 status) {
+    modifier roomStatusCheck(bool decision, uint256 _roomNumber, roomStatusENUM status) {
         require(decision ? roomNumberMap[_roomNumber].roomStatus == status : roomNumberMap[_roomNumber].roomStatus != status, "RSC");
         _;
     }
 
     // модификатор для более красивой проверки статуса сделки
-    modifier dealStatusCheck(bool decision, uint256 _roomNumber, uint256 _takerNumber, uint8 status) {
+    modifier dealStatusCheck(bool decision, uint256 _roomNumber, uint256 _takerNumber, dealStatusENUM status) {
         require(decision ? roomNumberMap[_roomNumber].taker[_takerNumber].dealStatus == status : roomNumberMap[_roomNumber].taker[_takerNumber].dealStatus != status, "DSC");
         _;
     }
@@ -109,8 +125,9 @@ contract TO_FIAT {
         _;
     }
 
-    //--------------------------------------------------------------------------------------------------
-    // тут ивенты
+    // =============================================================
+    //                            Events
+    // =============================================================
 
     event CreateRoom(
         uint256 roomNumber,
@@ -148,8 +165,9 @@ contract TO_FIAT {
     );
 
 
-    //--------------------------------------------------------------------------------------------------
-    // тут основная часть контракта (функции)
+    // =============================================================
+    //                         Main functions
+    // =============================================================
 
     // тут мы создаем в комнату в Native токенах сети
     function createRoom(
@@ -160,17 +178,17 @@ contract TO_FIAT {
         address _addressOfToken, // адресс токена, который будет использован в этой комнате
         uint256 _msgValue, // количество токенов, которые надо будет исполнить в жтой комнате
         uint32 _rate // курс, по которому будет происходить обмен токена на фиат
-    ) public payable roomStatusCheck(true, _roomNumber, 0) {
+    ) public payable roomStatusCheck(true, _roomNumber, roomStatusENUM.None) {
         // тут мы проверяем, что все временные рамки выставленны верно (все в cекундах)
         require(_timeForTakerAndMaker <= maxTimeForTakerAndMaker &&
                 _timeForTakerAndMaker >= minTimeForTakerAndMaker &&
                 _timeForTakerAndMaker % multiplicityOfTime == 0,
-                "Incorrect time");
+                "IT");
 
         if (_addressOfToken == address(0)) {
             require(_maxLimit > _lowLimit && 
                 _maxLimit <= (msg.value - (msg.value / 1000 * commissions)),
-                "Incorrect limits");
+                "IL");
 
             // монету у нас отправляются в очень мелких величинах (условно 1 udst записыватеся в контракте transferFrom как 1000000)
             // соответсченно подобное деление не будет приводить к неправильным вычислениям
@@ -179,18 +197,12 @@ contract TO_FIAT {
             roomNumberMap[_roomNumber].timeForTakerAndMaker = _timeForTakerAndMaker;
             roomNumberMap[_roomNumber].volume = (msg.value - (msg.value / 1000 * commissions));
             roomNumberMap[_roomNumber].addressOfToken = address(0);
-            roomNumberMap[_roomNumber].maxLimit = _maxLimit;
-            roomNumberMap[_roomNumber].lowLimit = _lowLimit;
-            roomNumberMap[_roomNumber].maker = msg.sender;
-            roomNumberMap[_roomNumber].rate = _rate;
-            roomNumberMap[_roomNumber].roomStatus++;
         } else {
             require(_maxLimit > _lowLimit && 
                 _maxLimit <= _msgValue - (_msgValue / 1000 * commissions),
-                "Incorrect limits");
+                "IL");
         
             // блок с трансферов erc20 токенов для депозита
-            require(IERC20(_addressOfToken).allowance(msg.sender, address(this)) >= _msgValue, "Incorrect allowance");
             IERC20(_addressOfToken).transferFrom(msg.sender, address(this), _msgValue);
 
             // монету у нас отправляются в очень мелких величинах (условно 1 udst записыватеся в контракте transferFrom как 1000000)
@@ -200,12 +212,13 @@ contract TO_FIAT {
             roomNumberMap[_roomNumber].timeForTakerAndMaker = _timeForTakerAndMaker;
             roomNumberMap[_roomNumber].volume = (_msgValue - (_msgValue / 1000 * commissions));
             roomNumberMap[_roomNumber].addressOfToken = _addressOfToken;
-            roomNumberMap[_roomNumber].maxLimit = _maxLimit;
-            roomNumberMap[_roomNumber].lowLimit = _lowLimit;
-            roomNumberMap[_roomNumber].maker = msg.sender;
-            roomNumberMap[_roomNumber].rate = _rate;
-            roomNumberMap[_roomNumber].roomStatus++;
         }
+
+        roomNumberMap[_roomNumber].maxLimit = _maxLimit;
+        roomNumberMap[_roomNumber].lowLimit = _lowLimit;
+        roomNumberMap[_roomNumber].maker = msg.sender;
+        roomNumberMap[_roomNumber].rate = _rate;
+        roomNumberMap[_roomNumber].roomStatus = roomStatusENUM.Continue;
 
         emit CreateRoom(
             _roomNumber,
@@ -218,9 +231,9 @@ contract TO_FIAT {
     function joinRoom (
         uint256 _roomNumber, // номер комнаты
         uint256 _txVolume // какой обьем готовы исполнить в volume (в wei)
-    ) public roomStatusCheck(true, _roomNumber, 1) {
+    ) public roomStatusCheck(true, _roomNumber, roomStatusENUM.Continue) {
         // тут мы проверяем, что обьем сделки исполнителя находится в пределах лимитов
-        require(roomNumberMap[_roomNumber].maxLimit > _txVolume && roomNumberMap[_roomNumber].lowLimit < _txVolume, "Your volume is out of limits");
+        require(roomNumberMap[_roomNumber].maxLimit > _txVolume && roomNumberMap[_roomNumber].lowLimit < _txVolume, "OL");
 
         // создаем структуру чела, который готов исполнить обьем
         roomNumberMap[_roomNumber].taker[roomNumberMap[_roomNumber].counter] = Taker({
@@ -228,8 +241,8 @@ contract TO_FIAT {
             volume: _txVolume,
             timer: block.timestamp,
             isScam: false,
-            moderDecision: 0,
-            dealStatus: 1
+            moderDecision: moderDecisionENUM.None,
+            dealStatus: dealStatusENUM.Continue
         });
 
         // освобождаем обьем комнаты от выполняемой транзакции, чтобы другие ее не могли выполнить
@@ -242,30 +255,30 @@ contract TO_FIAT {
     }
 
     // тут исполнитель (taker) должен подтвердить свой перевод средств
-    function takerApprove(uint256 _roomNumber, uint256 _takerNumber) dealStatusCheck(true, _roomNumber, _takerNumber, 1) external {
-        require(roomNumberMap[_roomNumber].taker[_takerNumber].addressOfTaker == msg.sender, "You are not taker");
-        roomNumberMap[_roomNumber].taker[_takerNumber].dealStatus++;
+    function takerApprove(uint256 _roomNumber, uint256 _takerNumber) dealStatusCheck(true, _roomNumber, _takerNumber, dealStatusENUM.Continue) external {
+        require(roomNumberMap[_roomNumber].taker[_takerNumber].addressOfTaker == msg.sender, "NT");
+        roomNumberMap[_roomNumber].taker[_takerNumber].dealStatus = dealStatusENUM.ApprovedByTaker;
         roomNumberMap[_roomNumber].taker[_takerNumber].timer = block.timestamp + roomNumberMap[_roomNumber].timeForTakerAndMaker;
         emit TakerApprove(_roomNumber, _takerNumber);
     }
 
     // тут мы получаем подтверждение транзакции покупателя, что исполноитель (struct Taker) все выполнила правильно
-    function makerApprove(uint256 _roomNumber, uint256 _takerNumber) external isRoomMaker(_roomNumber, msg.sender) dealStatusCheck(true, _roomNumber, _takerNumber, 2) {
-        require(roomNumberMap[_roomNumber].taker[_takerNumber].isScam == false, "There is a scam on this taker");
+    function makerApprove(uint256 _roomNumber, uint256 _takerNumber) external isRoomMaker(_roomNumber, msg.sender) dealStatusCheck(true, _roomNumber, _takerNumber, dealStatusENUM.ApprovedByTaker) {
+        require(roomNumberMap[_roomNumber].taker[_takerNumber].isScam == false, "ST");
 
-        roomNumberMap[_roomNumber].taker[_takerNumber].dealStatus++;
+        roomNumberMap[_roomNumber].taker[_takerNumber].dealStatus = dealStatusENUM.ApprovedByMaker;
         emit MakerApprove(_roomNumber, _takerNumber);
     }
 
     // тут у нас тейкер выводит средства со сделки
-    function takerWithdraw(uint256 _roomNumber, uint256 _takerNumber) public dealStatusCheck(true, _roomNumber, _takerNumber, 3) {
+    function takerWithdraw(uint256 _roomNumber, uint256 _takerNumber) public dealStatusCheck(true, _roomNumber, _takerNumber, dealStatusENUM.ApprovedByMaker) {
         withdraw(_roomNumber, _takerNumber);
         emit TakerWithdraw(_roomNumber, _takerNumber, roomNumberMap[_roomNumber].addressOfToken, roomNumberMap[_roomNumber].taker[_takerNumber].volume);
     }
 
     // тут у нас исполнитель может вывести деньги, если создатель комнаты дал аппрув
-    function withdraw(uint256 _roomNumber, uint256 _takerNumber) internal dealStatusCheck(false, _roomNumber, _takerNumber, 4) {
-        roomNumberMap[_roomNumber].taker[_takerNumber].dealStatus = 4;
+    function withdraw(uint256 _roomNumber, uint256 _takerNumber) internal dealStatusCheck(false, _roomNumber, _takerNumber, dealStatusENUM.Closed) {
+        roomNumberMap[_roomNumber].taker[_takerNumber].dealStatus = dealStatusENUM.Closed;
 
         if (roomNumberMap[_roomNumber].addressOfToken == address(0)) {
             payable(roomNumberMap[_roomNumber].taker[_takerNumber].addressOfTaker).transfer(roomNumberMap[_roomNumber].taker[_takerNumber].volume);
@@ -276,12 +289,12 @@ contract TO_FIAT {
     }
 
     // тут создатель комнаты может ее закрыть, в случае если в ней не осталось исполнителей
-    function closeRoom(uint256 _roomNumber) external roomStatusCheck(false, _roomNumber, 3) isRoomMaker(_roomNumber, msg.sender) {
+    function closeRoom(uint256 _roomNumber) external roomStatusCheck(false, _roomNumber, roomStatusENUM.Closed) isRoomMaker(_roomNumber, msg.sender) {
 
         // тут мы проверяем, чтобы все в комнате было завершено и создатель комнаты не мог просто так взять и закрыть эту комнату
         if (roomNumberMap[_roomNumber].counter > 0) {
             for (uint256 i = 0; i < roomNumberMap[_roomNumber].counter; i++) {
-                require(roomNumberMap[_roomNumber].taker[i].dealStatus == 4, "Deal is opened");
+                require(roomNumberMap[_roomNumber].taker[i].dealStatus == dealStatusENUM.Closed, "DO");
             }
         }
 
@@ -294,67 +307,67 @@ contract TO_FIAT {
             }
         }
 
-        roomNumberMap[_roomNumber].roomStatus = 3;
+        roomNumberMap[_roomNumber].roomStatus = roomStatusENUM.Closed;
         emit CloseRoom(_roomNumber);
     }
 
     // в этой функции мы позволяем создателю комнаты запретить создание новых сделок
-    function stopRoom(uint256 _roomNumber) external isRoomMaker(_roomNumber, msg.sender) {
-        roomNumberMap[_roomNumber].roomStatus = 2;
+    function pauseRoom(uint256 _roomNumber) external isRoomMaker(_roomNumber, msg.sender) {
+        roomNumberMap[_roomNumber].roomStatus = roomStatusENUM.Paused;
     }
 
     // в этой функции мы позволяем создателю комнаты возобновить создание новых сделок
     function continueRoom(uint256 _roomNumber) external isRoomMaker(_roomNumber, msg.sender) {
-        roomNumberMap[_roomNumber].roomStatus = 1;
+        roomNumberMap[_roomNumber].roomStatus = roomStatusENUM.Continue;
     }
 
     // тут у нас maker может вернуть деньги в комнату, если taker просрачивает вызов "function dealDone"
-    function delayFromTaker(uint256 _roomNumber, uint256 _takerNumber) external dealStatusCheck(true, _roomNumber, _takerNumber, 1) {
-        require(roomNumberMap[_roomNumber].taker[_takerNumber].timer <= block.timestamp + roomNumberMap[_roomNumber].timeForTakerAndMaker, "Taker got some time for deal");
+    function delayFromTaker(uint256 _roomNumber, uint256 _takerNumber) external dealStatusCheck(true, _roomNumber, _takerNumber, dealStatusENUM.Continue) {
+        require(roomNumberMap[_roomNumber].taker[_takerNumber].timer <= block.timestamp + roomNumberMap[_roomNumber].timeForTakerAndMaker, "TT");
         
-        roomNumberMap[_roomNumber].taker[_takerNumber].dealStatus = 4;
+        roomNumberMap[_roomNumber].taker[_takerNumber].dealStatus = dealStatusENUM.Closed;
         roomNumberMap[_roomNumber].volume += roomNumberMap[_roomNumber].taker[_takerNumber].volume;
     }
 
     // тут у нас исполнитель может вывести деньги, если создатель просрочил аппрув сделки
-    function delayFromMaker(uint256 _roomNumber, uint256 _takerNumber) external dealStatusCheck(true, _roomNumber, _takerNumber, 2) {
-        require(roomNumberMap[_roomNumber].taker[_takerNumber].timer <= block.timestamp + roomNumberMap[_roomNumber].timeForTakerAndMaker, "Sender got some time for deal");
+    function delayFromMaker(uint256 _roomNumber, uint256 _takerNumber) external dealStatusCheck(true, _roomNumber, _takerNumber, dealStatusENUM.ApprovedByTaker) {
+        require(roomNumberMap[_roomNumber].taker[_takerNumber].timer <= block.timestamp + roomNumberMap[_roomNumber].timeForTakerAndMaker, "MS");
 
         withdraw(_roomNumber, _takerNumber);
     }
 
-    // тут мы узнаем, скаманули ли покупателя (он соответсвенно подтверждает что это скам)
-    function scamFromMaker(uint256 _roomNumber, uint256 _takerNumber) external isRoomMaker(_roomNumber, msg.sender) dealStatusCheck(true, _roomNumber, _takerNumber, 2) {
+    // тут мы узнаем, скаманули ли тейкера (он соответсвенно подтверждает что это скам)
+    function scamFromTaker(uint256 _roomNumber, uint256 _takerNumber) external isRoomMaker(_roomNumber, msg.sender) dealStatusCheck(true, _roomNumber, _takerNumber, dealStatusENUM.ApprovedByTaker) {
         roomNumberMap[_roomNumber].taker[_takerNumber].isScam = true;
     }
 
     // данная функция служит для принятия решения админом о скаме
-    function moderDecision(uint256 _roomNumber, uint8 _decision, uint256 _takerNumber) external onlyModerAddr {
+    function moderDecision(uint256 _roomNumber, moderDecisionENUM _decision, uint256 _takerNumber) external onlyRole(TCmultisig) {
         require(roomNumberMap[_roomNumber].taker[_takerNumber].isScam == true);
         roomNumberMap[_roomNumber].taker[_takerNumber].moderDecision = _decision;
     }
 
     // тут если у нас прожимается скам, то админ будет разрешать проблему и делать возврат средств создателю комнаты (типо исполнитель скаманулся)
     function scamReal(uint256 _roomNumber, uint256 _takerNumber) external {
-        require(roomNumberMap[_roomNumber].taker[_takerNumber].moderDecision == 1);
+        require(roomNumberMap[_roomNumber].taker[_takerNumber].moderDecision == moderDecisionENUM.scamReal);
 
-        roomNumberMap[_roomNumber].taker[_takerNumber].dealStatus = 4;
+        roomNumberMap[_roomNumber].taker[_takerNumber].dealStatus = dealStatusENUM.Closed;
         roomNumberMap[_roomNumber].volume += roomNumberMap[_roomNumber].taker[_takerNumber].volume;
     }
 
     // тут если у нас прожимается скам, то админ будет разрешать проблему и делать возврат получателю средств
     // (типо покупатель решил скамануть всех, получить товар и при этом деьги вернуть)
     function scamFake(uint256 _roomNumber, uint256 _takerNumber) external {
-        require(roomNumberMap[_roomNumber].taker[_takerNumber].moderDecision == 2);
+        require(roomNumberMap[_roomNumber].taker[_takerNumber].moderDecision == moderDecisionENUM.scamFake);
 
         withdraw(_roomNumber, _takerNumber);
     }
 
     // в случае этого скама - половина сделки уходит тейкеру, а половина уходит мейкеру
     function scamHalf(uint256 _roomNumber, uint256 _takerNumber) external {
-        require(roomNumberMap[_roomNumber].taker[_takerNumber].moderDecision == 3);
+        require(roomNumberMap[_roomNumber].taker[_takerNumber].moderDecision == moderDecisionENUM.scamHalf);
         uint256 half = roomNumberMap[_roomNumber].taker[_takerNumber].volume/2;
-        roomNumberMap[_roomNumber].taker[_takerNumber].dealStatus = 4;
+        roomNumberMap[_roomNumber].taker[_takerNumber].dealStatus = dealStatusENUM.Closed;
 
         roomNumberMap[_roomNumber].volume += half;
 
@@ -366,14 +379,15 @@ contract TO_FIAT {
     }
 
     // в случае если тейкер ошибся в своей сделке и хочет из нее выйти, то у него есть время до того момента, как он не подтвердит свой перевод
-    function mistakeFromTaker(uint256 _roomNumber, uint256 _takerNumber) external dealStatusCheck(true, _roomNumber, _takerNumber, 1) {
-        require(roomNumberMap[_roomNumber].taker[_takerNumber].addressOfTaker == msg.sender, "You are not taker");
-        roomNumberMap[_roomNumber].taker[_takerNumber].dealStatus = 4;
+    function mistakeFromTaker(uint256 _roomNumber, uint256 _takerNumber) external dealStatusCheck(true, _roomNumber, _takerNumber, dealStatusENUM.Continue) {
+        require(roomNumberMap[_roomNumber].taker[_takerNumber].addressOfTaker == msg.sender, "NT");
+        roomNumberMap[_roomNumber].taker[_takerNumber].dealStatus = dealStatusENUM.Closed;
         roomNumberMap[_roomNumber].volume += roomNumberMap[_roomNumber].taker[_takerNumber].volume;
     }
 
-    //-----------------------------------------------------------------------------------------------------------
-    // Тут несколько вью функций
+    // =============================================================
+    //                            View functions
+    // =============================================================
 
     // функция, которая возвращает нам одного из исполнителей комнаты
     function getTaker(uint256 _roomNumber, uint256 _takerNumber) public view returns(Taker memory) {
@@ -403,7 +417,7 @@ contract TO_FIAT {
     function getRoomDynamic(uint256 _roomNumber) public view returns(
         uint16,
         uint256,
-        uint8
+        roomStatusENUM
     ) {
         return(
             roomNumberMap[_roomNumber].counter,
@@ -412,57 +426,50 @@ contract TO_FIAT {
         );
     }
 
-    //-----------------------------------------------------------------------------------------------------------
-    // админский функции для глобальных штук
+    // =============================================================
+    //                            Admin functions
+    // =============================================================
 
     // функция вывода всех собранных комиссий в эфире
-    function withdrawCommissionsEth() external onlyAdmin {
+    function withdrawCommissionsEth() external onlyRole(DEFAULT_ADMIN_ROLE) {
         payable(msg.sender).transfer(comissionSumEth);
         comissionSumEth = 0;
     }
 
     // функция вывода всех собранных комиссий в токенах
-    function withdrawCommissionsToken(address token) external onlyAdmin {
+    function withdrawCommissionsToken(address token) external onlyRole(DEFAULT_ADMIN_ROLE) {
         IERC20(token).transfer(msg.sender, comissionSumToken[token]);
         comissionSumToken[token] = 0;
     }
 
     // тут админ устанавливает комиссии (исчисление идет в десятых процента, то есть "5" будет соответсвеовать 0,5%)
-    function setCommissions(uint8 _commissions) external onlyAdmin {
+    function setCommissions(uint8 _commissions) external onlyRole(DEFAULT_ADMIN_ROLE) {
         commissions = _commissions;
     }
 
     // устанавливает время в секундах, для лимитов сендера
-    function setMaxTimeForTakerAndMaker(uint256 _maxTimeForTakerAndMaker) external onlyAdmin {
+    function setMaxTimeForTakerAndMaker(uint256 _maxTimeForTakerAndMaker) external onlyRole(DEFAULT_ADMIN_ROLE) {
         maxTimeForTakerAndMaker = _maxTimeForTakerAndMaker;
     }
 
     // устанавливает время в секундах, для лимитов сендера
-    function setMinTimeForTakerAndMaker(uint256 _minTimeForTakerAndMaker) external onlyAdmin {
+    function setMinTimeForTakerAndMaker(uint256 _minTimeForTakerAndMaker) external onlyRole(DEFAULT_ADMIN_ROLE) {
         minTimeForTakerAndMaker = _minTimeForTakerAndMaker;
     }
 
     // устанавливает кратность тайм лимитов
-    function setMultiplicityOfTime(uint256 _multiplicityOfTime) external onlyAdmin {
+    function setMultiplicityOfTime(uint256 _multiplicityOfTime) external onlyRole(DEFAULT_ADMIN_ROLE) {
         multiplicityOfTime = _multiplicityOfTime;
     }
 
-    // тут мы можем переназначить главного админа контракта
-    function changeAdmin(address _newAdmin) external onlyAdmin {
-        admin = _newAdmin;
-    }
-
-    // тут мы меняем адрес мультисига
-    function setTCMultisig(address _TCMultisig) external onlyAdmin {
-        TCMultisig = _TCMultisig;
-    }
-
-
-    //-----------------------------------------------------------------------------------------------------------
-    // конструктор
+    // =============================================================
+    //                            Constructor
+    // =============================================================
 
     constructor() {
-        admin = msg.sender;
+        _grantRole(DEFAULT_ADMIN_ROLE, msg.sender);
     }
+
+    receive() external payable {}
 
 }
