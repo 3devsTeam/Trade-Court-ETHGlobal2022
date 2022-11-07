@@ -6,7 +6,7 @@ interface ILegend {
 
 export const Legend = ({ fields }: ILegend) => {
   return (
-    <div className="flex items-center font-bold px-4 select-none mb-5">
+    <div className="flex items-center font-bold px-4 select-none">
       {fields.map((field, i) => {
         return (
           <div className={field.className} key={i}>

@@ -57,9 +57,10 @@ const Profile = () => {
   ]
 
   return (
-    <>
+    <div>
       <Legend fields={fields} />
-      <section className={'flex flex-col gap-5'}>
+
+      <section className="relative">
         {rooms?.length ? (
           <>
             <Divider name="Active offers" margin={'my-5'} />
@@ -69,29 +70,31 @@ const Profile = () => {
             ) : rooms?.length === 0 ? (
               <p>no offers</p>
             ) : isSuccessRooms ? (
-              rooms?.map((room: IActiveOffer) => {
-                return <ActiveOffer activeOffer={room} key={room._id} />
-              })
+              <div className={'flex flex-col gap-5'}>
+                {rooms?.map((room: IActiveOffer) => {
+                  return <ActiveOffer activeOffer={room} key={room._id} />
+                })}
+              </div>
             ) : null}
           </>
         ) : null}
-      </section>
 
-      {/* <SkeletonWrapper isLoading={isLoading} height={100} count={10} margin={'20px'}> */}
-      <section className={'flex flex-col gap-5'}>
+        {/* <SkeletonWrapper isLoading={isLoading} height={100} count={10} margin={'20px'}> */}
         <Divider name="My offers" margin={'my-5'} />
+
         {isError ? (
           <p>error</p>
         ) : data?.length === 0 ? (
           <NoItems />
         ) : isSuccess ? (
-          data?.map((offer: IProfileOffer) => {
-            return <ProfileOffer offer={offer} refetch={refetch} key={offer._id} />
-          })
+          <div className={'flex flex-col gap-5'}>
+            {data?.map((offer: IProfileOffer) => {
+              return <ProfileOffer offer={offer} refetch={refetch} key={offer._id} />
+            })}
+          </div>
         ) : null}
       </section>
-      {/* </SkeletonWrapper> */}
-    </>
+    </div>
   )
 }
 

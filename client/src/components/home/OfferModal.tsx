@@ -119,6 +119,7 @@ const OfferModal: React.FC<Props> = ({ close, offer }) => {
           value={recieve}
           inputContent={symbol}
         />
+
         <div>
           <ButtonDisabled
             onClick={() => handleTransaction()}

@@ -72,8 +72,8 @@ export const ConnectButton = ({
       </button>
 
       {openConnectModal ? (
-        <Modal close={() => setOpenConnectModal(false)} header={'Select wallet'}>
-          <div className="grid grid-cols-3 gap-5 ">
+        <Modal close={() => setOpenConnectModal(false)} header={'Select Wallet'}>
+          <div className="grid grid-flow-row-dense gap-5 ">
             {connectors.map((wallet, i) => (
               <WalletButton
                 sign={signMessageAsync}
@@ -81,9 +81,8 @@ export const ConnectButton = ({
                 close={setOpenConnectModal}
                 wallet={wallet}
                 i={i}
-                key={wallet.id}>
-                <span>{wallet.name}</span>
-              </WalletButton>
+                key={wallet.id}
+              />
             ))}
           </div>
         </Modal>
