@@ -7,7 +7,7 @@ import { IMaker } from './maker.interface'
 
 export interface IOffer {
   _id: string
-  offerType?: 'buy' | 'sell'
+  offerType: 'buy' | 'sell'
   crypto: ICrypto
   fiat: IFiat
   unitPrice: number

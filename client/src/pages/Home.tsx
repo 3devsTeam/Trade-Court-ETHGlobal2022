@@ -17,6 +17,9 @@ import { IPayment } from '../types/interfaces/payment.interface'
 import { IRegion } from '../types/interfaces/region.interface'
 import { IBank } from '../types/interfaces/bank.interface'
 import { IOffer } from '../types/interfaces/offer.interface'
+import { useNavigate } from 'react-router-dom'
+import { useAccount } from 'wagmi'
+import { NoItems } from '../components/errors/no-items'
 
 export interface IActiveFilters {
   amount: string
@@ -157,9 +160,7 @@ export const Home = () => {
         {/* </SkeletonWrapper> */}
         {/* <SkeletonWrapper isLoaded={isLoaded} height={100} count={10} margin={'20px'}> */}
         {data?.pages[0].length === 0 ? (
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
-            <span className="text-2xl font-bold">No items found...</span>
-          </div>
+          <NoItems />
         ) : (
           <div className="space-y-2 flex flex-wrap">{content}</div>
         )}

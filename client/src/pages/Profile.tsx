@@ -9,6 +9,7 @@ import { SkeletonWrapper } from '../components/ui/SkeletonWrapper'
 import { IProfileOffer } from '../types/interfaces/profile-offer.interface'
 import { ActiveOffer } from '../components/profile/ActiveOffer'
 import { IActiveOffer } from '../types/interfaces/active-offer.interface'
+import { NoItems } from '../components/errors/no-items'
 
 const Profile = () => {
   const { data, isSuccess, isLoading, isError, refetch, isFetching } = useQuery(
@@ -58,31 +59,31 @@ const Profile = () => {
   return (
     <>
       <Legend fields={fields} />
+      <section className={'flex flex-col gap-5'}>
+        {rooms?.length ? (
+          <>
+            <Divider name="Active offers" margin={'my-5'} />
 
-      {rooms?.length ? (
-        <>
-          <Divider name="Active offers" margin={'my-5'} />
-
-          {isErrorRooms ? (
-            <p>error</p>
-          ) : rooms?.length === 0 ? (
-            <p>no offers</p>
-          ) : isSuccessRooms ? (
-            rooms?.map((room: IActiveOffer) => {
-              return <ActiveOffer activeOffer={room} key={room._id} />
-            })
-          ) : null}
-        </>
-      ) : null}
-
-      <Divider name="My offers" margin={'my-5'} />
+            {isErrorRooms ? (
+              <p>error</p>
+            ) : rooms?.length === 0 ? (
+              <p>no offers</p>
+            ) : isSuccessRooms ? (
+              rooms?.map((room: IActiveOffer) => {
+                return <ActiveOffer activeOffer={room} key={room._id} />
+              })
+            ) : null}
+          </>
+        ) : null}
+      </section>
 
       {/* <SkeletonWrapper isLoading={isLoading} height={100} count={10} margin={'20px'}> */}
-      <section className={'flex flex-col gap-5 mt-[20px]'}>
+      <section className={'flex flex-col gap-5'}>
+        <Divider name="My offers" margin={'my-5'} />
         {isError ? (
           <p>error</p>
         ) : data?.length === 0 ? (
-          <p>no offers</p>
+          <NoItems />
         ) : isSuccess ? (
           data?.map((offer: IProfileOffer) => {
             return <ProfileOffer offer={offer} refetch={refetch} key={offer._id} />
