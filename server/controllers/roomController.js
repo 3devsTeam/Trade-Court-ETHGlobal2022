@@ -10,6 +10,15 @@ exports.getMyRooms = catchAsync(async (req, res, next) => {
         from: 'offers',
         localField: 'offer',
         foreignField: '_id',
+        pipeline: [
+          {
+            $project: {
+              'payMethods.bank': 1,
+              fiat: 1,
+              crypto: 1,
+            },
+          },
+        ],
         as: 'offer',
       },
     },
@@ -39,6 +48,15 @@ exports.getMyRooms = catchAsync(async (req, res, next) => {
         from: 'fiats',
         localField: 'offer.fiat',
         foreignField: '_id',
+        pipeline: [
+          {
+            $project: {
+              _id: 1,
+              name: 1,
+              ticker: 1,
+            },
+          },
+        ],
         as: 'fiat',
       },
     },
