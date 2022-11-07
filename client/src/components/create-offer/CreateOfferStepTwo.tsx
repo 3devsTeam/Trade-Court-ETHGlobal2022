@@ -76,7 +76,7 @@ export const CreateOfferStepTwo = () => {
 
   useEffect(() => {
     if (active != null) {
-      setBank(active?.paymentMethod)
+      setBank(active?.bank)
       setRegion(active?.region)
       setCardNumber(active?.cardNumber)
       setPaymentDescription(active.paymentDescription)

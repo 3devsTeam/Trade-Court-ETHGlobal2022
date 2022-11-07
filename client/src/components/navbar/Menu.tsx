@@ -86,7 +86,7 @@ export const Menu = ({ address, balance, ensName, setOpenMenu, menuRef }: Props)
       <div className={'flex justify-between'}>
         <div className="flex justify-between space-x-2">
           <div>
-            <AvatarIcon color={address.slice(-6)} />
+            <AvatarIcon color={address?.slice(-6)} />
           </div>
           <div className={'flex flex-col font-bold'}>
             <span>{!ensName ? truncateAddress(address) : ensName}</span>

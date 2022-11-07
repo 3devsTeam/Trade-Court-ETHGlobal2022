@@ -1,6 +1,6 @@
 import { ethers } from 'ethers'
 import { useContractWrite, usePrepareContractWrite, useWaitForTransaction } from 'wagmi'
-import ethContractConfig from '../abis/ethContractConfig'
+import ethContractConfig from '../abis/contractConfig'
 
 export const useEthContract = (args: any, functionName: string) => {
   const { config, error: prepareError } = usePrepareContractWrite({

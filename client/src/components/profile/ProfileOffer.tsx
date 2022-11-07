@@ -4,20 +4,21 @@ import { Cross } from '../ui/icons/Cross'
 import { OfferService } from '../../api/offer.services'
 import { Label } from './Label'
 import { useNavigate } from 'react-router-dom'
-import { IProfileOffer } from '../../types/interfaces/profile-offer.interface'
 import { Button } from '../ui/Button'
 import { SkeletonWrapper } from '../ui/SkeletonWrapper'
 import { Modal } from '../ui/Modal'
 import { useMutation } from '@tanstack/react-query'
 import { totalAmount } from '../../utils/totalAmount'
 import { IPayment } from '../../types/interfaces/payment.interface'
+import { IOffer } from '../../types/interfaces/offer.interface'
+import { IProfileOffer } from '../../types/interfaces/profile-offer.interface'
 
 interface Props {
   offer: IProfileOffer
-  refetch?: () => Promise<any>
+  refetch: () => Promise<any>
 }
 
-export const Offer: React.FC<Props> = ({ offer, refetch }) => {
+export const ProfileOffer: React.FC<Props> = ({ offer, refetch }) => {
   const {
     _id,
     maker,
@@ -33,8 +34,6 @@ export const Offer: React.FC<Props> = ({ offer, refetch }) => {
     totalAmount
   } = offer
 
-  console.log(amount, totalAmount)
-
   const handleDelete = useMutation(() => OfferService.deleteByID(_id))
 
   const [open, setOpen] = useState(false)
@@ -43,11 +42,9 @@ export const Offer: React.FC<Props> = ({ offer, refetch }) => {
     refetch!()
     setOpen(false)
   }, [handleDelete.isSuccess])
-
   // grid-cols-offer
-
   return (
-    <div className="grid items-center bg-white shadow-customDark rounded-[20px] p-5">
+    <div className="flex justify-between items-center bg-white shadow-customDark rounded-[20px] p-5">
       <div>
         <span className="text-purple">{_id}</span>
       </div>

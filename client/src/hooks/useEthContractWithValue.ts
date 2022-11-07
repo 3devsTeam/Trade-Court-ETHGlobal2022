@@ -1,6 +1,6 @@
 import { ethers } from 'ethers'
 import { useContractWrite, usePrepareContractWrite, useWaitForTransaction } from 'wagmi'
-import ethContractConfig from '../abis/ethContractConfig'
+import ethContractConfig from '../abis/contractConfig'
 
 export const useEthContractWithValue = (
   args: any,
@@ -9,8 +9,8 @@ export const useEthContractWithValue = (
 ) => {
   const { config, error: prepareError } = usePrepareContractWrite({
     ...ethContractConfig,
-    functionName: functionName,
-    args: args,
+    functionName,
+    args,
     overrides: {
       value: value,
       gasLimit: 400000
@@ -36,8 +36,4 @@ export const useEthContractWithValue = (
     hash,
     prepareError
   }
-
-  // } catch(err) {
-  //   console.log(err)
-  // }
 }
