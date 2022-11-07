@@ -1,11 +1,14 @@
 import { useQuery } from '@tanstack/react-query'
 import React, { useEffect, useState } from 'react'
-import { Offer } from '../components/profile/Offer'
+import { ProfileOffer } from '../components/profile/ProfileOffer'
 import { useAccount, useEnsName, useEnsAvatar } from 'wagmi'
 import { Legend } from '../components/home/Legend'
 import { UserService } from '../api/user.services'
 import { Divider } from '../components/profile/Divider'
 import { SkeletonWrapper } from '../components/ui/SkeletonWrapper'
+import { IProfileOffer } from '../types/interfaces/profile-offer.interface'
+import { ActiveOffer } from '../components/profile/ActiveOffer'
+import { IActiveOffer } from '../types/interfaces/active-offer.interface'
 
 const Profile = () => {
   const { data, isSuccess, isLoading, isError, refetch, isFetching } = useQuery(
@@ -24,8 +27,6 @@ const Profile = () => {
   } = useQuery(['get user rooms'], () => UserService.getUserRooms(), {
     select: ({ data }) => data.rooms
   })
-
-  console.log(rooms)
 
   const fields = [
     {
@@ -58,7 +59,7 @@ const Profile = () => {
     <>
       <Legend fields={fields} />
 
-      {/* {rooms?.length ? (
+      {rooms?.length ? (
         <>
           <Divider name="Active offers" margin={'my-5'} />
 
@@ -67,12 +68,12 @@ const Profile = () => {
           ) : rooms?.length === 0 ? (
             <p>no offers</p>
           ) : isSuccessRooms ? (
-            rooms?.offers.map((offer: IProfileOffer) => {
-              return <Offer offer={offer} refetch={refetch} activeOffer={true} key={offer._id} />
+            rooms?.map((room: IActiveOffer) => {
+              return <ActiveOffer activeOffer={room} key={room._id} />
             })
           ) : null}
         </>
-      ) : null} */}
+      ) : null}
 
       <Divider name="My offers" margin={'my-5'} />
 
@@ -84,7 +85,7 @@ const Profile = () => {
           <p>no offers</p>
         ) : isSuccess ? (
           data?.map((offer: IProfileOffer) => {
-            return <Offer offer={offer} refetch={refetch} key={offer._id} />
+            return <ProfileOffer offer={offer} refetch={refetch} key={offer._id} />
           })
         ) : null}
       </section>

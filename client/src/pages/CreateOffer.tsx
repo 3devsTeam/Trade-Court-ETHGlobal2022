@@ -45,7 +45,7 @@ const CreateOffer = () => {
 
   const isLoaded = tokensSuccess && fiatSuccess
 
-  const limitPrice = (value: any, unitPrice: any) => {
+  const limitPrice = (value: number, unitPrice: number) => {
     if (!BigNumber.from(value).eq(BigNumber.from(0))) {
       return ethers.utils.parseEther(value.toString()).div(BigNumber.from(unitPrice))
     } else {
