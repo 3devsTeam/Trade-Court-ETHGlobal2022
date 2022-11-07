@@ -34,17 +34,18 @@ exports.getMyRooms = catchAsync(async (req, res, next) => {
         as: 'crypto',
       },
     },
-  ]);
-  const populateQuery = [
     {
-      path: 'payMethod.bank',
-      select: '_id name',
+      $lookup: {
+        from: 'fiats',
+        localField: 'offer.fiat',
+        foreignField: '_id',
+        as: 'fiat',
+      },
     },
-  ];
-  room_tmp = await Room.populate(rooms, populateQuery);
+  ]);
   res.status(201).json({
     message: 'success',
-    room_tmp,
+    rooms,
   });
 });
 
