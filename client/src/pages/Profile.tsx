@@ -11,7 +11,7 @@ import { ActiveOffer } from '../components/profile/ActiveOffer'
 import { IActiveOffer } from '../types/interfaces/active-offer.interface'
 import { NoItems } from '../components/errors/no-items'
 
-const Profile = () => {
+const ProfilePage = () => {
   const { data, isSuccess, isLoading, isError, refetch, isFetching } = useQuery(
     ['get user offers'],
     () => UserService.getOffers(),
@@ -98,4 +98,4 @@ const Profile = () => {
   )
 }
 
-export default Profile
+export default ProfilePage

@@ -19,7 +19,7 @@ interface Props {
 export const CreateOfferStepThree = ({ handleCreateOffer }: Props) => {
   const { setMinPriceLimit, setMaxPriceLimit, setTimeLimit, setComment, prevStep } = useActions()
   const { fiat, offerComment, minLimit, maxLimit, quantity, unitPrice } = useTypedSelector(
-    (state) => state.offerReducer
+    (state) => state.createOfferReducer
   )
   const { ticker } = fiat
 

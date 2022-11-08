@@ -22,9 +22,8 @@ import { FiatServices } from '../api/fiat.services'
 import { useFiat } from '../hooks/useFiat'
 import { IPayment } from '../types/interfaces/payment.interface'
 import { ProgressBar } from '../components/create-offer/ProgressBar'
-
-const CreateOffer = () => {
-  const { resetOffer, resetStep } = useActions()
+const CreateOfferPage = () => {
+  const { resetOffer } = useActions()
 
   const {
     crypto,
@@ -35,10 +34,9 @@ const CreateOffer = () => {
     maxLimit,
     offerComment,
     payMethods,
-    timeLimit
-  } = useTypedSelector((state) => state.offerReducer)
-
-  const { step } = useTypedSelector((state) => state.formReducer)
+    timeLimit,
+    step
+  } = useTypedSelector((state) => state.createOfferReducer)
 
   const { tokens, isSuccess: tokensSuccess } = useTokens()
   const { allFiat, isSuccess: fiatSuccess } = useFiat()
@@ -65,14 +63,14 @@ const CreateOffer = () => {
 
   const value = ethers.utils.parseEther(String(quantity) === '' ? '0' : quantity.toString())
 
-  const {
-    data,
-    isError,
-    isLoading,
-    isSuccess: isSuccessMakeRoom,
-    writeAsync,
-    hash
-  } = useEthContractWithValue(args, value, 'makeRoomEth')
+  // const {
+  //   data,
+  //   isError,
+  //   isLoading,
+  //   isSuccess: isSuccessMakeRoom,
+  //   writeAsync,
+  //   hash
+  // } = useEthContractWithValue(args, value, 'makeRoomEth')
 
   const navigate = useNavigate()
 
@@ -114,22 +112,22 @@ const CreateOffer = () => {
       offerComment
     })
       .then(() => {
-        successOfferNotify(
-          <div>
-            <p>Offer is created!</p>
-            <a
-              target={'_blank'}
-              className={'text-purple'}
-              href={`https://rinkeby.etherscan.io/tx/${hash?.transactionHash}`}>
-              View your transaction on Etherscan
-            </a>
-          </div>
-        )
+        // successOfferNotify(
+        //   <div>
+        //     <p>Offer is created!</p>
+        //     <a
+        //       target={'_blank'}
+        //       className={'text-purple'}
+        //       href={`https://rinkeby.etherscan.io/tx/${hash?.transactionHash}`}>
+        //       View your transaction on Etherscan
+        //     </a>
+        //   </div>
+        // )
         navigate('/')
         resetOffer()
-        resetStep()
       })
-      .catch((data) => errorOfferNotify(data.response.data.message))
+      .catch((error) => console.log(error))
+    // errorOfferNotify(data.response.data.message)
   }
 
   const steps = [
@@ -183,4 +181,4 @@ const CreateOffer = () => {
   )
 }
 
-export default CreateOffer
+export default CreateOfferPage

@@ -1,7 +1,7 @@
 import { useInfiniteQuery } from '@tanstack/react-query'
 import { useCallback, useRef } from 'react'
 import { OfferService } from '../api/offer.services'
-import { IActiveFilters } from '../pages/Home'
+import { IActiveFilters } from '../pages/home'
 
 export const useInfiniteOffers = (activeFilters: IActiveFilters, limit?: number) => {
   const { data, fetchNextPage, status, error, isFetchingNextPage, hasNextPage } = useInfiniteQuery(

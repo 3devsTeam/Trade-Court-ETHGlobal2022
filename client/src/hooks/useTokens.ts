@@ -5,7 +5,7 @@ import { useAccount, useNetwork } from 'wagmi'
 import { useActions } from '../hooks/useActions'
 import { useQueries, useQuery } from '@tanstack/react-query'
 import { Preview } from '../components/create-offer/Preview'
-import { IToken } from '../types/interfaces/crypto.interface'
+import { ICrypto } from '../types/interfaces/crypto.interface'
 
 export const useTokens = () => {
   const { chain } = useNetwork()
@@ -51,7 +51,7 @@ export const useTokens = () => {
   const div36 = BigNumber.from(10).pow(36)
   const div15 = BigNumber.from(10).pow(15)
 
-  const newTokens = tokens?.map((el: IToken, i: number) => {
+  const newTokens = tokens?.map((el: ICrypto, i: number) => {
     const weiBalance = BigNumber.from(el.balance)
 
     if (!weiBalance.eq(zero)) {

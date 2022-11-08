@@ -23,7 +23,9 @@ interface IStep1 {
 
 export const CreateOfferStepOne = ({ tokens, allFiat }: IStep1) => {
   const { setFiat, setQuantity, setUnitPrice, nextStep } = useActions()
-  const { crypto, fiat, quantity, unitPrice } = useTypedSelector((state) => state.offerReducer)
+  const { crypto, fiat, quantity, unitPrice } = useTypedSelector(
+    (state) => state.createOfferReducer
+  )
 
   const { tokenAmount } = crypto
 

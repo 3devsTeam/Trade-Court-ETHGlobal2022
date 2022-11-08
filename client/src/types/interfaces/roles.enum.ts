@@ -1,5 +1,4 @@
-export enum ROLES {
-  admin,
-  user,
-  moderator
+export enum TRANSACTION_ROLES {
+  taker = 'taker',
+  maker = 'maker'
 }

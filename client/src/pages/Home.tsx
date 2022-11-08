@@ -29,7 +29,7 @@ export interface IActiveFilters {
   region: string | undefined
 }
 
-export const Home = () => {
+const HomePage = () => {
   const initialFilters: IActiveFilters = {
     amount: '',
     crypto: '',
@@ -140,7 +140,7 @@ export const Home = () => {
           </>
         )}
         <Button
-          textColor="text-black"
+          text="text-black"
           border="border"
           name={'Clear All'}
           color={'transparent'}
@@ -169,3 +169,5 @@ export const Home = () => {
     </div>
   )
 }
+
+export default HomePage

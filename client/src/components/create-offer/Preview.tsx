@@ -15,7 +15,7 @@ export const Preview = () => {
     maxLimit,
     offerComment,
     payMethods
-  } = useTypedSelector((state) => state.offerReducer)
+  } = useTypedSelector((state) => state.createOfferReducer)
 
   const { symbol, logoUrl: cryptoImage } = crypto
 

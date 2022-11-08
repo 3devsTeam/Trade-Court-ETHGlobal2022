@@ -2,7 +2,7 @@ import React from 'react'
 import { useNavigate } from 'react-router-dom'
 import { OfferService } from '../../api/offer.services'
 import { IActiveOffer } from '../../types/interfaces/active-offer.interface'
-import { uperCaseFirstLetter } from '../../utils/upercaseFirstLetter'
+import { uperCaseFirstLetter } from '../../utils/uperCaseFirstLetter'
 import { Button } from '../ui/Button'
 import { Arrow } from '../ui/icons/Arrow'
 
@@ -21,7 +21,7 @@ export const ActiveOffer: React.FC<Props> = ({ activeOffer }) => {
   const { offerType, unitPrice } = offer[0]
 
   const handleGoToActiveOffer = () => {
-    navigate(`/transaction/${roomId}`)
+    navigate(`/transaction/${_id}`)
   }
 
   return (
@@ -32,7 +32,7 @@ export const ActiveOffer: React.FC<Props> = ({ activeOffer }) => {
 
       <div>
         <span className={`font-bold ${offerType === 'buy' ? 'text-lightGreen' : 'text-red-400'}`}>
-          {uperCaseFirstLetter(offerType!)}
+          {offerType}
         </span>
       </div>
 
@@ -57,7 +57,7 @@ export const ActiveOffer: React.FC<Props> = ({ activeOffer }) => {
       </div>
 
       <div>
-        <span className="font-bold text-purple">{uperCaseFirstLetter(stage)}</span>
+        <span className="font-bold text-purple">{stage}</span>
       </div>
 
       <div>

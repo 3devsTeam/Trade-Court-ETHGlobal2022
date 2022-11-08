@@ -3,7 +3,7 @@ import { useTypedSelector } from '../../hooks/useTypedSelector'
 import { IStep } from './ProgressBar'
 
 export const ProgressBarStep: React.FC<IStep> = ({ step, name, currentStep }) => {
-  const { step: stepNum } = useTypedSelector((state) => state.formReducer)
+  const { step: stepNum } = useTypedSelector((state) => state.createOfferReducer)
 
   return (
     <div className="flex items-center gap-x-2">

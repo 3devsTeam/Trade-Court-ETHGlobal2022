@@ -19,7 +19,7 @@ export const WalletButton = ({ sign, wallet, i, close, img }: Props) => {
     <button
       onClick={() => {
         try {
-          connect({ connector: connectors[i] })
+          connect({ connector: connectors[i] }).then(() => sign())
         } catch (e) {
           console.log(e)
         }
