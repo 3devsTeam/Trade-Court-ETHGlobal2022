@@ -1,0 +1,12 @@
+[
+  {
+    "_id": "636bb505d03aa946eaecf046",
+    "address": "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+    "chainId": 5,
+    "name": "Ethereum",
+    "symbol": "ETH",
+    "decimals": 18,
+    "logoUrl": "https://tokens.1inch.io/0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee.png",
+    "__v": 0
+  }
+]
