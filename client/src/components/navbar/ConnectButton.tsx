@@ -56,7 +56,8 @@ export const ConnectButton = ({
       onMouseEnter={() => setOpenMenu(true)}>
       <div className="font-bold flex items-center space-x-2 text-black">
         <span>
-          {balance?.formatted.slice(0, 8)} {balance?.symbol}
+          {balance?.formatted.slice(0, 8)}
+          {balance?.symbol}
         </span>
         <div className="font-medium py-[4px] px-[10px] bg-purple rounded-[10px] text-white">
           <span>{!ensName ? truncateAddress(address!) : ensName}</span>

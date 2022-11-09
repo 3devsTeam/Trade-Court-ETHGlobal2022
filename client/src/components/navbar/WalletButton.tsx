@@ -5,6 +5,7 @@ import { MetaMaskConnector } from 'wagmi/connectors/metaMask'
 import { WalletConnectConnector } from 'wagmi/connectors/walletConnect'
 import { CoinbaseWalletConnector } from 'wagmi/connectors/coinbaseWallet'
 import { useAccount, useConnect, useSignMessage } from 'wagmi'
+import { SelectButton } from './SelectButton'
 
 interface Props {
   sign: () => Promise<any>
@@ -15,16 +16,16 @@ interface Props {
 }
 
 export const WalletButton = ({ sign, wallet, i, close, img }: Props) => {
+  const connectWallet = () => {
+    try {
+      connect({ connector: connectors[i] }).then(() => sign())
+    } catch (e) {
+      console.log(e)
+    }
+  }
+
   return (
-    <button
-      onClick={() => {
-        try {
-          connect({ connector: connectors[i] }).then(() => sign())
-        } catch (e) {
-          console.log(e)
-        }
-      }}
-      className="flex border justify-center items-center rounded-lg p-3 hover:shadow-customDark transition-all duration-500">
+    <SelectButton onClick={connectWallet}>
       <div className="flex items-center space-x-2">
         <img
           src={img}
@@ -37,6 +38,6 @@ export const WalletButton = ({ sign, wallet, i, close, img }: Props) => {
 
         {/* {isConnecting && ? <span>Connecting...</span> : null} */}
       </div>
-    </button>
+    </SelectButton>
   )
 }

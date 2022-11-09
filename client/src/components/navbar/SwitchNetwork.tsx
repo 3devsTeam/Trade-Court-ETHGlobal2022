@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { useNetwork, useSwitchNetwork } from 'wagmi'
 import { Modal } from '../ui/Modal'
+import { NetworkButton } from './NetworkButton'
 
 export const SwitchNetwork = () => {
   const { chain, chains } = useNetwork()
@@ -18,9 +19,7 @@ export const SwitchNetwork = () => {
         <Modal header="Switch Network" close={setOpenSwitchNetwork}>
           <div className="flex flex-col">
             {chains.map((chain, i) => (
-              <button key={i} onClick={async () => await switchNetworkAsync(chain.id)}>
-                <span className="font-bold">{chain.name}</span>
-              </button>
+              <NetworkButton chain={chain} switch={switchNetworkAsync} key={i} />
             ))}
           </div>
         </Modal>
