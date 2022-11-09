@@ -7,7 +7,6 @@ import { OfferInput } from '../home/OfferInput'
 import { OfferService } from '../../api/offer.services'
 import { toast } from 'react-toastify'
 import { parseEther } from '../../utils/parseEther'
-import { round } from '../../utils/round'
 import { ButtonDisabled } from '../ui/ButtonDisabled'
 
 interface Props {
@@ -79,7 +78,7 @@ const OfferModal: React.FC<Props> = ({ close, offer }) => {
     },
     {
       name: 'Available:',
-      value: `${round(+quantity, 4)} ${symbol}`
+      value: `${quantity} ${symbol}`
     },
     {
       name: 'Limit:',

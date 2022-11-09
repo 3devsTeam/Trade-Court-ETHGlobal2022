@@ -44,7 +44,6 @@ const CreateOfferPage = () => {
   const { allFiat, isSuccess: fiatSuccess } = useFiat()
 
   const { roomId } = useGenerateRoomId()
-  console.log(roomId)
 
   const isLoaded = tokensSuccess && fiatSuccess
 

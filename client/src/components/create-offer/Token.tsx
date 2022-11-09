@@ -5,16 +5,16 @@ import { ICrypto } from '../../types/interfaces/crypto.interface'
 interface Props {
   virtualItem: any
   token: ICrypto
-  onClose: any
+  close: any
 }
 
-export const Token = ({ virtualItem, token, onClose }: Props) => {
+export const Token = ({ virtualItem, token, close }: Props) => {
   const { setCrypto } = useActions()
   const { symbol, balance, logoUrl, name, tokenAmount } = token
 
   const selectHandler = (token: ICrypto) => {
     setCrypto(token)
-    onClose()
+    close()
   }
 
   return (
@@ -31,8 +31,7 @@ export const Token = ({ virtualItem, token, onClose }: Props) => {
         width: '100%',
         height: `${virtualItem.size}px`,
         transform: `translateY(${virtualItem.start}px)`
-      }}
-    >
+      }}>
       <div className={'flex items-center gap-3'}>
         <img className={'image'} src={logoUrl} alt={''} />
         <div className={'flex flex-col items-start'}>

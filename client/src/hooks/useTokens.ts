@@ -18,7 +18,7 @@ export const useTokens = () => {
   const { address } = useAccount()
 
   const { data: tokens, status: statusTokens } = useQuery(
-    [`get ${chainId} tokens`],
+    [`get ${chainId} chain tokens`],
     () => TokenService.getTokens(address!, chainId!),
     {
       select: (data) => data.data.data,
@@ -78,11 +78,7 @@ export const useTokens = () => {
     return crypto
   })
 
-  // useEffect(() => {
-  //   if (newTokens.length > 0) {
-  //     setCrypto(newTokens[0])
-  //   }
-  // }, [newTokens])
+  console.log(newTokens)
 
   return { tokens: newTokens, isSuccess, isLoading, isError }
 }

@@ -15,6 +15,7 @@ import { ButtonDisabled } from '../ui/ButtonDisabled'
 import { SubmitButton } from '../ui/SubmitButton'
 import { ICrypto } from '../../types/interfaces/crypto.interface'
 import { IFiat } from '../../types/interfaces/fiat.interface'
+import { NoItems } from '../errors/no-items'
 
 interface IStep1 {
   tokens: [ICrypto]
@@ -38,12 +39,14 @@ export const CreateOfferStepOne = ({ tokens, allFiat }: IStep1) => {
   const [searchTerm, setSearchTerm] = useState('')
 
   const searchFilter = (tokens: ICrypto[]) => {
-    return tokens.filter(
+    const filteredTokens = tokens?.filter(
       (t: ICrypto) =>
         t.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
         t.address.toLowerCase() === searchTerm.toLowerCase() ||
         t.symbol.toLowerCase() === searchTerm.toLowerCase()
     )
+
+    return filteredTokens
   }
 
   const checkStep1 = () => {
@@ -51,6 +54,8 @@ export const CreateOfferStepOne = ({ tokens, allFiat }: IStep1) => {
 
     return false
   }
+
+  const filteredTokens = searchFilter(tokens)
 
   return (
     <form>
@@ -95,7 +100,8 @@ export const CreateOfferStepOne = ({ tokens, allFiat }: IStep1) => {
               setSearchTerm={setSearchTerm}
               searchTerm={searchTerm}
             />
-            <TokenList tokens={searchFilter(tokens)} closeModal={() => setIsOpen(false)} />
+
+            <TokenList tokens={filteredTokens} closeModal={() => setIsOpen(false)} />
           </Modal>
         ) : null}
       </Wrapper>
