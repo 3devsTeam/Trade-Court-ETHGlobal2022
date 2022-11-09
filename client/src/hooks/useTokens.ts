@@ -8,15 +8,16 @@ import { Preview } from '../components/create-offer/Preview'
 import { ICrypto } from '../types/interfaces/crypto.interface'
 
 export const useTokens = () => {
+  const { setCrypto } = useActions()
+
   const { chain } = useNetwork()
 
-  // const chainName = chain?.name.toLowerCase();
   const chainId = chain?.id.toString()
   const chainName = chain?.name.toLowerCase()
 
   const { address } = useAccount()
 
-  const { data: tokens, isSuccess: successGetTokens } = useQuery(
+  const { data: tokens, status: statusTokens } = useQuery(
     [`get ${chainId} tokens`],
     () => TokenService.getTokens(address!, chainId!),
     {
@@ -26,7 +27,7 @@ export const useTokens = () => {
     }
   )
 
-  const { data: exchangeRate, isSuccess: successGetExchangeTokens } = useQuery(
+  const { data: exchangeRate, status: statusExchangeRate } = useQuery(
     [`get exchange ${chainId} token rate`],
     () => TokenService.getExchangeRate(chainId!),
     {
@@ -35,7 +36,7 @@ export const useTokens = () => {
     }
   )
 
-  const { data: ethUsdRate, isSuccess: successGetEthUsdRate } = useQuery(
+  const { data: ethUsdRate, status: statusEthUsdRate } = useQuery(
     [`get ${chainName} usd rate`],
     () => TokenService.getEthUsdRate(chainName!),
     {
@@ -45,17 +46,22 @@ export const useTokens = () => {
     }
   )
 
-  const isSuccess = successGetTokens && successGetExchangeTokens && successGetEthUsdRate
+  const isSuccess =
+    statusEthUsdRate === 'success' && statusExchangeRate === 'success' && statusTokens === 'success'
+  const isLoading =
+    statusEthUsdRate === 'loading' && statusExchangeRate === 'loading' && statusTokens === 'loading'
+  const isError =
+    statusEthUsdRate === 'error' && statusExchangeRate === 'error' && statusTokens === 'error'
 
   const zero = BigNumber.from(0)
   const div36 = BigNumber.from(10).pow(36)
   const div15 = BigNumber.from(10).pow(15)
 
-  const newTokens = tokens?.map((el: ICrypto, i: number) => {
-    const weiBalance = BigNumber.from(el.balance)
+  const newTokens = tokens?.map((crypto: ICrypto) => {
+    const weiBalance = BigNumber.from(crypto.balance)
 
     if (!weiBalance.eq(zero)) {
-      const weiExchangeRate = BigNumber.from(exchangeRate[`${el.address}`])
+      const weiExchangeRate = BigNumber.from(exchangeRate[`${crypto.address}`])
 
       const usdRate = BigNumber.from(parseInt(ethUsdRate) * 100)
 
@@ -64,13 +70,19 @@ export const useTokens = () => {
       const ethAmount = parseInt(weiBalance.div(div15).toString()) / 1000
 
       return {
-        ...el,
+        ...crypto,
         tokenAmount: ethAmount,
         balance: usdAmount
       }
     }
-    return el
+    return crypto
   })
 
-  return { tokens: newTokens, isSuccess }
+  // useEffect(() => {
+  //   if (newTokens.length > 0) {
+  //     setCrypto(newTokens[0])
+  //   }
+  // }, [newTokens])
+
+  return { tokens: newTokens, isSuccess, isLoading, isError }
 }

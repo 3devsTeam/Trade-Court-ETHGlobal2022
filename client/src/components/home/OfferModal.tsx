@@ -6,7 +6,6 @@ import { IOffer } from '../../types/interfaces/offer.interface'
 import { OfferInput } from '../home/OfferInput'
 import { OfferService } from '../../api/offer.services'
 import { toast } from 'react-toastify'
-import { useEthContract } from '../../hooks/useEthContract'
 import { parseEther } from '../../utils/parseEther'
 import { round } from '../../utils/round'
 import { ButtonDisabled } from '../ui/ButtonDisabled'
@@ -36,10 +35,10 @@ const OfferModal: React.FC<Props> = ({ close, offer }) => {
   const value = 0
   const functionName = 'completeDeal'
 
-  const { data, prepareError, isError, isLoading, isSuccess, writeAsync } = useEthContract(
-    args,
-    functionName
-  )
+  // const { data, prepareError, isError, isLoading, isSuccess, writeAsync } = useEthContract(
+  //   args,
+  //   functionName
+  // )
 
   const offerNotify = (error: string) => {
     toast.error(error, {

@@ -1,5 +1,5 @@
 import { UseContractConfig } from 'wagmi/dist/declarations/src/hooks/contracts/useContract'
-import config from './to_fiat_abi.json'
+import config from './goerli_contract.json'
 
 const contractConfig: UseContractConfig = {
   addressOrName: config.address,

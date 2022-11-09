@@ -9,7 +9,6 @@ import { useNavigate } from 'react-router-dom'
 import { OfferService } from '../api/offer.services'
 import { multiply } from '../utils/multiply'
 import { toast } from 'react-toastify'
-import { useEthContractWithValue } from '../hooks/useEthContractWithValue'
 import { BigNumber, ethers } from 'ethers'
 import { randomNumber } from '../utils/randomNumber'
 import { convertToSeconds } from '../utils/convertToSeconds'
@@ -22,6 +21,9 @@ import { FiatServices } from '../api/fiat.services'
 import { useFiat } from '../hooks/useFiat'
 import { IPayment } from '../types/interfaces/payment.interface'
 import { ProgressBar } from '../components/create-offer/ProgressBar'
+import { useCreateRoom } from '../hooks/useCreateRoom'
+import { useGenerateRoomId } from '../hooks/useGenerateRoomId'
+
 const CreateOfferPage = () => {
   const { resetOffer } = useActions()
 
@@ -41,27 +43,35 @@ const CreateOfferPage = () => {
   const { tokens, isSuccess: tokensSuccess } = useTokens()
   const { allFiat, isSuccess: fiatSuccess } = useFiat()
 
+  const { roomId } = useGenerateRoomId()
+  console.log(roomId)
+
   const isLoaded = tokensSuccess && fiatSuccess
 
   const limitPrice = (value: number, unitPrice: number) => {
     if (!BigNumber.from(value).eq(BigNumber.from(0))) {
       return ethers.utils.parseEther(value.toString()).div(BigNumber.from(unitPrice))
     } else {
-      return ethers.utils.parseEther('0')
+      return ethers.utils.parseEther('0') //умножать на 10 ** decimals
     }
   }
 
-  const roomId = 10
-
   const args = [
-    roomId, // рандомная комната
+    // рандомная комната
     convertToSeconds(timeLimit), // время апрува
     convertToSeconds(timeLimit), // время апрува
     limitPrice(minLimit, unitPrice), // фиатный максимальный лимит
     limitPrice(maxLimit, unitPrice) // фиатный минимальный лимит
   ]
 
-  const value = ethers.utils.parseEther(String(quantity) === '' ? '0' : quantity.toString())
+  // const value = ethers.utils.parseEther(quantity)
+
+  const { data, isError, isLoading, isSuccess, hash, error } = useCreateRoom(quantity, [
+    timeLimit,
+    maxLimit,
+    minLimit,
+    crypto.address
+  ])
 
   // const {
   //   data,
