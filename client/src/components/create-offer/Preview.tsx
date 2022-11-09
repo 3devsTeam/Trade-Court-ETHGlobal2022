@@ -15,7 +15,7 @@ export const Preview = () => {
     maxLimit,
     offerComment,
     payMethods
-  } = useTypedSelector((state) => state.offerReducer)
+  } = useTypedSelector((state) => state.createOfferReducer)
 
   const { symbol, logoUrl: cryptoImage } = crypto
 
@@ -89,11 +89,11 @@ export const Preview = () => {
           </div>
           <div>
             {payMethods.length
-              ? payMethods?.map((p, i) => {
+              ? payMethods?.map((payment, i) => {
                   return (
                     <div key={i} className={'flex items-center gap-1 my-2'}>
-                      <img className={'image'} src={p.paymentMethod.logoUrl} alt="" />
-                      <p>{p.paymentMethod.name}</p>
+                      <img className={'image'} src={payment.bank.logoUrl} alt="" />
+                      <p>{payment.bank.name}</p>
                     </div>
                   )
                 })

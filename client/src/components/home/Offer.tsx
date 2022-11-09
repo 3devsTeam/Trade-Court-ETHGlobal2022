@@ -1,8 +1,8 @@
 import React, { forwardRef, useRef, useState } from 'react'
 import { truncateAddress } from '../../utils/truncateAddress'
-import { OfferModal } from './OfferModal'
+import OfferModal from './OfferModal'
 import { Modal } from '../ui/Modal'
-import { IOffer } from '../../models/models'
+import { IOffer } from '../../types/interfaces/offer.interface'
 
 export const Offer = forwardRef<any, any>((offer: IOffer, ref) => {
   const { _id, crypto, fiat, maker, minLimit, maxLimit, payMethods, quantity, unitPrice } = offer
@@ -10,79 +10,73 @@ export const Offer = forwardRef<any, any>((offer: IOffer, ref) => {
   const { address } = maker
   const { symbol } = crypto
   const { ticker } = fiat
-  const [openOfferModal, setOpenOfferModal] = useState(false)
+  const [isOpen, setIsOpen] = useState(false)
 
   const offerBody = (
-    <>
-      <div className="shadow-customDark bg-white grid text-sm grid-cols-offer gap-5 items-center h-[100px] w-full px-[20px] rounded-[20px]">
-        <div className="text-md">
-          <div>
-            <p className="font-bold">{truncateAddress(address)}</p>
-          </div>
+    <div className="flex bg-white py-6 px-4 shadow-customDark w-full rounded-[20px]">
+      <div className="flex items-center w-full">
+        <div className="flex-1">
+          <span className="font-bold text-purple">{truncateAddress(address)}</span>
         </div>
-        <div>
+
+        <div className="flex-1">
+          <span className="font-bold">
+            {unitPrice} <span className="font-normal">{ticker}</span>
+          </span>
+        </div>
+
+        <div className="flex-[2_0]">
           <div>
             <div>
-              <p className={'text-sm'}>
-                <span className={'font-normal'}>Available: </span>
+              <span>
+                Available:{' '}
                 <span className={'font-bold'}>
-                  {parseFloat(quantity).toFixed(4)} {symbol}
+                  {parseFloat(quantity.toString()).toFixed(4)} {symbol}
                 </span>
-              </p>
+              </span>
             </div>
             <div>
-              <p className={'text-sm'}>
-                <span className={'font-normal'}>Limit: </span>
+              <span>
+                Limit:{' '}
                 <span className={'font-bold'}>
                   {minLimit}-{maxLimit} {ticker}
                 </span>
-              </p>
+              </span>
             </div>
           </div>
         </div>
-        <div className="text-md">
-          <p className={''}>
-            <span className={'font-bold text-lg'}>{unitPrice}</span>
-            <span className={'text-sm text-gray font-bold'}> {ticker}</span>
-          </p>
+
+        <div className="flex-1">
+          {payments.map((payment: string, i: number) => (
+            <div key={i} className={'text-sm font-bold'}>
+              {payment}
+            </div>
+          ))}
         </div>
-        <div>
-          <div>
-            {payments.map((p: string, i: number) => (
-              <div key={i} className={'text-sm font-bold'}>
-                {p}
-              </div>
-            ))}
-          </div>
-        </div>
-        <div>
-          <div>
-            <button
-              onClick={() => setOpenOfferModal(!openOfferModal)}
-              className="bg-green text-lg text-white rounded-[10px] font-bold p-[6px]
-            transition-all duration-500 hover:bg-lightGreen w-full"
-            >
-              <span className={'text-lg'}>Buy {symbol}</span>
-            </button>
-          </div>
+
+        <div className="flex-1">
+          <button
+            onClick={() => setIsOpen(!isOpen)}
+            className="bg-green text-lg text-white rounded-[10px] font-bold p-[6px]
+            transition-all duration-500 hover:bg-lightGreen w-full">
+            Buy {symbol}
+          </button>
         </div>
       </div>
-      <Modal
-        isOpen={openOfferModal}
-        width={'700px'}
-        header={'Transaction'}
-        close={() => setOpenOfferModal(false)}
-      >
-        <OfferModal close={() => setOpenOfferModal(false)} offer={offer} />
-      </Modal>
-    </>
+
+      {isOpen ? (
+        <Modal header={'Transaction'} close={() => setIsOpen(false)}>
+          <OfferModal close={() => setIsOpen(false)} offer={offer} />
+        </Modal>
+      ) : null}
+    </div>
   )
 
   return ref ? (
-    <div id="lastItem" ref={ref}>
+    <div className="w-full" ref={ref}>
       {offerBody}
     </div>
   ) : (
-    <div>{offerBody}</div>
+    <div className="w-full">{offerBody}</div>
   )
 })

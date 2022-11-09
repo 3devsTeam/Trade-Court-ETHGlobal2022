@@ -1,9 +1,9 @@
 import { UseContractConfig } from 'wagmi/dist/declarations/src/hooks/contracts/useContract'
-import config from './ethContractConfig.json'
+import config from './goerli_contract.json'
 
-const ethContractConfig: UseContractConfig = {
+const contractConfig: UseContractConfig = {
   addressOrName: config.address,
   contractInterface: config.abi
 }
 
-export default ethContractConfig
+export default contractConfig

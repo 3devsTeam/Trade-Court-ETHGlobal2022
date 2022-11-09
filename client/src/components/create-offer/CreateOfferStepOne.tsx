@@ -11,7 +11,7 @@ import 'react-loading-skeleton/dist/skeleton.css'
 import { Wrapper } from './Wrapper'
 import { useForm } from 'react-hook-form'
 import { toast } from 'react-toastify'
-import { Button } from '../ui/Button'
+import { ButtonDisabled } from '../ui/ButtonDisabled'
 import { SubmitButton } from '../ui/SubmitButton'
 import { ICrypto } from '../../types/interfaces/crypto.interface'
 import { IFiat } from '../../types/interfaces/fiat.interface'
@@ -23,7 +23,9 @@ interface IStep1 {
 
 export const CreateOfferStepOne = ({ tokens, allFiat }: IStep1) => {
   const { setFiat, setQuantity, setUnitPrice, nextStep } = useActions()
-  const { crypto, fiat, quantity, unitPrice } = useTypedSelector((state) => state.offerReducer)
+  const { crypto, fiat, quantity, unitPrice } = useTypedSelector(
+    (state) => state.createOfferReducer
+  )
 
   const { tokenAmount } = crypto
 
@@ -86,20 +88,21 @@ export const CreateOfferStepOne = ({ tokens, allFiat }: IStep1) => {
             value={quantity}
           />
         </div>
-
-        <Modal isOpen={isOpen} close={() => setIsOpen(false)} header={'Select Token'}>
-          <SearchField
-            placeholder={'Enter token name or paste it address'}
-            setSearchTerm={setSearchTerm}
-            searchTerm={searchTerm}
-          />
-          <TokenList tokens={searchFilter(tokens)} closeModal={() => setIsOpen(false)} />
-        </Modal>
+        {isOpen ? (
+          <Modal close={() => setIsOpen(false)} header={'Select Token'}>
+            <SearchField
+              placeholder={'Enter token name or paste it address'}
+              setSearchTerm={setSearchTerm}
+              searchTerm={searchTerm}
+            />
+            <TokenList tokens={searchFilter(tokens)} closeModal={() => setIsOpen(false)} />
+          </Modal>
+        ) : null}
       </Wrapper>
 
       <div className="mt-5">
         <Wrapper>
-          <Button name="Next" onClick={nextStep} disabled={!checkStep1()} />
+          <ButtonDisabled name="Next" onClick={nextStep} disabled={!checkStep1()} />
         </Wrapper>
       </div>
     </form>

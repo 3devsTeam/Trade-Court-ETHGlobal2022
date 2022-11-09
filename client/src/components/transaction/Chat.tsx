@@ -1,7 +1,7 @@
 import React from 'react'
 import telegram from '../../assets/images/message.svg'
 import defaultProfilePic from '../../assets/images/ava.svg'
-import { Gram } from './Gram'
+import { Gram } from '../ui/icons/Gram'
 import { useEnsName } from 'wagmi'
 import { truncateAddress } from '../../utils/truncateAddress'
 
@@ -23,7 +23,7 @@ export const Chat = ({
   sendMessage
 }: IChat) => {
   //console.log(chatMessages);
-  console.log(addressOrName)
+
   // console.log(avatar);
 
   // const {
@@ -53,7 +53,7 @@ export const Chat = ({
           </div>
         </div>
       </div>
-      <div className={'border-4 border-purple'}>
+      <div className={'h-52'}>
         {chatMessages}
         {/* {chatMessages?.map((msg: any, i: number) => {
           console.log(msg);

@@ -1,8 +1,8 @@
 import { combineReducers } from 'redux'
-import { formReducer } from './form.slice'
-import { offerReducer } from './offer.slice'
+import { createOfferReducer } from './create-offer.slice'
+import { transactionReducer } from './transaction.slice'
 
 export const rootReducer = combineReducers({
-  formReducer,
-  offerReducer
+  createOfferReducer,
+  transactionReducer
 })

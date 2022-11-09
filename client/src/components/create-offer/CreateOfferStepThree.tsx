@@ -6,7 +6,7 @@ import { Arrow } from '../ui/icons/Arrow'
 import { useActions } from '../../hooks/useActions'
 import { TextArea } from './TextArea'
 import { TimeLimit } from './TimeLimit'
-import { Button } from '../ui/Button'
+import { ButtonDisabled } from '../ui/ButtonDisabled'
 import { SubmitButton } from '../ui/SubmitButton'
 import { totalAmount } from '../../utils/totalAmount'
 import { Wrapper } from './Wrapper'
@@ -19,7 +19,7 @@ interface Props {
 export const CreateOfferStepThree = ({ handleCreateOffer }: Props) => {
   const { setMinPriceLimit, setMaxPriceLimit, setTimeLimit, setComment, prevStep } = useActions()
   const { fiat, offerComment, minLimit, maxLimit, quantity, unitPrice } = useTypedSelector(
-    (state) => state.offerReducer
+    (state) => state.createOfferReducer
   )
   const { ticker } = fiat
 
@@ -67,8 +67,8 @@ export const CreateOfferStepThree = ({ handleCreateOffer }: Props) => {
       <div className="mt-5">
         <Wrapper>
           <div className="flex gap-5">
-            <Button onClick={prevStep} name="Back" />
-            <Button disabled={checkStep3()} onClick={handleCreateOffer} name="Create" />
+            <ButtonDisabled onClick={prevStep} name="Back" />
+            <ButtonDisabled disabled={checkStep3()} onClick={handleCreateOffer} name="Create" />
           </div>
         </Wrapper>
       </div>

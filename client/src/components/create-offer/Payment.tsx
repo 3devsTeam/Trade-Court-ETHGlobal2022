@@ -9,15 +9,15 @@ interface Props {
 }
 
 export const Payment = ({ payment, setActive, deletePayment }: Props) => {
-  const { paymentMethod, cardNumber, id } = payment
+  const { bank, cardNumber, id } = payment
   return (
     <button
       type="button"
       onClick={() => setActive(payment)}
       className={`flex justify-between items-center p-2 rounded-[15px] inputBorder w-full`}>
       <div className="flex items-center space-x-2">
-        <img className={'w-8 h-8 rounded-full object-cover'} src={paymentMethod.logoUrl} alt={''} />
-        <span>{paymentMethod.name}</span>
+        <img className={'w-8 h-8 rounded-full object-cover'} src={bank.logoUrl} alt={''} />
+        <span>{bank.name}</span>
         <span className={'font-bold'}>{cardNumber}</span>
       </div>
 

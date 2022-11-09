@@ -1,14 +1,18 @@
-import {createSlice, PayloadAction} from '@reduxjs/toolkit'
+import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
-import {IBank} from '../types/interfaces/bank.interface'
-import {IFiat} from '../types/interfaces/fiat.interface'
-import {IOffer} from '../types/interfaces/offer.interface'
-import {IPayment} from '../types/interfaces/payment.interface'
-import {IRegion} from '../types/interfaces/region.interface'
-import {ICrypto} from '../types/interfaces/crypto.interface'
-import {ROLES} from '../types/interfaces/roles.enum'
+import { IBank } from '../types/interfaces/bank.interface'
+import { IFiat } from '../types/interfaces/fiat.interface'
+import { IOffer } from '../types/interfaces/offer.interface'
+import { IPayment } from '../types/interfaces/payment.interface'
+import { IRegion } from '../types/interfaces/region.interface'
+import { ICrypto } from '../types/interfaces/crypto.interface'
 
-const initialState: IOffer = {
+interface ICreateOfferSlice extends IOffer {
+  step: number
+}
+
+const initialState: ICreateOfferSlice = {
+  step: 1,
   room: {
     roomId: '',
     stage: 'no taker',
@@ -31,7 +35,7 @@ const initialState: IOffer = {
     _id: '',
     address: '',
     offers: [],
-    role: ROLES.user,
+    role: '',
     __v: 0
   },
   fiat: {
@@ -48,7 +52,7 @@ const initialState: IOffer = {
   timeLimit: '15',
   minLimit: 0,
   maxLimit: 0,
-  paymentMethod: {
+  bank: {
     _id: '',
     logoUrl: '',
     name: '',
@@ -63,7 +67,7 @@ const initialState: IOffer = {
   offerComment: ''
 }
 
-export const offerSlice = createSlice({
+export const createOfferSlice = createSlice({
   name: 'create-offer',
   initialState,
   reducers: {
@@ -73,7 +77,7 @@ export const offerSlice = createSlice({
     setFiat: (state, { payload }: PayloadAction<IFiat>) => {
       state.fiat = payload
     },
-    setUnitPrice: (state, { payload}: PayloadAction<number>) => {
+    setUnitPrice: (state, { payload }: PayloadAction<number>) => {
       state.unitPrice = payload
     },
     setQuantity: (state, { payload }: PayloadAction<number>) => {
@@ -91,11 +95,11 @@ export const offerSlice = createSlice({
     setComment: (state, { payload }: PayloadAction<string>) => {
       state.offerComment = payload
     },
-    setRegion: (state, {  payload }: PayloadAction<IRegion>) => {
+    setRegion: (state, { payload }: PayloadAction<IRegion>) => {
       state.region = payload
     },
     setBank: (state, { payload }: PayloadAction<IBank>) => {
-      state.paymentMethod = payload
+      state.bank = payload
     },
     addPaymentMethod: (state, { payload }: PayloadAction<IPayment>) => {
       state.payMethods.push(payload)
@@ -114,9 +118,15 @@ export const offerSlice = createSlice({
     clearPayments: (state) => {
       state.payMethods = []
     },
-    resetOffer: () => initialState
+    resetOffer: () => initialState,
+    nextStep: (state) => {
+      state.step++
+    },
+    prevStep: (state) => {
+      state.step--
+    }
   }
 })
 
-export const offerReducer = offerSlice.reducer
-export const offerActions = offerSlice.actions
+export const createOfferReducer = createOfferSlice.reducer
+export const createOfferActions = createOfferSlice.actions

@@ -6,7 +6,7 @@ import { MetaMaskConnector } from 'wagmi/connectors/metaMask'
 import { WalletConnectConnector } from 'wagmi/connectors/walletConnect'
 
 const { chains, provider, webSocketProvider } = configureChains(
-  [chain.mainnet, chain.rinkeby, chain.polygon, chain.optimism],
+  [chain.mainnet, chain.goerli, chain.polygon],
   [infuraProvider({ apiKey: import.meta.env.VITE_INFURA_ID }), publicProvider()]
 )
 

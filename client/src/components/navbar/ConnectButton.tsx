@@ -71,24 +71,22 @@ export const ConnectButton = ({
         <span className="font-bold">Connect</span>
       </button>
 
-      <Modal
-        isOpen={openConnectModal}
-        close={() => setOpenConnectModal(false)}
-        header={'Select wallet'}>
-        <div className="grid grid-cols-3 gap-5 ">
-          {connectors.map((wallet, i) => (
-            <WalletButton
-              sign={signMessageAsync}
-              img={walletsImages[i]}
-              close={setOpenConnectModal}
-              wallet={wallet}
-              i={i}
-              key={wallet.id}>
-              <span>{wallet.name}</span>
-            </WalletButton>
-          ))}
-        </div>
-      </Modal>
+      {openConnectModal ? (
+        <Modal close={() => setOpenConnectModal(false)} header={'Select Wallet'}>
+          <div className="grid grid-flow-row-dense gap-5 ">
+            {connectors.map((wallet, i) => (
+              <WalletButton
+                sign={signMessageAsync}
+                img={walletsImages[i]}
+                close={setOpenConnectModal}
+                wallet={wallet}
+                i={i}
+                key={wallet.id}
+              />
+            ))}
+          </div>
+        </Modal>
+      ) : null}
     </>
   )
 }

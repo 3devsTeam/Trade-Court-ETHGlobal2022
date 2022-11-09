@@ -1,20 +1,33 @@
 import { useQuery } from '@tanstack/react-query'
 import React, { useEffect, useState } from 'react'
-import { Offer } from '../components/profile/Offer'
+import { ProfileOffer } from '../components/profile/ProfileOffer'
 import { useAccount, useEnsName, useEnsAvatar } from 'wagmi'
 import { Legend } from '../components/home/Legend'
 import { UserService } from '../api/user.services'
 import { Divider } from '../components/profile/Divider'
+import { SkeletonWrapper } from '../components/ui/SkeletonWrapper'
 import { IProfileOffer } from '../types/interfaces/profile-offer.interface'
+import { ActiveOffer } from '../components/profile/ActiveOffer'
+import { IActiveOffer } from '../types/interfaces/active-offer.interface'
+import { NoItems } from '../components/errors/no-items'
 
-const Profile = () => {
-  const { data, isSuccess, isLoading, isError } = useQuery(
+const ProfilePage = () => {
+  const { data, isSuccess, isLoading, isError, refetch, isFetching } = useQuery(
     ['get user offers'],
     () => UserService.getOffers(),
     {
       select: (data) => data.data.offers
     }
   )
+
+  const {
+    data: rooms,
+    isLoading: isLoadingRooms,
+    isError: isErrorRooms,
+    isSuccess: isSuccessRooms
+  } = useQuery(['get user rooms'], () => UserService.getUserRooms(), {
+    select: ({ data }) => data.rooms
+  })
 
   const fields = [
     {
@@ -44,28 +57,45 @@ const Profile = () => {
   ]
 
   return (
-    <>
+    <div>
       <Legend fields={fields} />
 
-      <Divider name="Active offers" margin={'my-5'} />
+      <section className="relative">
+        {rooms?.length ? (
+          <>
+            <Divider name="Active offers" margin={'my-5'} />
 
-      <Divider name="My offers" margin={'my-5'} />
+            {isErrorRooms ? (
+              <p>error</p>
+            ) : rooms?.length === 0 ? (
+              <p>no offers</p>
+            ) : isSuccessRooms ? (
+              <div className={'flex flex-col gap-5'}>
+                {rooms?.map((room: IActiveOffer) => {
+                  return <ActiveOffer activeOffer={room} key={room._id} />
+                })}
+              </div>
+            ) : null}
+          </>
+        ) : null}
 
-      <section className={'flex flex-col gap-5 mt-[20px]'}>
-        {isLoading ? (
-          <p>loading</p>
-        ) : isError ? (
+        {/* <SkeletonWrapper isLoading={isLoading} height={100} count={10} margin={'20px'}> */}
+        <Divider name="My offers" margin={'my-5'} />
+
+        {isError ? (
           <p>error</p>
         ) : data?.length === 0 ? (
-          <p>no offers</p>
+          <NoItems />
         ) : isSuccess ? (
-          data?.map((offer: IProfileOffer) => {
-            return <Offer key={offer._id} {...offer} />
-          })
+          <div className={'flex flex-col gap-5'}>
+            {data?.map((offer: IProfileOffer) => {
+              return <ProfileOffer offer={offer} refetch={refetch} key={offer._id} />
+            })}
+          </div>
         ) : null}
       </section>
-    </>
+    </div>
   )
 }
 
-export default Profile
+export default ProfilePage

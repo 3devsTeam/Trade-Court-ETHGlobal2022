@@ -11,19 +11,20 @@ export const SwitchNetwork = () => {
   return (
     <button
       onClick={() => setOpenSwitchNetwork(!openSwitchNetwork)}
-      className="rounded-[15px] relative bg-white shadow-customDark h-full px-[10px]"
-    >
+      className="rounded-[15px] relative bg-white shadow-customDark h-full px-[10px]">
       <span className="font-bold">{chain?.name}</span>
 
-      <Modal header="Switch Network" isOpen={openSwitchNetwork} close={setOpenSwitchNetwork}>
-        <div className="flex flex-col">
-          {chains.map((chain, i) => (
-            <button key={i} onClick={async () => await switchNetworkAsync(chain.id)}>
-              <span className="font-bold">{chain.name}</span>
-            </button>
-          ))}
-        </div>
-      </Modal>
+      {openSwitchNetwork ? (
+        <Modal header="Switch Network" close={setOpenSwitchNetwork}>
+          <div className="flex flex-col">
+            {chains.map((chain, i) => (
+              <button key={i} onClick={async () => await switchNetworkAsync(chain.id)}>
+                <span className="font-bold">{chain.name}</span>
+              </button>
+            ))}
+          </div>
+        </Modal>
+      ) : null}
     </button>
   )
 }

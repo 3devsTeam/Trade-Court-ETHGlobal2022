@@ -9,7 +9,6 @@ import { useNavigate } from 'react-router-dom'
 import { OfferService } from '../api/offer.services'
 import { multiply } from '../utils/multiply'
 import { toast } from 'react-toastify'
-import { useEthContractWithValue } from '../hooks/useEthContractWithValue'
 import { BigNumber, ethers } from 'ethers'
 import { randomNumber } from '../utils/randomNumber'
 import { convertToSeconds } from '../utils/convertToSeconds'
@@ -22,9 +21,11 @@ import { FiatServices } from '../api/fiat.services'
 import { useFiat } from '../hooks/useFiat'
 import { IPayment } from '../types/interfaces/payment.interface'
 import { ProgressBar } from '../components/create-offer/ProgressBar'
+import { useCreateRoom } from '../hooks/useCreateRoom'
+import { useGenerateRoomId } from '../hooks/useGenerateRoomId'
 
-const CreateOffer = () => {
-  const { resetOffer, resetStep } = useActions()
+const CreateOfferPage = () => {
+  const { resetOffer } = useActions()
 
   const {
     crypto,
@@ -35,48 +36,51 @@ const CreateOffer = () => {
     maxLimit,
     offerComment,
     payMethods,
-    timeLimit
-  } = useTypedSelector((state) => state.offerReducer)
-
-  const { step } = useTypedSelector((state) => state.formReducer)
+    timeLimit,
+    step
+  } = useTypedSelector((state) => state.createOfferReducer)
 
   const { tokens, isSuccess: tokensSuccess } = useTokens()
   const { allFiat, isSuccess: fiatSuccess } = useFiat()
 
+  const { roomId } = useGenerateRoomId()
+  console.log(roomId)
+
   const isLoaded = tokensSuccess && fiatSuccess
 
-  const limitPrice = (value: any, unitPrice: any) => {
+  const limitPrice = (value: number, unitPrice: number) => {
     if (!BigNumber.from(value).eq(BigNumber.from(0))) {
       return ethers.utils.parseEther(value.toString()).div(BigNumber.from(unitPrice))
     } else {
-      return ethers.utils.parseEther('0')
+      return ethers.utils.parseEther('0') //умножать на 10 ** decimals
     }
   }
 
-  const [roomId, setRoomId] = useState(0)
-
-  useEffect(() => {
-    setRoomId(randomNumber(1, 10000))
-  }, [])
-
   const args = [
-    roomId, // рандомная комната
+    // рандомная комната
     convertToSeconds(timeLimit), // время апрува
     convertToSeconds(timeLimit), // время апрува
     limitPrice(minLimit, unitPrice), // фиатный максимальный лимит
     limitPrice(maxLimit, unitPrice) // фиатный минимальный лимит
   ]
 
-  const value = ethers.utils.parseEther(String(quantity) === '' ? '0' : quantity.toString())
+  // const value = ethers.utils.parseEther(quantity)
 
-  const {
-    data,
-    isError,
-    isLoading,
-    isSuccess: isSuccessMakeRoom,
-    writeAsync,
-    hash
-  } = useEthContractWithValue(args, value, 'makeRoomEth')
+  const { data, isError, isLoading, isSuccess, hash, error } = useCreateRoom(quantity, [
+    timeLimit,
+    maxLimit,
+    minLimit,
+    crypto.address
+  ])
+
+  // const {
+  //   data,
+  //   isError,
+  //   isLoading,
+  //   isSuccess: isSuccessMakeRoom,
+  //   writeAsync,
+  //   hash
+  // } = useEthContractWithValue(args, value, 'makeRoomEth')
 
   const navigate = useNavigate()
 
@@ -98,10 +102,10 @@ const CreateOffer = () => {
     OfferService.create({
       offerType: 'buy',
       payMethods: payMethods.map((payment: IPayment) => {
-        const { paymentMethod, cardNumber, region, paymentDescription } = payment
+        const { bank, cardNumber, region, paymentDescription } = payment
 
         return {
-          bank: paymentMethod,
+          bank,
           cardNumber,
           region,
           paymentDescription
@@ -117,31 +121,23 @@ const CreateOffer = () => {
       crypto: crypto._id,
       offerComment
     })
-      .then(
-        (data) => {
-          console.log(data)
-          console.log('tx hash:', hash?.transactionHash)
-          successOfferNotify(
-            <div>
-              <p>Offer is created!</p>
-              <a
-                target={'_blank'}
-                className={'text-purple'}
-                href={`https://rinkeby.etherscan.io/tx/${hash?.transactionHash}`}>
-                View your transaction on Etherscan
-              </a>
-            </div>
-          )
-          navigate('/')
-          resetOffer()
-          resetStep()
-        }
-
-        //resetOffer();
-      )
-      .catch((data) => errorOfferNotify(data.response.data.message))
-    // })
-    // .catch((err) => console.log(err));
+      .then(() => {
+        // successOfferNotify(
+        //   <div>
+        //     <p>Offer is created!</p>
+        //     <a
+        //       target={'_blank'}
+        //       className={'text-purple'}
+        //       href={`https://rinkeby.etherscan.io/tx/${hash?.transactionHash}`}>
+        //       View your transaction on Etherscan
+        //     </a>
+        //   </div>
+        // )
+        navigate('/')
+        resetOffer()
+      })
+      .catch((error) => console.log(error))
+    // errorOfferNotify(data.response.data.message)
   }
 
   const steps = [
@@ -174,25 +170,25 @@ const CreateOffer = () => {
 
   return (
     <div className="p-5">
-      <SkeletonWrapper isLoaded={isLoaded} height={100}>
-        <ProgressBar steps={steps} />
-      </SkeletonWrapper>
+      {/* <SkeletonWrapper isLoading={isLoaded} height={100}> */}
+      <ProgressBar steps={steps} />
+      {/* </SkeletonWrapper> */}
 
       <div className={'grid grid-cols-2 gap-5 mt-5'}>
         <div className="flex flex-col justify-between">
-          <SkeletonWrapper isLoaded={isLoaded} height={600}>
-            {pageDisplay()}
-          </SkeletonWrapper>
+          {/* <SkeletonWrapper isLoading={isLoaded} height={600}> */}
+          {pageDisplay()}
+          {/* </SkeletonWrapper> */}
         </div>
 
         <div>
-          <SkeletonWrapper isLoaded={isLoaded} height={600}>
-            <Preview />
-          </SkeletonWrapper>
+          {/* <SkeletonWrapper isLoading={isLoaded} height={600}> */}
+          <Preview />
+          {/* </SkeletonWrapper> */}
         </div>
       </div>
     </div>
   )
 }
 
-export default CreateOffer
+export default CreateOfferPage

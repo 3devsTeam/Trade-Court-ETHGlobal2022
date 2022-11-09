@@ -7,7 +7,7 @@ import { IFiat } from '../types/interfaces/fiat.interface'
 import { IRegion } from '../types/interfaces/region.interface'
 
 export const useFiat = () => {
-  const { fiat } = useTypedSelector((state) => state.offerReducer)
+  const { fiat } = useTypedSelector((state) => state.createOfferReducer)
 
   const { regions, banks } = fiat
 

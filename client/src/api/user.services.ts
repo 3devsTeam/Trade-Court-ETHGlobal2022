@@ -16,5 +16,8 @@ export const UserService = {
   },
   async getOffers() {
     return api.get(`/api/user/offers`, { withCredentials: true })
+  },
+  async getUserRooms() {
+    return api.get('/api/user/rooms', { withCredentials: true })
   }
 }

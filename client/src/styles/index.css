@@ -5,6 +5,10 @@
 @tailwind utilities;
 
 @layer components {
+  .wrapper {
+    @apply shadow-customDark rounded-[20px] bg-white;
+  }
+
   .inputBorder {
     @apply border-2 border-gray-300 focus:outline-none focus:border-purple active:border-purple transition-colors duration-300;
   }
