@@ -5,7 +5,6 @@ interface Props {
 }
 
 export const AvatarIcon: React.FC<Props> = ({ color }) => {
-  console.log(color)
   return (
     <svg
       width="50"
