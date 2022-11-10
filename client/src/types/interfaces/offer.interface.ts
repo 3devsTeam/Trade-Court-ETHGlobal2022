@@ -7,6 +7,7 @@ import { IMaker } from './maker.interface'
 
 export interface IOffer {
   _id: string
+  roomId: string
   offerType: 'buy' | 'sell'
   crypto: ICrypto
   fiat: IFiat
@@ -23,10 +24,4 @@ export interface IOffer {
   amount?: number
   maker: IMaker
   tokenAmount?: number
-  room: {
-    roomId: string
-    stage: 'no taker' | 'taker'
-    amount: number
-    createdAt: string
-  }
 }

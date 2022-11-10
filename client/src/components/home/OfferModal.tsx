@@ -8,6 +8,7 @@ import { OfferService } from '../../api/offer.services'
 import { toast } from 'react-toastify'
 import { ButtonDisabled } from '../ui/ButtonDisabled'
 import { ethers } from 'ethers'
+import { useJoinRoom } from '../../hooks/useJoinRoom'
 
 interface Props {
   close: any
@@ -15,7 +16,18 @@ interface Props {
 }
 
 const OfferModal: React.FC<Props> = ({ close, offer }) => {
-  const { fiat, crypto, maker, unitPrice, _id, quantity, offerComment, minLimit, maxLimit } = offer
+  const {
+    fiat,
+    crypto,
+    maker,
+    unitPrice,
+    _id,
+    quantity,
+    offerComment,
+    minLimit,
+    maxLimit,
+    roomId
+  } = offer
 
   const navigate = useNavigate()
 
@@ -30,42 +42,16 @@ const OfferModal: React.FC<Props> = ({ close, offer }) => {
 
   const { address } = maker
 
-  const args = [1, ethers.utils.parseEther(recieve.toString())]
-  const value = 0
-  const functionName = 'completeDeal'
-
-  // const { data, prepareError, isError, isLoading, isSuccess, writeAsync } = useEthContract(
-  //   args,
-  //   functionName
-  // )
-
-  const offerNotify = (error: string) => {
-    toast.error(error, {
-      position: toast.POSITION.BOTTOM_RIGHT
-    })
-  }
+  const { data, txStatus, prepareTxStatus, handleTransaction } = useJoinRoom(
+    roomId,
+    recieve,
+    pay,
+    _id
+  )
 
   useEffect(() => {
     setRecieve(pay / unitPrice)
   }, [pay, recieve])
-
-  const handleTransaction = () => {
-    // writeAsync?.().then(() => {
-    OfferService.joinByID(_id, {
-      amount: pay,
-      roomId: _id
-    })
-      .then((data) => {
-        if (data.data.message === 'success') {
-          close()
-          navigate(`/transaction/${_id}`)
-        }
-      })
-      .catch((err) => {
-        offerNotify(err.response.data.message)
-      })
-    // })
-  }
 
   const info = [
     {

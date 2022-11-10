@@ -1,14 +1,13 @@
 import contractConfig from '../abis/contractConfig'
-import { useAccount, useContractWrite, usePrepareContractWrite, useWaitForTransaction } from 'wagmi'
+import { useContractWrite, usePrepareContractWrite, useWaitForTransaction } from 'wagmi'
 import { ethers, BigNumber } from 'ethers'
-import { useEffect, useState } from 'react'
 import { useTypedSelector } from './useTypedSelector'
 import { OfferService } from '../api/offer.services'
 import { IPayment } from '../types/interfaces/payment.interface'
 import { useNavigate } from 'react-router-dom'
 import { useActions } from './useActions'
 import { toast } from 'react-toastify'
-import { sha256 } from 'js-sha256'
+import { useGenerateRoom } from './useGenerateRoom'
 
 // createRoom ДЛЯ ДОМИНАТОРОВ
 // _roomNumber (uint256)
@@ -20,8 +19,6 @@ import { sha256 } from 'js-sha256'
 // _rate (uint32) UNIT PRICE
 
 export const useCreateRoom = () => {
-  const { address } = useAccount()
-
   const {
     quantity,
     unitPrice,
@@ -38,64 +35,42 @@ export const useCreateRoom = () => {
 
   const { resetOffer } = useActions()
 
-  const roomId = BigNumber.from('0x' + sha256(Date.now().toString() + address))
+  const { roomId } = useGenerateRoom()
 
-  const handleCreateOffer = async () => {
-    OfferService.create({
-      offerType: 'buy',
-      payMethods: payMethods.map((payment: IPayment) => {
-        const { bank, cardNumber, region, paymentDescription } = payment
-
-        return {
-          bank,
-          cardNumber,
-          region,
-          paymentDescription
-        }
-      }),
-      fiat: fiat._id,
-      roomId,
-      unitPrice,
-      amount: unitPrice * quantity,
-      quantity,
-      minLimit,
-      maxLimit,
-      crypto: crypto._id,
-      offerComment
-    })
-      .then(() => {
-        toast.success('Offer is created', {
-          position: toast.POSITION.BOTTOM_RIGHT
-        })
-
-        navigate('/')
-        resetOffer()
-      })
-      .catch((error) =>
-        toast.error(error, {
-          position: toast.POSITION.BOTTOM_RIGHT
-        })
-      )
+  const limitPrice = (value: string, unitPrice: number) => {
+    // if (value.replace(' ', '') != '' && value != undefined) {
+    if (!BigNumber.from(value).eq(BigNumber.from(0))) {
+      return ethers.utils.parseEther(value.toString()).div(BigNumber.from(unitPrice))
+    }
+    // }
+    else {
+      return ethers.utils.parseEther('0')
+    }
   }
 
-  const { config, error: prepareError } = usePrepareContractWrite({
+  const args = [
+    roomId,
+    +timeLimit * 60,
+    limitPrice(maxLimit.toString(), unitPrice),
+    limitPrice(minLimit.toString(), unitPrice),
+    '0x0000000000000000000000000000000000000000',
+    ethers.utils.parseEther('0'),
+    unitPrice
+  ]
+
+  const { config, status: prepareTxStatus } = usePrepareContractWrite({
     ...contractConfig,
     functionName: 'createRoom',
-    args: [
-      ethers.utils.parseEther(quantity.toString()),
-      quantity,
-      roomId,
-      +timeLimit * 60,
-      maxLimit,
-      minLimit,
-      unitPrice
-    ],
+    args,
     overrides: {
-      // gasLimit: 400000
+      value: ethers.utils.parseEther(quantity.toString()),
+      gasLimit: 400000
     }
   })
 
-  const { data, isError, writeAsync: createOffer } = useContractWrite(config)
+  //console.log('prepare error', prepareError)
+
+  const { data, status: txStatus, writeAsync } = useContractWrite(config)
 
   const {
     isSuccess,
@@ -105,14 +80,51 @@ export const useCreateRoom = () => {
     hash: data?.hash
   })
 
+  const handleCreateOffer = async () => {
+    writeAsync?.().then(() => {
+      OfferService.create({
+        offerType: 'buy',
+        payMethods: payMethods.map((payment: IPayment) => {
+          const { bank, cardNumber, region, paymentDescription } = payment
+          return {
+            bank,
+            cardNumber,
+            region,
+            paymentDescription
+          }
+        }),
+        fiat: fiat._id,
+        roomId: roomId!.toString(),
+        unitPrice,
+        amount: unitPrice * quantity,
+        quantity,
+        minLimit,
+        maxLimit,
+        crypto: crypto._id,
+        offerComment
+      })
+        .then(() => {
+          toast.success('Offer is created', {
+            position: toast.POSITION.BOTTOM_RIGHT
+          })
+          navigate('/')
+          resetOffer()
+        })
+        .catch((error) =>
+          toast.error(error, {
+            position: toast.POSITION.BOTTOM_RIGHT
+          })
+        )
+    })
+  }
+
   return {
     data,
     handleCreateOffer,
     isSuccess,
-    createOffer,
-    isError,
     isLoading,
     hash,
-    prepareError
+    prepareTxStatus,
+    txStatus
   }
 }
