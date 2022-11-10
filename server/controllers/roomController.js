@@ -17,6 +17,7 @@ exports.getMyRooms = catchAsync(async (req, res, next) => {
               fiat: 1,
               type: 1,
               crypto: 1,
+              maker: 1,
             },
           },
         ],
@@ -25,7 +26,7 @@ exports.getMyRooms = catchAsync(async (req, res, next) => {
     },
     {
       $match: {
-        $or: [{ 'offers.maker': req.user._id }, { taker: req.user._id }],
+        $or: [{ 'offer.maker': req.user._id }, { taker: req.user._id }],
       },
     },
     {
