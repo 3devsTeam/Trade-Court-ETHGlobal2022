@@ -8,8 +8,6 @@ import { Preview } from '../components/create-offer/Preview'
 import { ICrypto } from '../types/interfaces/crypto.interface'
 
 export const useTokens = () => {
-  const { setCrypto } = useActions()
-
   const { chain } = useNetwork()
 
   const chainId = chain?.id.toString()
@@ -77,8 +75,6 @@ export const useTokens = () => {
     }
     return crypto
   })
-
-  console.log(newTokens)
 
   return { tokens: newTokens, isSuccess, isLoading, isError }
 }

@@ -27,6 +27,7 @@ export const CreateOfferStepTwo = () => {
   const { fiat, region, bank, payMethods } = useTypedSelector((state) => state.createOfferReducer)
 
   const [paymentDescription, setPaymentDescription] = useState('')
+
   const [cardNumber, setCardNumber] = useState('')
 
   const addPayment = () => {

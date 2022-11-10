@@ -74,7 +74,7 @@ export const Preview = () => {
           </div>
           <div>
             <span className={'font-medium'}>
-              {unitPrice * quantity} {ticker}
+              {+unitPrice * +quantity} {ticker}
             </span>
           </div>
         </div>

@@ -6,8 +6,8 @@ import { IOffer } from '../../types/interfaces/offer.interface'
 import { OfferInput } from '../home/OfferInput'
 import { OfferService } from '../../api/offer.services'
 import { toast } from 'react-toastify'
-import { parseEther } from '../../utils/parseEther'
 import { ButtonDisabled } from '../ui/ButtonDisabled'
+import { ethers } from 'ethers'
 
 interface Props {
   close: any
@@ -30,7 +30,7 @@ const OfferModal: React.FC<Props> = ({ close, offer }) => {
 
   const { address } = maker
 
-  const args = [1, parseEther(recieve.toString())]
+  const args = [1, ethers.utils.parseEther(recieve.toString())]
   const value = 0
   const functionName = 'completeDeal'
 
@@ -46,7 +46,7 @@ const OfferModal: React.FC<Props> = ({ close, offer }) => {
   }
 
   useEffect(() => {
-    setRecieve(+(pay / unitPrice).toFixed(4))
+    setRecieve(pay / unitPrice)
   }, [pay, recieve])
 
   const handleTransaction = () => {

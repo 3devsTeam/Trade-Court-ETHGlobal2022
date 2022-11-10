@@ -13,7 +13,7 @@ export const TimeLimit = ({ times, label, onAction }: ITimeLimit) => {
 
   return (
     <div>
-      <Label label={'Order Price Limit'} />
+      <Label label={label} />
       <div className={'flex items-center justify-between p-5'}>
         {times.map((t: string, i: number) => {
           return (

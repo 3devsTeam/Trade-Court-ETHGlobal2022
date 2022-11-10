@@ -162,7 +162,7 @@ const HomePage = () => {
         {data?.pages[0].length === 0 ? (
           <NoItems />
         ) : (
-          <div className="space-y-2 flex flex-wrap">{content}</div>
+          <div className="space-y-3 flex flex-wrap">{content}</div>
         )}
         {/* </SkeletonWrapper> */}
       </main>

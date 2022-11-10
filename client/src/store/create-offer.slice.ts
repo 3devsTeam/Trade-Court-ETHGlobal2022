@@ -13,6 +13,7 @@ interface ICreateOfferSlice extends IOffer {
 
 const initialState: ICreateOfferSlice = {
   step: 1,
+  offerType: 'buy',
   room: {
     roomId: '',
     stage: 'no taker',

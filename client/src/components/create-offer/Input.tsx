@@ -1,25 +1,23 @@
 import React from 'react'
 import { Label } from '../ui/Label'
 
-export interface IInput {
+export interface Props {
   onAction: any
   label?: string
   placeholder: string
   value: string | number
   element?: any
   maxValue?: any
-  error?: any
 }
 
-export const Input = ({
-  error,
+export const Input: React.FC<Props> = ({
   maxValue,
   onAction,
   label,
   placeholder,
   value,
   element
-}: IInput) => {
+}) => {
   return (
     <div className="relative">
       <Label label={label!} />
@@ -40,9 +38,8 @@ export const Input = ({
             <>
               <button
                 type="button"
-                onClick={() => onAction(maxValue)}
-                className={'font-bold text-purple'}
-              >
+                onClick={() => onAction(String(maxValue))}
+                className={'font-bold text-purple'}>
                 Max
               </button>
               <span className={'text-gray-300'}>|</span>

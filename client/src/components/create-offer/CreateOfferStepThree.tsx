@@ -8,15 +8,12 @@ import { TextArea } from './TextArea'
 import { TimeLimit } from './TimeLimit'
 import { ButtonDisabled } from '../ui/ButtonDisabled'
 import { SubmitButton } from '../ui/SubmitButton'
-import { totalAmount } from '../../utils/totalAmount'
 import { Wrapper } from './Wrapper'
 import { Label } from '../ui/Label'
+import { useCreateRoom } from '../../hooks/useCreateRoom'
+import { useContractWrite, usePrepareContractWrite } from 'wagmi'
 
-interface Props {
-  handleCreateOffer: () => void
-}
-
-export const CreateOfferStepThree = ({ handleCreateOffer }: Props) => {
+export const CreateOfferStepThree = () => {
   const { setMinPriceLimit, setMaxPriceLimit, setTimeLimit, setComment, prevStep } = useActions()
   const { fiat, offerComment, minLimit, maxLimit, quantity, unitPrice } = useTypedSelector(
     (state) => state.createOfferReducer
@@ -24,9 +21,13 @@ export const CreateOfferStepThree = ({ handleCreateOffer }: Props) => {
   const { ticker } = fiat
 
   const checkStep3 = () => {
-    if (minLimit > 0 && maxLimit > 0 && minLimit < maxLimit) return false
+    if (minLimit > 0 && maxLimit > 0 && minLimit < maxLimit && maxLimit <= quantity * unitPrice)
+      return false
     return true
   }
+
+  const { createOffer, isSuccess, isError, isLoading, prepareError, handleCreateOffer } =
+    useCreateRoom()
 
   return (
     <form>
@@ -48,7 +49,7 @@ export const CreateOfferStepThree = ({ handleCreateOffer }: Props) => {
             />
             <Input
               value={maxLimit}
-              maxValue={parseInt((quantity * unitPrice).toString())}
+              maxValue={quantity * unitPrice}
               onAction={setMaxPriceLimit}
               placeholder={'Max'}
               element={ticker}
@@ -68,7 +69,11 @@ export const CreateOfferStepThree = ({ handleCreateOffer }: Props) => {
         <Wrapper>
           <div className="flex gap-5">
             <ButtonDisabled onClick={prevStep} name="Back" />
-            <ButtonDisabled disabled={checkStep3()} onClick={handleCreateOffer} name="Create" />
+            <ButtonDisabled
+              disabled={checkStep3()}
+              onClick={() => handleCreateOffer()}
+              name="Create"
+            />
           </div>
         </Wrapper>
       </div>
