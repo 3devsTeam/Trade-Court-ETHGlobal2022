@@ -11,6 +11,11 @@ const offerSchema = new mongoose.Schema({
     enum: ['buy', 'sell'],
     required: [true, 'offerType is empty'],
   },
+  roomId: {
+    type: String,
+    required: true,
+    unique: true,
+  },
   payMethods: {
     type: [
       {
