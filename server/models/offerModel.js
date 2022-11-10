@@ -91,6 +91,11 @@ const offerSchema = new mongoose.Schema({
     type: String,
     maxLenght: 600,
   },
+  takerIndex: {
+    type: Number,
+    default: 0,
+    required: true,
+  },
 });
 
 const Offer = mongoose.model('Offer', offerSchema);

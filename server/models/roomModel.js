@@ -27,12 +27,6 @@ const roomSchema = new mongoose.Schema({
     min: [1, 'unitPrice very small'],
     required: [true, 'unitPrice is empty'],
   },
-  roomId: {
-    type: String,
-    required: [true, 'roomId is empty'],
-    unique: true,
-    required: true,
-  },
   createdAt: {
     type: Date,
     required: true,
