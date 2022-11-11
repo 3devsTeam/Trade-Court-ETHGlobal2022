@@ -1,16 +1,16 @@
 import { Suspense, lazy } from 'react'
 import { BrowserRouter, Routes, Route, useNavigate } from 'react-router-dom'
 import { Navbar } from './components/navbar/Navbar'
-import HomePage from './pages/home'
+import HomePage from './pages/Home'
 import { PrivateRoutes } from './routes/PrivateRoutes'
-import { SettingsPage } from './pages/settings'
+import { SettingsPage } from './pages/Settings'
 import { Navigate } from 'react-router-dom'
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 
 const CreateOffer = lazy(() => import('./pages/create-offer'))
-const Transaction = lazy(() => import('./pages/transaction'))
-const Profile = lazy(() => import('./pages/profile'))
+const Transaction = lazy(() => import('./pages/Transaction'))
+const Profile = lazy(() => import('./pages/Profile'))
 
 const App = () => {
   return (
