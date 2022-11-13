@@ -5,10 +5,13 @@ import { OfferService } from '../api/offer.services'
 import { toast } from 'react-toastify'
 import { useNavigate } from 'react-router-dom'
 
-export const useJoinRoom = (roomId: string, recieve: number, pay: number, _id: string) => {
+export const useJoinRoom = (roomId: string, recieve: string, pay: string, _id: string) => {
   const navigate = useNavigate()
 
-  const args = [roomId, ethers.utils.parseEther(recieve.toFixed(6).toString())]
+  const args = [
+    roomId,
+    pay != '.' && pay != '' ? ethers.utils.parseEther(Number(recieve).toFixed(6).toString()) : '0'
+  ]
 
   const handleTransaction = () => {
     joinRoom?.().then(() => {

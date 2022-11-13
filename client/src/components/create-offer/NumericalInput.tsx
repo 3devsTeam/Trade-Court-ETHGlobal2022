@@ -10,6 +10,7 @@ export interface Props {
   value: string | number
   element?: string | number
   maxValue?: string
+  readOnly?: boolean
 }
 
 const inputRegex = RegExp(`^\\d*(?:\\\\[.])?\\d*$`)
@@ -20,7 +21,8 @@ export const NumericalInput: React.FC<Props> = ({
   label,
   placeholder,
   value,
-  element
+  element,
+  readOnly
 }) => {
   const enforcer = (nextUserInput: string) => {
     if (nextUserInput === '' || inputRegex.test(escapeRegExp(nextUserInput))) {
@@ -45,7 +47,8 @@ export const NumericalInput: React.FC<Props> = ({
           type="text"
           minLength={1}
           maxLength={79}
-          value={value === 0 ? '' : value}
+          readOnly={readOnly}
+          value={value}
         />
 
         <div className={`absolute right-3 ${maxValue ? 'flex space-x-2 items-center' : null}`}>

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { truncateAddress } from '../../utils/truncateAddress'
-import { Input } from '../create-offer/NumericalInput'
+import { NumericalInput } from '../create-offer/NumericalInput'
 import { useNavigate } from 'react-router'
 import { IOffer } from '../../types/interfaces/offer.interface'
 import { OfferInput } from '../home/OfferInput'
@@ -31,8 +31,8 @@ const OfferModal: React.FC<Props> = ({ close, offer }) => {
 
   const navigate = useNavigate()
 
-  const [pay, setPay] = useState(0)
-  const [recieve, setRecieve] = useState(0)
+  const [pay, setPay] = useState('0')
+  const [recieve, setRecieve] = useState('0')
 
   // const { roomId } = room;
 
@@ -50,7 +50,7 @@ const OfferModal: React.FC<Props> = ({ close, offer }) => {
   )
 
   useEffect(() => {
-    setRecieve(pay / unitPrice)
+    setRecieve((+pay / +unitPrice).toString())
   }, [pay, recieve])
 
   const info = [
@@ -87,28 +87,29 @@ const OfferModal: React.FC<Props> = ({ close, offer }) => {
       </div>
 
       <div className="flex flex-col gap-[10px] px-3">
-        <OfferInput
+        <NumericalInput
           label={'You pay'}
           maxValue={maxLimit}
-          setValue={setPay}
+          onUserInput={setPay}
           placeholder={'You pay'}
           value={pay}
-          inputContent={ticker}
+          element={ticker}
         />
-        <OfferInput
-          readOnly={false}
+
+        <NumericalInput
+          readOnly={true}
           label={'You recieve'}
-          setValue={setRecieve}
+          onUserInput={setRecieve}
           placeholder={'You recieve'}
           value={recieve}
-          inputContent={symbol}
+          element={symbol}
         />
 
         <div>
           <ButtonDisabled
             onClick={() => handleTransaction()}
             name={`Buy ${symbol}`}
-            disabled={!(pay > 0 && pay <= maxLimit)}
+            disabled={!(+pay > 0 && +pay <= +maxLimit)}
           />
         </div>
       </div>
