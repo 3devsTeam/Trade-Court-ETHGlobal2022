@@ -24,7 +24,6 @@ jobs:
           sudo service nginx restart
       - run: |
           cd client
-          chmod 777 node_modules
           npm i
           cd ..
           pm2 restart client
