@@ -1,0 +1,10 @@
+node_modules
+Dockerfile
+uploads
+node_modules
+erc20TokenImg
+uploads
+.DS_Store
+cache
+artifacts
+.git
