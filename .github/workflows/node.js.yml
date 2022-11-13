@@ -16,7 +16,7 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     - run: |
-        cd ./server
+        cd server
         npm i
         npm run start:prod
         cd ../client
