@@ -91,7 +91,7 @@ const offerSchema = new mongoose.Schema({
     type: String,
     maxLenght: 600,
   },
-  takerIndex: {
+  takerNumber: {
     type: Number,
     default: 0,
     required: true,

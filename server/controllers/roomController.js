@@ -99,14 +99,14 @@ exports.joinRoom = catchAsync(async (req, res, next) => {
     taker: req.user._id,
     amount: req.body.amount,
     unitPrice: offer.unitPrice,
-    roomId: req.body.roomId,
+    takerNumber: offer.takerNumber,
     createdAt: new Date(),
   });
   await Offer.findByIdAndUpdate(req.params.id, {
     $inc: {
       amount: req.body.amount * -1,
       quantity: (req.body.amount / offer.unitPrice) * -1,
-      takerIndex: 1,
+      takerNumber: 1,
     },
   });
   res.status(200).json({
