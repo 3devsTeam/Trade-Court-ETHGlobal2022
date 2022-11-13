@@ -1,14 +1,11 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useTypedSelector } from '../../hooks/useTypedSelector'
-import { Input } from './Input'
+import { NumericalInput } from './NumericalInput'
 import { Dropdown } from './Dropdown'
 import { useActions } from '../../hooks/useActions'
-import { useScrollTop } from '../../hooks/useScrollTop'
 import { TextArea } from './TextArea'
 import { Payment } from './Payment'
 import { Wrapper } from './Wrapper'
-import { useForm } from 'react-hook-form'
-import { SubmitButton } from '../ui/SubmitButton'
 import { ButtonDisabled } from '../ui/ButtonDisabled'
 import { v4 as uuidv4 } from 'uuid'
 import { Label } from '../ui/Label'
@@ -124,11 +121,11 @@ export const CreateOfferStepTwo = () => {
             </div>
           </div>
 
-          <Input
-            value={cardNumber!}
+          <NumericalInput
+            value={cardNumber!.replace('.', '')}
             label={'Card Number'}
             placeholder={'Enter card number'}
-            onAction={setCardNumber}
+            onUserInput={setCardNumber}
           />
           <TextArea
             value={paymentDescription}

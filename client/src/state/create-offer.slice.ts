@@ -14,12 +14,6 @@ interface ICreateOfferSlice extends IOffer {
 const initialState: ICreateOfferSlice = {
   step: 1,
   offerType: 'buy',
-  room: {
-    roomId: '',
-    stage: 'no taker',
-    amount: 0,
-    createdAt: ''
-  },
   _id: '',
   crypto: {
     address: '',
@@ -47,12 +41,12 @@ const initialState: ICreateOfferSlice = {
     regions: [],
     logoUrl: ''
   },
-  unitPrice: 0,
-  quantity: 0,
+  unitPrice: '0',
+  quantity: '0',
   payMethods: [],
   timeLimit: '15',
-  minLimit: 0,
-  maxLimit: 0,
+  minLimit: '0',
+  maxLimit: '0',
   bank: {
     _id: '',
     logoUrl: '',
@@ -65,7 +59,8 @@ const initialState: ICreateOfferSlice = {
     logoUrl: '',
     __v: 0
   },
-  offerComment: ''
+  offerComment: '',
+  roomId: ''
 }
 
 export const createOfferSlice = createSlice({
@@ -78,19 +73,19 @@ export const createOfferSlice = createSlice({
     setFiat: (state, { payload }: PayloadAction<IFiat>) => {
       state.fiat = payload
     },
-    setUnitPrice: (state, { payload }: PayloadAction<number>) => {
+    setUnitPrice: (state, { payload }: PayloadAction<string>) => {
       state.unitPrice = payload
     },
-    setQuantity: (state, { payload }: PayloadAction<number>) => {
+    setQuantity: (state, { payload }: PayloadAction<string>) => {
       state.quantity = payload
     },
     setTimeLimit: (state, { payload }: PayloadAction<string>) => {
       state.timeLimit = payload
     },
-    setMinPriceLimit: (state, { payload }: PayloadAction<number>) => {
+    setMinPriceLimit: (state, { payload }: PayloadAction<string>) => {
       state.minLimit = payload
     },
-    setMaxPriceLimit: (state, { payload }: PayloadAction<number>) => {
+    setMaxPriceLimit: (state, { payload }: PayloadAction<string>) => {
       state.maxLimit = payload
     },
     setComment: (state, { payload }: PayloadAction<string>) => {
@@ -99,7 +94,7 @@ export const createOfferSlice = createSlice({
     setRegion: (state, { payload }: PayloadAction<IRegion>) => {
       state.region = payload
     },
-    setBank: (state, { payload }: PayloadAction<IBank>) => {
+    setBank: (state, { payload }: PayloadAction<IBank | undefined>) => {
       state.bank = payload
     },
     addPaymentMethod: (state, { payload }: PayloadAction<IPayment>) => {

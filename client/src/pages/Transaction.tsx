@@ -1,7 +1,7 @@
 import { useParams } from 'react-router-dom'
 import { useAccount, useQuery } from 'wagmi'
 import { OfferService } from '../api/offer.services'
-import { ProgressBar } from '../components/create-offer/ProgressBar'
+import { ProgressBar } from '../components/create-offer/Progressbar'
 import { Chat } from '../components/transaction/Chat'
 import { ConfirmsMaker } from '../components/transaction/ConfirmsMaker'
 import { ConfirmsTaker } from '../components/transaction/ConfirmsTaker'

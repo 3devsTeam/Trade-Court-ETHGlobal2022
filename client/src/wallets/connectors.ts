@@ -7,7 +7,7 @@ import { WalletConnectConnector } from 'wagmi/connectors/walletConnect'
 
 const { chains, provider, webSocketProvider } = configureChains(
   [chain.mainnet, chain.goerli, chain.polygon],
-  [infuraProvider({ apiKey: import.meta.env.VITE_INFURA_ID }), publicProvider()]
+  [infuraProvider({ apiKey: import.meta.env.VITE_INFURA_ID })]
 )
 
 export const connectors = [

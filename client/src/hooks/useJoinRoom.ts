@@ -8,32 +8,23 @@ import { useNavigate } from 'react-router-dom'
 export const useJoinRoom = (roomId: string, recieve: number, pay: number, _id: string) => {
   const navigate = useNavigate()
 
-  console.log(roomId)
+  const args = [roomId, ethers.utils.parseEther(recieve.toFixed(6).toString())]
 
-  const args = [
-    BigNumber.from('0x' + roomId),
-    ethers.utils.parseEther(recieve.toFixed(6).toString())
-  ]
-  console.log(args)
-  //   console.log(roomId)
-  //   console.log(ethers.utils.parseEther(recieve.toString()))
-  //   console.log(BigNumber.from('0x' + roomId))
   const handleTransaction = () => {
-    joinRoom?.()
-    // .then(() => {
-    //   OfferService.joinByID(_id, {
-    //     amount: pay
-    //   })
-    //     .then(({ data }) => {
-    //       close()
-    //       navigate(`/transaction/${data.newRoom._id}`)
-    //     })
-    //     .catch((err) => {
-    //       toast.error(err.response.data.message, {
-    //         position: toast.POSITION.BOTTOM_RIGHT
-    //       })
-    //     })
-    // })
+    joinRoom?.().then(() => {
+      OfferService.joinByID(_id, {
+        amount: pay
+      })
+        .then(({ data }) => {
+          close()
+          navigate(`/transaction/${data.newRoom._id}`)
+        })
+        .catch((err) => {
+          toast.error(err.response.data.message, {
+            position: toast.POSITION.BOTTOM_RIGHT
+          })
+        })
+    })
   }
 
   const { config, status: prepareTxStatus } = usePrepareContractWrite({
@@ -45,7 +36,11 @@ export const useJoinRoom = (roomId: string, recieve: number, pay: number, _id: s
     }
   })
 
+  console.log(prepareTxStatus)
+
   const { data, status: txStatus, writeAsync: joinRoom } = useContractWrite(config)
+
+  console.log(txStatus)
 
   return { data, prepareTxStatus, txStatus, handleTransaction }
 }

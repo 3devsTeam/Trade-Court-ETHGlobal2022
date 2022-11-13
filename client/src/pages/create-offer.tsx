@@ -6,23 +6,19 @@ import { CreateOfferStepThree } from '../components/create-offer/CreateOfferStep
 import { BigNumber, ethers } from 'ethers'
 import { useTokens } from '../hooks/useTokens'
 import { useFiat } from '../hooks/useFiat'
-import { ProgressBar } from '../components/create-offer/ProgressBar'
+import { ProgressBar } from '../components/create-offer/Progressbar'
+import { useCreateRoom } from '../hooks/useCreateRoom'
 
 const CreateOfferPage = () => {
+  const { data, handleCreateOffer, isSuccess, isLoading, hash, prepareTxStatus, txStatus } =
+    useCreateRoom()
+
   const { step } = useTypedSelector((state) => state.createOfferReducer)
 
   const { tokens, isSuccess: tokensSuccess } = useTokens()
   const { allFiat, isSuccess: fiatSuccess } = useFiat()
 
   const isLoaded = tokensSuccess && fiatSuccess
-
-  const limitPrice = (value: number, unitPrice: number) => {
-    if (!BigNumber.from(value).eq(BigNumber.from(0))) {
-      return ethers.utils.parseEther(value.toString()).div(BigNumber.from(unitPrice))
-    } else {
-      return ethers.utils.parseEther('0') //умножать на 10 ** decimals
-    }
-  }
 
   const pageDisplay = () => {
     switch (step) {
@@ -31,7 +27,7 @@ const CreateOfferPage = () => {
       case 2:
         return <CreateOfferStepTwo />
       case 3:
-        return <CreateOfferStepThree />
+        return <CreateOfferStepThree handleCreateOffer={handleCreateOffer} />
       default:
         return
     }
@@ -59,7 +55,7 @@ const CreateOfferPage = () => {
       {/* </SkeletonWrapper> */}
 
       <div className={'grid grid-cols-2 gap-5 mt-5'}>
-        <div className="flex flex-col justify-between">
+        <div>
           {/* <SkeletonWrapper isLoading={isLoaded} height={600}> */}
           {pageDisplay()}
           {/* </SkeletonWrapper> */}

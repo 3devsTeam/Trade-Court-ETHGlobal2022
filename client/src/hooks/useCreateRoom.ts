@@ -38,32 +38,33 @@ export const useCreateRoom = () => {
   const { roomId } = useGenerateRoom()
 
   const limitPrice = (value: string, unitPrice: number) => {
-    // if (value.replace(' ', '') != '' && value != undefined) {
-    if (!BigNumber.from(value).eq(BigNumber.from(0))) {
-      return ethers.utils.parseEther(value.toString()).div(BigNumber.from(unitPrice))
-    }
-    // }
-    else {
-      return ethers.utils.parseEther('0')
+    if (value != '.' && value != '0' && value != undefined) {
+      try {
+        return ethers.utils.parseEther(value.toString()).div(BigNumber.from(unitPrice))
+      } catch (err) {
+        console.log(err)
+      }
     }
   }
 
   const args = [
     roomId,
     +timeLimit * 60,
-    limitPrice(maxLimit.toString(), unitPrice),
-    limitPrice(minLimit.toString(), unitPrice),
+    limitPrice(maxLimit.toString(), +unitPrice),
+    limitPrice(minLimit.toString(), +unitPrice),
     '0x0000000000000000000000000000000000000000',
     ethers.utils.parseEther('0'),
     unitPrice
   ]
+
+  console.log(args)
 
   const { config, status: prepareTxStatus } = usePrepareContractWrite({
     ...contractConfig,
     functionName: 'createRoom',
     args,
     overrides: {
-      value: ethers.utils.parseEther(quantity.toString()),
+      value: ethers.utils.parseEther(+quantity > 0 ? quantity.toString() : '0'),
       gasLimit: 400000
     }
   })
@@ -96,7 +97,7 @@ export const useCreateRoom = () => {
         fiat: fiat._id,
         roomId: roomId!.toString(),
         unitPrice,
-        amount: unitPrice * quantity,
+        amount: +unitPrice * +quantity,
         quantity,
         minLimit,
         maxLimit,

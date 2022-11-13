@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { truncateAddress } from '../../utils/truncateAddress'
-import { Input } from '../create-offer/Input'
+import { Input } from '../create-offer/NumericalInput'
 import { useNavigate } from 'react-router'
 import { IOffer } from '../../types/interfaces/offer.interface'
 import { OfferInput } from '../home/OfferInput'
@@ -108,7 +108,7 @@ const OfferModal: React.FC<Props> = ({ close, offer }) => {
           <ButtonDisabled
             onClick={() => handleTransaction()}
             name={`Buy ${symbol}`}
-            disabled={!(pay > 0)}
+            disabled={!(pay > 0 && pay <= maxLimit)}
           />
         </div>
       </div>

@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { useTypedSelector } from '../../hooks/useTypedSelector'
-import { Input } from './Input'
+import { NumericalInput } from './NumericalInput'
 import { Dropdown } from './Dropdown'
 import { useActions } from '../../hooks/useActions'
 import { ModalInput } from './ModalInput'
@@ -50,7 +50,7 @@ export const CreateOfferStepOne = ({ tokens, allFiat }: IStep1) => {
   }
 
   const checkStep1 = () => {
-    if (quantity > 0 && quantity <= tokenAmount && unitPrice > 0) return true
+    if (+quantity > 0 && +quantity <= +tokenAmount && +unitPrice > 0) return true
 
     return false
   }
@@ -76,17 +76,17 @@ export const CreateOfferStepOne = ({ tokens, allFiat }: IStep1) => {
             data={allFiat as IFiat[]}
             label={'Fiat'}
           />
-          <Input
-            onAction={setUnitPrice}
+          <NumericalInput
+            onUserInput={setUnitPrice}
             placeholder={'0'}
             label={'Unit Price'}
             element={ticker}
             value={unitPrice}
           />
 
-          <Input
-            maxValue={tokenAmount}
-            onAction={setQuantity}
+          <NumericalInput
+            maxValue={tokenAmount.toString()}
+            onUserInput={setQuantity}
             placeholder={'0'}
             label={'Quantity'}
             element={symbol}
