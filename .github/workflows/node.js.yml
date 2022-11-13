@@ -18,11 +18,13 @@ jobs:
       - run: |
           cd server
           npm i
+          cd ..
           pm2 restart server
           sudo service nginx restart
       - run: |
           cd client
           chmod 777 node_modules
           npm i
+          cd ..
           pm2 restart client
           sudo service nginx restart
