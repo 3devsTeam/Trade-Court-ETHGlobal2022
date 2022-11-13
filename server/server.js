@@ -4,7 +4,9 @@ dotenv.config({ path: '../../../../conffiles/config.env' });
 const socketHandler = require('./socket');
 
 const app = require('./app');
-const DB = process.env.DATABASE.replace('<PASSWORD>', process.env.DB_PASSWORD);
+// const DB = process.env.DATABASE.replace('<PASSWORD>', process.env.DB_PASSWORD);
+const DB =
+  'mongodb://127.0.0.1:27017/?compressors=disabled&gssapiServiceName=mongodb';
 mongoose
   .connect(DB, {
     useNewUrlParser: true,
