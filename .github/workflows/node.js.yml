@@ -19,6 +19,7 @@ jobs:
           cd server
           npm i
           cd ..
+          pm2 status
           pm2 restart server
           sudo service nginx restart
       - run: |
