@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start:dev": "cross-env NODE_ENV=dev nodemon server.js",
-    "start:prod": "NODE_ENV=prod node server.js",
+    "start:prod": "cross-env NODE_ENV=prod node server.js",
     "token:rate": "node utils/tokeRate.js"
   },
   "keywords": [],
