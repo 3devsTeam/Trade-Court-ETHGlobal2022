@@ -18,8 +18,14 @@ jobs:
       - run: |
           cd server
           npm i
-          npm run start:prod
+          pm2 stop 0
+          pm2 start 0
+          pm2 save
+          sudo service nginx restart
       - run: |
           cd client
           npm i
-          npm run dev
+          pm2 stop 1
+          pm2 start 1
+          pm2 save
+          sudo service nginx restart
