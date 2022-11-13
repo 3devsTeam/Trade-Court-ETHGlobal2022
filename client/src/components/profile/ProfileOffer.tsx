@@ -1,103 +1,102 @@
-import React from "react";
-import { IOffer } from "../../models/models";
-import { ButtonOffer } from "./ButtonOffer";
-import { Arrow } from "../ui/icons/Arrow";
-import { Cross } from "../ui/icons/Cross";
-import { OfferService } from "../../api/offer.services";
-import { Label } from "./Label";
-import { useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from 'react'
+import { Arrow } from '../ui/icons/Arrow'
+import { Cross } from '../ui/icons/Cross'
+import { OfferService } from '../../api/offer.services'
+import { Label } from './Label'
+import { useNavigate } from 'react-router-dom'
+import { Button } from '../ui/Button'
+import { SkeletonWrapper } from '../ui/SkeletonWrapper'
+import { Modal } from '../ui/Modal'
+import { useMutation } from '@tanstack/react-query'
+import { totalAmount } from '../../utils/totalAmount'
+import { IPayment } from '../../types/interfaces/payment.interface'
+import { IOffer } from '../../types/interfaces/offer.interface'
+import { IProfileOffer } from '../../types/interfaces/profile-offer.interface'
 
-export const ProfileOffer = ({
-  _id,
-  offerType,
-  fiat,
-  crypto,
-  unitPrice,
-  quantity,
-  orderLimit,
-  payMethods,
-  room,
-}: IOffer) => {
-  const navigate = useNavigate();
+interface Props {
+  offer: IProfileOffer
+  refetch: () => Promise<any>
+}
 
+export const ProfileOffer: React.FC<Props> = ({ offer, refetch }) => {
+  const {
+    _id,
+    maker,
+    offerType,
+    unitPrice,
+    amount,
+    quantity,
+    minLimit,
+    maxLimit,
+    payMethods,
+    crypto,
+    fiat,
+    totalAmount
+  } = offer
+
+  const handleDelete = useMutation(() => OfferService.deleteByID(_id))
+
+  const [open, setOpen] = useState(false)
+
+  useEffect(() => {
+    refetch!()
+    setOpen(false)
+  }, [handleDelete.isSuccess])
+  // grid-cols-offer
   return (
-    <div
-      className={
-        "bg-white px-[20px] py-[33px] rounded-[20px] grid grid-cols-profileOffer items-center relative shadow-customDark"
-      }
-    >
+    <div className="flex justify-between items-center bg-white shadow-customDark rounded-[20px] p-5">
       <div>
-        <p className={"font-bold"}>#{parseInt(_id.slice(-3), 16)}</p>
+        <span className="text-purple">{_id}</span>
       </div>
 
       <div>
-        <p
-          className={`text-lg font-bold ${
-            offerType === "buy"
-              ? "text-green"
-              : offerType === "sell"
-              ? "text-red-500"
-              : ""
-          }`}
-        >
-          {offerType === "buy"
-            ? "Buy crypto"
-            : offerType === "sell"
-            ? "Sell crypto"
-            : ""}
-        </p>
+        <span
+          className={`font-bold ${
+            offerType === 'buy' ? 'text-lightGreen' : 'text-red-400'
+          }`}>{`${offerType?.[0].toUpperCase()}${offerType?.slice(1)}`}</span>
       </div>
 
       <div>
-        <span className={"font-bold"}>
+        <span>
+          {unitPrice} {fiat?.ticker}
+        </span>
+      </div>
+
+      <div>
+        <span className="font-bold">
           {crypto.symbol}/{fiat.ticker}
         </span>
       </div>
 
       <div>
-        <p className={"font-bold"}>
-          {unitPrice} {fiat.ticker}
-        </p>
-      </div>
-
-      <div>
-        <p className={"text-sm"}>
-          Available: {quantity} {crypto.symbol}
-        </p>
-        <p className={"text-sm"}>
-          Limit: {orderLimit[0]}-{orderLimit[1]} {fiat.ticker}
-        </p>
-      </div>
-
-      <div>
-        {payMethods.map((e) => (
-          <p className={"font-bold text-sm"} key={e._id}>
-            {e.bank.name}
-          </p>
+        {payMethods.map((payment: IPayment) => (
+          <div>
+            <span>{payment.bank.name}</span>
+          </div>
         ))}
       </div>
 
-      <div>
-        {room!.stage === "no taker" ? (
-          <ButtonOffer
-            onAction={() => OfferService.deleteByID(_id)}
-            image={<Cross />}
-            bgColor={"bg-black"}
-          />
-        ) : (
-          <ButtonOffer
-            onAction={() => navigate(`/transaction/${_id}`)}
-            image={
-              <div className={"-rotate-90"}>
-                <Arrow />
-              </div>
-            }
-            bgColor={"bg-purple"}
-          />
-        )}
+      <div className="flex flex-col">
+        <span className="font-bold">
+          {amount}/{totalAmount} {crypto.symbol}
+        </span>
+        <span className="font-bold">{(amount / totalAmount) * 100}%</span>
       </div>
 
-      <Label color={"purple"} name={room!.stage} />
+      <div>
+        <Button onClick={() => setOpen(true)} color="bg-black" icon={<Cross />} />
+      </div>
+
+      {open ? (
+        <Modal close={() => setOpen(false)} header={'Delete this Offer?'}>
+          <button
+            onClick={() => handleDelete.mutate()}
+            disabled={handleDelete.isLoading}
+            className="text-white p-2 w-full rounded-lg bg-red-500 font-bold hover:opacity-70">
+            {handleDelete.isLoading ? 'Deleting Offer...' : 'Delete'}
+          </button>
+        </Modal>
+      ) : null}
     </div>
-  );
-};
+  )
+}

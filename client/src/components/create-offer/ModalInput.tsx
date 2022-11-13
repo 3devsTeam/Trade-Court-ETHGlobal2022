@@ -1,51 +1,35 @@
-import { stat } from "fs";
-import React from "react";
-import { useTypedSelector } from "../../hooks/useTypedSelector";
+import { stat } from 'fs'
+import React from 'react'
+import { useTypedSelector } from '../../hooks/useTypedSelector'
+import { Label } from '../ui/Label'
 // import defaultImg from "../../assets/defaultImg.svg";
 
 interface IModalInput {
-  fullName: string;
-  image: string;
-  onOpen: any;
-  label: string;
-  symbol: string;
+  fullName: string
+  image: string
+  onOpen: any
+  label: string
+  symbol: string
 }
 
-export const ModalInput = ({
-  onOpen,
-  label,
-  symbol,
-  image,
-  fullName,
-}: IModalInput) => {
-  // const onOpenHandler: React.MouseEventHandler = (e) => {
-  //   console.log("open tokens modal");
-  //   e.preventDefault();
-  //   onOpen();
-  // };
-
-  const { crypto } = useTypedSelector((state) => state.offerReducer);
-
+export const ModalInput = ({ onOpen, label, symbol, image, fullName }: IModalInput) => {
   return (
     <div>
-      <label htmlFor={label}>
-        <span className={"text-lg font-bold mb-1 ml-[10px]"}>{label}</span>
-      </label>
+      <Label label={label} />
       <button
-        type='button'
+        type="button"
         onClick={() => onOpen()}
-        className='flex items-center h-[60px] px-[10px] w-full elementBorder'
+        className="flex items-center space-x-2 w-full p-2 inputBorder rounded-[15px]"
       >
-        <div className={"flex items-center gap-1"}>
-          <img
-            className={"w-8 h-8 rounded-[50%] shadow-customDark object-cover"}
-            src={image}
-            alt={""}
-          />
-          <span className={"font-bold"}>{symbol}</span>
-          <span className={"text-gray-300 font-bold"}>{fullName}</span>
-        </div>
+        <img
+          className={'w-8 h-8 rounded-[50%] shadow-customDark object-cover'}
+          src={image}
+          alt={''}
+        />
+        <span className={'font-bold'}>
+          {symbol} <span className={'text-gray-300 font-bold'}>{fullName}</span>
+        </span>
       </button>
     </div>
-  );
-};
+  )
+}

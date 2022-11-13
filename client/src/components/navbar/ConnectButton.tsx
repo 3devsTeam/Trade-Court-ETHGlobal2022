@@ -1,24 +1,26 @@
-import React, { SetStateAction, useRef, useState } from "react";
-import { useAccount, useEnsName, useNetwork, useSwitchNetwork } from "wagmi";
-import { connectors } from "../../wallets/connectors";
-import { truncateAddress } from "../../utils/truncateAddress";
-import { Modal } from "../ui/Modal";
-import { WalletButton } from "./WalletButton";
-import { useBalance } from "wagmi";
-import { Menu } from "./Menu";
-import { NavLink } from "./NavLink";
-import useOnClickOutside from "use-onclickoutside";
-import { walletsImages } from "../../wallets/walletsImages";
+import React, { SetStateAction, useEffect, useRef, useState } from 'react'
+import { useAccount, useEnsName, useNetwork, useSignMessage, useSwitchNetwork } from 'wagmi'
+import { connectors } from '../../wallets/connectors'
+import { truncateAddress } from '../../utils/truncateAddress'
+import { Modal } from '../ui/Modal'
+import { WalletButton } from './WalletButton'
+import { useBalance } from 'wagmi'
+import { Menu } from './Menu'
+import { NavLink } from './NavLink'
+import useOnClickOutside from 'use-onclickoutside'
+import { walletsImages } from '../../wallets/images'
+import { useMutation } from '@tanstack/react-query'
+import { UserService } from '../../api/user.services'
 
 interface Props {
-  isConnected: boolean;
-  address: string | undefined;
-  balance: any;
-  ensName: any;
-  setOpenConnectModal: React.Dispatch<SetStateAction<boolean>>;
-  setOpenMenu: React.Dispatch<SetStateAction<boolean>>;
-  openConnectModal: boolean;
-  openMenu: boolean;
+  isConnected: boolean
+  address: string | undefined
+  balance: any
+  ensName: any
+  setOpenConnectModal: React.Dispatch<SetStateAction<boolean>>
+  setOpenMenu: React.Dispatch<SetStateAction<boolean>>
+  openConnectModal: boolean
+  openMenu: boolean
 }
 
 export const ConnectButton = ({
@@ -29,23 +31,34 @@ export const ConnectButton = ({
   setOpenConnectModal,
   setOpenMenu,
   openMenu,
-  openConnectModal,
+  openConnectModal
 }: Props) => {
-  const [activeWalletImg, setActiveWalletImg] = useState("");
+  const {
+    data: signature,
+    status,
+    isLoading,
+    signMessageAsync
+  } = useSignMessage({
+    message: 'login',
+    onSuccess: (signature) => {
+      const loginBody = {
+        address,
+        messageRaw: 'login',
+        signature
+      }
+      UserService.login(loginBody)
+    }
+  })
 
   return isConnected ? (
     <button
-      className='rounded-[15px] py-[9px] px-[10px] bg-white shadow-customDark'
-      onMouseEnter={() => setOpenMenu(true)}
-    >
-      <div className='font-bold flex items-center space-x-2 text-black'>
-        {/* <div>
-          <img src={activeWalletImg} className='w-5 h-5' />
-        </div> */}
+      className="rounded-[15px] bg-white shadow-customDark h-full px-[10px]"
+      onMouseEnter={() => setOpenMenu(true)}>
+      <div className="font-bold flex items-center space-x-2 text-black">
         <span>
           {balance?.formatted.slice(0, 8)} {balance?.symbol}
         </span>
-        <div className='font-medium py-[4px] px-[10px] bg-purple rounded-[10px] text-white'>
+        <div className="font-medium py-[4px] px-[10px] bg-purple rounded-[10px] text-white">
           <span>{!ensName ? truncateAddress(address!) : ensName}</span>
         </div>
       </div>
@@ -53,35 +66,27 @@ export const ConnectButton = ({
   ) : (
     <>
       <button
-        className='rounded-[15px] py-1  px-2 relative bg-purple  text-white shadow-customDark'
-        onClick={() => setOpenConnectModal(!openConnectModal)}
-      >
-        <div className='py-1 px-5'>
-          <span className='font-bold'>Connect</span>
-        </div>
+        className="rounded-[15px] p-2 relative bg-purple  text-white shadow-customDark"
+        onClick={() => setOpenConnectModal(!openConnectModal)}>
+        <span className="font-bold">Connect</span>
       </button>
 
-      <Modal
-        isOpen={openConnectModal}
-        close={() => setOpenConnectModal(false)}
-        header={"Select wallet"}
-        width={"500px"}
-      >
-        <div className='grid grid-cols-3 gap-5 '>
-          {connectors.map((wallet, i) => (
-            <WalletButton
-              setActiveWalletImg={setActiveWalletImg}
-              img={walletsImages[i]}
-              onClose={setOpenConnectModal}
-              wallet={wallet}
-              i={i}
-              key={wallet.id}
-            >
-              <span>{wallet.name}</span>
-            </WalletButton>
-          ))}
-        </div>
-      </Modal>
+      {openConnectModal ? (
+        <Modal close={() => setOpenConnectModal(false)} header={'Select Wallet'}>
+          <div className="grid grid-flow-row-dense gap-5 ">
+            {connectors.map((wallet, i) => (
+              <WalletButton
+                sign={signMessageAsync}
+                img={walletsImages[i]}
+                close={setOpenConnectModal}
+                wallet={wallet}
+                i={i}
+                key={wallet.id}
+              />
+            ))}
+          </div>
+        </Modal>
+      ) : null}
     </>
-  );
-};
+  )
+}

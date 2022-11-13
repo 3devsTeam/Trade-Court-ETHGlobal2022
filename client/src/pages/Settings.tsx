@@ -1,5 +1,5 @@
-import React from "react";
+import React from 'react'
 
-export const Settings = () => {
-  return <div>Settings</div>;
-};
+export const SettingsPage = () => {
+  return <div>Settings</div>
+}

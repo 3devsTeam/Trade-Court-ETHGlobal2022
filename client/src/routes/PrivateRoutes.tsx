@@ -1,14 +1,14 @@
-import React from "react";
-import { Outlet, Navigate } from "react-router-dom";
+import React from 'react'
+import { Outlet, Navigate } from 'react-router-dom'
 
-import Cookies from "js-cookie";
+import Cookies from 'js-cookie'
 
 export const PrivateRoutes = () => {
-  const isLogged = Boolean(localStorage.getItem("isLogged"));
+  const isLogged = Boolean(localStorage.getItem('isLogged'))
 
   //console.log(typeof isLogged);
 
-  const auth = { token: isLogged };
+  const auth = { token: isLogged }
 
-  return auth.token ? <Outlet /> : <Navigate to={"/"} />;
-};
+  return auth.token ? <Outlet /> : <Navigate to={'/'} />
+}

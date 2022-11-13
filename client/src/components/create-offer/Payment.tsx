@@ -1,43 +1,27 @@
-import React, { useState } from "react";
-import { sliceCardNumber } from "../../utils/sliceCardNumber";
-import { useActions } from "../../hooks/useActions";
-import { useSelector } from "react-redux";
-import { CloseButton } from "../ui/CloseButton";
-import { useTypedSelector } from "../../hooks/useTypedSelector";
-import { IPayment } from "../../models/models";
+import React, { Dispatch, SetStateAction, useState } from 'react'
+import { CloseButton } from '../ui/CloseButton'
+import { IPayment } from '../../types/interfaces/payment.interface'
 
-interface IPaymentButton {
-  payment: IPayment;
-  setActive: any;
-  active: string | undefined;
-  deletePayment: any;
+interface Props {
+  payment: IPayment
+  setActive: Dispatch<SetStateAction<IPayment>>
+  deletePayment: (id: string) => void
 }
 
-export const Payment = ({
-  payment,
-  setActive,
-  active,
-  deletePayment,
-}: IPaymentButton) => {
-  const { paymentMethod, cardNumber, id } = payment;
-
-  const activePayment = active === id ? "border-2 border-purple" : "";
+export const Payment = ({ payment, setActive, deletePayment }: Props) => {
+  const { bank, cardNumber, id } = payment
   return (
-    <div
-      className={`${activePayment} h-[60px] elementBorder p-2 flex gap-2 cursor-pointer`}
-    >
-      <div
-        onClick={() => setActive(payment)}
-        className={` flex gap-1 justify-between items-center`}
-      >
-        <img
-          className={"w-8 h-8 rounded-full border border-purple object-cover"}
-          src={paymentMethod.logoUrl}
-          alt={""}
-        />
-        <span className={"font-bold"}>{sliceCardNumber(cardNumber)}</span>
+    <button
+      type="button"
+      onClick={() => setActive(payment)}
+      className={`flex justify-between items-center p-2 rounded-[15px] inputBorder w-full`}>
+      <div className="flex items-center space-x-2">
+        <img className={'w-8 h-8 rounded-full object-cover'} src={bank.logoUrl} alt={''} />
+        <span>{bank.name}</span>
+        <span className={'font-bold'}>{cardNumber}</span>
       </div>
+
       <CloseButton onAction={() => deletePayment(id)} />
-    </div>
-  );
-};
+    </button>
+  )
+}

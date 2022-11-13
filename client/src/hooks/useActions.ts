@@ -1,14 +1,14 @@
-import { offerActions } from "../context/offer.slice";
-import { useDispatch } from "react-redux";
-import { bindActionCreators } from "@reduxjs/toolkit";
-import { formActions } from "../context/form.slice";
-const actions = {
-  ...offerActions,
-  ...formActions,
-};
+import { createOfferActions } from '../store/create-offer.slice'
+import { useDispatch } from 'react-redux'
+import { bindActionCreators } from '@reduxjs/toolkit'
+import { transactionActions } from '../store/transaction.slice'
+const allActions = {
+  ...createOfferActions,
+  ...transactionActions
+}
 
 export const useActions = () => {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch()
 
-  return bindActionCreators(actions, dispatch);
-};
+  return bindActionCreators(allActions, dispatch)
+}

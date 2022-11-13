@@ -1,4 +1,8 @@
 config.env
 node_modules
 erc20TokenImg
+uploads
 .DS_Store
+cache
+artifacts
+

@@ -1,313 +1,106 @@
-import { useQuery } from "@tanstack/react-query";
-import React, { useState, useEffect } from "react";
-import { useNavigate, useParams } from "react-router-dom";
-import { OfferService } from "../api/offer.services";
-import { Form } from "../components/create-offer/Form";
-import { Chat } from "../components/transaction/Chat";
-import transfer from "../assets/images/transfer.svg";
-import lock from "../assets/images/lock.svg";
-import success from "../assets/images/success.svg";
-import { ProgressBar } from "../components/transaction/ProgressBar";
-import Skeleton from "react-loading-skeleton";
-import "react-loading-skeleton/dist/skeleton.css";
-import { Button } from "../components/ui/Button";
-import { Info } from "../components/transaction/Info";
-import { io } from "socket.io-client";
-import { Main } from "../components/transaction/Main";
-import { toast } from "react-toastify";
-import axios from "axios";
-import { API_URl } from "../api/axios";
-import { useAccount, useEnsAvatar, useEnsName } from "wagmi";
-import { useEthContract } from "../hooks/useEthContract";
-import { SkeletonWrapper } from "../components/ui/SkeletonWrapper";
-import { Wrapper } from "../components/create-offer/Wrapper";
+import { useParams } from 'react-router-dom'
+import { useAccount, useQuery } from 'wagmi'
+import { OfferService } from '../api/offer.services'
+import { ProgressBar } from '../components/create-offer/ProgressBar'
+import { Chat } from '../components/transaction/Chat'
+import { ConfirmsMaker } from '../components/transaction/ConfirmsMaker'
+import { ConfirmsTaker } from '../components/transaction/ConfirmsTaker'
+import { Time } from '../components/transaction/Time'
+import { TransactionInfo } from '../components/transaction/TransactionInfo'
+import { TransactionMaker } from '../components/transaction/TransactionMaker'
+import { TransactionTaker } from '../components/transaction/TransactionTaker'
+import { useActions } from '../hooks/useActions'
+import { useTypedSelector } from '../hooks/useTypedSelector'
+import { TRANSACTION_ROLES } from '../types/interfaces/roles.enum'
+import Confetti from 'react-confetti'
 
-const Transaction = () => {
-  const { address } = useAccount();
+import { io } from 'socket.io-client'
+import { useEffect } from 'react'
 
-  // const {
-  //   data: ensName,
-  //   isLoading: ensNameLoading,
-  //   isSuccess: ensNameSuccess,
-  // } = useEnsName({
-  //   address,
-  // });
+const TransactionPage = () => {
+  const socket = io('http://127.0.0.1:3030')
 
-  // const {
-  //   data: ensAvatar,
-  //   isLoading: ensAvatarLoading,
-  //   isSuccess: ensAvatarSuccess,
-  // } = useEnsAvatar({
-  //   addressOrName: address,
-  // });
+  const { id } = useParams()
 
-  const { id } = useParams();
+  const { address } = useAccount()
 
-  const navigate = useNavigate();
+  const { setSelectedPayment, setRole, setStep } = useActions()
+  const { role } = useTypedSelector((state) => state.transactionReducer)
 
-  const txNotify = (message: string, type: string) => {
-    if (type === "error") {
-      toast.error(message, {
-        position: toast.POSITION.BOTTOM_RIGHT,
-      });
-    }
-    if (type === "success") {
-      toast.success(message, {
-        position: toast.POSITION.BOTTOM_RIGHT,
-      });
-    }
-  };
-
-  const [name, setName] = useState("");
-  const [role, setRole] = useState("");
-
-  const {
-    data: offer,
-    isLoading,
-    isSuccess,
-  } = useQuery(["get offer by id"], () => OfferService.getByID(id!), {
-    select: (data) => data.data.data.offer,
-    onSuccess: (data) => {
-      setRole(data.role);
-      setPayMethod(data.payMethods[0]);
-
-      joinRoom({
-        id,
-        role: data.role,
-        //addressOrName: ensName ? ensName : address,
-        //avatar: ensAvatar,
-      });
-      //console.log(data.room.stage);
-
-      if (data.room.stage === "waiting taker") {
-        console.log("switch taker send");
-        setStep(1);
+  const { data, isLoading, isSuccess, isError } = useQuery(
+    ['get offer by id'],
+    () => OfferService.getByID(id!),
+    {
+      select: ({ data }) => data.data.room,
+      onSuccess: (data) => {
+        setRole(data.role)
+        joinRoom({ id, role })
+        // setStep(
+        //   data.stage === 'waiting taker'
+        //     ? 1
+        //     : data.stage === 'taker send'
+        //     ? 2
+        //     : data.stage === 'maker recieved'
+        //     ? 3
+        //     : null
+        // )
+        setSelectedPayment(data.offer.payMethods[0])
       }
-
-      if (data.room.stage === "taker send") {
-        console.log("switch taker send");
-        setStep(2);
-      }
-
-      if (data.room.stage === "maker recieved") {
-        console.log("switch maker recieved");
-        setStep(3);
-      }
-    },
-  });
-
-  useEffect(() => {
-    if (role === "taker") {
-      setName(offer?.maker.address);
-    } else {
-      setName(offer?.room.taker.address);
     }
-  }, [role]);
-
-  const roomId = offer?.room.roomId;
-  const amount = offer?.room.amount;
-  const ticker = offer?.fiat.ticker;
-
-  const {
-    data: takerApproveData,
-    isError: takerApproveError,
-    isLoading: loadingTakerApprove,
-    isSuccess: successTakerApprove,
-    writeAsync: takerApproveContract,
-    hash: takerApproveHash,
-  } = useEthContract([roomId, 0], "dealDone");
-
-  const {
-    data: makerApproveData,
-    isError: makerApproveError,
-    isLoading: loadingMakerApprove,
-    isSuccess: successMakerApprove,
-    writeAsync: makerApproveContract,
-    hash: makerApproveHash,
-  } = useEthContract([roomId, 0], "approveFromSender");
-
-  const {
-    data: claimData,
-    isError: claimError,
-    isLoading: loadingClaim,
-    isSuccess: successClaim,
-    writeAsync: claimContract,
-    hash: claimHash,
-  } = useEthContract([roomId, 0], "finalWithdraw");
-
-  const socket = io("http://127.0.0.1:3030");
-
-  //socket.emit("msg", "bruh");
+  )
 
   const joinRoom = (data: object) => {
-    socket.emit("joinOffer", data);
-  };
-  // const [profileImg, setProfileImg] = useState("");
+    socket.emit('joinOffer', data)
+  }
 
-  // socket.on("setChat", (data) => {
-  //   console.log("set chat from client", data);
-  //   setName(data.addressOrName);
-  //   setProfileImg(data.avatar);
-  // });
+  socket.on('approvalStage', () => {
+    setStep(2)
+  })
 
-  const [step, setStep] = useState(1);
-  const [payMethod, setPayMethod] = useState({});
-  const [message, setMessage] = useState("");
+  socket.on('successStage', () => {
+    setStep(3)
+  })
 
-  const sendMessage = (message: string) => {
-    console.log("send from client", message);
-    socket.emit("sendMessage", { message, room: id });
-    setMessage("");
-  };
+  const takerTransfered = async () => {
+    socket.emit('takerConfirmed', id)
+  }
 
-  const [chatMessages, setChatMessages] = useState([]);
+  const makerConfirmed = async () => {
+    socket.emit('makerConfirmed', id)
+  }
 
-  useEffect(() => {
-    socket.on("messageRecieved", (data) => {
-      console.log(data.message);
-      setChatMessages(data);
-      //setChatMessages([...chatMessages, data.message]);
-    });
-  }, [socket]);
-
-  const takerConfirmed = async (id: string) => {
-    try {
-      takerApproveContract?.().then(() => {
-        axios
-          .get(`${API_URl}/api/offer/${id}/send`, { withCredentials: true })
-          .then((res) => {
-            if (res.data.message === "success") {
-              console.log("taker confirmed");
-              socket.emit("takerConfirmed", id);
-            }
-          });
-      });
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
-  socket.on("approvalStage", () => {
-    setStep(2);
-  });
-
-  const makerConfirmed = (id: string) => {
-    try {
-      makerApproveContract?.().then(() => {
-        axios
-          .get(`${API_URl}/api/offer/${id}/recieve`, { withCredentials: true })
-          .then((res) => {
-            if (res.data.message === "success") {
-              console.log("maker confirmed");
-              socket.emit("makerConfirmed", id);
-            }
-          });
-      });
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
-  const claimTokens = async (id: string) => {
-    try {
-      claimContract?.().then(() => {
-        OfferService.claimByID(id!).then(() => navigate("/"));
-      });
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
-  socket.on("successStage", () => {
-    setStep(3);
-  });
-
-  return (
+  return isSuccess ? (
     <div>
-      {/* it just to check role and step */}
-      {/* <div className={"absolute bottom-0 right-0 z-50"}>
-        <h1>user role: {role}</h1>
-        <h1>active step: {step}</h1>
-        <h1>current stage: {offer?.room.stage}</h1>
-      </div> */}
+      <TransactionInfo offer={data?.offer} />
 
-      <SkeletonWrapper isLoaded={!isLoading} height={60}>
-        <Info {...offer} />
-      </SkeletonWrapper>
-
-      <div className={"grid grid-cols-form gap-5 mt-[20px]"}>
-        <SkeletonWrapper isLoaded={!isLoading} height={600}>
-          <Wrapper>
-            <ProgressBar
-              activeStep={step}
-              steps={["Transfer", "Approval", "Success"]}
-              images={[transfer, lock, success]}
-            />
-            <Main
-              ticker={ticker}
-              amount={amount}
-              step={step}
-              role={role}
-              id={id!}
-              offer={offer}
-              setPayMethod={setPayMethod}
-              activePayMethod={payMethod}
-            />
-          </Wrapper>
-        </SkeletonWrapper>
-
-        <SkeletonWrapper isLoaded={!isLoading} height={600}>
-          <Chat
-            chatMessages={chatMessages}
-            sendMessage={sendMessage}
-            message={message}
-            setMessage={setMessage}
-            addressOrName={name ? name : "ya loh"}
-            avatar={""}
-          />
-        </SkeletonWrapper>
-
-        <SkeletonWrapper isLoaded={!isLoading} height={100}>
-          <div className={"flex items-center justify-between w-full"}>
-            <Wrapper>
-              <div>
-                {role === "taker" ? (
-                  step === 1 ? (
-                    <Button
-                      onAction={() => takerConfirmed(id!)}
-                      name={"Done, next!"}
-                    />
-                  ) : step === 2 ? (
-                    <span className={"text-lg font-bold"}>
-                      Waiting for confirmation...
-                    </span>
-                  ) : (
-                    <Button onAction={() => claimTokens(id!)} name={"Claim"} />
-                  )
-                ) : step === 1 ? (
-                  <Button
-                    disabled={true}
-                    onAction={() => {}}
-                    name={"Funds recieved"}
-                  />
-                ) : step === 2 ? (
-                  <Button
-                    onAction={() => makerConfirmed(id!)}
-                    name={"Funds recieved"}
-                  />
-                ) : step === 3 ? (
-                  <Button
-                    onAction={() => navigate("/")}
-                    name={"Go to main page"}
-                  />
-                ) : null}
-              </div>
-            </Wrapper>
+      <div className="grid grid-cols-form gap-5 mt-5">
+        <div className="">
+          <div className="wrapper p-5">
+            {role === TRANSACTION_ROLES.taker ? <TransactionTaker offer={data.offer} /> : null}
+            {role === TRANSACTION_ROLES.maker ? <TransactionMaker offer={data.offer} /> : null}
+            <Time id={data._id} time={data.createdAt} />
           </div>
-        </SkeletonWrapper>
+
+          <div className="wrapper p-5 mt-5">
+            {role === TRANSACTION_ROLES.taker ? (
+              <ConfirmsTaker takerConfirmed={takerTransfered} />
+            ) : null}
+            {role === TRANSACTION_ROLES.maker ? (
+              <ConfirmsMaker makerConfirmed={makerConfirmed} />
+            ) : null}
+          </div>
+        </div>
+        <Chat
+          sendMessage={() => {}}
+          setMessage={() => {}}
+          message={''}
+          addressOrName={address!}
+          avatar={''}
+          chatMessages={[]}
+        />
       </div>
     </div>
-  );
-};
+  ) : null
+}
 
-export default Transaction;
+export default TransactionPage

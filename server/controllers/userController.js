@@ -1,4 +1,5 @@
 const Offer = require('../models/offerModel');
+const Room = require('../models/roomModel');
 const User = require('../models/userModel');
 const catchAsync = require('../utils/catchAsync');
 
@@ -10,16 +11,6 @@ exports.getAllUsers = catchAsync(async (req, res, next) => {
     data: {
       allUsers: allUsers,
     },
-  });
-});
-
-exports.getMyOffers = catchAsync(async (req, res, next) => {
-  const user = await Offer.find({
-    $or: [{ maker: req.user._id }, { 'room.taker': req.user._id }],
-  }).populate('crypto fiat payMethods.bank');
-  res.status(201).json({
-    message: 'success',
-    user,
   });
 });
 

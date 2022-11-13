@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/Trade-Court-ETHGlobal2022.iml" filepath="$PROJECT_DIR$/.idea/Trade-Court-ETHGlobal2022.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/TradeCourt.iml" filepath="$PROJECT_DIR$/.idea/TradeCourt.iml" />
     </modules>
   </component>
 </project>

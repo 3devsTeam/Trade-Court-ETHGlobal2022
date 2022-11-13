@@ -6,7 +6,7 @@ const catchAsync = require('../utils/catchAsync');
 exports.getAllOffers = catchAsync(async (req, res, next) => {
   const page = +req.query.page || 1;
   const limit = +req.query.limit || 10;
-  const amountReq = +req.query.search?.amount || 0;
+  const amountReq = +req.query.search?.amount;
   const fiatReq = req.query.search?.fiat || '63209e46243d0ba1ebc616f6';
   const cryptoReq = req.query.search?.crypto || '6303a23c229dc6a74b1b1191';
   const offerTypeReq = req.query.search?.offerType || 'buy';
@@ -65,51 +65,13 @@ exports.getAllOffers = catchAsync(async (req, res, next) => {
   });
 });
 
-exports.getOffer = catchAsync(async (req, res, next) => {
-  let room = await Room.findById(req.params.id).populate([
-    {
-      path: 'offer',
-      populate: [
-        {
-          path: 'maker',
-        },
-        {
-          path: 'fiat',
-          select: '-banks -regions',
-        },
-        {
-          path: 'crypto',
-        },
-        {
-          path: 'payMethods.bank',
-        },
-        {
-          path: 'payMethods.region',
-        },
-      ],
-    },
-    { path: 'taker' },
-  ]);
-  if (!room) {
-    return next(new AppError('No such offer', 404));
-  }
-  let role = 'restricted';
-  if (room.offer.maker._id.toString() != req.user._id.toString()) {
-    if (room.taker._id.toString() != req.user._id.toString()) {
-      return next(new AppError('You dont have access', 403));
-    } else {
-      role = 'taker';
-    }
-  } else {
-    role = 'maker';
-  }
-  room = JSON.parse(JSON.stringify(room));
-  room.role = role;
+exports.getMyOffers = catchAsync(async (req, res, next) => {
+  const offers = await Offer.find({
+    maker: req.user._id,
+  }).populate('crypto fiat payMethods.bank');
   res.status(201).json({
     message: 'success',
-    data: {
-      room,
-    },
+    offers,
   });
 });
 
@@ -120,7 +82,9 @@ exports.createOffer = catchAsync(async (req, res, next) => {
     payMethods: req.body.payMethods,
     fiat: req.body.fiat,
     unitPrice: req.body.unitPrice,
+    totalAmount: req.body.amount,
     amount: req.body.amount,
+    totalQuantity: req.body.quantity,
     quantity: req.body.quantity,
     minLimit: req.body.minLimit,
     maxLimit: req.body.maxLimit,
@@ -151,7 +115,6 @@ exports.deleteOffer = catchAsync(async (req, res, next) => {
   const rooms = await Room.find({
     offer: req.params.id,
   });
-  console.log(rooms);
   if (rooms.length != 0) {
     return next(new AppError('You cant delete offer with active rooms', 403));
   }

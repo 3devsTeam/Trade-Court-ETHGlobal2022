@@ -1,81 +1,101 @@
-import { useQuery } from "@tanstack/react-query";
-import React, { useEffect, useState } from "react";
-import { Badge } from "../components/profile/Badge";
-import { Schedule } from "../components/profile/Schedule";
-import { OfferService } from "../api/offer.services";
-import { IOffer } from "../models/models";
-import { off } from "process";
-import { ProfileOffer } from "../components/profile/ProfileOffer";
-import { useAccount, useEnsName, useEnsAvatar } from "wagmi";
-import { Header } from "../components/home/Header";
+import { useQuery } from '@tanstack/react-query'
+import React, { useEffect, useState } from 'react'
+import { ProfileOffer } from '../components/profile/ProfileOffer'
+import { useAccount, useEnsName, useEnsAvatar } from 'wagmi'
+import { Legend } from '../components/home/Legend'
+import { UserService } from '../api/user.services'
+import { Divider } from '../components/profile/Divider'
+import { SkeletonWrapper } from '../components/ui/SkeletonWrapper'
+import { IProfileOffer } from '../types/interfaces/profile-offer.interface'
+import { ActiveOffer } from '../components/profile/ActiveOffer'
+import { IActiveOffer } from '../types/interfaces/active-offer.interface'
+import { NoItems } from '../components/errors/no-items'
 
-export const Profile = () => {
-  const { address } = useAccount();
-
-  const {
-    data: ensName,
-    isLoading: ensNameLoading,
-    isSuccess: ensNameSuccess,
-  } = useEnsName({
-    address,
-  });
-
-  const {
-    data: ensAvatar,
-    isLoading: ensAvatarLoading,
-    isSuccess: ensAvatarSuccess,
-  } = useEnsAvatar({
-    addressOrName: address,
-  });
-
-  if (ensAvatarSuccess && ensNameSuccess) {
-    console.log(ensName, ensAvatar);
-  }
-
-  const { data, isSuccess, isLoading, isError } = useQuery(
-    ["get user offers"],
-    () => OfferService.getUserOffers(),
+const ProfilePage = () => {
+  const { data, isSuccess, isLoading, isError, refetch, isFetching } = useQuery(
+    ['get user offers'],
+    () => UserService.getOffers(),
     {
-      select: (data) => data.data.user,
-      // refetchInterval: 5000,
+      select: (data) => data.data.offers
     }
-  );
+  )
 
-  const sections = [
-    "ID",
-    "Type",
-    "Pair",
-    "Unit Price",
-    "Avalaible/Limit",
-    "Pay Methods",
-  ];
+  const {
+    data: rooms,
+    isLoading: isLoadingRooms,
+    isError: isErrorRooms,
+    isSuccess: isSuccessRooms
+  } = useQuery(['get user rooms'], () => UserService.getUserRooms(), {
+    select: ({ data }) => data.rooms
+  })
+
+  const fields = [
+    {
+      name: 'Ad number',
+      className: 'flex-[1.5_0]'
+    },
+    {
+      name: 'Type',
+      className: 'flex-[0.5_0]'
+    },
+    {
+      name: 'Price',
+      className: 'flex-1'
+    },
+    {
+      name: 'Pair',
+      className: 'flex-1'
+    },
+    {
+      name: 'Pay Methods',
+      className: 'flex-1'
+    },
+    {
+      name: 'Info',
+      className: 'flex-1'
+    }
+  ]
 
   return (
     <div>
-      <div className={"grid grid-cols-profile gap-5"}>
-        <Badge avatar={ensAvatar} name={ensName} />
-        <Schedule />
-      </div>
+      <Legend fields={fields} />
 
-      <div>
-        <div className={"grid grid-cols-profileOffer mt-[20px] px-6"}>
-          <Header headers={sections} />
-        </div>
+      <section className="relative">
+        {rooms?.length ? (
+          <>
+            <Divider name="Active offers" margin={'my-5'} />
 
-        <section className={"flex flex-col gap-5 mt-[20px]"}>
-          {isLoading ? (
-            <p>loading</p>
-          ) : isError ? (
-            <p>error</p>
-          ) : data?.length === 0 ? (
-            <p>no offers</p>
-          ) : isSuccess ? (
-            data?.map((offer: IOffer) => {
-              return <ProfileOffer key={offer._id} {...offer} />;
-            })
-          ) : null}
-        </section>
-      </div>
+            {isErrorRooms ? (
+              <p>error</p>
+            ) : rooms?.length === 0 ? (
+              <p>no offers</p>
+            ) : isSuccessRooms ? (
+              <div className={'flex flex-col gap-5'}>
+                {rooms?.map((room: IActiveOffer) => {
+                  return <ActiveOffer activeOffer={room} key={room._id} />
+                })}
+              </div>
+            ) : null}
+          </>
+        ) : null}
+
+        {/* <SkeletonWrapper isLoading={isLoading} height={100} count={10} margin={'20px'}> */}
+        <Divider name="My offers" margin={'my-5'} />
+
+        {isError ? (
+          <p>error</p>
+        ) : data?.length === 0 ? (
+          <NoItems />
+        ) : isSuccess ? (
+          <div className={'flex flex-col gap-5'}>
+            {data?.map((offer: IProfileOffer) => {
+              return <ProfileOffer offer={offer} refetch={refetch} key={offer._id} />
+            })}
+          </div>
+        ) : null}
+      </section>
     </div>
-  );
-};
+  )
+}
+
+export default ProfilePage
