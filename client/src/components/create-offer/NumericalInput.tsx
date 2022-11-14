@@ -57,7 +57,8 @@ export const NumericalInput: React.FC<Props> = ({
               <button
                 type="button"
                 onClick={() => onUserInput(maxValue)}
-                className={'font-bold text-purple'}>
+                className={'font-bold text-purple'}
+              >
                 Max
               </button>
               <span className={'text-gray-300'}>|</span>

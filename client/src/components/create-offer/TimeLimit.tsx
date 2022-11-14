@@ -23,7 +23,8 @@ export const TimeLimit = ({ times, label, onAction }: ITimeLimit) => {
               className={`${
                 timeLimit === t ? 'text-purple' : 'text-gray'
               } font-bold cursor-pointer`}
-              key={i}>{`${t} min`}</button>
+              key={i}
+            >{`${t} min`}</button>
           )
         })}
       </div>

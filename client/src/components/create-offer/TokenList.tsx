@@ -26,14 +26,16 @@ export const TokenList = ({ tokens, closeModal }: ITokenList) => {
         overflow: 'auto',
         marginTop: '20px'
       }}
-      ref={parentRef}>
+      ref={parentRef}
+    >
       {tokens.length ? (
         <div
           style={{
             height: `${virtualizer.getTotalSize()}px`,
             width: '100%',
             position: 'relative'
-          }}>
+          }}
+        >
           {virtualizer.getVirtualItems().map((virtualItem) => {
             const token = tokens[virtualItem.index]
 

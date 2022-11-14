@@ -51,9 +51,8 @@ export const ProfileOffer: React.FC<Props> = ({ offer, refetch }) => {
 
       <div>
         <span
-          className={`font-bold ${
-            offerType === 'buy' ? 'text-lightGreen' : 'text-red-400'
-          }`}>{`${offerType?.[0].toUpperCase()}${offerType?.slice(1)}`}</span>
+          className={`font-bold ${offerType === 'buy' ? 'text-lightGreen' : 'text-red-400'}`}
+        >{`${offerType?.[0].toUpperCase()}${offerType?.slice(1)}`}</span>
       </div>
 
       <div>
@@ -92,7 +91,8 @@ export const ProfileOffer: React.FC<Props> = ({ offer, refetch }) => {
           <button
             onClick={() => handleDelete.mutate()}
             disabled={handleDelete.isLoading}
-            className="text-white p-2 w-full rounded-lg bg-red-500 font-bold hover:opacity-70">
+            className="text-white p-2 w-full rounded-lg bg-red-500 font-bold hover:opacity-70"
+          >
             {handleDelete.isLoading ? 'Deleting Offer...' : 'Delete'}
           </button>
         </Modal>

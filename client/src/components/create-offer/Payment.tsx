@@ -14,7 +14,8 @@ export const Payment = ({ payment, setActive, deletePayment }: Props) => {
     <button
       type="button"
       onClick={() => setActive(payment)}
-      className={`flex justify-between items-center p-2 rounded-[15px] inputBorder w-full`}>
+      className={`flex justify-between items-center p-2 rounded-[15px] inputBorder w-full`}
+    >
       <div className="flex items-center space-x-2">
         <img className={'w-8 h-8 rounded-full object-cover'} src={bank?.logoUrl} alt={''} />
         <span>{bank?.name}</span>
