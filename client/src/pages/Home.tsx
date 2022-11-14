@@ -136,7 +136,7 @@ const HomePage = () => {
         <Button
           text="text-black"
           border="border"
-          name={'Clear All'}
+          name={'Clear'}
           color={'transparent'}
           onClick={() => {
             setActiveCrypto(null)

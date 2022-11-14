@@ -81,7 +81,7 @@ export const Dropdown = ({ label, data, onSelect, activeSelect }: Props) => {
             placeholder={'Search...'}
           />
 
-          <div ref={parentRef} className="h-52 overflow-auto">
+          <div ref={parentRef} className="overflow-auto max-h-52">
             <div className={`h-[${virtualizer.getTotalSize()}px] w-full relative`}>
               {virtualizer.getVirtualItems().map((virtualItem) => {
                 const item = filteredItems[virtualItem.index]

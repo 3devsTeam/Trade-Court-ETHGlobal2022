@@ -51,7 +51,7 @@ export const Menu = ({ address, balance, ensName, setOpenMenu, menuRef }: Props)
     {
       icon: <AddIcon />,
       route: '/create-offer',
-      name: 'Create offer'
+      name: 'Create Offer'
     }
     // {
     //   icon: <SettingsIcon />,
