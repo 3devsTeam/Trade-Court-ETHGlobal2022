@@ -81,6 +81,17 @@ exports.getBalance = catchAsync(async (req, res, next) => {
     );
     balanceContract = process.env.ETHEREUM_BALANCE_CONTRACT;
     tokenList = require(`../data/${chainId}/tokenList`);
+  } else if (chainId === 5) {
+    web3 = new Web3(process.env.ALCHEMY_GOERLI);
+    tokenList = require(`../data/${chainId}/tokenList`);
+    const nativeToken = await web3.eth.getBalance(req.params.address);
+    tokenList.forEach(async (el) => {
+      el['balance'] = nativeToken;
+    });
+    return res.status(200).json({
+      message: 'success',
+      data: tokenList,
+    });
   } else if (chainId === 10) {
     web3 = new Web3(process.env.ALCHEMY_OPTIMISM);
     provider = new Web3ProviderConnector(

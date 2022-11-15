@@ -5,7 +5,6 @@ interface Props {
 }
 
 export const AvatarIcon: React.FC<Props> = ({ color }) => {
-  console.log(color)
   return (
     <svg
       width="50"
@@ -13,7 +12,8 @@ export const AvatarIcon: React.FC<Props> = ({ color }) => {
       viewBox="0 0 2048 2048"
       fill={`#${color}`}
       className="shadow-customDark rounded-full"
-      xmlns="http://www.w3.org/2000/svg">
+      xmlns="http://www.w3.org/2000/svg"
+    >
       <rect width="2048" height="2048" fill="white" />
       <path d="M670.499 1000.2L176 1251.99V1153.73L555.32 971.032L552.249 977.173V961.82L555.32 967.961L176 785.26V687L670.499 938.79V1000.2Z" />
       <path d="M1269.52 1276.56V1361H778.094V1276.56H1269.52Z" />

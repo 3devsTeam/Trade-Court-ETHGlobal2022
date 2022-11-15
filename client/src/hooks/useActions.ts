@@ -1,7 +1,7 @@
-import { createOfferActions } from '../store/create-offer.slice'
+import { createOfferActions } from '../state/create-offer.slice'
 import { useDispatch } from 'react-redux'
 import { bindActionCreators } from '@reduxjs/toolkit'
-import { transactionActions } from '../store/transaction.slice'
+import { transactionActions } from '../state/transaction.slice'
 const allActions = {
   ...createOfferActions,
   ...transactionActions

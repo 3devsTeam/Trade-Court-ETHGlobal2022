@@ -2,6 +2,7 @@ import React, { useRef, useEffect } from 'react'
 import { useVirtualizer } from '@tanstack/react-virtual'
 import { Token } from './Token'
 import { ICrypto } from '../../types/interfaces/crypto.interface'
+import { NoItems } from '../errors/no-items'
 
 interface ITokenList {
   tokens: ICrypto[]
@@ -27,26 +28,30 @@ export const TokenList = ({ tokens, closeModal }: ITokenList) => {
       }}
       ref={parentRef}
     >
-      <div
-        style={{
-          height: `${virtualizer.getTotalSize()}px`,
-          width: '100%',
-          position: 'relative'
-        }}
-      >
-        {virtualizer.getVirtualItems().map((virtualItem) => {
-          const token = tokens[virtualItem.index]
+      {tokens.length ? (
+        <div
+          style={{
+            height: `${virtualizer.getTotalSize()}px`,
+            width: '100%',
+            position: 'relative'
+          }}
+        >
+          {virtualizer.getVirtualItems().map((virtualItem) => {
+            const token = tokens[virtualItem.index]
 
-          return (
-            <Token
-              key={virtualItem.key}
-              token={token}
-              virtualItem={virtualItem}
-              onClose={closeModal}
-            />
-          )
-        })}
-      </div>
+            return (
+              <Token
+                key={virtualItem.key}
+                token={token}
+                virtualItem={virtualItem}
+                close={closeModal}
+              />
+            )
+          })}
+        </div>
+      ) : (
+        <NoItems />
+      )}
     </div>
   )
 }

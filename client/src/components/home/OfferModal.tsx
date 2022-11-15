@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from 'react'
 import { truncateAddress } from '../../utils/truncateAddress'
-import { Input } from '../create-offer/Input'
+import { NumericalInput } from '../create-offer/NumericalInput'
 import { useNavigate } from 'react-router'
 import { IOffer } from '../../types/interfaces/offer.interface'
 import { OfferInput } from '../home/OfferInput'
 import { OfferService } from '../../api/offer.services'
 import { toast } from 'react-toastify'
-import { parseEther } from '../../utils/parseEther'
-import { round } from '../../utils/round'
 import { ButtonDisabled } from '../ui/ButtonDisabled'
+import { ethers } from 'ethers'
+import { useJoinRoom } from '../../hooks/useJoinRoom'
 
 interface Props {
   close: any
@@ -16,12 +16,23 @@ interface Props {
 }
 
 const OfferModal: React.FC<Props> = ({ close, offer }) => {
-  const { fiat, crypto, maker, unitPrice, _id, quantity, offerComment, minLimit, maxLimit } = offer
+  const {
+    fiat,
+    crypto,
+    maker,
+    unitPrice,
+    _id,
+    quantity,
+    offerComment,
+    minLimit,
+    maxLimit,
+    roomId
+  } = offer
 
   const navigate = useNavigate()
 
-  const [pay, setPay] = useState(0)
-  const [recieve, setRecieve] = useState(0)
+  const [pay, setPay] = useState('0')
+  const [recieve, setRecieve] = useState('0')
 
   // const { roomId } = room;
 
@@ -31,42 +42,16 @@ const OfferModal: React.FC<Props> = ({ close, offer }) => {
 
   const { address } = maker
 
-  const args = [1, parseEther(recieve.toString())]
-  const value = 0
-  const functionName = 'completeDeal'
-
-  // const { data, prepareError, isError, isLoading, isSuccess, writeAsync } = useEthContract(
-  //   args,
-  //   functionName
-  // )
-
-  const offerNotify = (error: string) => {
-    toast.error(error, {
-      position: toast.POSITION.BOTTOM_RIGHT
-    })
-  }
+  const { data, txStatus, prepareTxStatus, handleTransaction } = useJoinRoom(
+    roomId,
+    recieve,
+    pay,
+    _id
+  )
 
   useEffect(() => {
-    setRecieve(+(pay / unitPrice).toFixed(4))
+    setRecieve((+pay / +unitPrice).toString())
   }, [pay, recieve])
-
-  const handleTransaction = () => {
-    // writeAsync?.().then(() => {
-    OfferService.joinByID(_id, {
-      amount: pay,
-      roomId: _id
-    })
-      .then((data) => {
-        if (data.data.message === 'success') {
-          close()
-          navigate(`/transaction/${_id}`)
-        }
-      })
-      .catch((err) => {
-        offerNotify(err.response.data.message)
-      })
-    // })
-  }
 
   const info = [
     {
@@ -79,7 +64,7 @@ const OfferModal: React.FC<Props> = ({ close, offer }) => {
     },
     {
       name: 'Available:',
-      value: `${round(+quantity, 4)} ${symbol}`
+      value: `${quantity} ${symbol}`
     },
     {
       name: 'Limit:',
@@ -102,28 +87,29 @@ const OfferModal: React.FC<Props> = ({ close, offer }) => {
       </div>
 
       <div className="flex flex-col gap-[10px] px-3">
-        <OfferInput
+        <NumericalInput
           label={'You pay'}
           maxValue={maxLimit}
-          setValue={setPay}
+          onUserInput={setPay}
           placeholder={'You pay'}
           value={pay}
-          inputContent={ticker}
+          element={ticker}
         />
-        <OfferInput
-          readOnly={false}
+
+        <NumericalInput
+          readOnly={true}
           label={'You recieve'}
-          setValue={setRecieve}
+          onUserInput={setRecieve}
           placeholder={'You recieve'}
           value={recieve}
-          inputContent={symbol}
+          element={symbol}
         />
 
         <div>
           <ButtonDisabled
             onClick={() => handleTransaction()}
             name={`Buy ${symbol}`}
-            disabled={!(pay > 0)}
+            disabled={!(+pay > 0 && +pay <= +maxLimit)}
           />
         </div>
       </div>

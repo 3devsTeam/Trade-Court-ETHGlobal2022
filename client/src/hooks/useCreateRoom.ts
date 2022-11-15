@@ -1,11 +1,14 @@
 import contractConfig from '../abis/contractConfig'
 import { useContractWrite, usePrepareContractWrite, useWaitForTransaction } from 'wagmi'
-import { ethers } from 'ethers'
-import { useEffect, useState } from 'react'
+import { ethers, BigNumber } from 'ethers'
+import { useTypedSelector } from './useTypedSelector'
+import { OfferService } from '../api/offer.services'
+import { IPayment } from '../types/interfaces/payment.interface'
+import { useNavigate } from 'react-router-dom'
+import { useActions } from './useActions'
+import { toast } from 'react-toastify'
+import { useGenerateRoom } from './useGenerateRoom'
 
-interface Args {
-  args: any
-}
 // createRoom ДЛЯ ДОМИНАТОРОВ
 // _roomNumber (uint256)
 // _timeForTakerAndMaker (uint32)
@@ -15,20 +18,60 @@ interface Args {
 // _msgValue (uint256) ДЛЯ ЩИТКОИНОВ
 // _rate (uint32) UNIT PRICE
 
-export const useCreateRoom = (value: number, args: any) => {
+export const useCreateRoom = () => {
+  const {
+    quantity,
+    unitPrice,
+    timeLimit,
+    minLimit,
+    maxLimit,
+    crypto,
+    fiat,
+    offerComment,
+    payMethods
+  } = useTypedSelector((state) => state.createOfferReducer)
+
+  const navigate = useNavigate()
+
+  const { resetOffer } = useActions()
+
+  const { roomId } = useGenerateRoom()
+
+  const limitPrice = (value: string, unitPrice: number) => {
+    if (value != '.' && value != '0' && value != undefined) {
+      try {
+        return ethers.utils.parseEther(value.toString()).div(BigNumber.from(unitPrice))
+      } catch (err) {
+        console.log(err)
+      }
+    }
+  }
+
+  const args = [
+    roomId,
+    +timeLimit * 60,
+    limitPrice(maxLimit.toString(), +unitPrice),
+    limitPrice(minLimit.toString(), +unitPrice),
+    '0x0000000000000000000000000000000000000000',
+    ethers.utils.parseEther('0'),
+    unitPrice
+  ]
+
   console.log(args)
 
-  const { config, error } = usePrepareContractWrite({
+  const { config, status: prepareTxStatus } = usePrepareContractWrite({
     ...contractConfig,
     functionName: 'createRoom',
     args,
     overrides: {
-      value
-      //   gasLimit: 400000
+      value: ethers.utils.parseEther(+quantity > 0 ? quantity.toString() : '0'),
+      gasLimit: 400000
     }
   })
 
-  const { data, isError, writeAsync: createOffer } = useContractWrite(config)
+  //console.log('prepare error', prepareError)
+
+  const { data, status: txStatus, writeAsync } = useContractWrite(config)
 
   const {
     isSuccess,
@@ -38,13 +81,51 @@ export const useCreateRoom = (value: number, args: any) => {
     hash: data?.hash
   })
 
+  const handleCreateOffer = async () => {
+    writeAsync?.().then(() => {
+      OfferService.create({
+        offerType: 'buy',
+        payMethods: payMethods.map((payment: IPayment) => {
+          const { bank, cardNumber, region, paymentDescription } = payment
+          return {
+            bank,
+            cardNumber,
+            region,
+            paymentDescription
+          }
+        }),
+        fiat: fiat._id,
+        roomId: roomId!.toString(),
+        unitPrice,
+        amount: +unitPrice * +quantity,
+        quantity,
+        minLimit,
+        maxLimit,
+        crypto: crypto._id,
+        offerComment
+      })
+        .then(() => {
+          toast.success('Offer is created', {
+            position: toast.POSITION.BOTTOM_RIGHT
+          })
+          navigate('/')
+          resetOffer()
+        })
+        .catch((error) =>
+          toast.error(error, {
+            position: toast.POSITION.BOTTOM_RIGHT
+          })
+        )
+    })
+  }
+
   return {
     data,
+    handleCreateOffer,
     isSuccess,
-    createOffer,
-    isError,
     isLoading,
     hash,
-    error
+    prepareTxStatus,
+    txStatus
   }
 }

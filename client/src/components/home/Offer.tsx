@@ -16,17 +16,17 @@ export const Offer = forwardRef<any, any>((offer: IOffer, ref) => {
     <div className="flex bg-white py-6 px-4 shadow-customDark w-full rounded-[20px]">
       <div className="flex items-center w-full">
         <div className="flex-1">
-          <span className="font-bold text-purple">{truncateAddress(address)}</span>
+          <span className="font-bold text-purple text-[16px]">{truncateAddress(address)}</span>
         </div>
 
         <div className="flex-1">
           <span className="font-bold">
-            {unitPrice} <span className="font-normal">{ticker}</span>
+            {unitPrice} <span className="font-normal text-[12px]">{ticker}</span>
           </span>
         </div>
 
         <div className="flex-[2_0]">
-          <div>
+          <div className="text-[14px]">
             <div>
               <span>
                 Available:{' '}
@@ -48,7 +48,7 @@ export const Offer = forwardRef<any, any>((offer: IOffer, ref) => {
 
         <div className="flex-1">
           {payments.map((payment: string, i: number) => (
-            <div key={i} className={'text-sm font-bold'}>
+            <div key={i} className={'text-[12px] font-bold'}>
               {payment}
             </div>
           ))}
@@ -57,8 +57,9 @@ export const Offer = forwardRef<any, any>((offer: IOffer, ref) => {
         <div className="flex-1">
           <button
             onClick={() => setIsOpen(!isOpen)}
-            className="bg-green text-lg text-white rounded-[10px] font-bold p-[6px]
-            transition-all duration-500 hover:bg-lightGreen w-full">
+            className="bg-green text-white rounded-[10px] font-bold p-[6px]
+            transition-all duration-500 hover:bg-lightGreen w-full"
+          >
             Buy {symbol}
           </button>
         </div>

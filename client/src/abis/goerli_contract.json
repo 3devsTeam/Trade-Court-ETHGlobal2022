@@ -1,5 +1,5 @@
 {
-  "address": "0x1994Be355E0e4EFE252542EA76Bf99Ff218081F9",
+  "address": "0x1dcf9ec117B6bb2C26099270EFcA28276D7feddD",
   "abi": [
     { "inputs": [], "stateMutability": "nonpayable", "type": "constructor" },
     {
@@ -54,6 +54,50 @@
     {
       "anonymous": false,
       "inputs": [
+        { "indexed": true, "internalType": "bytes32", "name": "role", "type": "bytes32" },
+        {
+          "indexed": true,
+          "internalType": "bytes32",
+          "name": "previousAdminRole",
+          "type": "bytes32"
+        },
+        { "indexed": true, "internalType": "bytes32", "name": "newAdminRole", "type": "bytes32" }
+      ],
+      "name": "RoleAdminChanged",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        { "indexed": true, "internalType": "bytes32", "name": "role", "type": "bytes32" },
+        { "indexed": true, "internalType": "address", "name": "account", "type": "address" },
+        { "indexed": true, "internalType": "address", "name": "sender", "type": "address" }
+      ],
+      "name": "RoleGranted",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        { "indexed": true, "internalType": "bytes32", "name": "role", "type": "bytes32" },
+        { "indexed": true, "internalType": "address", "name": "account", "type": "address" },
+        { "indexed": true, "internalType": "address", "name": "sender", "type": "address" }
+      ],
+      "name": "RoleRevoked",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        { "indexed": false, "internalType": "uint256", "name": "roomNumber", "type": "uint256" },
+        { "indexed": false, "internalType": "uint256", "name": "takerNumber", "type": "uint256" }
+      ],
+      "name": "ScamFromTaker",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
         { "indexed": false, "internalType": "uint256", "name": "roomNumber", "type": "uint256" },
         { "indexed": false, "internalType": "uint256", "name": "takerNumber", "type": "uint256" }
       ],
@@ -78,23 +122,16 @@
     },
     {
       "inputs": [],
-      "name": "TCMultisig",
-      "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
+      "name": "DEFAULT_ADMIN_ROLE",
+      "outputs": [{ "internalType": "bytes32", "name": "", "type": "bytes32" }],
       "stateMutability": "view",
       "type": "function"
     },
     {
       "inputs": [],
-      "name": "admin",
-      "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
+      "name": "TCmultisig",
+      "outputs": [{ "internalType": "bytes32", "name": "", "type": "bytes32" }],
       "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "inputs": [{ "internalType": "address", "name": "_newAdmin", "type": "address" }],
-      "name": "changeAdmin",
-      "outputs": [],
-      "stateMutability": "nonpayable",
       "type": "function"
     },
     {
@@ -106,7 +143,7 @@
     },
     {
       "inputs": [],
-      "name": "comissionSumEth",
+      "name": "comissionSumNative",
       "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
       "stateMutability": "view",
       "type": "function"
@@ -168,12 +205,19 @@
       "type": "function"
     },
     {
+      "inputs": [{ "internalType": "bytes32", "name": "role", "type": "bytes32" }],
+      "name": "getRoleAdmin",
+      "outputs": [{ "internalType": "bytes32", "name": "", "type": "bytes32" }],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
       "inputs": [{ "internalType": "uint256", "name": "_roomNumber", "type": "uint256" }],
       "name": "getRoomDynamic",
       "outputs": [
         { "internalType": "uint16", "name": "", "type": "uint16" },
         { "internalType": "uint256", "name": "", "type": "uint256" },
-        { "internalType": "uint8", "name": "", "type": "uint8" }
+        { "internalType": "enum TO_FIAT6.roomStatusENUM", "name": "", "type": "uint8" }
       ],
       "stateMutability": "view",
       "type": "function"
@@ -205,14 +249,42 @@
             { "internalType": "uint256", "name": "volume", "type": "uint256" },
             { "internalType": "uint256", "name": "timer", "type": "uint256" },
             { "internalType": "bool", "name": "isScam", "type": "bool" },
-            { "internalType": "uint8", "name": "moderDecision", "type": "uint8" },
-            { "internalType": "uint8", "name": "dealStatus", "type": "uint8" }
+            {
+              "internalType": "enum TO_FIAT6.moderDecisionENUM",
+              "name": "moderDecision",
+              "type": "uint8"
+            },
+            {
+              "internalType": "enum TO_FIAT6.dealStatusENUM",
+              "name": "dealStatus",
+              "type": "uint8"
+            }
           ],
-          "internalType": "struct TO_FIAT3.Taker",
+          "internalType": "struct TO_FIAT6.Taker",
           "name": "",
           "type": "tuple"
         }
       ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        { "internalType": "bytes32", "name": "role", "type": "bytes32" },
+        { "internalType": "address", "name": "account", "type": "address" }
+      ],
+      "name": "grantRole",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        { "internalType": "bytes32", "name": "role", "type": "bytes32" },
+        { "internalType": "address", "name": "account", "type": "address" }
+      ],
+      "name": "hasRole",
+      "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }],
       "stateMutability": "view",
       "type": "function"
     },
@@ -263,7 +335,11 @@
     {
       "inputs": [
         { "internalType": "uint256", "name": "_roomNumber", "type": "uint256" },
-        { "internalType": "uint8", "name": "_decision", "type": "uint8" },
+        {
+          "internalType": "enum TO_FIAT6.moderDecisionENUM",
+          "name": "_decision",
+          "type": "uint8"
+        },
         { "internalType": "uint256", "name": "_takerNumber", "type": "uint256" }
       ],
       "name": "moderDecision",
@@ -276,6 +352,33 @@
       "name": "multiplicityOfTime",
       "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
       "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [{ "internalType": "uint256", "name": "_roomNumber", "type": "uint256" }],
+      "name": "pauseRoom",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        { "internalType": "bytes32", "name": "role", "type": "bytes32" },
+        { "internalType": "address", "name": "account", "type": "address" }
+      ],
+      "name": "renounceRole",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        { "internalType": "bytes32", "name": "role", "type": "bytes32" },
+        { "internalType": "address", "name": "account", "type": "address" }
+      ],
+      "name": "revokeRole",
+      "outputs": [],
+      "stateMutability": "nonpayable",
       "type": "function"
     },
     {
@@ -293,7 +396,7 @@
         { "internalType": "uint256", "name": "_roomNumber", "type": "uint256" },
         { "internalType": "uint256", "name": "_takerNumber", "type": "uint256" }
       ],
-      "name": "scamFromMaker",
+      "name": "scamFromTaker",
       "outputs": [],
       "stateMutability": "nonpayable",
       "type": "function"
@@ -351,17 +454,10 @@
       "type": "function"
     },
     {
-      "inputs": [{ "internalType": "address", "name": "_TCMultisig", "type": "address" }],
-      "name": "setTCMultisig",
-      "outputs": [],
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "inputs": [{ "internalType": "uint256", "name": "_roomNumber", "type": "uint256" }],
-      "name": "stopRoom",
-      "outputs": [],
-      "stateMutability": "nonpayable",
+      "inputs": [{ "internalType": "bytes4", "name": "interfaceId", "type": "bytes4" }],
+      "name": "supportsInterface",
+      "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }],
+      "stateMutability": "view",
       "type": "function"
     },
     {
@@ -386,7 +482,7 @@
     },
     {
       "inputs": [],
-      "name": "withdrawCommissionsEth",
+      "name": "withdrawCommissionsNative",
       "outputs": [],
       "stateMutability": "nonpayable",
       "type": "function"
@@ -397,6 +493,7 @@
       "outputs": [],
       "stateMutability": "nonpayable",
       "type": "function"
-    }
+    },
+    { "stateMutability": "payable", "type": "receive" }
   ]
 }

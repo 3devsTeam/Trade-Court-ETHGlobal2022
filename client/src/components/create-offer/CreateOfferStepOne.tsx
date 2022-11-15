@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { useTypedSelector } from '../../hooks/useTypedSelector'
-import { Input } from './Input'
+import { NumericalInput } from './NumericalInput'
 import { Dropdown } from './Dropdown'
 import { useActions } from '../../hooks/useActions'
 import { ModalInput } from './ModalInput'
@@ -15,6 +15,7 @@ import { ButtonDisabled } from '../ui/ButtonDisabled'
 import { SubmitButton } from '../ui/SubmitButton'
 import { ICrypto } from '../../types/interfaces/crypto.interface'
 import { IFiat } from '../../types/interfaces/fiat.interface'
+import { NoItems } from '../errors/no-items'
 
 interface IStep1 {
   tokens: [ICrypto]
@@ -38,19 +39,23 @@ export const CreateOfferStepOne = ({ tokens, allFiat }: IStep1) => {
   const [searchTerm, setSearchTerm] = useState('')
 
   const searchFilter = (tokens: ICrypto[]) => {
-    return tokens.filter(
+    const filteredTokens = tokens?.filter(
       (t: ICrypto) =>
         t.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
         t.address.toLowerCase() === searchTerm.toLowerCase() ||
         t.symbol.toLowerCase() === searchTerm.toLowerCase()
     )
+
+    return filteredTokens
   }
 
   const checkStep1 = () => {
-    if (quantity > 0 && quantity <= tokenAmount && unitPrice > 0) return true
+    if (+quantity > 0 && +quantity <= +tokenAmount && +unitPrice > 0) return true
 
     return false
   }
+
+  const filteredTokens = searchFilter(tokens)
 
   return (
     <form>
@@ -71,17 +76,17 @@ export const CreateOfferStepOne = ({ tokens, allFiat }: IStep1) => {
             data={allFiat as IFiat[]}
             label={'Fiat'}
           />
-          <Input
-            onAction={setUnitPrice}
+          <NumericalInput
+            onUserInput={setUnitPrice}
             placeholder={'0'}
             label={'Unit Price'}
             element={ticker}
             value={unitPrice}
           />
 
-          <Input
-            maxValue={tokenAmount}
-            onAction={setQuantity}
+          <NumericalInput
+            maxValue={tokenAmount.toString()}
+            onUserInput={setQuantity}
             placeholder={'0'}
             label={'Quantity'}
             element={symbol}
@@ -95,7 +100,8 @@ export const CreateOfferStepOne = ({ tokens, allFiat }: IStep1) => {
               setSearchTerm={setSearchTerm}
               searchTerm={searchTerm}
             />
-            <TokenList tokens={searchFilter(tokens)} closeModal={() => setIsOpen(false)} />
+
+            <TokenList tokens={filteredTokens} closeModal={() => setIsOpen(false)} />
           </Modal>
         ) : null}
       </Wrapper>

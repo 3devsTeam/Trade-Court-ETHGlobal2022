@@ -12,30 +12,12 @@ mongoose
   .then(() => {
     console.log('connected');
   });
-const ethereum = JSON.parse(
-  fs.readFileSync(
-    `${__dirname}/../controllers/balanceController/ethereum/tokenList.json`,
-    'utf-8'
-  )
-);
-const polygon = JSON.parse(
-  fs.readFileSync(
-    `${__dirname}/../controllers/balanceController/polygon/tokenList.json`,
-    'utf-8'
-  )
-);
-const optimism = JSON.parse(
-  fs.readFileSync(
-    `${__dirname}/../controllers/balanceController/optimism/tokenList.json`,
-    'utf-8'
-  )
-);
-
-const importData = async () => {
+const importData = async (chainId) => {
   try {
-    await Crypto.create(ethereum);
-    await Crypto.create(polygon);
-    await Crypto.create(optimism);
+    const data = JSON.parse(
+      fs.readFileSync(`${__dirname}/../data/${chainId}/tokenList.json`, 'utf-8')
+    );
+    await Crypto.create(data);
     console.log('OK 🤡');
   } catch (err) {
     console.log(err);
@@ -54,7 +36,7 @@ const deleteData = async () => {
 };
 
 if (process.argv[2] === '--import') {
-  importData();
+  importData(process.argv[3]);
 } else if (process.argv[2] === '--delete') {
   deleteData();
 }

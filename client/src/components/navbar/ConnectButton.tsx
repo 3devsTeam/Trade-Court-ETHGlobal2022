@@ -53,10 +53,12 @@ export const ConnectButton = ({
   return isConnected ? (
     <button
       className="rounded-[15px] bg-white shadow-customDark h-full px-[10px]"
-      onMouseEnter={() => setOpenMenu(true)}>
+      onMouseEnter={() => setOpenMenu(true)}
+    >
       <div className="font-bold flex items-center space-x-2 text-black">
         <span>
-          {balance?.formatted.slice(0, 8)} {balance?.symbol}
+          {balance?.formatted.slice(0, 8)}
+          {balance?.symbol}
         </span>
         <div className="font-medium py-[4px] px-[10px] bg-purple rounded-[10px] text-white">
           <span>{!ensName ? truncateAddress(address!) : ensName}</span>
@@ -67,7 +69,8 @@ export const ConnectButton = ({
     <>
       <button
         className="rounded-[15px] p-2 relative bg-purple  text-white shadow-customDark"
-        onClick={() => setOpenConnectModal(!openConnectModal)}>
+        onClick={() => setOpenConnectModal(!openConnectModal)}
+      >
         <span className="font-bold">Connect</span>
       </button>
 

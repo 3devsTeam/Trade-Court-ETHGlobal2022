@@ -11,6 +11,11 @@ const offerSchema = new mongoose.Schema({
     enum: ['buy', 'sell'],
     required: [true, 'offerType is empty'],
   },
+  roomId: {
+    type: String,
+    required: true,
+    unique: true,
+  },
   payMethods: {
     type: [
       {
@@ -85,6 +90,11 @@ const offerSchema = new mongoose.Schema({
   offerComment: {
     type: String,
     maxLenght: 600,
+  },
+  takerNumber: {
+    type: Number,
+    default: 0,
+    required: true,
   },
 });
 

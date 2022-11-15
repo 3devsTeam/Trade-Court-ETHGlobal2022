@@ -5,10 +5,11 @@ import { useTypedSelector } from '../../hooks/useTypedSelector'
 import { Button } from '../ui/Button'
 
 interface Props {
-  takerConfirmed: () => void
+  takerConfirmed: () => Promise<void>
+  takerClaim: () => Promise<void>
 }
 
-export const ConfirmsTaker: React.FC<Props> = ({ takerConfirmed }) => {
+export const ConfirmsTaker: React.FC<Props> = ({ takerConfirmed, takerClaim }) => {
   const { step } = useTypedSelector((state) => state.transactionReducer)
 
   const { next } = useActions()
@@ -26,7 +27,7 @@ export const ConfirmsTaker: React.FC<Props> = ({ takerConfirmed }) => {
       {step === 2 ? <span>Wating for confirmation...</span> : null}
       {step === 3 ? (
         <Button
-          onClick={() => next()}
+          onClick={() => takerClaim()}
           name="Claim"
           color={'bg-purple'}
           text={'text-white text-lg'}

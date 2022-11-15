@@ -7,26 +7,21 @@ import { IMaker } from './maker.interface'
 
 export interface IOffer {
   _id: string
+  roomId: string
   offerType: 'buy' | 'sell'
   crypto: ICrypto
   fiat: IFiat
-  unitPrice: number
-  quantity: number
+  unitPrice: string
+  quantity: string
   payMethods: IPayment[]
   bank?: IBank
   region: IRegion
   timeLimit: string
-  minLimit: number
-  maxLimit: number
+  minLimit: string
+  maxLimit: string
   offerComment: string
   paymentDescription?: string
   amount?: number
   maker: IMaker
   tokenAmount?: number
-  room: {
-    roomId: string
-    stage: 'no taker' | 'taker'
-    amount: number
-    createdAt: string
-  }
 }

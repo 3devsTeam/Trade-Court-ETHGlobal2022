@@ -1,22 +1,18 @@
 import React from 'react'
 import { useTypedSelector } from '../../hooks/useTypedSelector'
-import { Input } from './Input'
-import { Dropdown } from './Dropdown'
-import { Arrow } from '../ui/icons/Arrow'
+import { NumericalInput } from './NumericalInput'
 import { useActions } from '../../hooks/useActions'
 import { TextArea } from './TextArea'
 import { TimeLimit } from './TimeLimit'
 import { ButtonDisabled } from '../ui/ButtonDisabled'
-import { SubmitButton } from '../ui/SubmitButton'
-import { totalAmount } from '../../utils/totalAmount'
 import { Wrapper } from './Wrapper'
 import { Label } from '../ui/Label'
 
 interface Props {
-  handleCreateOffer: () => void
+  handleCreateOffer: () => Promise<void>
 }
 
-export const CreateOfferStepThree = ({ handleCreateOffer }: Props) => {
+export const CreateOfferStepThree: React.FC<Props> = ({ handleCreateOffer }) => {
   const { setMinPriceLimit, setMaxPriceLimit, setTimeLimit, setComment, prevStep } = useActions()
   const { fiat, offerComment, minLimit, maxLimit, quantity, unitPrice } = useTypedSelector(
     (state) => state.createOfferReducer
@@ -24,7 +20,13 @@ export const CreateOfferStepThree = ({ handleCreateOffer }: Props) => {
   const { ticker } = fiat
 
   const checkStep3 = () => {
-    if (minLimit > 0 && maxLimit > 0 && minLimit < maxLimit) return false
+    if (
+      +minLimit > 0 &&
+      +maxLimit > 0 &&
+      +minLimit < +maxLimit &&
+      +maxLimit <= +quantity * +unitPrice
+    )
+      return false
     return true
   }
 
@@ -40,16 +42,16 @@ export const CreateOfferStepThree = ({ handleCreateOffer }: Props) => {
 
           <Label label={'Order Price Limit'} />
           <div className={'flex justify-between gap-1'}>
-            <Input
+            <NumericalInput
               value={minLimit}
-              onAction={setMinPriceLimit}
+              onUserInput={setMinPriceLimit}
               placeholder={'Min'}
               element={ticker}
             />
-            <Input
+            <NumericalInput
               value={maxLimit}
-              maxValue={parseInt((quantity * unitPrice).toString())}
-              onAction={setMaxPriceLimit}
+              maxValue={(+quantity * +unitPrice).toString()}
+              onUserInput={setMaxPriceLimit}
               placeholder={'Max'}
               element={ticker}
             />
@@ -68,7 +70,11 @@ export const CreateOfferStepThree = ({ handleCreateOffer }: Props) => {
         <Wrapper>
           <div className="flex gap-5">
             <ButtonDisabled onClick={prevStep} name="Back" />
-            <ButtonDisabled disabled={checkStep3()} onClick={handleCreateOffer} name="Create" />
+            <ButtonDisabled
+              disabled={checkStep3()}
+              onClick={() => handleCreateOffer()}
+              name="Create"
+            />
           </div>
         </Wrapper>
       </div>

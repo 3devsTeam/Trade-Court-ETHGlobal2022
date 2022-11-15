@@ -1,7 +1,6 @@
 import { useQuery } from '@tanstack/react-query'
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import { ProfileOffer } from '../components/profile/ProfileOffer'
-import { useAccount, useEnsName, useEnsAvatar } from 'wagmi'
 import { Legend } from '../components/home/Legend'
 import { UserService } from '../api/user.services'
 import { Divider } from '../components/profile/Divider'

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { BigNumber } from 'ethers'
+import { BigNumber, ethers } from 'ethers'
 import { TokenService } from '../api/tokens.services'
 import { useAccount, useNetwork } from 'wagmi'
 import { useActions } from '../hooks/useActions'
@@ -8,17 +8,17 @@ import { Preview } from '../components/create-offer/Preview'
 import { ICrypto } from '../types/interfaces/crypto.interface'
 
 export const useTokens = () => {
-  const { setCrypto } = useActions()
-
   const { chain } = useNetwork()
 
   const chainId = chain?.id.toString()
   const chainName = chain?.name.toLowerCase()
 
+  const { setCrypto } = useActions()
+
   const { address } = useAccount()
 
   const { data: tokens, status: statusTokens } = useQuery(
-    [`get ${chainId} tokens`],
+    [`get ${chainId} chain tokens`],
     () => TokenService.getTokens(address!, chainId!),
     {
       select: (data) => data.data.data,
@@ -53,15 +53,21 @@ export const useTokens = () => {
   const isError =
     statusEthUsdRate === 'error' && statusExchangeRate === 'error' && statusTokens === 'error'
 
-  const zero = BigNumber.from(0)
+  useEffect(() => {
+    if (isSuccess) {
+      setCrypto(newTokens[0])
+    }
+  }, [isSuccess])
+
+  const zero = ethers.constants.Zero
   const div36 = BigNumber.from(10).pow(36)
   const div15 = BigNumber.from(10).pow(15)
 
   const newTokens = tokens?.map((crypto: ICrypto) => {
-    const weiBalance = BigNumber.from(crypto.balance)
+    const weiBalance = BigNumber.from(crypto?.balance)
 
     if (!weiBalance.eq(zero)) {
-      const weiExchangeRate = BigNumber.from(exchangeRate[`${crypto.address}`])
+      const weiExchangeRate = BigNumber.from(exchangeRate[`${crypto?.address}`])
 
       const usdRate = BigNumber.from(parseInt(ethUsdRate) * 100)
 
@@ -77,12 +83,6 @@ export const useTokens = () => {
     }
     return crypto
   })
-
-  // useEffect(() => {
-  //   if (newTokens.length > 0) {
-  //     setCrypto(newTokens[0])
-  //   }
-  // }, [newTokens])
 
   return { tokens: newTokens, isSuccess, isLoading, isError }
 }

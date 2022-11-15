@@ -1,10 +1,6 @@
-import React, { useEffect, useState, useRef } from 'react'
-import axios from 'axios'
+import { useEffect, useState } from 'react'
 import { Offer } from '../components/home/Offer'
 import { Legend } from '../components/home/Legend'
-import { useQuery } from '@tanstack/react-query'
-import { OfferService } from '../api/offer.services'
-import { SkeletonWrapper } from '../components/ui/SkeletonWrapper'
 import { SearchField } from '../components/ui/SearchField'
 import { Dropdown } from '../components/home/Dropdown'
 import { useFetchFilters } from '../hooks/useFetchFilters'
@@ -17,8 +13,6 @@ import { IPayment } from '../types/interfaces/payment.interface'
 import { IRegion } from '../types/interfaces/region.interface'
 import { IBank } from '../types/interfaces/bank.interface'
 import { IOffer } from '../types/interfaces/offer.interface'
-import { useNavigate } from 'react-router-dom'
-import { useAccount } from 'wagmi'
 import { NoItems } from '../components/errors/no-items'
 
 export interface IActiveFilters {
@@ -142,7 +136,7 @@ const HomePage = () => {
         <Button
           text="text-black"
           border="border"
-          name={'Clear All'}
+          name={'Clear'}
           color={'transparent'}
           onClick={() => {
             setActiveCrypto(null)
@@ -162,7 +156,7 @@ const HomePage = () => {
         {data?.pages[0].length === 0 ? (
           <NoItems />
         ) : (
-          <div className="space-y-2 flex flex-wrap">{content}</div>
+          <div className="space-y-3 flex flex-wrap">{content}</div>
         )}
         {/* </SkeletonWrapper> */}
       </main>
