@@ -5,7 +5,7 @@ import { CreateOfferStepTwo } from '../components/create-offer/CreateOfferStepTw
 import { CreateOfferStepThree } from '../components/create-offer/CreateOfferStepThree'
 import { useTokens } from '../hooks/useTokens'
 import { useFiat } from '../hooks/useFiat'
-import { ProgressBar } from '../components/create-offer/ProgressBar'
+import { ProgressBar } from '../components/create-offer/Progressbar'
 import { useCreateRoom } from '../hooks/useCreateRoom'
 import { SkeletonWrapper } from '../components/ui/SkeletonWrapper'
 import { ErrorBoundary } from 'react-error-boundary'
