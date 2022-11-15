@@ -11,7 +11,7 @@ interface Props {
 
 export const Button: React.FC<Props> = ({ onClick, color, icon, border, text, name }) => {
   return (
-    <button onClick={() => onClick()} className={`${color} ${border} p-2 rounded-xl w-full`}>
+    <button onClick={() => onClick()} className={`${color} ${border} p-2 rounded-xl `}>
       {name ? <span className={`font-bold ${text}`}>{name}</span> : null}
       {icon}
     </button>

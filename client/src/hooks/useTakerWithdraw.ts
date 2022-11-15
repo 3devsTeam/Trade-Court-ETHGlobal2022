@@ -14,7 +14,7 @@ export const useTakerWithdraw = (roomId: string, takerNumber: number) => {
     data: takerWithdrawTxData,
     status: takerWithdrawTxStatus,
     writeAsync: takerWithdraw
-  } = useContractWrite(config as any)
+  } = useContractWrite(config)
 
   return {
     takerWithdrawTxData,

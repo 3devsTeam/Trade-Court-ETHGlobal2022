@@ -34,13 +34,13 @@ export const useJoinRoom = (roomId: string, recieve: string, pay: string, _id: s
     functionName: 'joinRoom',
     args,
     overrides: {
-      gasLimit: BigNumber.from(400000)
+      gasLimit: 400000
     }
   })
 
   console.log(prepareTxStatus)
 
-  const { data, status: txStatus, writeAsync: joinRoom } = useContractWrite(config as any)
+  const { data, status: txStatus, writeAsync: joinRoom } = useContractWrite(config)
 
   console.log(txStatus)
 

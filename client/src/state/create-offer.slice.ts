@@ -30,7 +30,7 @@ const initialState: ICreateOfferSlice = {
     _id: '',
     address: '',
     offers: [],
-    role: 'maker',
+    role: '',
     __v: 0
   },
   fiat: {

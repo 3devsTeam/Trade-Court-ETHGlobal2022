@@ -3,28 +3,20 @@ import { useTypedSelector } from '../hooks/useTypedSelector'
 import { CreateOfferStepOne } from '../components/create-offer/CreateOfferStepOne'
 import { CreateOfferStepTwo } from '../components/create-offer/CreateOfferStepTwo'
 import { CreateOfferStepThree } from '../components/create-offer/CreateOfferStepThree'
+import { BigNumber, ethers } from 'ethers'
 import { useTokens } from '../hooks/useTokens'
 import { useFiat } from '../hooks/useFiat'
-import { ProgressBar } from '../components/create-offer/ProgressBar'
+import { ProgressBar } from '../components/create-offer/Progressbar'
 import { useCreateRoom } from '../hooks/useCreateRoom'
-import { SkeletonWrapper } from '../components/ui/SkeletonWrapper'
-import { ErrorBoundary } from 'react-error-boundary'
 
 const CreateOfferPage = () => {
-  const {
-    data,
-    handleCreateOffer,
-    isSuccess,
-    isLoading: createRoomLoading,
-    hash,
-    prepareTxStatus,
-    txStatus
-  } = useCreateRoom()
+  const { data, handleCreateOffer, isSuccess, isLoading, hash, prepareTxStatus, txStatus } =
+    useCreateRoom()
 
   const { step } = useTypedSelector((state) => state.createOfferReducer)
 
-  const { tokens, tokensError, tokensLoading, tokensSuccess } = useTokens()
-  const { allFiat, fiatSuccess, fiatError, fiatLoading } = useFiat()
+  const { tokens, isSuccess: tokensSuccess } = useTokens()
+  const { allFiat, isSuccess: fiatSuccess } = useFiat()
 
   const isLoaded = tokensSuccess && fiatSuccess
 
@@ -57,27 +49,25 @@ const CreateOfferPage = () => {
   ]
 
   return (
-    <ErrorBoundary fallback={<h1>error</h1>}>
-      <div className="p-5">
-        <ProgressBar steps={steps} />
+    <div className="p-5">
+      {/* <SkeletonWrapper isLoading={isLoaded} height={100}> */}
+      <ProgressBar steps={steps} />
+      {/* </SkeletonWrapper> */}
 
-        <div className={'grid grid-cols-2 gap-5 mt-5'}>
-          <div>
-            <ErrorBoundary fallback={<h1>error</h1>}>
-              <SkeletonWrapper isLoaded={isLoaded} height={600}>
-                <div className="flex flex-col gap-5">{pageDisplay()}</div>
-              </SkeletonWrapper>
-            </ErrorBoundary>
-          </div>
+      <div className={'grid grid-cols-2 gap-5 mt-5'}>
+        <div>
+          {/* <SkeletonWrapper isLoading={isLoaded} height={600}> */}
+          {pageDisplay()}
+          {/* </SkeletonWrapper> */}
+        </div>
 
-          <div>
-            <SkeletonWrapper isLoaded={isLoaded} height={600}>
-              <Preview />
-            </SkeletonWrapper>
-          </div>
+        <div>
+          {/* <SkeletonWrapper isLoading={isLoaded} height={600}> */}
+          <Preview />
+          {/* </SkeletonWrapper> */}
         </div>
       </div>
-    </ErrorBoundary>
+    </div>
   )
 }
 

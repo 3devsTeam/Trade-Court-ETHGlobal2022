@@ -31,37 +31,39 @@ export const CreateOfferStepThree: React.FC<Props> = ({ handleCreateOffer }) => 
   }
 
   return (
-    <>
+    <form>
       <Wrapper>
-        <TimeLimit
-          onAction={setTimeLimit}
-          label={'Order Time Limit'}
-          times={['15', '30', '45', '60', '120']}
-        />
-
-        <Label label={'Order Price Limit'} />
-        <div className={'flex justify-between gap-1'}>
-          <NumericalInput
-            value={minLimit}
-            onUserInput={setMinPriceLimit}
-            placeholder={'Min'}
-            element={ticker}
+        <div className="flex flex-col gap-5">
+          <TimeLimit
+            onAction={setTimeLimit}
+            label={'Order Time Limit'}
+            times={['15', '30', '45', '60', '120']}
           />
-          <NumericalInput
-            value={maxLimit}
-            maxValue={(+quantity * +unitPrice).toString()}
-            onUserInput={setMaxPriceLimit}
-            placeholder={'Max'}
-            element={ticker}
+
+          <Label label={'Order Price Limit'} />
+          <div className={'flex justify-between gap-1'}>
+            <NumericalInput
+              value={minLimit}
+              onUserInput={setMinPriceLimit}
+              placeholder={'Min'}
+              element={ticker}
+            />
+            <NumericalInput
+              value={maxLimit}
+              maxValue={(+quantity * +unitPrice).toString()}
+              onUserInput={setMaxPriceLimit}
+              placeholder={'Max'}
+              element={ticker}
+            />
+          </div>
+
+          <TextArea
+            value={offerComment ? offerComment : ''}
+            onAction={setComment}
+            label={'Comment'}
+            placeholder={'Enter comment'}
           />
         </div>
-
-        <TextArea
-          value={offerComment ? offerComment : ''}
-          onAction={setComment}
-          label={'Comment'}
-          placeholder={'Enter comment'}
-        />
       </Wrapper>
 
       <div className="mt-5">
@@ -76,6 +78,6 @@ export const CreateOfferStepThree: React.FC<Props> = ({ handleCreateOffer }) => 
           </div>
         </Wrapper>
       </div>
-    </>
+    </form>
   )
 }

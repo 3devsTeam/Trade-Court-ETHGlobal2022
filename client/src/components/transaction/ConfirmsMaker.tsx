@@ -12,6 +12,8 @@ interface Props {
 export const ConfirmsMaker: React.FC<Props> = ({ makerConfirmed }) => {
   const { step } = useTypedSelector((state) => state.transactionReducer)
 
+  const { next } = useActions()
+
   const navigate = useNavigate()
 
   return (
@@ -24,7 +26,12 @@ export const ConfirmsMaker: React.FC<Props> = ({ makerConfirmed }) => {
         />
       ) : null}
       {step === 3 ? (
-        <ButtonDisabled name="Go to Home page" onClick={() => navigate('/')} color={'bg-purple'} />
+        <Button
+          name="Go to Home page"
+          onClick={() => navigate('/')}
+          color={'bg-purple'}
+          text={'text-white text-lg'}
+        />
       ) : null}
     </>
   )

@@ -67,9 +67,7 @@ export const Dropdown = ({ value, fullName, onAction, label, data, image }: IDro
               <div
                 onClick={() => clickHandler(data[i])}
                 key={i}
-                className={
-                  'p-2 cursor-pointer flex items-center gap-1 hover:bg-lightGray transition-colors duration-300'
-                }
+                className={'p-2 cursor-pointer flex items-center gap-1'}
               >
                 <img
                   className={'w-8 h-8 rounded-full shadow-customDark object-cover'}

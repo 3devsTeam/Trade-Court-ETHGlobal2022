@@ -1,6 +1,7 @@
 import { useParams } from 'react-router-dom'
 import { useAccount, useQuery } from 'wagmi'
 import { OfferService } from '../api/offer.services'
+import { ProgressBar } from '../components/create-offer/Progressbar'
 import { Chat } from '../components/transaction/Chat'
 import { ConfirmsMaker } from '../components/transaction/ConfirmsMaker'
 import { ConfirmsTaker } from '../components/transaction/ConfirmsTaker'
@@ -17,7 +18,6 @@ import { useTakerApprove } from '../hooks/useTakerApprove'
 import { useMakerApprove } from '../hooks/useMakerApprove'
 import { useTakerWithdraw } from '../hooks/useTakerWithdraw'
 import { useEffect } from 'react'
-import { ErrorBoundary } from 'react-error-boundary'
 
 const TransactionPage = () => {
   const socket = io('http://127.0.0.1:3030')
@@ -102,46 +102,36 @@ const TransactionPage = () => {
   }
 
   return isSuccess ? (
-    <>
+    <div>
       <TransactionInfo offer={data?.offer} />
 
       <div className="grid grid-cols-form gap-5 mt-5">
-        <div>
+        <div className="">
           <div className="wrapper p-5">
-            <ErrorBoundary fallback={<h1>error</h1>}>
-              {role === TRANSACTION_ROLES.taker ? <TransactionTaker offer={data.offer} /> : null}
-              {role === TRANSACTION_ROLES.maker ? <TransactionMaker offer={data.offer} /> : null}
-              <Time id={data._id} time={data.createdAt} />
-            </ErrorBoundary>
+            {role === TRANSACTION_ROLES.taker ? <TransactionTaker offer={data.offer} /> : null}
+            {role === TRANSACTION_ROLES.maker ? <TransactionMaker offer={data.offer} /> : null}
+            <Time id={data._id} time={data.createdAt} />
           </div>
 
           <div className="wrapper p-5 mt-5">
-            <ErrorBoundary fallback={<h1>error</h1>}>
-              {role === TRANSACTION_ROLES.taker ? (
-                <ConfirmsTaker takerConfirmed={takerTransfered} takerClaim={takerClaim} />
-              ) : null}
-              {role === TRANSACTION_ROLES.maker ? (
-                <ConfirmsMaker makerConfirmed={makerConfirmed} />
-              ) : null}
-            </ErrorBoundary>
+            {role === TRANSACTION_ROLES.taker ? (
+              <ConfirmsTaker takerConfirmed={takerTransfered} takerClaim={takerClaim} />
+            ) : null}
+            {role === TRANSACTION_ROLES.maker ? (
+              <ConfirmsMaker makerConfirmed={makerConfirmed} />
+            ) : null}
           </div>
         </div>
-        <ErrorBoundary fallback={<h1>error</h1>}>
-          <Chat
-            sendMessage={() => {}}
-            setMessage={() => {}}
-            message={''}
-            addressOrName={address!}
-            avatar={''}
-            chatMessages={[]}
-          />
-        </ErrorBoundary>
+        <Chat
+          sendMessage={() => {}}
+          setMessage={() => {}}
+          message={''}
+          addressOrName={address!}
+          avatar={''}
+          chatMessages={[]}
+        />
       </div>
-    </>
-  ) : isLoading ? (
-    <h1>loading...</h1>
-  ) : isError ? (
-    <h1>error</h1>
+    </div>
   ) : null
 }
 

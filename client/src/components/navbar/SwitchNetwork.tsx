@@ -20,7 +20,7 @@ export const SwitchNetwork = () => {
         <Modal header="Switch Network" close={setOpenSwitchNetwork}>
           <div className="flex flex-col gap-y-5">
             {chains.map((chain, i) => (
-              <NetworkButton key={i} />
+              <NetworkButton chain={chain} key={i} switchNetwork={switchNetworkAsync} />
             ))}
           </div>
         </Modal>

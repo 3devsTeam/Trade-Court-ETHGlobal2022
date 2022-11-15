@@ -111,28 +111,28 @@ const HomePage = () => {
           label="Fiat"
           activeSelect={activeFiat}
         />
-        {/* {activeFiat && (
-          <> */}
-        <Dropdown
-          onSelect={setActivePayment}
-          data={{
-            items: activeFiat?.banks as [IBank],
-            options: 'name'
-          }}
-          activeSelect={activePayment}
-          label="Payment"
-        />
-        <Dropdown
-          onSelect={setActiveRegion}
-          data={{
-            items: activeFiat?.regions as [IRegion],
-            options: 'name'
-          }}
-          activeSelect={activeRegion}
-          label="Region"
-        />
-        {/* </>
-        )} */}
+        {activeFiat && (
+          <>
+            <Dropdown
+              onSelect={setActivePayment}
+              data={{
+                items: activeFiat.banks as [IBank],
+                options: 'name'
+              }}
+              activeSelect={activePayment}
+              label="Payment"
+            />
+            <Dropdown
+              onSelect={setActiveRegion}
+              data={{
+                items: activeFiat.regions as [IRegion],
+                options: 'name'
+              }}
+              activeSelect={activeRegion}
+              label="Region"
+            />
+          </>
+        )}
         <Button
           text="text-black"
           border="border"
