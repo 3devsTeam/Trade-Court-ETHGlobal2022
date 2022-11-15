@@ -1,7 +1,7 @@
 import React from 'react'
 import { SelectButton } from './SelectButton'
 import { useSwitchNetwork } from 'wagmi'
-import { useNetwork } from 'wagmi/dist/declarations/src/hooks/accounts'
+import { useNetwork } from 'wagmi'
 
 export const NetworkButton: React.FC = () => {
   const { switchNetworkAsync } = useSwitchNetwork()
