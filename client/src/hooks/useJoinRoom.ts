@@ -19,8 +19,7 @@ export const useJoinRoom = (roomId: string, recieve: string, pay: string, _id: s
         amount: pay
       })
         .then(({ data }) => {
-          close()
-          navigate(`/transaction/${data.newRoom._id}`)
+          navigate(`/transaction/${data?.newRoom._id}`)
         })
         .catch((err) => {
           toast.error(err.response.data.message, {

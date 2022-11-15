@@ -9,10 +9,11 @@ const globalErrorHandler = require("./utils/errorController")
 const app = express()
 app.use(
   cors({
-    credentials: true,
     origin: "http://127.0.0.1:5173",
+    credentials: true,
   })
 )
+
 app.options("*", cors())
 
 if (process.env.NODE_ENV === "dev") {

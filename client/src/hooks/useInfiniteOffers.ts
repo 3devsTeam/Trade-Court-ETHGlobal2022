@@ -3,10 +3,10 @@ import { useCallback, useRef } from 'react'
 import { OfferService } from '../api/offer.services'
 import { IActiveFilters } from '../pages/home'
 
-export const useInfiniteOffers = (activeFilters: IActiveFilters, limit?: number) => {
+export const useInfiniteOffers = (activeFilters: IActiveFilters, limit = 5) => {
   const { data, fetchNextPage, status, error, isFetchingNextPage, hasNextPage } = useInfiniteQuery(
     ['offers', activeFilters],
-    ({ pageParam = 1 }) => OfferService.getAll(pageParam, limit, activeFilters),
+    ({ pageParam = 1 }) => OfferService.getFiltered(pageParam, limit, activeFilters),
     {
       getNextPageParam: (lastPage, allPages) => {
         return lastPage.length ? allPages.length + 1 : undefined

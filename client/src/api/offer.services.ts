@@ -21,20 +21,27 @@ export const OfferService = {
       withCredentials: true
     })
   },
+  async takerSend(id: string) {
+    return api.get(`/api/offer/${id}/send`, { withCredentials: true })
+  },
+  async makerRecieved(id: string) {
+    return api.get(`/api/offer/${id}/recieve`, { withCredentials: true })
+  },
   async claimByID(id: string) {
     return api.get(`/api/offer/${id}/claim`, {
       withCredentials: true
     })
   },
-  async getAll(page: number, limit = 5, tags: any) {
-    if (Object.values(tags).join('') !== '') {
+  async getFiltered(page: number, limit = 5, tags: any) {
+    const isFilterOn = Object.values(tags).join('') !== ''
+
+    if (isFilterOn) {
       const filters = Object.entries(tags)
-        .map((tag) => {
-          if (tag[1] !== '') {
-            return `search[${tag[0]}]=${tag[1]}`
-          }
+        .map(([key, value]) => {
+          if (value) return `search[${key}]=${value}&`
         })
-        .join('&')
+        .join('')
+        .slice(0, -1)
 
       const { data } = await api.get(`/api/offer/?page=${page}&limit=${limit}&${filters}`)
       return data.data.offers
