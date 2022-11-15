@@ -8,6 +8,9 @@ export default defineConfig({
     global: {},
     'process.env': {}
   },
+  // preview: {
+  //   port: 5137
+  // },
   plugins: [
     react(),
     legacy({
