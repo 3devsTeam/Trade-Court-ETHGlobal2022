@@ -25,7 +25,7 @@ export const TransferStep: React.FC<Props> = ({ payMethods }) => {
       <div className="flex flex-col gap-y-[10px] font-bold">
         <div className="flex flex-col">
           <span className="text-gray-300 text-xs">Bank</span>
-          <span>{bank.name}</span>
+          <span>{bank?.name}</span>
         </div>
 
         <div className="flex flex-col">

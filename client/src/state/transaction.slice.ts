@@ -4,8 +4,8 @@ import { TRANSACTION_ROLES } from '../types/interfaces/roles.enum'
 
 interface ITransactionSlice {
   step: number
-  role: TRANSACTION_ROLES
-  selectedPayment: IPayment
+  role: string
+  selectedPayment: any
 }
 
 const initialState: ITransactionSlice = {

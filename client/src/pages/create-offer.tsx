@@ -5,13 +5,10 @@ import { CreateOfferStepTwo } from '../components/create-offer/CreateOfferStepTw
 import { CreateOfferStepThree } from '../components/create-offer/CreateOfferStepThree'
 import { useTokens } from '../hooks/useTokens'
 import { useFiat } from '../hooks/useFiat'
-import { ProgressBar } from '../components/create-offer/Progressbar'
+import { ProgressBar } from '../components/create-offer/ProgressBar'
 import { useCreateRoom } from '../hooks/useCreateRoom'
-import Skeleton from 'react-loading-skeleton'
 import { SkeletonWrapper } from '../components/ui/SkeletonWrapper'
 import { ErrorBoundary } from 'react-error-boundary'
-import { Wrapper } from '../components/create-offer/Wrapper'
-import { Suspense } from 'react'
 
 const CreateOfferPage = () => {
   const {
@@ -60,25 +57,27 @@ const CreateOfferPage = () => {
   ]
 
   return (
-    <div className="p-5">
-      <ProgressBar steps={steps} />
+    <ErrorBoundary fallback={<h1>error</h1>}>
+      <div className="p-5">
+        <ProgressBar steps={steps} />
 
-      <div className={'grid grid-cols-2 gap-5 mt-5'}>
-        <div>
-          <ErrorBoundary fallback={<h1>error</h1>}>
+        <div className={'grid grid-cols-2 gap-5 mt-5'}>
+          <div>
+            <ErrorBoundary fallback={<h1>error</h1>}>
+              <SkeletonWrapper isLoaded={isLoaded} height={600}>
+                <div className="flex flex-col gap-5">{pageDisplay()}</div>
+              </SkeletonWrapper>
+            </ErrorBoundary>
+          </div>
+
+          <div>
             <SkeletonWrapper isLoaded={isLoaded} height={600}>
-              <div className="flex flex-col gap-5">{pageDisplay()}</div>
+              <Preview />
             </SkeletonWrapper>
-          </ErrorBoundary>
-        </div>
-
-        <div>
-          <SkeletonWrapper isLoaded={isLoaded} height={600}>
-            <Preview />
-          </SkeletonWrapper>
+          </div>
         </div>
       </div>
-    </div>
+    </ErrorBoundary>
   )
 }
 

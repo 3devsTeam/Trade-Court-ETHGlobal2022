@@ -1,16 +1,10 @@
 import React, { useEffect, useState } from 'react'
-import { Arrow } from '../ui/icons/Arrow'
 import { Cross } from '../ui/icons/Cross'
 import { OfferService } from '../../api/offer.services'
-import { Label } from './Label'
-import { useNavigate } from 'react-router-dom'
 import { Button } from '../ui/Button'
-import { SkeletonWrapper } from '../ui/SkeletonWrapper'
 import { Modal } from '../ui/Modal'
 import { useMutation } from '@tanstack/react-query'
-import { totalAmount } from '../../utils/totalAmount'
 import { IPayment } from '../../types/interfaces/payment.interface'
-import { IOffer } from '../../types/interfaces/offer.interface'
 import { IProfileOffer } from '../../types/interfaces/profile-offer.interface'
 
 interface Props {
@@ -51,8 +45,9 @@ export const ProfileOffer: React.FC<Props> = ({ offer, refetch }) => {
 
       <div>
         <span
-          className={`font-bold ${offerType === 'buy' ? 'text-lightGreen' : 'text-red-400'}`}
-        >{`${offerType?.[0].toUpperCase()}${offerType?.slice(1)}`}</span>
+          className={`font-bold ${
+            offerType === 'buy' ? 'text-lightGreen' : 'text-red-400'
+          }`}>{`${offerType?.[0].toUpperCase()}${offerType?.slice(1)}`}</span>
       </div>
 
       <div>
@@ -70,7 +65,7 @@ export const ProfileOffer: React.FC<Props> = ({ offer, refetch }) => {
       <div>
         {payMethods.map((payment: IPayment) => (
           <div>
-            <span>{payment.bank.name}</span>
+            <span>{payment?.bank?.name}</span>
           </div>
         ))}
       </div>
@@ -91,8 +86,7 @@ export const ProfileOffer: React.FC<Props> = ({ offer, refetch }) => {
           <button
             onClick={() => handleDelete.mutate()}
             disabled={handleDelete.isLoading}
-            className="text-white p-2 w-full rounded-lg bg-red-500 font-bold hover:opacity-70"
-          >
+            className="text-white p-2 w-full rounded-lg bg-red-500 font-bold hover:opacity-70">
             {handleDelete.isLoading ? 'Deleting Offer...' : 'Delete'}
           </button>
         </Modal>

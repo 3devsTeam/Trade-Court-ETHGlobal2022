@@ -12,15 +12,14 @@ export const SwitchNetwork = () => {
   return (
     <button
       onClick={() => setOpenSwitchNetwork(!openSwitchNetwork)}
-      className="rounded-[15px] relative bg-white shadow-customDark h-full px-[10px]"
-    >
+      className="rounded-[15px] relative bg-white shadow-customDark h-full px-[10px]">
       <span className="font-bold">{chain?.name}</span>
 
       {openSwitchNetwork ? (
         <Modal header="Switch Network" close={setOpenSwitchNetwork}>
           <div className="flex flex-col gap-y-5">
             {chains.map((chain, i) => (
-              <NetworkButton chain={chain} key={i} switchNetwork={switchNetworkAsync} />
+              <NetworkButton key={i} />
             ))}
           </div>
         </Modal>

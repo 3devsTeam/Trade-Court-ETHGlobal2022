@@ -90,8 +90,8 @@ export const Preview = () => {
               ? payMethods?.map((payment, i) => {
                   return (
                     <div key={i} className={'flex items-center gap-1 my-2'}>
-                      <img className={'image'} src={payment.bank.logoUrl} alt="" />
-                      <p>{payment.bank.name}</p>
+                      <img className={'image'} src={payment?.bank?.logoUrl} alt="" />
+                      <p>{payment?.bank?.name}</p>
                     </div>
                   )
                 })

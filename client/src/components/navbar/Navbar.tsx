@@ -51,8 +51,6 @@ export const Navbar = () => {
   //   }
   // }, [isDisconnected]);
 
-  const login = () => {}
-
   const { isConnected, address } = useAccount()
   const {
     data: balance,
@@ -96,6 +94,7 @@ export const Navbar = () => {
             ensName={ensName}
             balance={balance}
             menuRef={menuRef}
+            setOpenConnectModal={setOpenConnectModal}
             setOpenMenu={setOpenMenu}
           />
         )}
