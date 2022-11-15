@@ -16,6 +16,7 @@ import { SubmitButton } from '../ui/SubmitButton'
 import { ICrypto } from '../../types/interfaces/crypto.interface'
 import { IFiat } from '../../types/interfaces/fiat.interface'
 import { NoItems } from '../errors/no-items'
+import Skeleton from 'react-loading-skeleton'
 
 interface IStep1 {
   tokens: [ICrypto]
@@ -58,52 +59,40 @@ export const CreateOfferStepOne = ({ tokens, allFiat }: IStep1) => {
   const filteredTokens = searchFilter(tokens)
 
   return (
-    <form>
+    <>
       <Wrapper>
-        <div className="flex flex-col gap-5">
-          <ModalInput
-            symbol={symbol}
-            fullName={cryptoName}
-            image={cryptoImage}
-            onOpen={() => setIsOpen(!isOpen)}
-            label={'Crypto'}
-          />
-          <Dropdown
-            value={ticker}
-            fullName={fiatName}
-            image={fiatImage}
-            onAction={setFiat}
-            data={allFiat as IFiat[]}
-            label={'Fiat'}
-          />
-          <NumericalInput
-            onUserInput={setUnitPrice}
-            placeholder={'0'}
-            label={'Unit Price'}
-            element={ticker}
-            value={unitPrice}
-          />
+        <ModalInput
+          symbol={symbol}
+          fullName={cryptoName}
+          image={cryptoImage}
+          onOpen={() => setIsOpen(!isOpen)}
+          label={'Crypto'}
+        />
 
-          <NumericalInput
-            maxValue={tokenAmount.toString()}
-            onUserInput={setQuantity}
-            placeholder={'0'}
-            label={'Quantity'}
-            element={symbol}
-            value={quantity}
-          />
-        </div>
-        {isOpen ? (
-          <Modal close={() => setIsOpen(false)} header={'Select Token'}>
-            <SearchField
-              placeholder={'Enter token name or paste it address'}
-              setSearchTerm={setSearchTerm}
-              searchTerm={searchTerm}
-            />
+        <Dropdown
+          value={ticker}
+          fullName={fiatName}
+          image={fiatImage}
+          onAction={setFiat}
+          data={allFiat as IFiat[]}
+          label={'Fiat'}
+        />
+        <NumericalInput
+          onUserInput={setUnitPrice}
+          placeholder={'0'}
+          label={'Unit Price'}
+          element={ticker}
+          value={unitPrice}
+        />
 
-            <TokenList tokens={filteredTokens} closeModal={() => setIsOpen(false)} />
-          </Modal>
-        ) : null}
+        <NumericalInput
+          maxValue={tokenAmount.toString()}
+          onUserInput={setQuantity}
+          placeholder={'0'}
+          label={'Quantity'}
+          element={symbol}
+          value={quantity}
+        />
       </Wrapper>
 
       <div className="mt-5">
@@ -111,6 +100,18 @@ export const CreateOfferStepOne = ({ tokens, allFiat }: IStep1) => {
           <ButtonDisabled name="Next" onClick={nextStep} disabled={!checkStep1()} />
         </Wrapper>
       </div>
-    </form>
+
+      {isOpen ? (
+        <Modal close={() => setIsOpen(false)} header={'Select Token'}>
+          <SearchField
+            placeholder={'Enter token name or paste it address'}
+            setSearchTerm={setSearchTerm}
+            searchTerm={searchTerm}
+          />
+
+          <TokenList tokens={filteredTokens} closeModal={() => setIsOpen(false)} />
+        </Modal>
+      ) : null}
+    </>
   )
 }

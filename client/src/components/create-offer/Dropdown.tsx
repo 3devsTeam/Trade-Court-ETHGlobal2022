@@ -37,8 +37,7 @@ export const Dropdown = ({ value, fullName, onAction, label, data, image }: IDro
         onClick={() => setIsOpen(!isOpen)}
         className={
           'flex items-center justify-between cursor-pointer w-full inputBorder rounded-[15px] p-2'
-        }
-      >
+        }>
         <div className={'flex items-center space-x-2'}>
           <img
             className={'w-8 h-8 rounded-[50%] shadow-customDark object-cover'}
@@ -58,8 +57,7 @@ export const Dropdown = ({ value, fullName, onAction, label, data, image }: IDro
         <div
           className={
             'rounded-[10px] absolute w-full shadow-2xl bg-white h-[250px] overflow-y-auto z-50'
-          }
-        >
+          }>
           {data.map((select: ISelect, i: number) => {
             const { ticker, logoUrl, name } = select
 
@@ -67,8 +65,9 @@ export const Dropdown = ({ value, fullName, onAction, label, data, image }: IDro
               <div
                 onClick={() => clickHandler(data[i])}
                 key={i}
-                className={'p-2 cursor-pointer flex items-center gap-1'}
-              >
+                className={
+                  'p-2 cursor-pointer flex items-center gap-1 hover:bg-lightGray transition-colors duration-300'
+                }>
                 <img
                   className={'w-8 h-8 rounded-full shadow-customDark object-cover'}
                   width={32}

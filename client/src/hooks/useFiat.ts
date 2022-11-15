@@ -13,18 +13,23 @@ export const useFiat = () => {
 
   const { setFiat, setBank, setRegion } = useActions()
 
-  const { data: allFiat, isSuccess } = useQuery(['get fiat'], () => FiatServices.getFiat(), {
+  const {
+    data: allFiat,
+    isSuccess: fiatSuccess,
+    isError: fiatError,
+    isLoading: fiatLoading
+  } = useQuery(['get fiat'], () => FiatServices.getFiat(), {
     select: (data) => data.data.allFiat,
     onSuccess: (data) => setFiat(data[0]),
     refetchOnWindowFocus: false
   })
 
   useEffect(() => {
-    if (isSuccess && regions.length != 0 && banks.length != 0) {
+    if (fiatSuccess && regions.length != 0 && banks.length != 0) {
       setBank(allFiat?.filter((e: IFiat) => e._id === fiat._id)[0].banks[0])
       setRegion(allFiat?.filter((e: IRegion) => e._id === fiat._id)[0].regions[0])
     }
   }, [fiat])
 
-  return { allFiat, isSuccess }
+  return { allFiat, fiatSuccess, fiatError, fiatLoading }
 }

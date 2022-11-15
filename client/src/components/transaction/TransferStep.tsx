@@ -38,10 +38,12 @@ export const TransferStep: React.FC<Props> = ({ payMethods }) => {
           <span>{cardNumber}</span>
         </div>
 
-        <div className="flex flex-col">
-          <span className="text-gray-300 text-xs">Payment Description</span>
-          <span>{paymentDescription}</span>
-        </div>
+        {paymentDescription ? (
+          <div className="flex flex-col">
+            <span className="text-gray-300 text-xs">Payment Description</span>
+            <span>{paymentDescription}</span>
+          </div>
+        ) : null}
 
         <WarningMessage />
       </div>

@@ -3,7 +3,7 @@ import Skeleton from 'react-loading-skeleton'
 
 interface ISkeletonWrapper {
   children: any
-  isLoading: boolean
+  isLoaded: boolean
   height: number
   count?: number
   margin?: string
@@ -11,12 +11,14 @@ interface ISkeletonWrapper {
 
 export const SkeletonWrapper = ({
   children,
-  isLoading,
+  isLoaded,
   height,
   count,
   margin
 }: ISkeletonWrapper) => {
-  return isLoading ? (
+  return isLoaded ? (
+    children
+  ) : (
     <Skeleton
       height={height}
       borderRadius={20}
@@ -25,7 +27,5 @@ export const SkeletonWrapper = ({
         marginBottom: margin
       }}
     />
-  ) : (
-    children
   )
 }

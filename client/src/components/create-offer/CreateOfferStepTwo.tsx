@@ -82,63 +82,56 @@ export const CreateOfferStepTwo = () => {
   }, [active])
 
   return (
-    <form>
+    <>
       <Wrapper>
-        <div className="flex flex-col gap-5">
-          {payMethods.length ? (
-            <div>
-              <Label label={'Payment Methods'} />
-              <div className={'flex flex-col gap-3'}>
-                {payMethods.map((p) => {
-                  return (
-                    <Payment
-                      deletePayment={deletePayment}
-                      setActive={setActive}
-                      key={p.id}
-                      payment={p}
-                    />
-                  )
-                })}
-              </div>
-            </div>
-          ) : null}
-
+        {payMethods.length ? (
           <div>
-            <Label label={'Add Payment Method'} />
-            <div className={'flex items-center gap-1'}>
-              <Dropdown
-                image={paymentLogoUrl}
-                value={paymentName}
-                data={banks}
-                onAction={setBank}
-              />
-              <Dropdown
-                image={regionLogoUrl}
-                value={regionName}
-                data={regions}
-                onAction={setRegion}
-              />
+            <Label label={'Payment Methods'} />
+            <div className={'flex flex-col gap-3'}>
+              {payMethods.map((p) => {
+                return (
+                  <Payment
+                    deletePayment={deletePayment}
+                    setActive={setActive}
+                    key={p.id}
+                    payment={p}
+                  />
+                )
+              })}
             </div>
           </div>
+        ) : null}
 
-          <NumericalInput
-            value={cardNumber!.replace('.', '')}
-            label={'Card Number'}
-            placeholder={'Enter card number'}
-            onUserInput={setCardNumber}
-          />
-          <TextArea
-            value={paymentDescription}
-            onAction={setPaymentDescription}
-            label={'Payment Description'}
-            placeholder={'Here can be written something useful...'}
-          />
-          <ButtonDisabled
-            name={payMethods.length === 5 ? 'Maximum' : active != null ? 'Save' : 'Add'}
-            onClick={active != null ? editPayment : addPayment}
-            disabled={!(payMethods.length < 5)}
-          />
+        <div>
+          <Label label={'Add Payment Method'} />
+          <div className={'flex items-center gap-1'}>
+            <Dropdown image={paymentLogoUrl} value={paymentName} data={banks} onAction={setBank} />
+            <Dropdown
+              image={regionLogoUrl}
+              value={regionName}
+              data={regions}
+              onAction={setRegion}
+            />
+          </div>
         </div>
+
+        <NumericalInput
+          value={cardNumber!.replace('.', '')}
+          label={'Card Number'}
+          placeholder={'Enter card number'}
+          onUserInput={setCardNumber}
+        />
+        <TextArea
+          value={paymentDescription}
+          onAction={setPaymentDescription}
+          label={'Payment Description'}
+          placeholder={'Here can be written something useful...'}
+        />
+        <ButtonDisabled
+          name={payMethods.length === 5 ? 'Maximum' : active != null ? 'Save' : 'Add'}
+          onClick={active != null ? editPayment : addPayment}
+          disabled={!(payMethods.length < 5)}
+        />
       </Wrapper>
 
       <div className="mt-5">
@@ -149,6 +142,6 @@ export const CreateOfferStepTwo = () => {
           </div>
         </Wrapper>
       </div>
-    </form>
+    </>
   )
 }

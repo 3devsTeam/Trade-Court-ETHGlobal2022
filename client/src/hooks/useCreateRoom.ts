@@ -57,7 +57,7 @@ export const useCreateRoom = () => {
     unitPrice
   ]
 
-  console.log(args)
+  //console.log(args)
 
   const { config, status: prepareTxStatus } = usePrepareContractWrite({
     ...contractConfig,
