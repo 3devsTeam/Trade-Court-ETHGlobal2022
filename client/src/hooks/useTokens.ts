@@ -46,18 +46,18 @@ export const useTokens = () => {
     }
   )
 
-  const isSuccess =
+  const tokensSuccess =
     statusEthUsdRate === 'success' && statusExchangeRate === 'success' && statusTokens === 'success'
-  const isLoading =
+  const tokensLoading =
     statusEthUsdRate === 'loading' && statusExchangeRate === 'loading' && statusTokens === 'loading'
-  const isError =
+  const tokensError =
     statusEthUsdRate === 'error' && statusExchangeRate === 'error' && statusTokens === 'error'
 
   useEffect(() => {
-    if (isSuccess) {
+    if (tokensSuccess) {
       setCrypto(newTokens[0])
     }
-  }, [isSuccess])
+  }, [tokensSuccess])
 
   const zero = ethers.constants.Zero
   const div36 = BigNumber.from(10).pow(36)
@@ -84,5 +84,10 @@ export const useTokens = () => {
     return crypto
   })
 
-  return { tokens: newTokens, isSuccess, isLoading, isError }
+  return {
+    tokens,
+    tokensSuccess,
+    tokensLoading,
+    tokensError
+  }
 }

@@ -1,4 +1,3 @@
-import { ROLES } from './roles.enum'
 import { IOffer } from './offer.interface'
 
 export interface IMaker {
@@ -6,5 +5,5 @@ export interface IMaker {
   _id: string
   address: string
   offers: IOffer[]
-  role: ROLES
+  role: 'maker'
 }

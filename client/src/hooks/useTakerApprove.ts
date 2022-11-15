@@ -10,7 +10,11 @@ export const useTakerApprove = (roomId: string, takerNumber: number) => {
     args
   })
 
-  const { data, status: contractTxStatus, writeAsync: takerApprove } = useContractWrite(config)
+  const {
+    data,
+    status: contractTxStatus,
+    writeAsync: takerApprove
+  } = useContractWrite(config as any)
 
   return {
     data,

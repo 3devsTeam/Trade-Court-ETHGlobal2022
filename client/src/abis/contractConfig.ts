@@ -1,7 +1,6 @@
-import { UseContractConfig } from 'wagmi/dist/declarations/src/hooks/contracts/useContract'
 import config from './goerli_contract.json'
 
-const contractConfig: UseContractConfig = {
+const contractConfig = {
   addressOrName: config.address,
   contractInterface: config.abi
 }

@@ -57,7 +57,7 @@ export const useCreateRoom = () => {
     unitPrice
   ]
 
-  console.log(args)
+  //console.log(args)
 
   const { config, status: prepareTxStatus } = usePrepareContractWrite({
     ...contractConfig,
@@ -65,13 +65,13 @@ export const useCreateRoom = () => {
     args,
     overrides: {
       value: ethers.utils.parseEther(+quantity > 0 ? quantity.toString() : '0'),
-      gasLimit: 400000
+      gasLimit: BigNumber.from(400000)
     }
   })
 
   //console.log('prepare error', prepareError)
 
-  const { data, status: txStatus, writeAsync } = useContractWrite(config)
+  const { data, status: txStatus, writeAsync } = useContractWrite(config as any)
 
   const {
     isSuccess,

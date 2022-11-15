@@ -10,7 +10,11 @@ export const useMakerApprove = (roomId: string, takerNumber: number) => {
     args
   })
 
-  const { data, status: makerContractTxStatus, writeAsync: makerApprove } = useContractWrite(config)
+  const {
+    data,
+    status: makerContractTxStatus,
+    writeAsync: makerApprove
+  } = useContractWrite(config as any)
 
   return {
     data,
