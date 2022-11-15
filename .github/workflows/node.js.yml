@@ -22,7 +22,7 @@ jobs:
           sudo service nginx restart
       - run: |
           cd client
-          npm i
+          npm i --force
           cd ..
           pm2 restart client
           sudo service nginx restart
