@@ -24,4 +24,4 @@ jobs:
           cd ..
           pm2 status
           pm2 restart server
-          sudo systemctl reload nginx
+          sudo service nginx restart
