@@ -11,7 +11,7 @@ const app = express();
 // app.use(express.static(path.join(__dirname, '../client/dist')));
 app.use(
   cors({
-    origin: 'http://127.0.0.1:5173',
+    origin: '*',
     credentials: true,
   })
 );
