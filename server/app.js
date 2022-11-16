@@ -8,10 +8,10 @@ const cookieParser = require('cookie-parser');
 const globalErrorHandler = require('./utils/errorController');
 
 const app = express();
-// app.use(express.static(path.join(__dirname, '../client/dist')));
+app.use(express.static(path.join(__dirname, '../client/dist')));
 app.use(
   cors({
-    origin: '*',
+    origin: 'http://161.35.83.140:3030',
     credentials: true,
   })
 );

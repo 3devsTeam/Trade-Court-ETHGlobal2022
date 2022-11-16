@@ -16,7 +16,7 @@ jobs:
       - run: |
           cd client
           npm i --force
-          pm2 restart client
+          npm run build
           cd ..
       - run: |
           cd server
