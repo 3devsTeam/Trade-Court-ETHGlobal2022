@@ -8,6 +8,7 @@ if (process.env.NODE_ENV == 'prod') {
 } else if (process.env.NODE_ENV == 'dev') {
   dotenv.config({ path: './config.env' });
 }
+console.log(process.env);
 const DB = process.env.DATABASE.replace('<PASSWORD>', process.env.DB_PASSWORD);
 
 mongoose
