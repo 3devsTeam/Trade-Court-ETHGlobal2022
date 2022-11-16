@@ -68,7 +68,7 @@ export const useTokens = () => {
 
     if (!weiBalance.eq(zero)) {
       const weiExchangeRate = BigNumber.from(exchangeRate[`${crypto?.address}`])
-      const usdRate = BigNumber.from(parseInt(ethUsdRate))
+      const usdRate = BigNumber.from(parseInt(ethUsdRate) * 100)
       const weiPrice = weiBalance.mul(weiExchangeRate).mul(usdRate).div(div36)
       const usdAmount = parseInt(weiPrice.toString()) / 100
       const ethAmount = parseInt(weiBalance.div(div15).toString()) / 1000
