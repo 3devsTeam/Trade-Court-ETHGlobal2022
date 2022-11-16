@@ -44,7 +44,7 @@ const TransactionPage = () => {
       select: ({ data }) => data.data.room,
       onSuccess: (data) => {
         setRole(data.role)
-        joinRoom({ id, role })
+        socket.emit('joinOffer', { id, role })
         setStep(
           data.stage === 'waiting taker'
             ? 1
@@ -61,45 +61,20 @@ const TransactionPage = () => {
 
   const {
     data: takerApproveTxData,
-    takerApprove,
+    takerTransfered,
     prepareTxStatus,
     contractTxStatus
-  } = useTakerApprove(data?.offer.roomId, data?.takerNumber)
+  } = useTakerApprove(data?.offer.roomId, data?.takerNumber, id!, socket)
 
   const {
     data: makerApproveTxData,
-    makerApprove,
+    makerConfirmed,
     makerContractTxStatus,
     makerPrepareTxStatus
-  } = useMakerApprove(data?.offer.roomId, data?.takerNumber)
+  } = useMakerApprove(data?.offer.roomId, data?.takerNumber, id!, socket)
 
-  const {
-    takerWithdraw,
-    takerWithdrawPrepareTxStatus,
-    takerWithdrawTxData,
-    takerWithdrawTxStatus
-  } = useTakerWithdraw(data?.offer.roomId, data?.takerNumber)
-
-  const joinRoom = (data: object) => {
-    socket.emit('joinOffer', data)
-  }
-
-  const takerTransfered = async () => {
-    await takerApprove?.()
-    await OfferService.takerSend(id!)
-    socket.emit('takerConfirmed', id)
-  }
-
-  const makerConfirmed = async () => {
-    await makerApprove?.()
-    await OfferService.makerRecieved(id!)
-    socket.emit('makerConfirmed', id)
-  }
-
-  const takerClaim = async () => {
-    await takerWithdraw?.()
-    await OfferService.claimByID(id!)
-  }
+  const { takerClaim, takerWithdrawPrepareTxStatus, takerWithdrawTxData, takerWithdrawTxStatus } =
+    useTakerWithdraw(data?.offer.roomId, data?.takerNumber, id!, socket)
 
   return isSuccess ? (
     <>

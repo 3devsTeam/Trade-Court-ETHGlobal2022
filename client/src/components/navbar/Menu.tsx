@@ -20,17 +20,9 @@ interface Props {
   ensName: any
   setOpenMenu: any
   setOpenConnectModal: React.Dispatch<SetStateAction<boolean>>
-  menuRef: React.MutableRefObject<null>
 }
 
-export const Menu = ({
-  address,
-  balance,
-  ensName,
-  setOpenMenu,
-  setOpenConnectModal,
-  menuRef
-}: Props) => {
+export const Menu = ({ address, balance, ensName, setOpenMenu, setOpenConnectModal }: Props) => {
   const navigate = useNavigate()
   const { disconnect } = useDisconnect()
 
@@ -90,8 +82,7 @@ export const Menu = ({
   return (
     <nav
       onMouseLeave={() => setOpenMenu(false)}
-      className="flex justify-start flex-col absolute top-11 right-0 px-2 py-[12px] w-full z-50 bg-white shadow-customDark rounded-[20px]"
-    >
+      className="flex justify-start flex-col absolute top-11 right-0 px-2 py-[12px] w-full z-50 bg-white shadow-customDark rounded-[20px]">
       <div className={'flex justify-between'}>
         <div className="flex justify-between space-x-2">
           <div>
