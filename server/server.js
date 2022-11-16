@@ -3,18 +3,12 @@ const mongoose = require('mongoose');
 const socketHandler = require('./socket');
 
 const app = require('./app');
-let DB;
 if (process.env.NODE_ENV == 'prod') {
   dotenv.config({ path: '../../../../conffiles/config.env' });
-  DB = 'mongodb://127.0.0.1:27017/';
 } else if (process.env.NODE_ENV == 'dev') {
   dotenv.config({ path: './config.env' });
-  DB = process.env.DATABASE.replace('<PASSWORD>', process.env.DB_PASSWORD);
-} else {
-  process.exit(1);
 }
-
-console.log(DB);
+const DB = process.env.DATABASE.replace('<PASSWORD>', process.env.DB_PASSWORD);
 
 mongoose
   .connect(DB, {
