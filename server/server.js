@@ -1,14 +1,13 @@
 const dotenv = require('dotenv');
 const mongoose = require('mongoose');
 const socketHandler = require('./socket');
-
 const app = require('./app');
+
 if (process.env.NODE_ENV == 'prod') {
   dotenv.config({ path: '../../../../conffiles/config.env' });
 } else if (process.env.NODE_ENV == 'dev') {
   dotenv.config({ path: './config.env' });
 }
-console.log(process.env);
 const DB = process.env.DATABASE.replace('<PASSWORD>', process.env.DB_PASSWORD);
 
 mongoose
