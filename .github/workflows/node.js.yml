@@ -9,10 +9,9 @@ on:
   pull_request:
     branches: ['main']
 jobs:
-  build:
+  deploy:
     runs-on: self-hosted
     steps:
-    
       - uses: actions/checkout@v3
       - run: |
           cd client
@@ -22,7 +21,5 @@ jobs:
       - run: |
           cd server
           npm i
-          cd ..
-          pm2 status
           pm2 restart server
-          sudo service nginx restart
+          sudo systemctl restart nginx
