@@ -65,19 +65,9 @@ const TransactionPage = () => {
     socket.emit('joinOffer', data)
   }
 
-  const {
-    data: takerApproveTxData,
-    takerTransfered,
-    prepareTxStatus,
-    contractTxStatus
-  } = useTakerApprove(data?.offer.roomId, data?.takerNumber, id!, socket)
+  const { takerTransfered } = useTakerApprove(data?.offer.roomId, data?.takerNumber, id!, socket)
 
-  const {
-    data: makerApproveTxData,
-    makerConfirmed,
-    makerContractTxStatus,
-    makerPrepareTxStatus
-  } = useMakerApprove(data?.offer.roomId, data?.takerNumber, id!, socket)
+  const { makerConfirmed } = useMakerApprove(data?.offer.roomId, data?.takerNumber, id!, socket)
 
   const { takerClaim } = useTakerWithdraw(data?.offer.roomId, data?.takerNumber, id!, socket)
 
@@ -107,14 +97,7 @@ const TransactionPage = () => {
           </div>
         </div>
         <ErrorBoundary fallback={<h1>error</h1>}>
-          <Chat
-            sendMessage={() => {}}
-            setMessage={() => {}}
-            message={''}
-            addressOrName={address!}
-            avatar={''}
-            chatMessages={[]}
-          />
+          <Chat offer={data} socket={socket} />
         </ErrorBoundary>
       </div>
     </>

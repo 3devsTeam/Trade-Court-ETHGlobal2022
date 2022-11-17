@@ -3,23 +3,13 @@ import { useContractWrite, usePrepareContractWrite, useWaitForTransaction } from
 import { ethers, BigNumber } from 'ethers'
 import { useTypedSelector } from './useTypedSelector'
 import { OfferService } from '../api/offer.services'
-import { IPayment } from '../types/interfaces/payment.interface'
 import { useNavigate } from 'react-router-dom'
 import { useActions } from './useActions'
 import { toast } from 'react-toastify'
 import { useGenerateRoom } from './useGenerateRoom'
-
-// createRoom ДЛЯ ДОМИНАТОРОВ
-// _roomNumber (uint256)
-// _timeForTakerAndMaker (uint32)
-// _maxLimit (uint256)
-// _lowLimit (uint256)
-// _addressOfToken (address) ДЛЯ ЩИТКОИНОВ
-// _msgValue (uint256) ДЛЯ ЩИТКОИНОВ
-// _rate (uint32) UNIT PRICE
+import { useEffect, useRef } from 'react'
 
 export const useCreateRoom = () => {
-  console.log(contractConfig)
   const {
     quantity,
     unitPrice,
@@ -32,6 +22,8 @@ export const useCreateRoom = () => {
     payMethods
   } = useTypedSelector((state) => state.createOfferReducer)
 
+  const toastId = useRef(null)
+
   const navigate = useNavigate()
 
   const { resetOffer } = useActions()
@@ -42,7 +34,7 @@ export const useCreateRoom = () => {
     if (value != '.' && value != '0' && value != '' && value != undefined) {
       return ethers.utils.parseEther(value.toString()).div(BigNumber.from(unitPrice))
     } else {
-      return null
+      return '1'
     }
   }
 
@@ -55,6 +47,7 @@ export const useCreateRoom = () => {
     ethers.utils.parseEther('0'),
     +unitPrice
   ]
+  console.log(args)
 
   const { config, status: prepareTxStatus } = usePrepareContractWrite({
     ...contractConfig,
@@ -68,6 +61,39 @@ export const useCreateRoom = () => {
 
   const { data, status: txStatus, writeAsync } = useContractWrite(config as any)
 
+  const txConfirmed = () => {
+    toast.update(toastId.current, {
+      render: 'Tx is confirmed',
+      position: toast.POSITION.BOTTOM_RIGHT,
+      type: 'success',
+      isLoading: false
+    })
+  }
+
+  const offerCreated = () => {
+    toast.update(toastId.current, {
+      render: 'Offer is Created!',
+      type: 'success',
+      position: toast.POSITION.BOTTOM_RIGHT,
+      isLoading: false,
+      closeOnClick: true,
+      autoClose: 5000
+    })
+    navigate('/')
+    resetOffer()
+  }
+
+  const txError = (error: string) => {
+    toast.update(toastId.current, {
+      render: error,
+      type: 'error',
+      position: toast.POSITION.BOTTOM_RIGHT,
+      isLoading: false,
+      closeOnClick: true,
+      autoClose: 5000
+    })
+  }
+
   const {
     isSuccess,
     isLoading,
@@ -75,17 +101,10 @@ export const useCreateRoom = () => {
   } = useWaitForTransaction({
     hash: data?.hash,
     onSuccess: () => {
+      txConfirmed()
       OfferService.create({
         offerType: 'buy',
-        payMethods: payMethods.map((payment: IPayment) => {
-          const { bank, cardNumber, region, paymentDescription } = payment
-          return {
-            bank,
-            cardNumber,
-            region,
-            paymentDescription
-          }
-        }),
+        payMethods: payMethods,
         fiat: fiat._id,
         roomId: roomId!.toString(),
         unitPrice,
@@ -96,20 +115,23 @@ export const useCreateRoom = () => {
         crypto: crypto._id,
         offerComment
       })
-        .then(() => {
-          toast.success('Offer is created', {
-            position: toast.POSITION.BOTTOM_RIGHT
-          })
-          navigate('/')
-          resetOffer()
-        })
-        .catch((error) =>
-          toast.error(error, {
-            position: toast.POSITION.BOTTOM_RIGHT
-          })
-        )
+        .then(() => offerCreated())
+        .catch((error) => txError(error))
     }
   })
+
+  useEffect(() => {
+    const loading = () => {
+      toastId.current = toast(`Waiting for tx...`, {
+        position: toast.POSITION.BOTTOM_RIGHT,
+        isLoading: true
+      })
+    }
+
+    if (isLoading) {
+      loading()
+    }
+  }, [isLoading])
 
   const handleCreateOffer = async () => {
     writeAsync?.()

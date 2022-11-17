@@ -131,8 +131,7 @@ const HomePage = () => {
           activeSelect={activeRegion}
           label="Region"
         />
-        {/* </>
-        )} */}
+
         <Button
           text="text-black"
           border="border"

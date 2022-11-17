@@ -1,83 +1,38 @@
-import React from 'react'
-import telegram from '../../assets/images/message.svg'
-import defaultProfilePic from '../../assets/images/ava.svg'
-import { Gram } from '../ui/icons/Gram'
-import { useEnsName } from 'wagmi'
+import React, { useEffect, useRef, useState } from 'react'
 import { truncateAddress } from '../../utils/truncateAddress'
+import { AvatarIcon } from '../ui/icons/AvatarIcon'
+import { useTypedSelector } from '../../hooks/useTypedSelector'
+import { ChatInput } from './ChatInput'
 
 interface IChat {
-  sendMessage: any
-  setMessage: any
-  message: any
-  addressOrName: string
-  avatar: string
-  chatMessages: any
+  offer: any
+  socket: any
 }
 
-export const Chat = ({
-  chatMessages,
-  addressOrName,
-  avatar,
-  message,
-  setMessage,
-  sendMessage
-}: IChat) => {
-  //console.log(chatMessages);
+export const Chat = ({ offer, socket }: IChat) => {
+  const { role } = useTypedSelector((state) => state.transactionReducer)
+  console.log(offer)
 
-  // console.log(avatar);
+  const [messages, setMessages] = useState([])
+  const scrollRef = useRef()
 
-  // const {
-  //   data: chatName,
-  //   isError,
-  //   isLoading,
-  // } = useEnsName({
-  //   address: "0x3c21AdC545aF820f9734eb67e504a845b897c4FF",
-  // });
+  const handleSendMsg = async () => {
+    socket.emit()
+  }
 
-  //console.log("chat name", chatName);
+  const name =
+    role === 'taker' ? offer?.offer?.maker?.address : role === 'maker' ? offer?.taker?.address : ''
 
   return (
-    <div className={'bg-white rounded-[20px] relative shadow-customDark'}>
-      <div className={'bg-purple rounded-t-[20px] h-[70px] px-[18px] flex items-center'}>
-        <div className={'flex items-center gap-2'}>
-          <img
-            className={'rounded-[50%]'}
-            src={avatar ? avatar : defaultProfilePic}
-            width={55}
-            height={55}
-            alt={''}
-          />
-          <div className={'flex flex-col justify-start'}>
-            <span className={'text-white font-bold'}>{truncateAddress(addressOrName)}</span>
-            <span className={'text-white text-sm'}>online</span>
-          </div>
+    <div className="grid grid-rows-[15%_70%_15%] gap-[0.1rem] overflow-hidden wrapper">
+      <div className="chat-header bg-purple rounded-t-[20px] flex items-center">
+        <div className="flex gap-2 items-center p-[2rem]">
+          <AvatarIcon color={name} />
+          <span className="font-bold text-white">{truncateAddress(name)}</span>
         </div>
       </div>
-      <div className={'h-52'}>
-        {chatMessages}
-        {/* {chatMessages?.map((msg: any, i: number) => {
-          console.log(msg);
-
-          return <></>;
-
-          // return (
-          //   <div className={"text-black"} key={i}>
-          //     {msg}
-          //   </div>
-          // );
-        })} */}
-      </div>
-      <div className={'flex absolute bottom-0 items-center border-t-2 border-gray pr-5 w-full'}>
-        <input
-          onChange={(e) => setMessage(e.target.value)}
-          //value={message ? message : ""}
-          className={'h-[70px] rounded-b-[20px] pl-5 w-full outline-none font-bold text-sm'}
-          placeholder={'Type some message...'}
-        />
-        <button className={``} onClick={() => sendMessage(message)}>
-          <Gram color={'purple'} />
-        </button>
-      </div>
+      <div className="chat-messages flex flex-col gap-4 overflow-auto"></div>
+      <ChatInput handleSendMsg={() => {}} />
     </div>
   )
 }
