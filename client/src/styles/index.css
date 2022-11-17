@@ -23,6 +23,7 @@ body {
   font-size: 1.1rem;
   background-color: #f4f2f8;
   line-height: 1;
+  min-height: 100vh;
 }
 
 * {
