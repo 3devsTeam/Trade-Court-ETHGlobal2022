@@ -1,4 +1,6 @@
+const Chat = require('../models/chatModel');
 const Offer = require('../models/offerModel');
+const { listenerCount } = require('../models/regionModel');
 const Room = require('../models/roomModel');
 const AppError = require('../utils/appError');
 const catchAsync = require('../utils/catchAsync');
@@ -106,6 +108,11 @@ exports.joinRoom = catchAsync(async (req, res, next) => {
     takerNumber: offer.takerNumber,
     createdAt: new Date(),
   });
+  await Chat.create({
+    maker: offer.maker,
+    taker: req.user._id,
+    room: newRoom,
+  });
   await Offer.findByIdAndUpdate(req.params.id, {
     $inc: {
       pendingAmount: req.body.amount,
@@ -157,8 +164,11 @@ exports.getRoom = catchAsync(async (req, res, next) => {
   } else {
     role = 'maker';
   }
+  let chat = await Chat.findOne({ room: room._id });
   room = JSON.parse(JSON.stringify(room));
   room.role = role;
+  chat = JSON.parse(JSON.stringify(chat));
+  room.chatId = chat._id;
   res.status(201).json({
     message: 'success',
     data: {
