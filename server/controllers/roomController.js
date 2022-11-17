@@ -1,4 +1,5 @@
 const Chat = require('../models/chatModel');
+const Message = require('../models/messageModel');
 const Offer = require('../models/offerModel');
 const { listenerCount } = require('../models/regionModel');
 const Room = require('../models/roomModel');
@@ -238,6 +239,8 @@ exports.takerClaimed = catchAsync(async (req, res, next) => {
   if (room.offer.amount - room.amount === 0) {
     await Offer.findByIdAndDelete(room.offer._id);
   }
+  const deletedChat = await Chat.findOneAndDelete({ room: room._id });
+  await Message.deleteMany({ chat: deletedChat._id });
   res.status(200).json({
     message: 'success',
     room,
@@ -262,6 +265,8 @@ exports.leaveRoom = catchAsync(async (req, res, next) => {
     },
   });
   await Room.findByIdAndDelete(req.params.id);
+  const deletedChat = await Chat.findOneAndDelete({ room: room._id });
+  await Message.deleteMany({ chat: deletedChat._id });
   res.status(200).json({
     message: 'success',
   });
