@@ -58,16 +58,30 @@ const offerSchema = new mongoose.Schema({
   },
   totalAmount: {
     type: Number,
+    min: [0, 'totalAmount very small'],
     required: [true, 'total Amount is empty'],
+  },
+  pendingAmount: {
+    type: Number,
+    min: [0, 'pendingAmount very small'],
+    default: 0,
+    required: [true, 'pendingAmount is empty'],
   },
   amount: {
     type: Number,
+    min: [0, 'amount very small'],
     required: [true, 'factual Amount is empty'],
   },
   totalQuantity: {
     type: Number,
     min: [0, 'quantity very small'],
     required: [true, 'quantity is empty'],
+  },
+  pendingQuantity: {
+    type: Number,
+    min: [0, 'pendingQuantity very small'],
+    default: 0,
+    required: [true, 'pendingQuantity is empty'],
   },
   quantity: {
     type: Number,
