@@ -1,8 +1,8 @@
 import config from './goerli_contract.json'
 
 const contractConfig = {
-  addressOrName: config.address,
-  contractInterface: config.abi
+  address: config.address,
+  abi: config.abi
 }
 
 export default contractConfig

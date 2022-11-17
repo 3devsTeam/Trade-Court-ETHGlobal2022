@@ -5,11 +5,11 @@ interface Props {
   fiat: string
 }
 
-export const ApprovalStep: React.FC<Props> = ({ amount }) => {
+export const ApprovalStep: React.FC<Props> = ({ amount, fiat }) => {
   return (
     <div className="h-[40vh] flex justify-center items-center text-center font-bold text-xl">
       Payment sent <br /> Please, comfirm if funds are recieved <br /> You should recieve: {amount}{' '}
-      RUB
+      {fiat}
     </div>
   )
 }

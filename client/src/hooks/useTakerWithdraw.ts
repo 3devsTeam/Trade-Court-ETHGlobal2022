@@ -1,4 +1,4 @@
-import { useContractWrite, usePrepareContractWrite } from 'wagmi'
+import { useContractWrite, usePrepareContractWrite, useWaitForTransaction } from 'wagmi'
 import contractConfig from '../abis/contractConfig'
 import { OfferService } from '../api/offer.services'
 
@@ -12,20 +12,23 @@ export const useTakerWithdraw = (roomId: string, takerNumber: number, id: string
   })
 
   const {
-    data: takerWithdrawTxData,
+    data,
     status: takerWithdrawTxStatus,
     writeAsync: takerWithdraw
   } = useContractWrite(config as any)
 
+  const { isLoading, isSuccess, isError } = useWaitForTransaction({
+    hash: data?.hash,
+    onSuccess: async () => {
+      await OfferService.claimByID(id!)
+    }
+  })
+
   const takerClaim = async () => {
     await takerWithdraw?.()
-    await OfferService.claimByID(id!)
   }
 
   return {
-    takerWithdrawTxData,
-    takerWithdrawPrepareTxStatus,
-    takerWithdrawTxStatus,
     takerClaim
   }
 }

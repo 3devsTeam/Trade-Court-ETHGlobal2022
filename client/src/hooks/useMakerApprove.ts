@@ -1,4 +1,4 @@
-import { useContractWrite, usePrepareContractWrite } from 'wagmi'
+import { useContractWrite, usePrepareContractWrite, useWaitForTransaction } from 'wagmi'
 import contractConfig from '../abis/contractConfig'
 import { OfferService } from '../api/offer.services'
 
@@ -19,9 +19,15 @@ export const useMakerApprove = (roomId: string, takerNumber: number, id: string,
 
   const makerConfirmed = async () => {
     await makerApprove?.()
-    await OfferService.makerRecieved(id!)
-    socket.emit('makerConfirmed', id)
   }
+
+  const { isLoading, isError, isSuccess } = useWaitForTransaction({
+    hash: data?.hash,
+    onSuccess: async () => {
+      await OfferService.makerRecieved(id!)
+      socket.emit('makerConfirmed', id)
+    }
+  })
 
   return {
     data,

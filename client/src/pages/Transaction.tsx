@@ -22,6 +22,8 @@ import { ErrorBoundary } from 'react-error-boundary'
 const TransactionPage = () => {
   const socket = io('http://127.0.0.1:3030')
 
+  console.log(socket)
+
   socket.on('approvalStage', () => {
     setStep(2)
   })
@@ -44,7 +46,7 @@ const TransactionPage = () => {
       select: ({ data }) => data.data.room,
       onSuccess: (data) => {
         setRole(data.role)
-        socket.emit('joinOffer', { id, role })
+        joinRoom({ id, role })
         setStep(
           data.stage === 'waiting taker'
             ? 1
@@ -58,6 +60,10 @@ const TransactionPage = () => {
       }
     }
   )
+
+  const joinRoom = (data: object) => {
+    socket.emit('joinOffer', data)
+  }
 
   const {
     data: takerApproveTxData,
@@ -73,8 +79,7 @@ const TransactionPage = () => {
     makerPrepareTxStatus
   } = useMakerApprove(data?.offer.roomId, data?.takerNumber, id!, socket)
 
-  const { takerClaim, takerWithdrawPrepareTxStatus, takerWithdrawTxData, takerWithdrawTxStatus } =
-    useTakerWithdraw(data?.offer.roomId, data?.takerNumber, id!, socket)
+  const { takerClaim } = useTakerWithdraw(data?.offer.roomId, data?.takerNumber, id!, socket)
 
   return isSuccess ? (
     <>

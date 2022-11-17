@@ -19,6 +19,7 @@ import { useGenerateRoom } from './useGenerateRoom'
 // _rate (uint32) UNIT PRICE
 
 export const useCreateRoom = () => {
+  console.log(contractConfig)
   const {
     quantity,
     unitPrice,
@@ -38,12 +39,10 @@ export const useCreateRoom = () => {
   const { roomId } = useGenerateRoom()
 
   const limitPrice = (value: string, unitPrice: number) => {
-    if (value != '.' && value != '0' && value != undefined) {
-      try {
-        return ethers.utils.parseEther(value.toString()).div(BigNumber.from(unitPrice))
-      } catch (err) {
-        console.log(err)
-      }
+    if (value != '.' && value != '0' && value != '' && value != undefined) {
+      return ethers.utils.parseEther(value.toString()).div(BigNumber.from(unitPrice))
+    } else {
+      return null
     }
   }
 
@@ -54,10 +53,8 @@ export const useCreateRoom = () => {
     limitPrice(minLimit.toString(), +unitPrice),
     '0x0000000000000000000000000000000000000000',
     ethers.utils.parseEther('0'),
-    unitPrice
+    +unitPrice
   ]
-
-  //console.log(args)
 
   const { config, status: prepareTxStatus } = usePrepareContractWrite({
     ...contractConfig,
@@ -69,8 +66,6 @@ export const useCreateRoom = () => {
     }
   })
 
-  //console.log('prepare error', prepareError)
-
   const { data, status: txStatus, writeAsync } = useContractWrite(config as any)
 
   const {
@@ -78,11 +73,8 @@ export const useCreateRoom = () => {
     isLoading,
     data: hash
   } = useWaitForTransaction({
-    hash: data?.hash
-  })
-
-  const handleCreateOffer = async () => {
-    writeAsync?.().then(() => {
+    hash: data?.hash,
+    onSuccess: () => {
       OfferService.create({
         offerType: 'buy',
         payMethods: payMethods.map((payment: IPayment) => {
@@ -116,7 +108,11 @@ export const useCreateRoom = () => {
             position: toast.POSITION.BOTTOM_RIGHT
           })
         )
-    })
+    }
+  })
+
+  const handleCreateOffer = async () => {
+    writeAsync?.()
   }
 
   return {

@@ -34,8 +34,6 @@ const OfferModal: React.FC<Props> = ({ close, offer }) => {
   const [pay, setPay] = useState('0')
   const [recieve, setRecieve] = useState('0')
 
-  // const { roomId } = room;
-
   const { ticker } = fiat
 
   const { symbol } = crypto

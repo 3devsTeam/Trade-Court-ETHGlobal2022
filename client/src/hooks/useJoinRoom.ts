@@ -1,4 +1,4 @@
-import { useContractWrite, usePrepareContractWrite } from 'wagmi'
+import { useContractWrite, usePrepareContractWrite, useWaitForTransaction } from 'wagmi'
 import contractConfig from '../abis/contractConfig'
 import { ethers, BigNumber } from 'ethers'
 import { OfferService } from '../api/offer.services'
@@ -14,19 +14,7 @@ export const useJoinRoom = (roomId: string, recieve: string, pay: string, _id: s
   ]
 
   const handleTransaction = () => {
-    joinRoom?.().then(() => {
-      OfferService.joinByID(_id, {
-        amount: pay
-      })
-        .then(({ data }) => {
-          navigate(`/transaction/${data?.newRoom._id}`)
-        })
-        .catch((err) => {
-          toast.error(err.response.data.message, {
-            position: toast.POSITION.BOTTOM_RIGHT
-          })
-        })
-    })
+    joinRoom?.()
   }
 
   const { config, status: prepareTxStatus } = usePrepareContractWrite({
@@ -38,11 +26,24 @@ export const useJoinRoom = (roomId: string, recieve: string, pay: string, _id: s
     }
   })
 
-  console.log(prepareTxStatus)
-
   const { data, status: txStatus, writeAsync: joinRoom } = useContractWrite(config as any)
 
-  console.log(txStatus)
+  const { isSuccess, isLoading } = useWaitForTransaction({
+    hash: data?.hash,
+    onSuccess: () => {
+      OfferService.joinByID(_id, {
+        amount: pay
+      })
+        .then(({ data }) => {
+          navigate(`/transaction/${data?.newRoom._id}`)
+        })
+        .catch((err) => {
+          toast.error(err.response.data.message, {
+            position: toast.POSITION.BOTTOM_RIGHT
+          })
+        })
+    }
+  })
 
-  return { data, prepareTxStatus, txStatus, handleTransaction }
+  return { data, prepareTxStatus, txStatus, handleTransaction, isLoading, isSuccess }
 }
