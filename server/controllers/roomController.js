@@ -87,9 +87,13 @@ exports.joinRoom = catchAsync(async (req, res, next) => {
   if (
     req.body.amount < offer.minLimit ||
     req.body.amount > offer.maxLimit ||
-    !req.body.amount
+    !req.body.amount ||
+    req.body.amount <= 0
   ) {
     return next(new AppError('Amount is invalid', 400));
+  }
+  if (offer.pendingAmount + req.body.amount > offer.amount) {
+    return next(new AppError('Amount is too big', 400));
   }
   if (offer.amount - req.body.amount < 0) {
     return next(new AppError('Amount is too big', 400));
@@ -104,8 +108,8 @@ exports.joinRoom = catchAsync(async (req, res, next) => {
   });
   await Offer.findByIdAndUpdate(req.params.id, {
     $inc: {
-      amount: req.body.amount * -1,
-      quantity: (req.body.amount / offer.unitPrice) * -1,
+      pendingAmount: req.body.amount,
+      pendingQuantity: req.body.amount / offer.unitPrice,
       takerNumber: 1,
     },
   });
@@ -213,8 +217,20 @@ exports.takerClaimed = catchAsync(async (req, res, next) => {
     return next(new AppError("It's not your turn", 400));
   }
   await Room.findByIdAndDelete(req.params.id);
+  await Offer.findByIdAndUpdate(room.offer._id, {
+    $inc: {
+      pendingAmount: room.amount * -1,
+      amount: room.amount * -1,
+      pendingQuantity: (room.amount / room.unitPrice) * -1,
+      quantity: (room.amount / room.unitPrice) * -1,
+    },
+  });
+  if (room.offer.amount - room.amount === 0) {
+    await Offer.findByIdAndDelete(room.offer._id);
+  }
   res.status(200).json({
     message: 'success',
+    room,
   });
 });
 
@@ -229,9 +245,11 @@ exports.leaveRoom = catchAsync(async (req, res, next) => {
   ) {
     return next(new AppError('You cant leave this room', 403));
   }
-  console.log(room.amount, room.amount / room.unitPrice);
-  await Offer.findByIdAndUpdate(room.offer, {
-    $inc: { amount: room.amount, quantity: room.amount / room.unitPrice },
+  await Offer.findByIdAndUpdate(room.offer._id, {
+    $inc: {
+      pendingAmount: room.amount * -1,
+      pendingQuantity: (room.amount / room.unitPrice) * -1,
+    },
   });
   await Room.findByIdAndDelete(req.params.id);
   res.status(200).json({
