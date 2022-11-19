@@ -11,8 +11,7 @@ import { SkeletonWrapper } from '../components/ui/SkeletonWrapper'
 import { ErrorBoundary } from 'react-error-boundary'
 
 const CreateOfferPage = () => {
-  const { data, handleCreateOffer, isSuccess, isLoading, hash, prepareTxStatus, txStatus } =
-    useCreateRoom()
+  const { handleCreateOffer } = useCreateRoom()
 
   const { step } = useTypedSelector((state) => state.createOfferReducer)
 

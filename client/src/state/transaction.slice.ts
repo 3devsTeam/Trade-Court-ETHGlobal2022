@@ -5,12 +5,14 @@ import { TRANSACTION_ROLES } from '../types/interfaces/roles.enum'
 interface ITransactionSlice {
   step: number
   role: string
+  room: string
   selectedPayment: any
 }
 
 const initialState: ITransactionSlice = {
   step: 1,
   role: '',
+  room: '',
   selectedPayment: {}
 }
 
@@ -29,6 +31,9 @@ export const TransactionSlice = createSlice({
     },
     setSelectedPayment: (state, { payload }) => {
       state.selectedPayment = payload
+    },
+    setRoom: (state, { payload }) => {
+      state.room = payload
     }
   }
 })

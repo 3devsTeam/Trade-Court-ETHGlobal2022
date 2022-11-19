@@ -8,7 +8,7 @@ export const TransactionInfo: React.FC<Props> = ({ offer }) => {
   return (
     <div className="flex justify-between items-center p-5 font-bold wrapper">
       <div className="flex flex-col">
-        <span>You send: {offer?.crypto.symbol}</span>
+        <span>You recieve: {offer?.crypto.symbol}</span>
         <span>You send: {offer.fiat.ticker}</span>
       </div>
       <div>

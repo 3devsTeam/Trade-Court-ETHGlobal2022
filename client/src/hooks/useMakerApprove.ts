@@ -1,6 +1,7 @@
 import { useContractWrite, usePrepareContractWrite, useWaitForTransaction } from 'wagmi'
 import contractConfig from '../abis/contractConfig'
 import { OfferService } from '../api/offer.services'
+import { useToastTx } from './useToastTx'
 
 export const useMakerApprove = (roomId: string, takerNumber: number, id: string, socket: any) => {
   const args = [roomId, takerNumber]
@@ -21,13 +22,17 @@ export const useMakerApprove = (roomId: string, takerNumber: number, id: string,
     await makerApprove?.()
   }
 
-  const { isLoading, isError, isSuccess } = useWaitForTransaction({
+  const { isLoading } = useWaitForTransaction({
     hash: data?.hash,
     onSuccess: async () => {
+      txSuccess('Maker confirmed')
       await OfferService.makerRecieved(id!)
       socket.emit('makerConfirmed', id)
-    }
+    },
+    onError: (err) => txError(err.message)
   })
+
+  const { txSuccess, txError } = useToastTx(isLoading)
 
   return {
     data,

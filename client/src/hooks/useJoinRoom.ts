@@ -2,8 +2,8 @@ import { useContractWrite, usePrepareContractWrite, useWaitForTransaction } from
 import contractConfig from '../abis/contractConfig'
 import { ethers, BigNumber } from 'ethers'
 import { OfferService } from '../api/offer.services'
-import { toast } from 'react-toastify'
 import { useNavigate } from 'react-router-dom'
+import { useToastTx } from './useToastTx'
 
 export const useJoinRoom = (roomId: string, recieve: string, pay: string, _id: string) => {
   const navigate = useNavigate()
@@ -31,19 +31,18 @@ export const useJoinRoom = (roomId: string, recieve: string, pay: string, _id: s
   const { isSuccess, isLoading } = useWaitForTransaction({
     hash: data?.hash,
     onSuccess: () => {
+      txSuccess('Tx is confirmed')
       OfferService.joinByID(_id, {
         amount: pay
       })
         .then(({ data }) => {
           navigate(`/transaction/${data?.newRoom._id}`)
         })
-        .catch((err) => {
-          toast.error(err.response.data.message, {
-            position: toast.POSITION.BOTTOM_RIGHT
-          })
-        })
+        .catch((err) => txError(err.response.data.message))
     }
   })
+
+  const { txSuccess, txError } = useToastTx(isLoading)
 
   return { data, prepareTxStatus, txStatus, handleTransaction, isLoading, isSuccess }
 }

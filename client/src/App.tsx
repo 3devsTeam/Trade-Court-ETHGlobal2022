@@ -16,7 +16,7 @@ const App = () => {
   return (
     <BrowserRouter>
       <Navbar />
-      <main className="max-w-5xl mx-auto">
+      <main className="max-w-5xl h-screen mx-auto">
         <Suspense fallback={<></>}>
           <Routes>
             {/* <Route element={<PrivateRoutes />}> */}

@@ -11,13 +11,9 @@ export const useTakerWithdraw = (roomId: string, takerNumber: number, id: string
     args
   })
 
-  const {
-    data,
-    status: takerWithdrawTxStatus,
-    writeAsync: takerWithdraw
-  } = useContractWrite(config as any)
+  const { data, writeAsync: takerWithdraw } = useContractWrite(config as any)
 
-  const { isLoading, isSuccess, isError } = useWaitForTransaction({
+  const { isLoading } = useWaitForTransaction({
     hash: data?.hash,
     onSuccess: async () => {
       await OfferService.claimByID(id!)

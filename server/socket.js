@@ -1,33 +1,23 @@
-module.exports = (io, socket) => {
-  socket.on("msg", (data) => console.log(data))
-
+module.exports = (socket) => {
+  console.log(`User Connected: ${socket.id}`)
   socket.on("joinOffer", (data) => {
-    socket.join(data.id)
-    // console.log(data);
-    // socket.to(data.id).emit("setChat", data);
-    //socket.to(data.id).emit("setChat", (data) => console.log(data));
-    // socket.to(data.id).emit("setChat", (data) => {
-    //   console.log(data);
-    // return {
-    //   addressOrName: data.addressOrName,
-    //   avatar: data.avatar,
-    // };
-    // });
-    console.log("join room", data, "------")
-  })
-
-  socket.on("sendMessage", (data) => {
     console.log(data)
-    socket.to(data.room).emit("messageRecieved", data.message)
+    socket.join(data.id)
+    console.log(socket)
   })
 
-  socket.on("takerConfirmed", (offerId) => {
+  socket.on("send_message", (data) => {
+    console.log(data)
+    socket.to(data.room).emit("message_recieved", data)
+  })
+
+  socket.on("takerConfirmed", (id) => {
     console.log("taker confirmed")
-    socket.to(offerId).emit("approvalStage")
+    socket.to(id).emit("approvalStage")
   })
 
-  socket.on("makerConfirmed", (offerId) => {
+  socket.on("makerConfirmed", (id) => {
     console.log("maker confirmed!")
-    socket.to(offerId).emit("successStage")
+    socket.to(id).emit("successStage")
   })
 }
