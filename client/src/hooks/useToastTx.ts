@@ -1,11 +1,11 @@
 import { useEffect, useRef } from 'react'
-import { toast } from 'react-toastify'
+import { toast, Id } from 'react-toastify'
 
 export const useToastTx = (isLoading: boolean) => {
-  const toastId = useRef(null)
+  const toastId = useRef<Id>()
 
   const txSuccess = (msg: string) => {
-    toast.update(toastId.current, {
+    toast.update(toastId.current!, {
       render: msg,
       type: 'success',
       position: toast.POSITION.BOTTOM_RIGHT,
@@ -16,7 +16,7 @@ export const useToastTx = (isLoading: boolean) => {
   }
 
   const txError = (error: string) => {
-    toast.update(toastId.current, {
+    toast.update(toastId.current!, {
       render: error,
       type: 'error',
       position: toast.POSITION.BOTTOM_RIGHT,

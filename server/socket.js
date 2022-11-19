@@ -1,14 +1,14 @@
 module.exports = (socket) => {
   console.log(`User Connected: ${socket.id}`)
-  socket.on("joinOffer", (data) => {
-    console.log(data)
-    socket.join(data.id)
-    console.log(socket)
+  socket.on("join_room", (data) => {
+    const { id } = data
+    socket.join(id)
+    console.log(`User ${socket.id} joined the room ${id}`)
   })
 
   socket.on("send_message", (data) => {
-    console.log(data)
-    socket.to(data.room).emit("message_recieved", data)
+    const { room } = data
+    io.in(room).emit("receive_message", data)
   })
 
   socket.on("takerConfirmed", (id) => {

@@ -17,7 +17,7 @@ module.exports = {
         black: '#0A060A',
         white: '#fff',
         modalOverlay: '#313131',
-        lightGray: '#f3f4f6',
+        lightGray: '#ececec',
         transparent: 'transparent',
         yellow: '#F8C011',
         hoverGray: '#fafafb'

@@ -63,7 +63,7 @@ const TransactionPage = () => {
   )
 
   const joinRoom = (data: object) => {
-    socket.emit('joinOffer', data)
+    socket.emit('join_room', data)
   }
 
   const { takerTransfered } = useTakerApprove(data?.offer.roomId, data?.takerNumber, id!, socket)
