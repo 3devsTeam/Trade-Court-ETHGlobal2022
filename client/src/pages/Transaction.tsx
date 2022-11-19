@@ -19,10 +19,10 @@ import { useTakerWithdraw } from '../hooks/useTakerWithdraw'
 import { useEffect } from 'react'
 import { ErrorBoundary } from 'react-error-boundary'
 
-const TransactionPage = () => {
-  const socket = io('http://127.0.0.1:3030')
+const socket = io('http://127.0.0.1:3030')
 
-  console.log(socket)
+const TransactionPage = () => {
+  //console.log(socket)
 
   socket.on('approvalStage', () => {
     setStep(2)
@@ -32,11 +32,11 @@ const TransactionPage = () => {
     setStep(3)
   })
 
+  socket.on('show_alert', () => alert('alo'))
+
   const { id } = useParams()
 
-  const { address } = useAccount()
-
-  const { setSelectedPayment, setRole, setStep } = useActions()
+  const { setSelectedPayment, setRole, setStep, setRoom } = useActions()
   const { role } = useTypedSelector((state) => state.transactionReducer)
 
   const { data, isLoading, isSuccess, isError } = useQuery(
@@ -46,6 +46,7 @@ const TransactionPage = () => {
       select: ({ data }) => data.data.room,
       onSuccess: (data) => {
         setRole(data.role)
+        setRoom(id)
         joinRoom({ id, role })
         setStep(
           data.stage === 'waiting taker'
@@ -62,40 +63,31 @@ const TransactionPage = () => {
   )
 
   const joinRoom = (data: object) => {
-    socket.emit('joinOffer', data)
+    socket.emit('join_room', data)
   }
 
-  const {
-    data: takerApproveTxData,
-    takerTransfered,
-    prepareTxStatus,
-    contractTxStatus
-  } = useTakerApprove(data?.offer.roomId, data?.takerNumber, id!, socket)
+  const { takerTransfered } = useTakerApprove(data?.offer.roomId, data?.takerNumber, id!, socket)
 
-  const {
-    data: makerApproveTxData,
-    makerConfirmed,
-    makerContractTxStatus,
-    makerPrepareTxStatus
-  } = useMakerApprove(data?.offer.roomId, data?.takerNumber, id!, socket)
+  const { makerConfirmed } = useMakerApprove(data?.offer.roomId, data?.takerNumber, id!, socket)
 
   const { takerClaim } = useTakerWithdraw(data?.offer.roomId, data?.takerNumber, id!, socket)
 
   return isSuccess ? (
-    <>
+    <div className="grid grid-rows-[10%_90%] h-full">
       <TransactionInfo offer={data?.offer} />
 
-      <div className="grid grid-cols-form gap-5 mt-5">
-        <div>
-          <div className="wrapper p-5">
+      <div className="grid grid-cols-2 gap-5 h-full mt-5">
+        <div className="grid grid-rows-[90%_10%] gap-y-5">
+          <div className="wrapper">
             <ErrorBoundary fallback={<h1>error</h1>}>
-              {role === TRANSACTION_ROLES.taker ? <TransactionTaker offer={data.offer} /> : null}
-              {role === TRANSACTION_ROLES.maker ? <TransactionMaker offer={data.offer} /> : null}
-              <Time id={data._id} time={data.createdAt} />
+              <div className="flex flex-col justify-between mb-5 p-5 h-full">
+                {role === TRANSACTION_ROLES.taker ? <TransactionTaker offer={data.offer} /> : null}
+                {role === TRANSACTION_ROLES.maker ? <TransactionMaker offer={data.offer} /> : null}
+                <Time id={data._id} time={data.createdAt} />
+              </div>
             </ErrorBoundary>
           </div>
-
-          <div className="wrapper p-5 mt-5">
+          <div className="flex items-center">
             <ErrorBoundary fallback={<h1>error</h1>}>
               {role === TRANSACTION_ROLES.taker ? (
                 <ConfirmsTaker takerConfirmed={takerTransfered} takerClaim={takerClaim} />
@@ -107,17 +99,10 @@ const TransactionPage = () => {
           </div>
         </div>
         <ErrorBoundary fallback={<h1>error</h1>}>
-          <Chat
-            sendMessage={() => {}}
-            setMessage={() => {}}
-            message={''}
-            addressOrName={address!}
-            avatar={''}
-            chatMessages={[]}
-          />
+          <Chat offer={data} socket={socket} />
         </ErrorBoundary>
       </div>
-    </>
+    </div>
   ) : isLoading ? (
     <h1>loading...</h1>
   ) : isError ? (

@@ -11,10 +11,11 @@ const chatSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: 'User',
     },
-    offer: {
+    room: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'Offer',
+      ref: 'Rooms',
       require: true,
+      unique: true,
     },
   },
   {

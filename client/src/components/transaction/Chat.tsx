@@ -1,83 +1,54 @@
-import React from 'react'
-import telegram from '../../assets/images/message.svg'
-import defaultProfilePic from '../../assets/images/ava.svg'
-import { Gram } from '../ui/icons/Gram'
-import { useEnsName } from 'wagmi'
+import React, { useEffect, useRef, useState } from 'react'
 import { truncateAddress } from '../../utils/truncateAddress'
+import { AvatarIcon } from '../ui/icons/AvatarIcon'
+import { useTypedSelector } from '../../hooks/useTypedSelector'
+import { ChatInput } from './ChatInput'
+import { Socket } from 'socket.io-client'
+import { DefaultEventsMap } from '@socket.io/component-emitter'
+import { ChatBody } from './ChatBody'
+import { ChatHeader } from './ChatHeader'
 
-interface IChat {
-  sendMessage: any
-  setMessage: any
-  message: any
-  addressOrName: string
-  avatar: string
-  chatMessages: any
+interface Props {
+  offer: any
+  socket: Socket<DefaultEventsMap, DefaultEventsMap>
 }
 
-export const Chat = ({
-  chatMessages,
-  addressOrName,
-  avatar,
-  message,
-  setMessage,
-  sendMessage
-}: IChat) => {
-  //console.log(chatMessages);
+export interface Message {
+  message: string
+  role: string
+  room: string
+}
 
-  // console.log(avatar);
+export const Chat: React.FC<Props> = ({ offer, socket }) => {
+  const [messages, setMessages] = useState<Message[]>([])
+  console.log(messages)
+  const lastMessageRef = useRef<null | HTMLDivElement>()
 
-  // const {
-  //   data: chatName,
-  //   isError,
-  //   isLoading,
-  // } = useEnsName({
-  //   address: "0x3c21AdC545aF820f9734eb67e504a845b897c4FF",
-  // });
+  useEffect(() => {
+    lastMessageRef.current?.scrollIntoView({ behavior: 'smooth' })
+  }, [messages])
 
-  //console.log("chat name", chatName);
+  useEffect(() => {
+    socket.on('receive_message', (data) => {
+      console.log(data)
+      setMessages([...messages, data])
+    })
+  }, [socket, messages])
+
+  const { role } = useTypedSelector((state) => state.transactionReducer)
+
+  const address =
+    role === 'taker' ? offer?.offer?.maker?.address : role === 'maker' ? offer?.taker?.address : ''
 
   return (
-    <div className={'bg-white rounded-[20px] relative shadow-customDark'}>
-      <div className={'bg-purple rounded-t-[20px] h-[70px] px-[18px] flex items-center'}>
-        <div className={'flex items-center gap-2'}>
-          <img
-            className={'rounded-[50%]'}
-            src={avatar ? avatar : defaultProfilePic}
-            width={55}
-            height={55}
-            alt={''}
-          />
-          <div className={'flex flex-col justify-start'}>
-            <span className={'text-white font-bold'}>{truncateAddress(addressOrName)}</span>
-            <span className={'text-white text-sm'}>online</span>
-          </div>
-        </div>
+    <div className="grid h-full grid-rows-[15%_75%_10%] gap-[0.1rem] overflow-hidden wrapper">
+      <div className="chat-header bg-purple rounded-t-[20px] flex items-center">
+        <ChatHeader address={address} offer={offer} />
       </div>
-      <div className={'h-52'}>
-        {chatMessages}
-        {/* {chatMessages?.map((msg: any, i: number) => {
-          console.log(msg);
-
-          return <></>;
-
-          // return (
-          //   <div className={"text-black"} key={i}>
-          //     {msg}
-          //   </div>
-          // );
-        })} */}
+      <div className="chat-messages flex flex-col gap-4 overflow-auto px-[1rem] py-[1rem]">
+        <ChatBody messages={messages} lastMessageRef={lastMessageRef} />
       </div>
-      <div className={'flex absolute bottom-0 items-center border-t-2 border-gray pr-5 w-full'}>
-        <input
-          onChange={(e) => setMessage(e.target.value)}
-          //value={message ? message : ""}
-          className={'h-[70px] rounded-b-[20px] pl-5 w-full outline-none font-bold text-sm'}
-          placeholder={'Type some message...'}
-        />
-        <button className={``} onClick={() => sendMessage(message)}>
-          <Gram color={'purple'} />
-        </button>
-      </div>
+      <ChatInput socket={socket} />
     </div>
   )
 }

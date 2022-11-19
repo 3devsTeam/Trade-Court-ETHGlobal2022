@@ -11,8 +11,7 @@ import { SkeletonWrapper } from '../components/ui/SkeletonWrapper'
 import { ErrorBoundary } from 'react-error-boundary'
 
 const CreateOfferPage = () => {
-  const { data, handleCreateOffer, isSuccess, isLoading, hash, prepareTxStatus, txStatus } =
-    useCreateRoom()
+  const { handleCreateOffer } = useCreateRoom()
 
   const { step } = useTypedSelector((state) => state.createOfferReducer)
 
@@ -52,8 +51,6 @@ const CreateOfferPage = () => {
   return (
     <ErrorBoundary fallback={<h1>error</h1>}>
       <div className="p-5">
-        <h1>success: {isSuccess}</h1>
-        <h1>loading: {isLoading}</h1>
         <ProgressBar steps={steps} />
 
         <div className={'grid grid-cols-2 gap-5 mt-5'}>

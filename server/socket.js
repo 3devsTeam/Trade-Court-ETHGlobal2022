@@ -1,33 +1,23 @@
-module.exports = (io, socket) => {
-  socket.on("msg", (data) => console.log(data))
-
-  socket.on("joinOffer", (data) => {
-    socket.join(data.id)
-    // console.log(data);
-    // socket.to(data.id).emit("setChat", data);
-    //socket.to(data.id).emit("setChat", (data) => console.log(data));
-    // socket.to(data.id).emit("setChat", (data) => {
-    //   console.log(data);
-    // return {
-    //   addressOrName: data.addressOrName,
-    //   avatar: data.avatar,
-    // };
-    // });
-    console.log("join room", data, "------")
+module.exports = (socket) => {
+  console.log(`User Connected: ${socket.id}`)
+  socket.on("join_room", (data) => {
+    const { id } = data
+    socket.join(id)
+    console.log(`User ${socket.id} joined the room ${id}`)
   })
 
-  socket.on("sendMessage", (data) => {
-    console.log(data)
-    socket.to(data.room).emit("messageRecieved", data.message)
+  socket.on("send_message", (data) => {
+    const { room } = data
+    io.in(room).emit("receive_message", data)
   })
 
-  socket.on("takerConfirmed", (offerId) => {
+  socket.on("takerConfirmed", (id) => {
     console.log("taker confirmed")
-    socket.to(offerId).emit("approvalStage")
+    socket.to(id).emit("approvalStage")
   })
 
-  socket.on("makerConfirmed", (offerId) => {
+  socket.on("makerConfirmed", (id) => {
     console.log("maker confirmed!")
-    socket.to(offerId).emit("successStage")
+    socket.to(id).emit("successStage")
   })
 }

@@ -1,4 +1,7 @@
+const Chat = require('../models/chatModel');
+const Message = require('../models/messageModel');
 const Offer = require('../models/offerModel');
+const { listenerCount } = require('../models/regionModel');
 const Room = require('../models/roomModel');
 const AppError = require('../utils/appError');
 const catchAsync = require('../utils/catchAsync');
@@ -87,9 +90,13 @@ exports.joinRoom = catchAsync(async (req, res, next) => {
   if (
     req.body.amount < offer.minLimit ||
     req.body.amount > offer.maxLimit ||
-    !req.body.amount
+    !req.body.amount ||
+    req.body.amount <= 0
   ) {
     return next(new AppError('Amount is invalid', 400));
+  }
+  if (offer.pendingAmount + req.body.amount > offer.amount) {
+    return next(new AppError('Amount is too big', 400));
   }
   if (offer.amount - req.body.amount < 0) {
     return next(new AppError('Amount is too big', 400));
@@ -102,10 +109,15 @@ exports.joinRoom = catchAsync(async (req, res, next) => {
     takerNumber: offer.takerNumber,
     createdAt: new Date(),
   });
+  await Chat.create({
+    maker: offer.maker,
+    taker: req.user._id,
+    room: newRoom,
+  });
   await Offer.findByIdAndUpdate(req.params.id, {
     $inc: {
-      amount: req.body.amount * -1,
-      quantity: (req.body.amount / offer.unitPrice) * -1,
+      pendingAmount: req.body.amount,
+      pendingQuantity: req.body.amount / offer.unitPrice,
       takerNumber: 1,
     },
   });
@@ -153,8 +165,11 @@ exports.getRoom = catchAsync(async (req, res, next) => {
   } else {
     role = 'maker';
   }
+  let chat = await Chat.findOne({ room: room._id });
   room = JSON.parse(JSON.stringify(room));
   room.role = role;
+  chat = JSON.parse(JSON.stringify(chat));
+  room.chatId = chat._id;
   res.status(201).json({
     message: 'success',
     data: {
@@ -213,8 +228,22 @@ exports.takerClaimed = catchAsync(async (req, res, next) => {
     return next(new AppError("It's not your turn", 400));
   }
   await Room.findByIdAndDelete(req.params.id);
+  await Offer.findByIdAndUpdate(room.offer._id, {
+    $inc: {
+      pendingAmount: room.amount * -1,
+      amount: room.amount * -1,
+      pendingQuantity: (room.amount / room.unitPrice) * -1,
+      quantity: (room.amount / room.unitPrice) * -1,
+    },
+  });
+  if (room.offer.amount - room.amount === 0) {
+    await Offer.findByIdAndDelete(room.offer._id);
+  }
+  const deletedChat = await Chat.findOneAndDelete({ room: room._id });
+  await Message.deleteMany({ chat: deletedChat._id });
   res.status(200).json({
     message: 'success',
+    room,
   });
 });
 
@@ -229,11 +258,15 @@ exports.leaveRoom = catchAsync(async (req, res, next) => {
   ) {
     return next(new AppError('You cant leave this room', 403));
   }
-  console.log(room.amount, room.amount / room.unitPrice);
-  await Offer.findByIdAndUpdate(room.offer, {
-    $inc: { amount: room.amount, quantity: room.amount / room.unitPrice },
+  await Offer.findByIdAndUpdate(room.offer._id, {
+    $inc: {
+      pendingAmount: room.amount * -1,
+      pendingQuantity: (room.amount / room.unitPrice) * -1,
+    },
   });
   await Room.findByIdAndDelete(req.params.id);
+  const deletedChat = await Chat.findOneAndDelete({ room: room._id });
+  await Message.deleteMany({ chat: deletedChat._id });
   res.status(200).json({
     message: 'success',
   });

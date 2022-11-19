@@ -3,23 +3,12 @@ import { useContractWrite, usePrepareContractWrite, useWaitForTransaction } from
 import { ethers, BigNumber } from 'ethers'
 import { useTypedSelector } from './useTypedSelector'
 import { OfferService } from '../api/offer.services'
-import { IPayment } from '../types/interfaces/payment.interface'
 import { useNavigate } from 'react-router-dom'
 import { useActions } from './useActions'
-import { toast } from 'react-toastify'
 import { useGenerateRoom } from './useGenerateRoom'
-
-// createRoom ДЛЯ ДОМИНАТОРОВ
-// _roomNumber (uint256)
-// _timeForTakerAndMaker (uint32)
-// _maxLimit (uint256)
-// _lowLimit (uint256)
-// _addressOfToken (address) ДЛЯ ЩИТКОИНОВ
-// _msgValue (uint256) ДЛЯ ЩИТКОИНОВ
-// _rate (uint32) UNIT PRICE
+import { useToastTx } from './useToastTx'
 
 export const useCreateRoom = () => {
-  console.log(contractConfig)
   const {
     quantity,
     unitPrice,
@@ -42,7 +31,7 @@ export const useCreateRoom = () => {
     if (value != '.' && value != '0' && value != '' && value != undefined) {
       return ethers.utils.parseEther(value.toString()).div(BigNumber.from(unitPrice))
     } else {
-      return null
+      return '1'
     }
   }
 
@@ -69,23 +58,16 @@ export const useCreateRoom = () => {
   const { data, status: txStatus, writeAsync } = useContractWrite(config as any)
 
   const {
-    isSuccess,
     isLoading,
+    isError,
     data: hash
   } = useWaitForTransaction({
     hash: data?.hash,
     onSuccess: () => {
+      txSuccess('Tx is confirmed')
       OfferService.create({
         offerType: 'buy',
-        payMethods: payMethods.map((payment: IPayment) => {
-          const { bank, cardNumber, region, paymentDescription } = payment
-          return {
-            bank,
-            cardNumber,
-            region,
-            paymentDescription
-          }
-        }),
+        payMethods: payMethods,
         fiat: fiat._id,
         roomId: roomId!.toString(),
         unitPrice,
@@ -97,28 +79,24 @@ export const useCreateRoom = () => {
         offerComment
       })
         .then(() => {
-          toast.success('Offer is created', {
-            position: toast.POSITION.BOTTOM_RIGHT
-          })
+          txSuccess('Offer is Created')
           navigate('/')
           resetOffer()
         })
-        .catch((error) =>
-          toast.error(error, {
-            position: toast.POSITION.BOTTOM_RIGHT
-          })
-        )
-    }
+        .catch((error) => txError(error))
+    },
+    onError: (err) => txError(err.message)
   })
 
+  const { txSuccess, txError } = useToastTx(isLoading)
+
   const handleCreateOffer = async () => {
-    writeAsync?.()
+    await writeAsync?.()
   }
 
   return {
     data,
     handleCreateOffer,
-    isSuccess,
     isLoading,
     hash,
     prepareTxStatus,
