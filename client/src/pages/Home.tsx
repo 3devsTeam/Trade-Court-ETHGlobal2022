@@ -14,6 +14,7 @@ import { IRegion } from '../types/interfaces/region.interface'
 import { IBank } from '../types/interfaces/bank.interface'
 import { IOffer } from '../types/interfaces/offer.interface'
 import { NoItems } from '../components/errors/no-items'
+import { SkeletonWrapper } from '../components/ui/SkeletonWrapper'
 
 export interface IActiveFilters {
   amount: string
@@ -90,74 +91,64 @@ const HomePage = () => {
 
   return (
     <div className="grid grid-cols-homePage gap-5 my-5">
-      {/* <SkeletonWrapper isLoadeding={isLoaded} height={1000}> */}
-      <aside className="bg-white shadow-customDark p-5 rounded-2xl flex flex-col gap-5 sticky top-5 overflow-auto max-h-screen">
-        <SearchField searchTerm={amount} setSearchTerm={setAmount} placeholder="Search..." />
-        <Dropdown
-          onSelect={setActiveCrypto}
-          data={{
-            items: crypto.data as [ICrypto],
-            options: 'symbol'
-          }}
-          label="Crypto"
-          activeSelect={activeCrypto}
-        />
-        <Dropdown
-          onSelect={setActiveFiat}
-          data={{
-            items: fiat.data as [IFiat],
-            options: 'ticker'
-          }}
-          label="Fiat"
-          activeSelect={activeFiat}
-        />
-        {/* {activeFiat && (
-          <> */}
-        <Dropdown
-          onSelect={setActivePayment}
-          data={{
-            items: activeFiat?.banks as [IBank],
-            options: 'name'
-          }}
-          activeSelect={activePayment}
-          label="Payment"
-        />
-        <Dropdown
-          onSelect={setActiveRegion}
-          data={{
-            items: activeFiat?.regions as [IRegion],
-            options: 'name'
-          }}
-          activeSelect={activeRegion}
-          label="Region"
-        />
+      <SkeletonWrapper isLoaded={isLoaded} height={1000}>
+        <aside className="bg-white shadow-customDark p-5 rounded-2xl flex flex-col gap-5 sticky top-5 overflow-auto max-h-screen">
+          <SearchField searchTerm={amount} setSearchTerm={setAmount} placeholder="Search..." />
+          <Dropdown
+            onSelect={setActiveCrypto}
+            items={crypto.data}
+            options={'symbol'}
+            activeSelect={activeCrypto}
+            label="Crypto"
+          />
+          <Dropdown
+            onSelect={setActiveFiat}
+            items={fiat.data}
+            options={'ticker'}
+            label="Fiat"
+            activeSelect={activeFiat}
+          />
+          <Dropdown
+            onSelect={setActivePayment}
+            items={activeFiat?.banks}
+            options={'name'}
+            activeSelect={activePayment}
+            label="Payment"
+          />
+          <Dropdown
+            onSelect={setActiveRegion}
+            items={activeFiat?.regions}
+            options={'name'}
+            activeSelect={activeRegion}
+            label="Region"
+          />
 
-        <Button
-          text="text-black"
-          border="border"
-          name={'Clear'}
-          color={'transparent'}
-          onClick={() => {
-            setActiveCrypto(null)
-            setActiveFiat(null)
-            setActivePayment(null)
-            setActiveRegion(null)
-          }}
-        />
-      </aside>
-      {/* </SkeletonWrapper> */}
+          <Button
+            text="text-black"
+            border="border"
+            name={'Clear'}
+            color={'transparent'}
+            onClick={() => {
+              setActiveCrypto(null)
+              setActiveFiat(null)
+              setActivePayment(null)
+              setActiveRegion(null)
+            }}
+          />
+        </aside>
+      </SkeletonWrapper>
 
       <main className="relative">
-        {/* <SkeletonWrapper height={30} isLoaded={isLoaded} margin={'20px'}> */}
-        <Legend fields={fields} />
-        {/* </SkeletonWrapper> */}
-        {/* <SkeletonWrapper isLoaded={isLoaded} height={100} count={10} margin={'20px'}> */}
-        {data?.pages[0].length === 0 ? (
-          <NoItems />
-        ) : (
-          <div className="space-y-3 flex flex-wrap">{content}</div>
-        )}
-        {/* </SkeletonWrapper> */}
+        <SkeletonWrapper height={30} isLoaded={isLoaded} margin={'20px'}>
+          <Legend fields={fields} />
+        </SkeletonWrapper>
+        <SkeletonWrapper isLoaded={isLoaded} height={100} count={10} margin={'20px'}>
+          {data?.pages[0].length === 0 ? (
+            <NoItems />
+          ) : (
+            <div className="space-y-3 flex flex-wrap">{content}</div>
+          )}
+        </SkeletonWrapper>
       </main>
     </div>
   )

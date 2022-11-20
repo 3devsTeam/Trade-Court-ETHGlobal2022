@@ -44,6 +44,7 @@ export const useCreateRoom = () => {
     ethers.utils.parseEther('0'),
     +unitPrice
   ]
+  console.log(args)
 
   const { config, status: prepareTxStatus } = usePrepareContractWrite({
     ...contractConfig,

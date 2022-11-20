@@ -18,7 +18,7 @@ export const ConfirmsTaker: React.FC<Props> = ({ takerConfirmed, takerClaim }) =
       {step === 1 ? (
         <ButtonDisabled onClick={() => takerConfirmed()} name="Done" color={'bg-purple'} />
       ) : null}
-      {step === 2 ? <span className="text-xl font-bold">Wating for confirmation...</span> : null}
+      {step === 2 ? <span className="text-xl font-bold">Waiting for confirmation...</span> : null}
       {step === 3 ? (
         <ButtonDisabled onClick={() => takerClaim()} name="Claim" color={'bg-purple'} />
       ) : null}
