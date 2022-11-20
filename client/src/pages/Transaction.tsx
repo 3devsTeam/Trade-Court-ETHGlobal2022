@@ -1,5 +1,5 @@
 import { useParams } from 'react-router-dom'
-import { useAccount, useQuery } from 'wagmi'
+import { useQuery } from 'wagmi'
 import { OfferService } from '../api/offer.services'
 import { Chat } from '../components/transaction/Chat'
 import { ConfirmsMaker } from '../components/transaction/ConfirmsMaker'
@@ -11,19 +11,15 @@ import { TransactionTaker } from '../components/transaction/TransactionTaker'
 import { useActions } from '../hooks/useActions'
 import { useTypedSelector } from '../hooks/useTypedSelector'
 import { TRANSACTION_ROLES } from '../types/interfaces/roles.enum'
-import Confetti from 'react-confetti'
 import { io } from 'socket.io-client'
 import { useTakerApprove } from '../hooks/useTakerApprove'
 import { useMakerApprove } from '../hooks/useMakerApprove'
 import { useTakerWithdraw } from '../hooks/useTakerWithdraw'
-import { useEffect } from 'react'
 import { ErrorBoundary } from 'react-error-boundary'
 
-const socket = io('http://127.0.0.1:3030')
+const socket = io(import.meta.env.VITE_SOCKET_URL)
 
 const TransactionPage = () => {
-  //console.log(socket)
-
   socket.on('approvalStage', () => {
     setStep(2)
   })
@@ -31,8 +27,6 @@ const TransactionPage = () => {
   socket.on('successStage', () => {
     setStep(3)
   })
-
-  socket.on('show_alert', () => alert('alo'))
 
   const { id } = useParams()
 

@@ -52,18 +52,19 @@ io.on('connection', (socket) => {
     io.to(room).emit('receive_message', data);
   });
 
-  socket.on('typing', (id) => {
-    console.log(id);
-    socket.to(id).emit('typingResponse');
-  });
+  socket.on("typing", (id) => {
+    console.log(id)
+    io.to(id).emit("typingResponse")
+  })
 
-  socket.on('takerConfirmed', (id) => {
-    console.log('taker confirmed');
-    socket.to(id).emit('approvalStage');
-  });
+  socket.on("takerConfirmed", (id) => {
+    console.log("taker confirmed")
+    io.to(id).emit("approvalStage")
+  })
 
-  socket.on('makerConfirmed', (id) => {
-    console.log('maker confirmed!');
-    socket.to(id).emit('successStage');
-  });
-});
+  socket.on("makerConfirmed", (id) => {
+    console.log("maker confirmed!")
+    io.to(id).emit("successStage")
+  })
+})
+
