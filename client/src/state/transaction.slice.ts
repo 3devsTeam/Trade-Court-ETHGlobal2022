@@ -34,7 +34,8 @@ export const TransactionSlice = createSlice({
     },
     setRoom: (state, { payload }) => {
       state.room = payload
-    }
+    },
+    resetTxDeal: () => initialState
   }
 })
 

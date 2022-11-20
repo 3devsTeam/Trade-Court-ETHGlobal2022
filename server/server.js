@@ -54,16 +54,16 @@ io.on("connection", (socket) => {
 
   socket.on("typing", (id) => {
     console.log(id)
-    socket.to(id).emit("typingResponse")
+    io.to(id).emit("typingResponse")
   })
 
   socket.on("takerConfirmed", (id) => {
     console.log("taker confirmed")
-    socket.to(id).emit("approvalStage")
+    io.to(id).emit("approvalStage")
   })
 
   socket.on("makerConfirmed", (id) => {
     console.log("maker confirmed!")
-    socket.to(id).emit("successStage")
+    io.to(id).emit("successStage")
   })
 })

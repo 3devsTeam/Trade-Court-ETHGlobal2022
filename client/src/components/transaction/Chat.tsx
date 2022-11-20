@@ -7,6 +7,8 @@ import { Socket } from 'socket.io-client'
 import { DefaultEventsMap } from '@socket.io/component-emitter'
 import { ChatBody } from './ChatBody'
 import { ChatHeader } from './ChatHeader'
+import { useQuery } from '@tanstack/react-query'
+import { ChatServices } from '../../api/chat.services'
 
 interface Props {
   offer: any
@@ -19,9 +21,36 @@ export interface Message {
   room: string
 }
 
+export interface lastMessage {
+  _id: string
+  sender: string
+  content: string
+  chat: string
+  createdAt: string
+  updatedAt: string
+}
+
 export const Chat: React.FC<Props> = ({ offer, socket }) => {
+  const { chatId } = offer
+
+  const [userId, setUserId] = useState('')
+
+  const [lastMessages, setLastMessages] = useState<lastMessage[]>([])
+
+  const { data, isLoading, isError, isSuccess } = useQuery(
+    ['get chat'],
+    () => ChatServices.getById(chatId),
+    {
+      select: ({ data }) => data,
+      onSuccess: ({ messages, userId }) => {
+        setLastMessages(messages)
+        setUserId(userId)
+      }
+    }
+  )
+
   const [messages, setMessages] = useState<Message[]>([])
-  console.log(messages)
+
   const lastMessageRef = useRef<null | HTMLDivElement>()
 
   useEffect(() => {
@@ -30,7 +59,6 @@ export const Chat: React.FC<Props> = ({ offer, socket }) => {
 
   useEffect(() => {
     socket.on('receive_message', (data) => {
-      console.log(data)
       setMessages([...messages, data])
     })
   }, [socket, messages])
@@ -46,9 +74,14 @@ export const Chat: React.FC<Props> = ({ offer, socket }) => {
         <ChatHeader address={address} offer={offer} />
       </div>
       <div className="chat-messages flex flex-col gap-4 overflow-auto px-[1rem] py-[1rem]">
-        <ChatBody messages={messages} lastMessageRef={lastMessageRef} />
+        <ChatBody
+          userId={userId}
+          lastMessages={lastMessages}
+          messages={messages}
+          lastMessageRef={lastMessageRef}
+        />
       </div>
-      <ChatInput socket={socket} />
+      <ChatInput chatId={chatId} socket={socket} />
     </div>
   )
 }
