@@ -5,6 +5,7 @@ import { useAccount, useBalance, useEnsName, useSignMessage } from 'wagmi'
 import { ConnectButton } from './ConnectButton'
 import { SwitchNetwork } from './SwitchNetwork'
 import { Menu } from './Menu'
+import useOnClickOutside from 'use-onclickoutside'
 
 export const Navbar = () => {
   const { isConnected, address } = useAccount()
@@ -22,6 +23,14 @@ export const Navbar = () => {
   const [openConnectModal, setOpenConnectModal] = useState(false)
   const [openMenu, setOpenMenu] = useState(false)
 
+  const ref = useRef(null)
+
+  const handleCloseMenu = () => {
+    setOpenMenu(false)
+  }
+
+  useOnClickOutside(ref, handleCloseMenu)
+
   return (
     <nav className={'p-5 flex justify-between items-center w-full'}>
       <div>
@@ -29,27 +38,29 @@ export const Navbar = () => {
         <h1 className="text-purple text-sm">Beta Version. Use at your own risk.</h1>
       </div>
 
-      <div className="flex space-x-2 items-center relative h-10">
+      <div className="flex space-x-2 items-center relative h-[2.5rem]">
         {isConnected && <SwitchNetwork />}
-        <ConnectButton
-          address={address!}
-          ensName={ensName}
-          balance={balance}
-          isConnected={isConnected}
-          openConnectModal={openConnectModal}
-          openMenu={openMenu}
-          setOpenConnectModal={setOpenConnectModal}
-          setOpenMenu={setOpenMenu}
-        />
-        {openMenu && (
-          <Menu
+        <div ref={ref} className="h-full">
+          <ConnectButton
             address={address!}
             ensName={ensName}
             balance={balance}
+            isConnected={isConnected}
+            openConnectModal={openConnectModal}
+            openMenu={openMenu}
             setOpenConnectModal={setOpenConnectModal}
             setOpenMenu={setOpenMenu}
           />
-        )}
+          {openMenu && (
+            <Menu
+              address={address!}
+              ensName={ensName}
+              balance={balance}
+              setOpenConnectModal={setOpenConnectModal}
+              setOpenMenu={setOpenMenu}
+            />
+          )}
+        </div>
       </div>
     </nav>
   )

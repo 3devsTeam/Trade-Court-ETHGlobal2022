@@ -1,13 +1,10 @@
-import React, { SetStateAction, useEffect, useRef, useState } from 'react'
-import { useAccount, useEnsName, useNetwork, useSignMessage, useSwitchNetwork } from 'wagmi'
+import React, { SetStateAction } from 'react'
+import { useSignMessage } from 'wagmi'
 import { connectors } from '../../wallets/connectors'
 import { truncateAddress } from '../../utils/truncateAddress'
 import { Modal } from '../ui/Modal'
 import { WalletButton } from './WalletButton'
-import { useBalance } from 'wagmi'
-import { Menu } from './Menu'
-import { NavLink } from './NavLink'
-import useOnClickOutside from 'use-onclickoutside'
+
 import { walletsImages } from '../../wallets/images'
 import { useMutation } from '@tanstack/react-query'
 import { UserService } from '../../api/user.services'
@@ -53,8 +50,7 @@ export const ConnectButton = ({
   return isConnected ? (
     <button
       className="rounded-[15px] bg-white shadow-customDark h-full px-[10px]"
-      onMouseEnter={() => setOpenMenu(true)}
-    >
+      onClick={() => setOpenMenu(!openMenu)}>
       <div className="font-bold flex items-center space-x-2 text-black">
         <span>
           {balance?.formatted.slice(0, 8)}
@@ -68,9 +64,8 @@ export const ConnectButton = ({
   ) : (
     <>
       <button
-        className="rounded-[15px] p-2 relative bg-purple  text-white shadow-customDark"
-        onClick={() => setOpenConnectModal(!openConnectModal)}
-      >
+        className="rounded-[15px] p-2 relative bg-purple text-white shadow-customDark"
+        onClick={() => setOpenConnectModal(!openConnectModal)}>
         <span className="font-bold">Connect</span>
       </button>
 

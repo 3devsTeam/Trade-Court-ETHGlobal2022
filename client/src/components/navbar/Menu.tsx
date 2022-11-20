@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction } from 'react'
+import React, { Dispatch, SetStateAction, useRef } from 'react'
 import { NavLink } from './NavLink'
 import { useAccount, useBalance, useConnect, useDisconnect } from 'wagmi'
 import { useNavigate } from 'react-router-dom'
@@ -13,6 +13,7 @@ import { DisconnectIcon } from '../ui/icons/DisconnectIcon'
 import { AvatarIcon } from '../ui/icons/AvatarIcon'
 import { truncateAddress } from '../../utils/truncateAddress'
 import { UserService } from '../../api/user.services'
+import useOnClickOutside from 'use-onclickoutside'
 
 interface Props {
   address: string
@@ -81,7 +82,7 @@ export const Menu = ({ address, balance, ensName, setOpenMenu, setOpenConnectMod
 
   return (
     <nav
-      onMouseLeave={() => setOpenMenu(false)}
+      onClick={() => setOpenMenu(false)}
       className="flex justify-start flex-col absolute top-11 right-0 px-2 py-[12px] w-full z-50 bg-white shadow-customDark rounded-[20px]">
       <div className={'flex justify-between'}>
         <div className="flex justify-between space-x-2">
