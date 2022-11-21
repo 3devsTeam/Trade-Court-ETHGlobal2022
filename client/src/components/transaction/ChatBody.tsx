@@ -25,11 +25,13 @@ export const ChatBody: React.FC<Props> = ({ userId, messages, lastMessages, last
               key={uuid()}
               className={`flex items-center ${
                 message.sender === userId ? 'justify-end' : 'justify-start'
-              }`}>
+              }`}
+            >
               <div
                 className={`${
                   message.sender === userId ? fromSelf : otherUser
-                } break-words max-w-[55%] p-[1rem] text-start rounded-[20px]`}>
+                } break-words max-w-[55%] p-[1rem] text-start rounded-[20px]`}
+              >
                 <p>{message.content}</p>
               </div>
             </div>
@@ -39,13 +41,13 @@ export const ChatBody: React.FC<Props> = ({ userId, messages, lastMessages, last
         <div
           ref={lastMessageRef}
           key={uuid()}
-          className={`flex items-center ${
-            role === message.role ? 'justify-end' : 'justify-start'
-          }`}>
+          className={`flex items-center ${role === message.role ? 'justify-end' : 'justify-start'}`}
+        >
           <div
             className={`${
               role === message.role ? fromSelf : otherUser
-            } break-words max-w-[55%] p-[1rem] text-start rounded-[20px]`}>
+            } break-words max-w-[55%] p-[1rem] text-start rounded-[20px]`}
+          >
             <p>{message.message}</p>
           </div>
         </div>

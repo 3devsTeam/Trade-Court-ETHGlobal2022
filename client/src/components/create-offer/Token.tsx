@@ -31,7 +31,8 @@ export const Token = ({ virtualItem, token, close }: Props) => {
         width: '100%',
         height: `${virtualItem.size}px`,
         transform: `translateY(${virtualItem.start}px)`
-      }}>
+      }}
+    >
       <div className={'flex items-center gap-3'}>
         <img className={'image'} src={logoUrl} alt={''} />
         <div className={'flex flex-col items-start'}>

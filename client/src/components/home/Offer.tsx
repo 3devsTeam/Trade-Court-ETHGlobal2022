@@ -58,7 +58,8 @@ export const Offer = forwardRef<any, any>((offer: IOffer, ref) => {
           <button
             onClick={() => setIsOpen(!isOpen)}
             className="bg-green text-white rounded-[10px] font-bold p-[6px]
-            transition-all duration-500 hover:bg-lightGreen w-full">
+            transition-all duration-500 hover:bg-lightGreen w-full"
+          >
             Buy {symbol}
           </button>
         </div>

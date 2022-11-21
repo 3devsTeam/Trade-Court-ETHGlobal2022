@@ -11,7 +11,8 @@ export const SwitchNetwork = () => {
   return (
     <button
       onClick={() => setOpenSwitchNetwork(!openSwitchNetwork)}
-      className="rounded-[15px] relative bg-white shadow-customDark h-full px-[10px] buttonFocus">
+      className="rounded-[15px] relative bg-white shadow-customDark h-full px-[10px] buttonFocus"
+    >
       <span className="font-bold">{chain?.name}</span>
 
       {openSwitchNetwork ? (

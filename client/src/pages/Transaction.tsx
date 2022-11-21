@@ -16,6 +16,7 @@ import { useTakerApprove } from '../hooks/useTakerApprove'
 import { useMakerApprove } from '../hooks/useMakerApprove'
 import { useTakerWithdraw } from '../hooks/useTakerWithdraw'
 import { ErrorBoundary } from 'react-error-boundary'
+import { SkeletonWrapper } from '../components/ui/SkeletonWrapper'
 
 const socket = io(import.meta.env.VITE_SOCKET_URL)
 
@@ -33,28 +34,24 @@ const TransactionPage = () => {
   const { setSelectedPayment, setRole, setStep, setRoom } = useActions()
   const { role } = useTypedSelector((state) => state.transactionReducer)
 
-  const { data, isLoading, isSuccess, isError } = useQuery(
-    ['get offer by id'],
-    () => OfferService.getByID(id!),
-    {
-      select: ({ data }) => data.data.room,
-      onSuccess: (data) => {
-        setRole(data.role)
-        setRoom(id)
-        joinRoom({ id, role })
-        setStep(
-          data.stage === 'waiting taker'
-            ? 1
-            : data.stage === 'taker send'
-            ? 2
-            : data.stage === 'maker recieved'
-            ? 3
-            : null
-        )
-        setSelectedPayment(data.offer.payMethods[0])
-      }
+  const { data, status } = useQuery(['get offer by id'], () => OfferService.getByID(id!), {
+    select: ({ data }) => data.data.room,
+    onSuccess: (data) => {
+      setRole(data.role)
+      setRoom(id)
+      joinRoom({ id, role })
+      setStep(
+        data.stage === 'waiting taker'
+          ? 1
+          : data.stage === 'taker send'
+          ? 2
+          : data.stage === 'maker recieved'
+          ? 3
+          : null
+      )
+      setSelectedPayment(data.offer.payMethods[0])
     }
-  )
+  })
 
   const joinRoom = (data: object) => {
     socket.emit('join_room', data)
@@ -66,40 +63,52 @@ const TransactionPage = () => {
 
   const { takerClaim } = useTakerWithdraw(data?.offer.roomId, data?.takerNumber, id!, socket)
 
-  return isSuccess ? (
+  return status === 'success' ? (
     <div className="grid grid-rows-[10%_90%] h-full">
-      <TransactionInfo offer={data?.offer} />
+      <SkeletonWrapper isLoaded={status === 'success'} height={60}>
+        <TransactionInfo offer={data?.offer} />
+      </SkeletonWrapper>
 
       <div className="grid grid-cols-2 gap-5 h-full mt-5">
-        <div className="grid grid-rows-[90%_10%] gap-y-5">
-          <div className="wrapper">
-            <ErrorBoundary fallback={<h1>error</h1>}>
-              <div className="flex flex-col justify-between p-5 h-full">
-                {role === TRANSACTION_ROLES.taker ? <TransactionTaker offer={data.offer} /> : null}
-                {role === TRANSACTION_ROLES.maker ? <TransactionMaker offer={data.offer} /> : null}
-                <Time id={data._id} time={data.createdAt} />
-              </div>
-            </ErrorBoundary>
+        <SkeletonWrapper isLoaded={status === 'success'} height={600}>
+          <div className="grid grid-rows-[90%_10%] gap-y-5">
+            <div className="wrapper">
+              <ErrorBoundary fallback={<h1>error</h1>}>
+                <div className="flex flex-col justify-between p-5 h-full">
+                  {role === TRANSACTION_ROLES.taker ? (
+                    <TransactionTaker offer={data.offer} />
+                  ) : null}
+                  {role === TRANSACTION_ROLES.maker ? (
+                    <TransactionMaker offer={data.offer} />
+                  ) : null}
+                  <Time id={data._id} time={data.createdAt} />
+                </div>
+              </ErrorBoundary>
+            </div>
+
+            <div className="flex items-center wrapper px-5">
+              <ErrorBoundary fallback={<h1>error</h1>}>
+                {role === TRANSACTION_ROLES.taker ? (
+                  <ConfirmsTaker takerConfirmed={takerTransfered} takerClaim={takerClaim} />
+                ) : null}
+                {role === TRANSACTION_ROLES.maker ? (
+                  <ConfirmsMaker makerConfirmed={makerConfirmed} />
+                ) : null}
+              </ErrorBoundary>
+            </div>
           </div>
-          <div className="flex items-center wrapper px-5">
-            <ErrorBoundary fallback={<h1>error</h1>}>
-              {role === TRANSACTION_ROLES.taker ? (
-                <ConfirmsTaker takerConfirmed={takerTransfered} takerClaim={takerClaim} />
-              ) : null}
-              {role === TRANSACTION_ROLES.maker ? (
-                <ConfirmsMaker makerConfirmed={makerConfirmed} />
-              ) : null}
-            </ErrorBoundary>
-          </div>
-        </div>
-        <ErrorBoundary fallback={<h1>error</h1>}>
-          <Chat offer={data} socket={socket} />
-        </ErrorBoundary>
+        </SkeletonWrapper>
+
+        <SkeletonWrapper isLoaded={status === 'success'} height={600}>
+          <ErrorBoundary fallback={<h1>error</h1>}>
+            <Chat offer={data} socket={socket} />
+          </ErrorBoundary>
+        </SkeletonWrapper>
       </div>
     </div>
-  ) : isLoading ? (
+  ) : status === 'loading' ? (
     <h1>loading...</h1>
-  ) : isError ? (
+  ) : status === 'error' ? (
     <h1>error</h1>
   ) : null
 }

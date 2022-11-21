@@ -21,7 +21,8 @@ export const DropdownItem = ({ item, virtualItem, onSelect, options }: Props) =>
         height: `${virtualItem.size}px`,
         transform: `translateY(${virtualItem.start}px)`
       }}
-      className="cursor-pointer hover:bg-lightGray transition-colors duration-300 rounded-[10px]">
+      className="cursor-pointer hover:bg-lightGray transition-colors duration-300 rounded-[10px]"
+    >
       <div className="flex items-center space-x-3 px-4">
         <img
           src={item?.logoUrl}

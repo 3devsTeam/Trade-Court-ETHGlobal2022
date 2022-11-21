@@ -34,7 +34,8 @@ export const ChatInput: React.FC<Props> = ({ socket, chatId }) => {
         e.preventDefault()
         sendMessage
       }}
-      className="w-full flex items-center gap-2 pr-4">
+      className="w-full flex items-center gap-2 pr-4"
+    >
       {/* <span>{typingStatus ? 'Somebody is typing...' : ''}</span> */}
       <input
         className="w-[90%] h-full bg-transparent text-black pl-4 rounded-[20px] focus:outline-none"

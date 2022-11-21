@@ -50,7 +50,8 @@ export const ConnectButton = ({
   return isConnected ? (
     <button
       className="rounded-[15px] bg-white shadow-customDark h-full px-[10px] buttonFocus"
-      onClick={() => setOpenMenu(!openMenu)}>
+      onClick={() => setOpenMenu(!openMenu)}
+    >
       <div className="font-bold flex items-center space-x-2 text-black">
         <span>
           {balance?.formatted.slice(0, 8)}
@@ -65,7 +66,8 @@ export const ConnectButton = ({
     <>
       <button
         className="rounded-[15px] p-2 relative bg-purple text-white shadow-customDark"
-        onClick={() => setOpenConnectModal(!openConnectModal)}>
+        onClick={() => setOpenConnectModal(!openConnectModal)}
+      >
         <span className="font-bold">Connect</span>
       </button>
 

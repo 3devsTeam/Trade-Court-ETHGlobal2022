@@ -83,7 +83,8 @@ export const Menu = ({ address, balance, ensName, setOpenMenu, setOpenConnectMod
   return (
     <nav
       onClick={() => setOpenMenu(false)}
-      className="flex justify-start flex-col absolute top-12 right-0 px-2 py-[12px] w-full z-50 bg-white shadow-customDark rounded-[20px]">
+      className="flex justify-start flex-col absolute top-12 right-0 px-2 py-[12px] w-full z-50 bg-white shadow-customDark rounded-[20px]"
+    >
       <div className={'flex justify-between'}>
         <div className="flex items-center justify-between space-x-2">
           <div>
