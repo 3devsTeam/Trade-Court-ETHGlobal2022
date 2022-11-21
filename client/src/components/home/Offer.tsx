@@ -58,15 +58,14 @@ export const Offer = forwardRef<any, any>((offer: IOffer, ref) => {
           <button
             onClick={() => setIsOpen(!isOpen)}
             className="bg-green text-white rounded-[10px] font-bold p-[6px]
-            transition-all duration-500 hover:bg-lightGreen w-full"
-          >
+            transition-all duration-500 hover:bg-lightGreen w-full">
             Buy {symbol}
           </button>
         </div>
       </div>
 
       {isOpen ? (
-        <Modal header={'Transaction'} close={() => setIsOpen(false)}>
+        <Modal header={'Transaction Details'} close={() => setIsOpen(false)}>
           <OfferModal close={() => setIsOpen(false)} offer={offer} />
         </Modal>
       ) : null}

@@ -69,7 +69,7 @@ export const Chat: React.FC<Props> = ({ offer, socket }) => {
     role === 'taker' ? offer?.offer?.maker?.address : role === 'maker' ? offer?.taker?.address : ''
 
   return (
-    <div className="grid h-full grid-rows-[15%_75%_10%] gap-[0.1rem] overflow-hidden wrapper">
+    <div className="grid h-[90%] grid-rows-[15%_75%_10%] gap-[0.1rem] overflow-hidden wrapper">
       <div className="chat-header bg-purple rounded-t-[20px] flex items-center">
         <ChatHeader address={address} offer={offer} />
       </div>

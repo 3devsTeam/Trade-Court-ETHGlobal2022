@@ -1,14 +1,12 @@
 import React, { useState, useEffect } from 'react'
 import { truncateAddress } from '../../utils/truncateAddress'
 import { NumericalInput } from '../create-offer/NumericalInput'
-import { useNavigate } from 'react-router'
 import { IOffer } from '../../types/interfaces/offer.interface'
-import { OfferInput } from '../home/OfferInput'
-import { OfferService } from '../../api/offer.services'
-import { toast } from 'react-toastify'
 import { ButtonDisabled } from '../ui/ButtonDisabled'
-import { ethers } from 'ethers'
 import { useJoinRoom } from '../../hooks/useJoinRoom'
+import { AvatarIcon } from '../ui/icons/AvatarIcon'
+import { ExchangeArrows } from '../ui/icons/ExchangeArrows'
+import { Button } from '../ui/Button'
 
 interface Props {
   close: any
@@ -26,10 +24,9 @@ const OfferModal: React.FC<Props> = ({ close, offer }) => {
     offerComment,
     minLimit,
     maxLimit,
-    roomId
+    roomId,
+    totalAmount
   } = offer
-
-  const navigate = useNavigate()
 
   const [pay, setPay] = useState('0')
   const [recieve, setRecieve] = useState('0')
@@ -51,18 +48,14 @@ const OfferModal: React.FC<Props> = ({ close, offer }) => {
     setRecieve((+pay / +unitPrice).toString())
   }, [pay, recieve])
 
-  const info = [
+  const txData = [
     {
-      name: 'Maker:',
-      value: truncateAddress(address)
-    },
-    {
-      name: 'Unit Price:',
-      value: `${unitPrice} ${ticker}`
+      name: 'Amount',
+      value: `${totalAmount} ${ticker}`
     },
     {
       name: 'Available:',
-      value: `${quantity} ${symbol}`
+      value: `${quantity.toString().slice(0, 8)} ${symbol}`
     },
     {
       name: 'Limit:',
@@ -71,42 +64,55 @@ const OfferModal: React.FC<Props> = ({ close, offer }) => {
   ]
 
   return (
-    <div className="rounded-[15px] grid grid-cols-2">
-      <div className="flex flex-col gap-3 p-3 cursor-default border-2 border-purple rounded-[20px]">
-        {info.map((i) => (
-          <div className={'flex justify-between'}>
-            <p>{i.name}</p>
-            <p className={'font-bold'}>{i.value}</p>
-          </div>
-        ))}
-        <div className="break-words bg-purple bg-opacity-20 p-2 rounded-[10px]">
-          <p className={'text-sm'}>{offerComment}</p>
+    <div className="grid grid-cols-2 gap-5">
+      <div className="flex flex-col">
+        <div className="flex items-center space-x-2 mb-3 p-2">
+          <AvatarIcon color={address} />
+          <span className="font-bold">{truncateAddress(address)}</span>
+        </div>
+        <div className="flex flex-col gap-y-[6px] p-2">
+          {txData.map((t) => (
+            <div className="flex justify-between font-bold">
+              <span className="text-gray-300">{t.name}</span>
+              <span>{t.value}</span>
+            </div>
+          ))}
+          <div className="h-[20vh] overflow-auto">{offerComment}</div>
         </div>
       </div>
+      <div className="flex flex-col justify-between p-2">
+        <div className="flex flex-col gap-y-2">
+          <NumericalInput
+            onUserInput={setPay}
+            placeholder={'You pay'}
+            value={pay}
+            element={ticker}
+            maxValue={totalAmount?.toString()}
+          />
+          <div className="flex space-x-2 items-center pl-2 font-bold">
+            <ExchangeArrows />
+            <span>
+              1 {symbol} = <span className="text-purple">{unitPrice}</span> {ticker}
+            </span>
+          </div>
+          <NumericalInput
+            onUserInput={setRecieve}
+            placeholder={'You recieve'}
+            value={+recieve === 0 ? '' : recieve}
+            readOnly={true}
+          />
+        </div>
+        <div className="flex space-x-2">
+          <Button
+            onClick={() => close()}
+            color={'bg-transparent'}
+            text={'text-gray-300'}
+            name={'Back'}
+          />
 
-      <div className="flex flex-col gap-[10px] px-3">
-        <NumericalInput
-          label={'You pay'}
-          maxValue={maxLimit}
-          onUserInput={setPay}
-          placeholder={'You pay'}
-          value={pay}
-          element={ticker}
-        />
-
-        <NumericalInput
-          readOnly={true}
-          label={'You recieve'}
-          onUserInput={setRecieve}
-          placeholder={'You recieve'}
-          value={recieve}
-          element={symbol}
-        />
-
-        <div>
           <ButtonDisabled
-            onClick={() => handleTransaction()}
             name={`Buy ${symbol}`}
+            onClick={() => handleTransaction()}
             disabled={!(+pay > 0 && +pay <= +maxLimit)}
           />
         </div>

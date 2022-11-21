@@ -1,30 +1,29 @@
 import { useVirtualizer } from '@tanstack/react-virtual'
 import React, { useEffect, useRef, useState } from 'react'
-import useOnClickOutside from 'use-onclickoutside'
+import { ICrypto } from '../../types/interfaces/crypto.interface'
+import { IFiat } from '../../types/interfaces/fiat.interface'
+import { IPayment } from '../../types/interfaces/payment.interface'
+import { IRegion } from '../../types/interfaces/region.interface'
 import { Arrow } from '../ui/icons/Arrow'
 import { SearchField } from '../ui/SearchField'
 import { DropdownItem } from './DropdownItem'
 
 interface Props {
+  // activeSelect: IFiat | ICrypto | IPayment | IRegion | null
+  // items: [IFiat | ICrypto | IPayment | IRegion | null]
   activeSelect: any
-  data: {
-    items: [Item]
-    options: string
-  }
+  items: any
+  options: string
   label: string
   onSelect: React.SetStateAction<any>
 }
 
 export interface Item {
-  name: string
-  symbol?: string
-  logoUrl: string
+  [options: string]: string
 }
 
-export const Dropdown = ({ label, data, onSelect, activeSelect }: Props) => {
+export const Dropdown = ({ label, items, options, onSelect, activeSelect }: Props) => {
   const [open, setOpen] = useState(false)
-
-  const { items, options } = data
 
   const parentRef = useRef(null)
 
@@ -38,26 +37,24 @@ export const Dropdown = ({ label, data, onSelect, activeSelect }: Props) => {
 
   const toggle = () => setOpen(!open)
 
-  const filterItems = (items: Item[]) => {
-    return items?.filter((i) => i.name.toLowerCase().includes(searchTerm.toLowerCase()))
-  }
-
-  const filteredItems = filterItems(items)
+  const filteredItems = items?.filter((i: any) =>
+    i.name.toLowerCase().includes(searchTerm.toLowerCase())
+  )
 
   return (
     <div className="border-2 border-gray-100 transition-all duration-300 hover:border-purple rounded-[15px]">
-      <button onClick={toggle} className="rounded-[10px] p-2 group w-full">
+      <button onClick={toggle} className="rounded-[10px] p-2 group w-full focus:outline-none">
         <div className="flex flex-col">
           <div className="flex justify-between items-center">
             {activeSelect ? (
               <div className="flex items-center gap-3">
                 <div className="flex items-center gap-1">
                   <img
-                    className="w-8 h-8 rounded-[50%] shadow-customDark object-cover"
+                    className="w-8 h-8 rounded-full shadow-customDark object-cover"
                     src={activeSelect.logoUrl}
                   />
 
-                  <span className="font-bold">{eval(`activeSelect.${options}`)}</span>
+                  <span className="font-bold">{activeSelect?.[options]}</span>
                 </div>
 
                 <span className="font-bold text-gray-300">{label}</span>

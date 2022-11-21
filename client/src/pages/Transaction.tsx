@@ -74,14 +74,14 @@ const TransactionPage = () => {
         <div className="grid grid-rows-[90%_10%] gap-y-5">
           <div className="wrapper">
             <ErrorBoundary fallback={<h1>error</h1>}>
-              <div className="flex flex-col justify-between mb-5 p-5 h-full">
+              <div className="flex flex-col justify-between p-5 h-full">
                 {role === TRANSACTION_ROLES.taker ? <TransactionTaker offer={data.offer} /> : null}
                 {role === TRANSACTION_ROLES.maker ? <TransactionMaker offer={data.offer} /> : null}
                 <Time id={data._id} time={data.createdAt} />
               </div>
             </ErrorBoundary>
           </div>
-          <div className="flex items-center">
+          <div className="flex items-center wrapper px-5">
             <ErrorBoundary fallback={<h1>error</h1>}>
               {role === TRANSACTION_ROLES.taker ? (
                 <ConfirmsTaker takerConfirmed={takerTransfered} takerClaim={takerClaim} />

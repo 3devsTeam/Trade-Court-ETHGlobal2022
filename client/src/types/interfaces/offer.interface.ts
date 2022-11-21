@@ -24,4 +24,5 @@ export interface IOffer {
   amount?: number
   maker: IMaker
   tokenAmount?: number
+  totalAmount?: number
 }

@@ -7,4 +7,5 @@ export interface IPayment {
   paymentDescription: string
   bank: IBank | undefined
   region: IRegion
+  logoUrl?: string
 }
