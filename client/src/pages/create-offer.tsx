@@ -57,7 +57,7 @@ const CreateOfferPage = () => {
           <div>
             <ErrorBoundary fallback={<h1>error</h1>}>
               <SkeletonWrapper isLoaded={isLoaded} height={600}>
-                <div className="flex flex-col gap-5">{pageDisplay()}</div>
+                <div className="flex flex-col">{pageDisplay()}</div>
               </SkeletonWrapper>
             </ErrorBoundary>
           </div>

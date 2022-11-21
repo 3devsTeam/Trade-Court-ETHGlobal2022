@@ -15,6 +15,9 @@
   .image {
     @apply w-8 h-8 rounded-full shadow-customDark object-cover;
   }
+  .buttonFocus {
+    @apply focus:outline-none active:ring-1 active:ring-purple transition-shadow duration-300 hover:ring-1 hover:ring-gray-300;
+  }
 }
 
 html,

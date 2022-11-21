@@ -49,7 +49,7 @@ export const ConnectButton = ({
 
   return isConnected ? (
     <button
-      className="rounded-[15px] bg-white shadow-customDark h-full px-[10px] focus:outline-none focus:ring focus:ring-fuchsia-300 transition-shadow duration-300"
+      className="rounded-[15px] bg-white shadow-customDark h-full px-[10px] buttonFocus"
       onClick={() => setOpenMenu(!openMenu)}>
       <div className="font-bold flex items-center space-x-2 text-black">
         <span>

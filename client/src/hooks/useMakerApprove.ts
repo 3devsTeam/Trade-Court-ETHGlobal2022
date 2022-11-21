@@ -19,6 +19,7 @@ export const useMakerApprove = (roomId: string, takerNumber: number, id: string,
   } = useContractWrite(config as any)
 
   const makerConfirmed = async () => {
+    console.log('maker approve')
     await makerApprove?.()
   }
 

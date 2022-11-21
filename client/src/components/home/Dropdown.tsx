@@ -50,7 +50,7 @@ export const Dropdown = ({ label, items, options, onSelect, activeSelect }: Prop
               <div className="flex items-center gap-3">
                 <div className="flex items-center gap-1">
                   <img
-                    className="w-8 h-8 rounded-[50%] shadow-customDark object-cover"
+                    className="w-8 h-8 rounded-full shadow-customDark object-cover"
                     src={activeSelect.logoUrl}
                   />
 
