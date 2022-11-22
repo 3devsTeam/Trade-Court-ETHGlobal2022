@@ -22,4 +22,4 @@ jobs:
           cd server
           npm i
           pm2 restart server
-          sudo systemctl restart nginx
+          sudo service nginx restart
